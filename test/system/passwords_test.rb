@@ -2,7 +2,7 @@
 
 require 'application_system_test_case'
 
-class PasswordsTest < ApplicationSystemTestCase
+class PasswordsTest < ::ApplicationSystemTestCase
   setup do
     @user = sign_in_as(create(:user))
   end

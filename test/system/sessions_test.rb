@@ -2,7 +2,7 @@
 
 require 'application_system_test_case'
 
-class SessionsTest < ApplicationSystemTestCase
+class SessionsTest < ::ApplicationSystemTestCase
   setup do
     @user = create(:user)
   end

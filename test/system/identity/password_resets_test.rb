@@ -3,7 +3,7 @@
 require 'application_system_test_case'
 
 module Identity
-  class PasswordResetsTest < ApplicationSystemTestCase
+  class PasswordResetsTest < ::ApplicationSystemTestCase
     setup do
       @user = create(:user)
       @sid = @user.password_reset_tokens.create.signed_id(expires_in: 20.minutes)

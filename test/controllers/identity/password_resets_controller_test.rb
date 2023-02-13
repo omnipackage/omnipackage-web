@@ -3,7 +3,7 @@
 require 'test_helper'
 
 module Identity
-  class PasswordResetsControllerTest < ActionDispatch::IntegrationTest
+  class PasswordResetsControllerTest < ::ActionDispatch::IntegrationTest
     setup do
       @user = create(:user)
     end

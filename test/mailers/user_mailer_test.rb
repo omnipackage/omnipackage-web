@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-class UserMailerTest < ActionMailer::TestCase
+class UserMailerTest < ::ActionMailer::TestCase
   setup do
     @user = create(:user)
   end

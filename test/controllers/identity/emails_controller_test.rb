@@ -3,7 +3,7 @@
 require 'test_helper'
 
 module Identity
-  class EmailsControllerTest < ActionDispatch::IntegrationTest
+  class EmailsControllerTest < ::ActionDispatch::IntegrationTest
     setup do
       @user = sign_in_as(create(:user))
     end
