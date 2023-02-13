@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Identity
   class EmailVerificationsController < ::ApplicationController
     skip_before_action :require_authentication, only: :edit
@@ -19,7 +21,7 @@ module Identity
     def set_user
       @token = ::EmailVerificationToken.find_signed!(params[:sid])
       @user = @token.user
-    rescue
+    rescue StandardError
       redirect_to(edit_identity_email_path, alert: 'That email verification link is invalid')
     end
   end

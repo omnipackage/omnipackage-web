@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SessionMailer < ApplicationMailer
   def signed_in_notification
     @session = params[:session]

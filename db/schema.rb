@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -10,43 +12,43 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_12_193107) do
+ActiveRecord::Schema[7.0].define(version: 20_230_212_193_107) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+  enable_extension 'plpgsql'
 
-  create_table "email_verification_tokens", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_email_verification_tokens_on_user_id"
+  create_table 'email_verification_tokens', force: :cascade do |t|
+    t.bigint 'user_id', null: false
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index ['user_id'], name: 'index_email_verification_tokens_on_user_id'
   end
 
-  create_table "password_reset_tokens", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_password_reset_tokens_on_user_id"
+  create_table 'password_reset_tokens', force: :cascade do |t|
+    t.bigint 'user_id', null: false
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index ['user_id'], name: 'index_password_reset_tokens_on_user_id'
   end
 
-  create_table "sessions", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.string "user_agent"
-    t.string "ip_address"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_sessions_on_user_id"
+  create_table 'sessions', force: :cascade do |t|
+    t.bigint 'user_id', null: false
+    t.string 'user_agent'
+    t.string 'ip_address'
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index ['user_id'], name: 'index_sessions_on_user_id'
   end
 
-  create_table "users", force: :cascade do |t|
-    t.string "email", null: false
-    t.string "password_digest", null: false
-    t.datetime "verified_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["email"], name: "index_users_on_email", unique: true
+  create_table 'users', force: :cascade do |t|
+    t.string 'email', null: false
+    t.string 'password_digest', null: false
+    t.datetime 'verified_at'
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index ['email'], name: 'index_users_on_email', unique: true
   end
 
-  add_foreign_key "email_verification_tokens", "users"
-  add_foreign_key "password_reset_tokens", "users"
-  add_foreign_key "sessions", "users"
+  add_foreign_key 'email_verification_tokens', 'users'
+  add_foreign_key 'password_reset_tokens', 'users'
+  add_foreign_key 'sessions', 'users'
 end

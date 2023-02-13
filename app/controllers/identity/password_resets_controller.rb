@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Identity
   class PasswordResetsController < ::ApplicationController
     skip_before_action :require_authentication
@@ -11,7 +13,7 @@ module Identity
     end
 
     def create
-      @user = ::User.where(email: params[:email]).not(verified_at: nil).first
+      @user = ::User.where(email: params[:email]).where.not(verified_at: nil).first
       if @user
         ::UserMailer.with(user: @user).password_reset.deliver_later
         redirect_to(sign_in_path, notice: 'Check your email for reset instructions')
@@ -25,8 +27,7 @@ module Identity
         @token.destroy
         redirect_to(sign_in_path, notice: 'Your password was reset successfully. Please sign in')
       else
-        error_message = '<ul>' + @user.errors.map { |e| "<li>#{e.full_message}</li>" }.join + '</ul>'
-        flash.now[:alert] = error_message.html_safe
+        flash_errors(@user.errors)
         render(:edit, status: :unprocessable_entity)
       end
     end
@@ -36,7 +37,7 @@ module Identity
     def set_user
       @token = PasswordResetToken.find_signed!(params[:sid])
       @user = @token.user
-    rescue
+    rescue StandardError
       redirect_to(new_identity_password_reset_path, alert: 'That password reset link is invalid')
     end
 

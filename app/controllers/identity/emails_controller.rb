@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Identity
   class EmailsController < ::ApplicationController
     before_action :set_user
@@ -9,8 +11,7 @@ module Identity
       if @user.update(user_params)
         redirect_to_root
       else
-        error_message = '<ul>' + @user.errors.map { |e| "<li>#{e.full_message}</li>" }.join + '</ul>'
-        flash.now[:alert] = error_message.html_safe
+        flash_errors(@user.errors)
         render(:edit, status: :unprocessable_entity)
       end
     end

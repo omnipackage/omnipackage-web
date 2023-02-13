@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RegistrationsController < ApplicationController
   skip_before_action :require_authentication
   before_action :require_no_authentication
@@ -15,8 +17,7 @@ class RegistrationsController < ApplicationController
       send_email_verification
       redirect_to(root_path, notice: 'Welcome! You have signed up successfully')
     else
-      error_message = '<ul>' + @user.errors.map { |e| "<li>#{e.full_message}</li>" }.join + '</ul>'
-      flash.now[:alert] = error_message.html_safe
+      flash_errors(@user.errors)
       render(:new, status: :unprocessable_entity)
     end
   end

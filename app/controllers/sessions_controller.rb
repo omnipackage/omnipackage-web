@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SessionsController < ApplicationController
   skip_before_action :require_authentication, only: %i[new create]
   before_action :require_no_authentication, only: %i[new create]
@@ -12,7 +14,7 @@ class SessionsController < ApplicationController
   def create
     user = ::User.find_by(email: params[:email])
 
-    if user && user.authenticate(params[:password])
+    if user&.authenticate(params[:password])
       sign_in(user)
 
       redirect_to(root_path, notice: 'Signed in successfully')
