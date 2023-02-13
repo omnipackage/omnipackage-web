@@ -12,9 +12,8 @@ class SessionsController < ApplicationController
   end
 
   def create
-    user = ::User.find_by(email: params[:email])
-
-    if user&.authenticate(params[:password])
+    user = ::User.authenticate_by(email: params[:email], password: params[:password])
+    if user
       sign_in(user)
 
       redirect_to(root_path, notice: 'Signed in successfully')
