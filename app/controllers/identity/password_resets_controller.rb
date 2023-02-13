@@ -25,6 +25,8 @@ module Identity
         @token.destroy
         redirect_to(sign_in_path, notice: 'Your password was reset successfully. Please sign in')
       else
+        error_message = '<ul>' + @user.errors.map { |e| "<li>#{e.full_message}</li>" }.join + '</ul>'
+        flash.now[:alert] = error_message.html_safe
         render(:edit, status: :unprocessable_entity)
       end
     end

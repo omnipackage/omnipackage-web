@@ -9,6 +9,8 @@ module Identity
       if @user.update(user_params)
         redirect_to_root
       else
+        error_message = '<ul>' + @user.errors.map { |e| "<li>#{e.full_message}</li>" }.join + '</ul>'
+        flash.now[:alert] = error_message.html_safe
         render(:edit, status: :unprocessable_entity)
       end
     end

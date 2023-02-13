@@ -29,5 +29,9 @@ class ApplicationController < ::ActionController::Base
     redirect_to(sign_in_path) unless logged_in?
   end
 
+  def require_no_authentication
+    redirect_to(root_path, notice: "You're already signed in") if logged_in?
+  end
+
   def logged_in? = current_user.present?
 end

@@ -1,5 +1,6 @@
 class SessionsController < ApplicationController
   skip_before_action :require_authentication, only: %i[new create]
+  before_action :require_no_authentication, only: %i[new create]
 
   def index
     @sessions = current_user.sessions.order(created_at: :desc)
@@ -24,6 +25,6 @@ class SessionsController < ApplicationController
     session = current_user.sessions.find(params[:id])
     session.destroy
     sign_out if session == current_session
-    redirect_to(sessions_path, notice: 'That session has been logged out')
+    redirect_to(root_path, notice: 'That session has been logged out')
   end
 end
