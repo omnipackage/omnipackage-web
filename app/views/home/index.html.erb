@@ -1,1 +1,22 @@
-<h1>Hello</h1>
+
+<% if logged_in? %>
+  <p>Signed as <%= current_user.email %></p>
+
+  <div>
+    <%= link_to "Change email address", edit_identity_email_path %>
+  </div>
+
+  <div>
+    <%= link_to "Change password", edit_password_path %>
+  </div>
+
+  <div>
+    <%= link_to "Devices & Sessions", sessions_path %>
+  </div>
+
+  <br>
+
+  <%= button_to "Log out", current_session, method: :delete %>
+<% else %>
+  Please <%= link_to "sign in", sign_in_path %> or <%= link_to "sign up", sign_up_path %>.
+<% end %>
