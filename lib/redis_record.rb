@@ -4,7 +4,7 @@ class RedisRecord
   include ::ActiveModel::Model
   include ::ActiveModel::Validations
 
-  class << self # rubocop: disable Metrics/BlockLength
+  class << self
     def find(key)
       return unless key
 

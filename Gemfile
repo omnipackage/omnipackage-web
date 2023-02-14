@@ -6,7 +6,6 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '3.2.1'
 
 gem 'bcrypt', '~> 3.1.7'
-gem 'bootsnap', require: false
 gem 'importmap-rails'
 gem 'pg'
 gem 'puma'
@@ -32,7 +31,6 @@ group :development do
   gem 'rubocop'
   gem 'rubocop-rails'
   gem 'rubocop-rake'
-  gem 'web-console'
 end
 
 group :test do
