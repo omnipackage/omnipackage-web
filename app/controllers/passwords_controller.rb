@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class PasswordsController < ApplicationController
+class PasswordsController < ::ApplicationController
   before_action :set_user
 
   def edit

@@ -41,5 +41,7 @@ class ApplicationController < ::ActionController::Base
     redirect_to(root_path, notice: "You're already signed in") if logged_in?
   end
 
-  def logged_in? = current_user.present?
+  def logged_in?
+    current_session.present? && current_user.present?
+  end
 end

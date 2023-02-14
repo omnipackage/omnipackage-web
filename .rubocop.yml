@@ -10,6 +10,7 @@ AllCops:
   - 'config/**/*'
   - 'script/**/*'
   - 'bin/**/*'
+  - .pryrc
 
 Gemspec/RequireMFA:
   Enabled: false
@@ -42,4 +43,7 @@ Style/FormatStringToken:
   Enabled: false
 
 Rails/I18nLocaleTexts:
+  Enabled: false
+
+Style/HashSyntax:
   Enabled: false

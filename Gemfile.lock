@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/rails/rails.git
-  revision: 3bebf19f562ea85199753ca5a3737e09a7be4385
+  revision: adbb85be9ca0a876ae7b865a188c3db192732ab6
   branch: main
   specs:
     actioncable (7.1.0.alpha)
@@ -100,7 +100,6 @@ GEM
     addressable (2.8.1)
       public_suffix (>= 2.0.2, < 6.0)
     ast (2.4.2)
-    authentication-zero (2.16.5)
     awesome_print (1.9.2)
     bcrypt (3.1.18)
     bindex (0.8.1)
@@ -121,7 +120,6 @@ GEM
     connection_pool (2.3.0)
     crass (1.0.6)
     date (3.3.3)
-    debug (1.7.1)
     erubi (1.12.0)
     factory_bot (6.2.1)
       activesupport (>= 5.0.0)
@@ -264,11 +262,9 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  authentication-zero
   bcrypt (~> 3.1.7)
   bootsnap
   capybara
-  debug
   factory_bot_rails
   faker
   importmap-rails

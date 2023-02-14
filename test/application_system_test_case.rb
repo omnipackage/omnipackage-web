@@ -12,6 +12,7 @@ class ApplicationSystemTestCase < ::ActionDispatch::SystemTestCase
     click_on 'Sign in'
 
     assert_current_path root_url
+    assert_select 'div.alert-success', 'Signed in successfully'
     user
   end
 end
