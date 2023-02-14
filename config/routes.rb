@@ -2,6 +2,7 @@
 
 ::Rails.application.routes.draw do
   root 'home#index'
+
   get  'sign_in', to: 'sessions#new'
   post 'sign_in', to: 'sessions#create'
   get  'sign_up', to: 'registrations#new'
@@ -13,4 +14,6 @@
     resource :email_verification, only: %i[edit create]
     resource :password_reset,     only: %i[new edit create update]
   end
+
+  resources :projects
 end
