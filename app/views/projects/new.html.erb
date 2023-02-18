@@ -8,10 +8,11 @@
     <div class="col-sm-2">
       <%= f.label :name, class: 'col-form-label' %>
     </div>
+
     <div class="col-sm-10">
 
       <div class="input-group has-validation">
-        <%= f.text_field :name, value: @project.name, class: "form-control #{@project.errors.include?(:name) ? 'is-invalid' : ''}", required: true, 'aria-describedby' => 'validation-error-name' %>
+        <%= f.text_field :name, value: @project.name, class: "form-control#{@project.errors.include?(:name) ? ' is-invalid' : ''}", required: true, 'aria-describedby' => 'validation-error-name' %>
         <div id="validation-error-name" class="invalid-feedback">
           <%= @project.errors.messages[:name].to_sentence %>
         </div>

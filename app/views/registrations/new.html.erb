@@ -6,21 +6,27 @@
     <%= form_with(url: sign_up_path) do |form| %>
       <div class="mb-3">
         <%= form.label :email, class: "form-label" %>
-        <%= form.email_field :email, autofocus: true, autocomplete: "email", class: "form-control" %>
+        <%= form.email_field :email, value: @user.email, autofocus: true, autocomplete: "email", class: "form-control#{@user.errors.include?(:email) ? ' is-invalid' : ''}", 'aria-describedby' => 'validation-error-email' %>
+        <div id="validation-error-email" class="invalid-feedback">
+          <%= @user.errors.messages[:email].to_sentence %>
+        </div>
       </div>
 
       <div class="mb-3">
         <%= form.label :password, class: "form-label" %>
-        <%= form.password_field :password, required: true, autocomplete: "new-password", class: "form-control" %>
-        <div class="invalid-feedback">
-          <%= @user.errors.full_messages %>
+        <%= form.password_field :password, required: true, autocomplete: "new-password", class: "form-control#{@user.errors.include?(:password) ? ' is-invalid' : ''}", 'aria-describedby' => 'validation-error-password' %>
+        <div id="validation-error-password" class="invalid-feedback">
+          <%= @user.errors.messages[:password].to_sentence %>
         </div>
         <div><%= ::User::PASSWORD_MIN_LENGTH %> characters minimum.</div>
       </div>
 
       <div class="mb-3">
         <%= form.label :password_confirmation, class: "form-label" %>
-        <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", class: "form-control" %>
+        <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", class: "form-control#{@user.errors.include?(:password_confirmation) ? ' is-invalid' : ''}", 'aria-describedby' => 'validation-error-password_confirmation' %>
+        <div id="validation-error-password_confirmation" class="invalid-feedback">
+          <%= @user.errors.messages[:password_confirmation].to_sentence %>
+        </div>
       </div>
 
       <div>
