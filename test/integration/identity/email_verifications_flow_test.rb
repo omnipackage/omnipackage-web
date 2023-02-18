@@ -3,7 +3,7 @@
 require 'test_helper'
 
 module Identity
-  class EmailVerificationsControllerTest < ::ActionDispatch::IntegrationTest
+  class EmailVerificationsFlowTest < ::ActionDispatch::IntegrationTest
     setup do
       @user = sign_in_as(create(:user))
       @user.update!(verified_at: nil)

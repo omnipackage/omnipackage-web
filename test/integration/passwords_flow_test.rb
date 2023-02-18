@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-class PasswordsControllerTest < ::ActionDispatch::IntegrationTest
+class PasswordsFlowTest < ::ActionDispatch::IntegrationTest
   setup do
     @user = sign_in_as(create(:user))
   end

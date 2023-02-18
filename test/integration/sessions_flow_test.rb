@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-class SessionsControllerTest < ::ActionDispatch::IntegrationTest
+class SessionsFlowTest < ::ActionDispatch::IntegrationTest
   setup do
     @user = create(:user)
   end
