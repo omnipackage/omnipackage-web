@@ -28,6 +28,12 @@ class ProjectsController < ::ApplicationController
 
   def update
     @project = current_user.projects.find(params[:id])
+    @project.assign_attributes(project_params)
+    if @project.save
+      redirect_to(projects_path, notice: "Project #{@project.name} updated successfully")
+    else
+      render(:edit, status: :unprocessable_entity)
+    end
   end
 
   def destroy

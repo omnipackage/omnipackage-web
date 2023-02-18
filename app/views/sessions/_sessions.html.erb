@@ -11,7 +11,7 @@
   <tbody>
 
     <% sessions.each do |session| %>
-      <tr>
+      <tr class="<%= session.id == current_session.id ? 'table-active' : '' %>">
         <td><%= session.user_agent %></td>
         <td><%= session.ip_address %></td>
         <td><%= session.created_at %></td>
