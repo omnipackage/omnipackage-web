@@ -9,19 +9,19 @@ class ProjectsController < ::ApplicationController
     @project = current_user.projects.find(params[:id])
   end
 
-  def edit
-    @project = current_user.projects.find(params[:id])
-  end
-
   def new
     @project = current_user.projects.build
   end
 
-  def update
+  def edit
     @project = current_user.projects.find(params[:id])
   end
 
   def create
+  end
+
+  def update
+    @project = current_user.projects.find(params[:id])
   end
 
   def destroy

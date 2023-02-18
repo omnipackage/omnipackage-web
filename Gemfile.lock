@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/rails/rails.git
-  revision: adbb85be9ca0a876ae7b865a188c3db192732ab6
+  revision: 9192027f0b8e06cd86f94bf6337823c88d6f7bfa
   branch: main
   specs:
     actioncable (7.1.0.alpha)
@@ -188,7 +188,7 @@ GEM
     rake (13.0.6)
     redis (5.0.6)
       redis-client (>= 0.9.0)
-    redis-client (0.12.1)
+    redis-client (0.12.2)
       connection_pool
     regexp_parser (2.7.0)
     rexml (3.2.5)
@@ -212,7 +212,7 @@ GEM
       rubocop (~> 1.0)
     ruby-progressbar (1.11.0)
     rubyzip (2.3.2)
-    selenium-webdriver (4.8.0)
+    selenium-webdriver (4.8.1)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
@@ -228,7 +228,7 @@ GEM
     super_awesome_print (0.2.6)
       awesome_print
     thor (1.2.1)
-    timeout (0.3.1)
+    timeout (0.3.2)
     turbo-rails (1.3.3)
       actionpack (>= 6.0.0)
       activejob (>= 6.0.0)
