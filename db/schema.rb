@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_02_14_170753) do
+ActiveRecord::Schema[7.1].define(version: 2023_02_18_185122) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -26,6 +26,15 @@ ActiveRecord::Schema[7.1].define(version: 2023_02_14_170753) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_password_reset_tokens_on_user_id"
+  end
+
+  create_table "project_distros", force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.string "distro_id", default: "", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["distro_id"], name: "index_project_distros_on_distro_id"
+    t.index ["project_id"], name: "index_project_distros_on_project_id"
   end
 
   create_table "projects", force: :cascade do |t|
@@ -57,6 +66,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_02_14_170753) do
 
   add_foreign_key "email_verification_tokens", "users"
   add_foreign_key "password_reset_tokens", "users"
+  add_foreign_key "project_distros", "projects"
   add_foreign_key "projects", "users"
   add_foreign_key "sessions", "users"
 end

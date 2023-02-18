@@ -1,0 +1,9 @@
+<br>
+<br>
+
+<hr>
+<div class="container">
+  <% if ::Rails.env.development? %>
+    <pre><%= params.to_unsafe_h.pretty_inspect %></pre>
+  <% end %>
+</div>

@@ -24,11 +24,6 @@
   </body>
 
   <footer>
-    <hr />
-    <section class="container">
-      <% if ::Rails.env.development? %>
-        <pre><%= params.to_unsafe_h.pretty_inspect %></pre>
-      <% end %>
-    </section>
+    <%= render partial: 'layouts/footer' %>
   </footer>
 </html>

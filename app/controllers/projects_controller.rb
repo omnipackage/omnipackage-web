@@ -18,7 +18,7 @@ class ProjectsController < ::ApplicationController
   end
 
   def create
-    @project = current_user.projects.build(project_params)
+    @project = assign_attributes(current_user.projects.build)
     if @project.save
       redirect_to(projects_path, notice: "Project #{@project.name} created successfully")
     else
@@ -27,8 +27,7 @@ class ProjectsController < ::ApplicationController
   end
 
   def update
-    @project = current_user.projects.find(params[:id])
-    @project.assign_attributes(project_params)
+    @project = assign_attributes(current_user.projects.find(params[:id]))
     if @project.save
       redirect_to(projects_path, notice: "Project #{@project.name} updated successfully")
     else
@@ -43,7 +42,9 @@ class ProjectsController < ::ApplicationController
 
   private
 
-  def project_params
-    params.permit(:name)
+  def assign_attributes(object)
+    object.name = params[:name]
+    object.project_distros = params[:project_distros].reject(&:empty?).map { |i| object.project_distros.find_or_initialize_by(distro_id: i) }
+    object
   end
 end

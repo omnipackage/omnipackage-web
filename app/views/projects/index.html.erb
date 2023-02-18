@@ -15,8 +15,10 @@
     </div>
 
     <div class="card-body">
-      <h5 class="card-title"><%= project.name %></h5>
-      <h6 class="card-subtitle mb-2 text-muted"><%= project.name %></h6>
+      <% project.distros.each do |distro| %>
+        <span class="badge text-bg-secondary"><%= distro.name %></span>
+      <% end %>
+
       <p class="card-text">
         <%= link_to 'More', project_path(project.id), class: 'card-link' %>
       </p>

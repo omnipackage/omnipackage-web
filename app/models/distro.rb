@@ -11,6 +11,15 @@ class Distro
         new(**h.symbolize_keys)
       end
     end
+
+    def by_id(id)
+      find { |i| i.id == id.to_s } || (raise "no such distro '#{id}'")
+    end
+    alias [] by_id
+
+    def by_ids(ids)
+      select { |i| ids.include?(i.id) }
+    end
   end
 
   attr_reader :id, :name, :image, :package_type, :setup
