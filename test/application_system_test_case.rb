@@ -9,10 +9,11 @@ class ApplicationSystemTestCase < ::ActionDispatch::SystemTestCase
     visit sign_in_url
     fill_in :email, with: user.email
     fill_in :password, with: 'Secret1*3*5*'
-    click_on 'Sign in'
+    find('input[name="commit"]').click
 
     assert_current_path root_url
-    assert_select 'div.alert-success', 'Signed in successfully'
+    assert_text user.email # navbar
+    assert page.has_css?('.alert-success', text: 'Signed in successfully')
     user
   end
 end

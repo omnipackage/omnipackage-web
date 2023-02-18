@@ -48,7 +48,7 @@ class SessionsControllerTest < ::ActionDispatch::IntegrationTest
 
     assert_redirected_to sign_in_url
     follow_redirect!
-    
+
     assert_response :success
   end
 end

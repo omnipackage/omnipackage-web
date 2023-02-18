@@ -6,6 +6,7 @@ module Identity
   class EmailsTest < ::ApplicationSystemTestCase
     setup do
       @user = sign_in_as(create(:user))
+      visit identity_account_path
     end
 
     test 'updating the email' do

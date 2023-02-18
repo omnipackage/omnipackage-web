@@ -32,6 +32,7 @@ end
 
 group :test do
   gem 'capybara'
+  gem 'rackup'
   gem 'selenium-webdriver'
   gem 'webdrivers'
 end

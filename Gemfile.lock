@@ -261,6 +261,7 @@ DEPENDENCIES
   pg
   pry-rails
   puma
+  rackup
   rails!
   redis
   rubocop
