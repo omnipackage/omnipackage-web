@@ -15,12 +15,13 @@ gem 'turbo-rails'
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 group :development, :test do
-  gem 'brakeman'
+  gem 'brakeman', require: false
+  gem 'bundle-audit', require: false
   gem 'factory_bot_rails'
   gem 'faker'
-  gem 'rubocop'
-  gem 'rubocop-rails'
-  gem 'rubocop-rake'
+  gem 'rubocop', require: false
+  gem 'rubocop-rails', require: false
+  gem 'rubocop-rake', require: false
   gem 'super_awesome_print'
 end
 

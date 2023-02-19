@@ -104,6 +104,11 @@ GEM
     bcrypt (3.1.18)
     brakeman (5.4.0)
     builder (3.2.4)
+    bundle-audit (0.1.0)
+      bundler-audit
+    bundler-audit (0.9.1)
+      bundler (>= 1.2.0, < 3)
+      thor (~> 1.0)
     capybara (3.38.0)
       addressable
       matrix
@@ -256,6 +261,7 @@ PLATFORMS
 DEPENDENCIES
   bcrypt (~> 3.1.7)
   brakeman
+  bundle-audit
   capybara
   factory_bot_rails
   faker
