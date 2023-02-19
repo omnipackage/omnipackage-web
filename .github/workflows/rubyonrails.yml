@@ -25,6 +25,7 @@ jobs:
     env:
       RAILS_ENV: test
       DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -33,25 +34,16 @@ jobs:
         uses: ruby/setup-ruby@ee2113536afb7f793eed4ce60e8d3b26db912da4 # v1.127.0
         with:
           bundler-cache: true
+          ruby-version: "3.2.1"
 
       - name: Set up database
         run: bundle exec rails db:setup
 
       - name: Run tests
         run: bundle exec rails test
-        
+
       - name: Run system tests
         run: bundle exec rails test:system
-
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Install Ruby and gems
-        uses: ruby/setup-ruby@ee2113536afb7f793eed4ce60e8d3b26db912da4 # v1.127.0
-        with:
-          bundler-cache: true
 
       - name: Rubocop
         run: bundle exec rubocop -DP
