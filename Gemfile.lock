@@ -102,6 +102,7 @@ GEM
     ast (2.4.2)
     awesome_print (1.9.2)
     bcrypt (3.1.18)
+    brakeman (5.4.0)
     builder (3.2.4)
     capybara (3.38.0)
       addressable
@@ -254,6 +255,7 @@ PLATFORMS
 
 DEPENDENCIES
   bcrypt (~> 3.1.7)
+  brakeman
   capybara
   factory_bot_rails
   faker
