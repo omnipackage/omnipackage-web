@@ -27,16 +27,18 @@ jobs:
       DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - uses: ruby/setup-ruby@v1
-        #with:
-        #  bundler-cache: true
-
-      - name: Bundle install
-        run: bundle install
+      - name: Install Ruby and gems
+        uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
+
+      #- name: Bundle install
+      #  run: bundle install
+      #  with:
+      #    bundler-cache: true
 
       - name: Set up database
         run: bundle exec rails db:setup
