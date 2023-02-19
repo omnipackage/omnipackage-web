@@ -47,5 +47,23 @@ jobs:
       - name: Run system tests
         run: bundle exec rails test:system
 
+
+  lint:
+    runs-on: ubuntu-latest
+    env:
+      RAILS_ENV: test
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Ruby and gems
+        uses: ruby/setup-ruby@v1
+        #with:
+        #  bundler-cache: true # otherwise `cannot load such file -- rubocop-minitest`
+
+      - name: Bundle install
+        run: bundle install
+
       - name: Rubocop
         run: bundle exec rubocop -DP
