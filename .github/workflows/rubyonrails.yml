@@ -35,10 +35,8 @@ jobs:
         with:
           bundler-cache: true
 
-      #- name: Bundle install
-      #  run: bundle install
-      #  with:
-      #    bundler-cache: true
+      - name: Bundle install
+        run: bundle install
 
       - name: Set up database
         run: bundle exec rails db:setup
