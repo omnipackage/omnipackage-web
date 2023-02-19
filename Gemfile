@@ -3,8 +3,6 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.2.1'
-
 gem 'bcrypt', '~> 3.1.7'
 gem 'importmap-rails'
 gem 'pg'
