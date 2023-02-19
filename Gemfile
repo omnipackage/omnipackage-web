@@ -18,14 +18,14 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'faker'
   gem 'super_awesome_print'
+  gem 'rubocop'
+  gem 'rubocop-rails'
+  gem 'rubocop-rake'
 end
 
 group :development do
   # gem 'authentication-zero'
   gem 'pry-rails'
-  gem 'rubocop'
-  gem 'rubocop-rails'
-  gem 'rubocop-rake'
 end
 
 group :test do
