@@ -1,9 +1,9 @@
 <div class="row">
-  <div class="col">
+  <div class="col-9">
     <h1>Projects</h1>
   </div>
 
-  <div class="col text-end">
+  <div class="col-3 text-end">
     <%= link_to 'Create new project', new_project_path, class: 'btn btn-outline-primary' %>
   </div>
 </div>
@@ -15,13 +15,14 @@
     </div>
 
     <div class="card-body">
-      <% project.distros.each do |distro| %>
-        <span class="badge text-bg-secondary"><%= distro.name %></span>
-      <% end %>
+      <div class="card-text">
+        <p>
+          <span class="badge bg-secondary"><%= project.sources_kind %></span>
+          <span class="font-monospace"><%= project.sources_location %></span>
+        </p>
 
-      <p class="card-text">
         <%= link_to 'More', project_path(project.id), class: 'card-link' %>
-      </p>
+      </div>
     </div>
   </div>
   <br>

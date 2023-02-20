@@ -2,13 +2,14 @@
 
 class Project < ::ApplicationRecord
   belongs_to :user
-  has_many :project_distros, dependent: :destroy
+
+  enum sources_kind: %w[git].index_with(&:itself), _default: 'git'
 
   attribute :name, :string, default: ''
+  attribute :sources_location, :string, default: ''
+  attribute :sources_ssh_key, :string, default: ''
 
   validates :name, presence: true, length: { in: 2..150 }
-
-  def distros
-    ::Distro.by_ids(project_distros.pluck('distro_id'))
-  end
+  validates :sources_location, presence: true, length: { in: 2..8000 }
+  validates :sources_kind, presence: true
 end

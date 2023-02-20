@@ -4,3 +4,11 @@
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
 <% end %>
+
+<script>
+  document.querySelectorAll('.alert-dismissible').forEach(function(element) {
+    setTimeout(function() {
+      bootstrap.Alert.getOrCreateInstance(element).close();
+    }, 5000);
+  });
+</script>

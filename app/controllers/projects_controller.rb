@@ -2,34 +2,34 @@
 
 class ProjectsController < ::ApplicationController
   def index
-    @projects = current_user.projects
+    @projects = current_user.projects.order(:name)
   end
 
   def show
-    @project = current_user.projects.find(params[:id])
+    @project = find_project
   end
 
   def new
-    @project = current_user.projects.build
+    @project = build_project
   end
 
   def edit
-    @project = current_user.projects.find(params[:id])
+    @project = find_project
   end
 
   def create
-    @project = assign_attributes(current_user.projects.build)
+    @project = assign_attributes(build_project)
     if @project.save
-      redirect_to(projects_path, notice: "Project #{@project.name} created successfully")
+      redirect_to(projects_path, notice: "Project #{@project.name} has been successfully created")
     else
       render(:new, status: :unprocessable_entity)
     end
   end
 
   def update
-    @project = assign_attributes(current_user.projects.find(params[:id]))
+    @project = assign_attributes(find_project)
     if @project.save
-      redirect_to(projects_path, notice: "Project #{@project.name} updated successfully")
+      redirect_to(projects_path, notice: "Project #{@project.name} has been successfully updated")
     else
       render(:edit, status: :unprocessable_entity)
     end
@@ -42,9 +42,18 @@ class ProjectsController < ::ApplicationController
 
   private
 
+  def find_project
+    current_user.projects.find(params[:id])
+  end
+
+  def build_project
+    current_user.projects.build
+  end
+
   def assign_attributes(object)
     object.name = params[:name]
-    object.project_distros = params[:project_distros].reject(&:empty?).map { |i| object.project_distros.find_or_initialize_by(distro_id: i) }
+    object.sources_location = params[:sources_location]
+    object.sources_kind = params[:sources_kind]
     object
   end
 end
