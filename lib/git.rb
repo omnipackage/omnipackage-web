@@ -8,6 +8,5 @@ class Git
   end
 
   def ping(repo)
-    
   end
 end
