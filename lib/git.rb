@@ -11,12 +11,12 @@ class Git
   end
 
   def ping(repo)
-    execute(*[exe, 'ls-remote', '--exit-code', '-h', repo]).success?
+    execute(exe, 'ls-remote', '--exit-code', '-h', repo).success?
   end
 
   private
 
-  def execute(*cli, timeout_sec: 5, &block)
+  def execute(*cli, timeout_sec: 5) # rubocop: disable Metrics/MethodLength
     stdin, stdout_and_stderr, wait_thr = ::Open3.popen2e(env, *cli)
 
     begin
@@ -32,5 +32,4 @@ class Git
 
     wait_thr.value
   end
-
 end
