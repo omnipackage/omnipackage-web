@@ -18,6 +18,8 @@ module OmnipackageWeb
       config.eager_load_paths << config.root.join(i)
     end
 
+    config.active_job.queue_adapter = :sidekiq
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files

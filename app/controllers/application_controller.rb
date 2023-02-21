@@ -26,7 +26,7 @@ class ApplicationController < ::ActionController::Base
   end
 
   def authenticate
-    session = ::Session.find_by(id: cookies.signed[:session_token])
+    session = ::Session.authenticate(cookies)
     return unless session
 
     @current_session = session

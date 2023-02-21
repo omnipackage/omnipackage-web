@@ -8,15 +8,16 @@ class Git
   def initialize(exe: 'git', env: {})
     @exe = exe
     @env = { 'SSH_ASKPASS' => '', 'GIT_ASKPASS' => '' }.merge(env)
+    # "GIT_SSH_COMMAND='ssh -i #{keyfile} -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'"
   end
 
   def ping(repo)
-    execute(exe, 'ls-remote', '--exit-code', '-h', repo).success?
+    execute(exe, 'ls-remote', '--exit-code', '-h', repo, timeout_sec: 8).success?
   end
 
   private
 
-  def execute(*cli, timeout_sec: 5) # rubocop: disable Metrics/MethodLength
+  def execute(*cli, timeout_sec: 30) # rubocop: disable Metrics/MethodLength
     stdin, stdout_and_stderr, wait_thr = ::Open3.popen2e(env, *cli)
 
     begin
