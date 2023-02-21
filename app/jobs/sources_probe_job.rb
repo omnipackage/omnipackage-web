@@ -2,9 +2,11 @@
 
 class SourcesProbeJob < ::ApplicationJob
   queue_as :default
-  sidekiq_options retry: false
 
-  def perform(kind:, location:)
-    ::Sources.new(kind: kind, location: location)
+  def perform(project_id)
+    project = ::Project.find(project_id)
+    if project.sources.probe
+      project.sources_verified!
+    end
   end
 end

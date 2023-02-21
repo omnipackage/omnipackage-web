@@ -20,6 +20,7 @@ class ProjectsController < ::ApplicationController
   def create
     @project = assign_attributes(build_project)
     if @project.save
+      ::SourcesProbeJob.perform_later(@project.id)
       redirect_to(projects_path, notice: "Project #{@project.name} has been successfully created")
     else
       render(:new, status: :unprocessable_entity)
@@ -29,6 +30,10 @@ class ProjectsController < ::ApplicationController
   def update
     @project = assign_attributes(find_project)
     if @project.save
+      if %w[sources_location sources_kind sources_ssh_key].intersect?(@project.previous_changes.keys)
+        @project.sources_unverified!
+        ::SourcesProbeJob.perform_later(@project.id)
+      end
       redirect_to(projects_path, notice: "Project #{@project.name} has been successfully updated")
     else
       render(:edit, status: :unprocessable_entity)

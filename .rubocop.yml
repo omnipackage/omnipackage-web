@@ -47,3 +47,9 @@ Rails/I18nLocaleTexts:
 
 Style/HashSyntax:
   Enabled: false
+
+Style/GuardClause:
+  Enabled: false
+
+Style/IfUnlessModifier:
+  Enabled: false
