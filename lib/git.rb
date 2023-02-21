@@ -6,12 +6,12 @@ class Git
   attr_reader :exe, :env
 
   def initialize(exe: 'git', env: {})
-    #keyfile = '/home/oleg/.ssh/id_rsa.pub'
+    # keyfile = '/home/oleg/.ssh/id_rsa.pub'
     @exe = exe
     @env = {
       'SSH_ASKPASS' => '',
-      'GIT_ASKPASS' => '',
-      #'GIT_SSH_COMMAND' => "'ssh -i #{keyfile} -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'"
+      'GIT_ASKPASS' => ''
+      # 'GIT_SSH_COMMAND' => "'ssh -i #{keyfile} -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'"
     }.merge(env)
   end
 

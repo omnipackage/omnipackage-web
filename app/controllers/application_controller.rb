@@ -11,7 +11,7 @@ class ApplicationController < ::ActionController::Base
   private
 
   def flash_errors(errors)
-    error_message = '<ul>' + errors.map { |e| "<li>#{e.full_message}</li>" }.join + '</ul>' # rubocop: disable Style/StringConcatenation
+    error_message = '<ul>' + errors.map { |e| "<li>#{e.full_message}</li>" }.join + '</ul>'
     flash.now[:alert] = error_message.html_safe # rubocop: disable Rails/OutputSafety
   end
 

@@ -53,3 +53,6 @@ Style/GuardClause:
 
 Style/IfUnlessModifier:
   Enabled: false
+
+Style/StringConcatenation:
+  Enabled: false
