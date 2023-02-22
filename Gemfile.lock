@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/rails/rails.git
-  revision: 81e6831821d8de16b8b1a7ed2b2ccde79ddbe16c
+  revision: c7e444e3b085ab026ca4116955c6e91f0608ad23
   branch: main
   specs:
     actioncable (7.1.0.alpha)
@@ -102,7 +102,7 @@ GEM
     ast (2.4.2)
     awesome_print (1.9.2)
     bcrypt (3.1.18)
-    brakeman (5.4.0)
+    brakeman (5.4.1)
     builder (3.2.4)
     bundle-audit (0.1.0)
       bundler-audit
@@ -222,7 +222,7 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
-    sidekiq (7.0.5)
+    sidekiq (7.0.6)
       concurrent-ruby (< 2)
       connection_pool (>= 2.3.0)
       rack (>= 2.2.4)
