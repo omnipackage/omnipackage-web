@@ -3,11 +3,12 @@
 class Project < ::ApplicationRecord
   belongs_to :user
 
+  encrypts :sources_private_ssh_key
+
   enum sources_kind: %w[git].index_with(&:itself), _default: 'git'
 
   attribute :name, :string, default: ''
-  attribute :sources_location, :string, default: ''
-  attribute :sources_ssh_key, :string, default: ''
+  attribute :sources_location, :string
 
   validates :name, presence: true, length: { in: 2..150 }
   validates :sources_location, presence: true, length: { in: 2..8000 }
