@@ -11,7 +11,7 @@
 
 <p>
   <strong>SSH public key</strong>
-  <pre><%= @project.sources_public_ssh_key %></pre>
+  <pre style="white-space: normal;"><%= @project.sources_public_ssh_key %></pre>
   <%= button_to 'Generate new keys', project_generate_ssh_keys_path(@project.id), method: :post, class: 'btn btn-outline-warning btn-sm' %>
 </p>
 
