@@ -12,6 +12,13 @@ AllCops:
   - 'bin/**/*'
   - .pryrc
 
+Rails/UnknownEnv:
+  Environments:
+    - production
+    - development
+    - test
+    - local
+
 Gemspec/RequireMFA:
   Enabled: false
 
