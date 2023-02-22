@@ -20,5 +20,7 @@ require 'sidekiq/web'
     resource :account,            only: %i[show]
   end
 
-  resources :projects
+  resources :projects do
+    post :generate_ssh_keys
+  end
 end

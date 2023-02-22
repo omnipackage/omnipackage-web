@@ -19,7 +19,9 @@ class ProjectsController < ::ApplicationController
 
   def create
     @project = assign_attributes(build_project)
-    if @project.save
+    if @project.valid?
+      @project.generate_ssh_keys
+      @project.save!
       ::SourcesProbeJob.perform_later(@project.id)
       redirect_to(projects_path, notice: "Project #{@project.name} has been successfully created")
     else
@@ -30,11 +32,11 @@ class ProjectsController < ::ApplicationController
   def update
     @project = assign_attributes(find_project)
     if @project.save
-      if %w[sources_location sources_kind sources_ssh_key].intersect?(@project.previous_changes.keys)
+      if %w[sources_location sources_kind].intersect?(@project.previous_changes.keys)
         @project.sources_unverified!
         ::SourcesProbeJob.perform_later(@project.id)
       end
-      redirect_to(projects_path, notice: "Project #{@project.name} has been successfully updated")
+      redirect_to(project_path(@project.id), notice: "Project #{@project.name} has been successfully updated")
     else
       render(:edit, status: :unprocessable_entity)
     end
@@ -43,6 +45,15 @@ class ProjectsController < ::ApplicationController
   def destroy
     current_user.projects.find(params[:id]).destroy!
     redirect_to(projects_path, notice: 'Project has been successfully deleted')
+  end
+
+  def generate_ssh_keys
+    project = current_user.projects.find(params[:project_id])
+    if project.generate_ssh_keys && project.save
+      redirect_to(project_path(project.id), notice: "New SSH keys for project #{project.name} have been successfully generated")
+    else
+      redirect_to(project_path(project.id), alert: "Error generating new SSH keys for project #{project.name}")
+    end
   end
 
   private

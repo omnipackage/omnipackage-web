@@ -17,6 +17,17 @@ class Project < ::ApplicationRecord
     ::Project::Sources.new(kind: sources_kind, location: sources_location)
   end
 
+  def generate_ssh_keys
+    keys = ::SshKeygen.new.generate
+    if keys
+      self.sources_private_ssh_key = keys.priv
+      self.sources_public_ssh_key = keys.pub
+      true
+    else
+      false
+    end
+  end
+
   def sources_verified?
     sources_verified_at.present?
   end
