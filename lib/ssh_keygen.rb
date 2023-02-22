@@ -22,6 +22,7 @@ class SshKeygen
       Key[::File.read(priv_keyfilepath), ::File.read(pub_keyfilepath)]
     end
   ensure
+    shred(priv_keyfilepath) unless ::Rails.env.local?
     ::FileUtils.remove_entry(dir)
   end
 
@@ -42,5 +43,14 @@ class SshKeygen
     stdout_and_stderr.close
 
     wait_thr.value
+  end
+
+  def shred(filepath)
+    filesize = ::File.size(filepath)
+    [0xFF, 0xAA, 0x55, 0x00].each do |byte|
+      ::File.open(filepath, 'wb') do |f|
+        filesize.times { f.print(byte.chr) }
+      end
+    end
   end
 end
