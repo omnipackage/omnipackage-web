@@ -19,7 +19,6 @@ module OmnipackageWeb
     end
 
     config.active_job.queue_adapter = :sidekiq
-    config.require_master_key = true
 
     # Configuration for the application, engines, and railties goes here.
     #
