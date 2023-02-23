@@ -19,6 +19,12 @@ class Git
     end
   end
 
+  def clone(repo, destination)
+    with_ssh_key do |env|
+      ::ShellUtil.execute_wo_io(exe, 'clone', '--depth', '1', repo, destination, env: env, timeout_sec: 200).success?
+    end
+  end
+
   private
 
   def with_ssh_key
@@ -30,7 +36,7 @@ class Git
     )
     yield(env)
   ensure
-    ::ShellUtil.shred(keyfile.path)
+    ::ShellUtil.shred(keyfile.path) unless ::Rails.env.local?
     keyfile.unlink
   end
 end
