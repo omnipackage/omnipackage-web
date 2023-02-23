@@ -15,4 +15,12 @@ class ProjectTest < ::ActiveSupport::TestCase
     assert build(:project, sources_kind: :git).valid?
     assert build(:project, sources_kind: 'git').valid?
   end
+
+  test 'generate ssh keys' do
+    project = build(:project)
+    assert project.generate_ssh_keys
+    assert project.sources_private_ssh_key
+    assert project.sources_public_ssh_key
+    assert_match(/-----BEGIN OPENSSH PRIVATE KEY-----/, project.sources_private_ssh_key)
+  end
 end

@@ -15,7 +15,7 @@ class Project < ::ApplicationRecord
   validates :sources_kind, presence: true
 
   def sources
-    ::Project::Sources.new(kind: sources_kind, location: sources_location)
+    ::Project::Sources.new(kind: sources_kind, location: sources_location, ssh_private_key: sources_private_ssh_key)
   end
 
   def generate_ssh_keys
