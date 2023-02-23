@@ -1,34 +1,36 @@
 # frozen_string_literal: true
 
-require 'open3'
-
 class Git
-  attr_reader :exe, :env
+  attr_reader :exe, :ssh_exe, :global_env, :ssh_private_key
 
   def initialize(exe: 'git', ssh_exe: 'ssh', env: {}, ssh_private_key: '')
     @exe = exe
-    @ssh_private_key_file = ::Tempfile.new
-    ssh_private_key_file.write(ssh_private_key)
-    ssh_private_key_file.close
-    @env = {
+    @ssh_exe = ssh_exe
+    @ssh_private_key = ssh_private_key
+    @global_env = {
       'SSH_ASKPASS' => '',
-      'GIT_ASKPASS' => '',
-      'GIT_SSH_COMMAND' => "#{ssh_exe} -i #{ssh_private_key_file.path} -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+      'GIT_ASKPASS' => ''
     }.merge(env)
   end
 
   def ping(repo)
-    ::ShellUtil.execute_wo_io(exe, 'ls-remote', '--exit-code', '-h', repo, env: env, timeout_sec: 8).success?
-  ensure
-    remove_private_key_file
+    with_ssh_key do |env|
+      ::ShellUtil.execute_wo_io(exe, 'ls-remote', '--exit-code', '-h', repo, env: env, timeout_sec: 8).success?
+    end
   end
 
   private
 
-  attr_reader :ssh_private_key_file
-
-  def remove_private_key_file
-    ::ShellUtil.shred(ssh_private_key_file.path)
-    ssh_private_key_file.unlink
+  def with_ssh_key
+    keyfile = ::Tempfile.new
+    keyfile.write(ssh_private_key)
+    keyfile.close
+    env = global_env.merge(
+      'GIT_SSH_COMMAND' => "#{ssh_exe} -i #{keyfile.path} -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+    )
+    yield(env)
+  ensure
+    ::ShellUtil.shred(keyfile.path)
+    keyfile.unlink
   end
 end
