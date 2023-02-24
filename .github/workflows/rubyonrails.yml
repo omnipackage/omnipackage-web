@@ -31,7 +31,7 @@ jobs:
     steps:
       - name: Install packages
         run: |
-          sudo apt-get -y install gpg tar xz
+          sudo apt-get -y install gpg tar xz-utils
 
       - name: Checkout code
         uses: actions/checkout@v3
