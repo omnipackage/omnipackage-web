@@ -32,8 +32,6 @@ module ShellUtil
   end
 
   def compress_and_encrypt(source_dir, passphrase:, excludes: [], env: {})
-    sap [env, 'tar', *excludes.map { |e| "--exclude=#{e}" }, '-C', source_dir, '-cJf', '-', '.']
-    sap [env, 'gpg', '-c', '--passphrase', passphrase, '--batch', '--yes']
     last_stdout, _wait_threads = ::Open3.pipeline_r(
       [env, 'tar', *excludes.map { |e| "--exclude=#{e}" }, '-C', source_dir, '-cJf', '-', '.'],
       [env, 'gpg', '-c', '--passphrase', passphrase, '--batch', '--yes']
