@@ -21,6 +21,14 @@
           <span class="font-monospace"><%= project.sources_location %></span>
         </p>
 
+        <p>
+          <% if project.sources_verified? %>
+            <% project.distros.each do |d| %>
+              <span class="badge text-bg-secondary"><%= d.name %></span>
+            <% end %>
+          <% end %>
+        </p>
+
         <%= link_to 'More', project_path(project.id), class: 'card-link' %>
       </div>
     </div>

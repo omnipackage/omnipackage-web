@@ -24,6 +24,15 @@
   <%= button_to 'Fetch sources', project_fetch_sources_path(@project.id), method: :post, class: 'btn btn-outline-success btn-sm' %>
 </p>
 
+<p>
+  <% if @project.sources_verified? %>
+    <strong>Distros</strong>
+    <% @project.distros.each do |d| %>
+      <span class="badge text-bg-secondary"><%= d.name %></span>
+    <% end %>
+  <% end %>
+</p>
+
 <br>
 <p>
   <%= link_to 'Edit project', edit_project_path(@project.id), class: 'btn btn-link' %>

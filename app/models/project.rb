@@ -15,6 +15,8 @@ class Project < ::ApplicationRecord
   validates :sources_location, presence: true, length: { in: 2..8000 }
   validates :sources_kind, presence: true
 
+  delegate :distros, to: :sources_tarball, allow_nil: true
+
   def sources
     ::Project::Sources.new(kind: sources_kind, location: sources_location, ssh_private_key: sources_private_ssh_key)
   end
