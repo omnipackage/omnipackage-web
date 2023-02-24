@@ -11,6 +11,7 @@ class Project
           end
         when 'localfs'
           raise 'only available in local envs' unless ::Rails.env.local?
+
           ::Project::Sources::Localfs.allocate.tap do |o|
             o.send(:initialize, location: location)
           end
