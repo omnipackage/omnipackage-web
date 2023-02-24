@@ -1,0 +1,44 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "Command Injection",
+      "warning_code": 14,
+      "fingerprint": "d0d05c68f3ea799a0dc8ab3acf482013b14c608b40123e5deb46deeeccc559c4",
+      "check_name": "Execute",
+      "message": "Possible command injection",
+      "file": "config/initializers/check_system_packages.rb",
+      "line": 5,
+      "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
+      "code": "system(\"#{b.keys.first} #{b.values.first} &> /dev/null\")",
+      "render_path": null,
+      "location": null,
+      "user_input": "b.keys.first",
+      "confidence": "Medium",
+      "cwe_id": [
+        77
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Command Injection",
+      "warning_code": 14,
+      "fingerprint": "e1eeeb814b5488d888593d6aac04e0cff99aaa2bab9a8c95dba863c8ad3a334c",
+      "check_name": "Execute",
+      "message": "Possible command injection",
+      "file": "config/initializers/check_system_packages.rb",
+      "line": 7,
+      "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
+      "code": "system(\"#{b} --version &> /dev/null\")",
+      "render_path": null,
+      "location": null,
+      "user_input": "b",
+      "confidence": "Medium",
+      "cwe_id": [
+        77
+      ],
+      "note": ""
+    }
+  ],
+  "updated": "2023-02-24 11:08:38 +0100",
+  "brakeman_version": "5.4.1"
+}
