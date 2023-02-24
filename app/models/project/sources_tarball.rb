@@ -14,7 +14,8 @@ class Project
 
     def distros
       return unless config
-      ::Distro.by_ids(config['builds'].map { |bc| bc['distro'] })
+
+      ::Distro.by_ids(config['builds'].pluck('distro'))
     end
   end
 end
