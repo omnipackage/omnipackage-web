@@ -23,5 +23,6 @@ require 'sidekiq/web'
   resources :projects do
     post :generate_ssh_keys
     post :fetch_sources
+    get :download_tarball
   end
 end

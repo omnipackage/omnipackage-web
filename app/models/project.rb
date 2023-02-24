@@ -6,7 +6,7 @@ class Project < ::ApplicationRecord
 
   encrypts :sources_private_ssh_key
 
-  enum sources_kind: %w[git localfs].index_with(&:itself), _default: 'git'
+  enum sources_kind: (%w[git] + (::Rails.env.local? ? %w[localfs] : [])).index_with(&:itself), _default: 'git'
 
   attribute :name, :string, default: ''
   attribute :sources_location, :string
