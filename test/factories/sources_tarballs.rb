@@ -9,6 +9,6 @@
 
     tarball { envelop.tarball }
     config { envelop.config }
-    project
+    project { association :project, sources_kind: 'localfs', sources_location: location.to_s }
   end
 end
