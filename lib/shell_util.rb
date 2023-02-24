@@ -32,32 +32,35 @@ module ShellUtil
   end
 
   def compress_and_encrypt(source_dir, passphrase:, excludes: [], env: {})
-    last_stdout, _wait_threads = ::Open3.pipeline_r(
+    last_stdout, wait_threads = ::Open3.pipeline_r(
       [env, 'tar', *excludes.map { |e| "--exclude=#{e}" }, '-C', source_dir, '-cJf', '-', '.'],
       [env, 'gpg', '-c', '--passphrase', passphrase, '--batch', '--yes']
     )
     last_stdout.binmode
+    wait_threads.each(&:join)
     last_stdout.read
   end
 
   def decrypt(input, passphrase:, env: {})
-    first_stdin, last_stdout, _wait_threads = ::Open3.pipeline_rw(
+    first_stdin, last_stdout, wait_threads = ::Open3.pipeline_rw(
       [env, 'gpg', '-d', '--passphrase', passphrase, '--batch', '--yes']
       # [env, 'tar', '-xvJf', '-']
     )
     first_stdin.binmode
     first_stdin.write(input)
     first_stdin.close
+    wait_threads.each(&:join)
     last_stdout.read
   end
 
   def decompress(input, destination_path, env: {})
-    first_stdin, _wait_threads = ::Open3.pipeline_w(
+    first_stdin, wait_threads = ::Open3.pipeline_w(
       [env, 'tar', '--directory', destination_path, '-xJf', '-']
     )
     first_stdin.binmode
     first_stdin.write(input)
     first_stdin.close
+    wait_threads.each(&:join)
     destination_path
   end
 end

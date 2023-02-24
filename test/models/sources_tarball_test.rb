@@ -14,10 +14,9 @@ class SourcesTarballTest < ::ActiveSupport::TestCase
     tmpdir = ::Dir.mktmpdir
     begin
       ::ShellUtil.decompress(o.decrypted_tarball, tmpdir)
-      `sync`
 
       extracted = ::Dir.glob(tmpdir + '/**/*')
-      assert extracted.size.positive?
+      assert_equal ::Dir.glob(sources_location.to_s + '/**/*').size, extracted.size
 
       assert_equal ::File.read(sources_location.join('.omnipackage/config.yml')), ::File.read("#{tmpdir}/.omnipackage/config.yml")
 
