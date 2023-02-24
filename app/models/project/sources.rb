@@ -15,15 +15,20 @@ class Project
       end
     end
 
+    Envelop = ::Data.define(:config, :tarball)
+
     attr_reader :location
 
     def initialize(location:)
       @location = location
     end
 
-    def build_config
+    def sync
       clone do |dir|
-        ::YAML.load_file(::File.join(dir, '.omnipackage', 'config.yml'), aliases: true)
+        conf = ::YAML.load_file(::File.join(dir, '.omnipackage', 'config.yml'))
+        tarball = ::ShellUtil.compress_and_encrypt(dir, passphrase: ::Rails.application.credentials.sources_tarball_passphrase, excludes: tarball_excludes)
+        # ::File.open('/home/oleg/Desktop/ololo.tar.xz.gpg', 'wb') { |file| file.write(out) }
+        Envelop[conf, tarball]
       end
     end
 
@@ -31,6 +36,12 @@ class Project
     end
 
     def clone
+    end
+
+    private
+
+    def tarball_excludes
+      []
     end
   end
 end

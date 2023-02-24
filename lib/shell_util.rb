@@ -30,4 +30,22 @@ module ShellUtil
       end
     end
   end
+
+  def compress_and_encrypt(source_dir, passphrase:, excludes: [], env: {})
+    last_stdout, _wait_threads = ::Open3.pipeline_r(
+      [env, 'tar', *excludes.map { |e| "--exclude=#{e}" }, '-C', source_dir, '-cvJf', '-', '.'],
+      [env, 'gpg', '-c', '--passphrase', passphrase, '--batch', '--yes']
+    )
+    last_stdout.read
+  end
+
+  def decrypt(input, passphrase:, env: {})
+    first_stdin, last_stdout, _wait_threads = ::Open3.pipeline_rw(
+      [env, 'gpg', '-d', '--passphrase', passphrase, '--batch', '--yes']
+      # [env, 'tar', '-xvJf', '-']
+    )
+    first_stdin.write(input)
+    first_stdin.close
+    last_stdout.read
+  end
 end

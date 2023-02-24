@@ -29,6 +29,10 @@ class Project
       private
 
       attr_reader :git
+
+      def tarball_excludes
+        %w[.git]
+      end
     end
   end
 end
