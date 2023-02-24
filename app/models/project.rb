@@ -2,10 +2,11 @@
 
 class Project < ::ApplicationRecord
   belongs_to :user
+  has_one :sources_tarball, class_name: '::Project::SourcesTarball', dependent: :destroy
 
   encrypts :sources_private_ssh_key
 
-  enum sources_kind: %w[git].index_with(&:itself), _default: 'git'
+  enum sources_kind: %w[git localfs].index_with(&:itself), _default: 'git'
 
   attribute :name, :string, default: ''
   attribute :sources_location, :string
@@ -30,14 +31,10 @@ class Project < ::ApplicationRecord
   end
 
   def sources_verified?
-    sources_verified_at.present?
+    sources_tarball.present?
   end
 
-  def sources_verified!
-    update!(sources_verified_at: ::Time.now.utc)
-  end
-
-  def sources_unverified!
-    update!(sources_verified_at: nil)
+  def sources_verified_at
+    sources_tarball&.updated_at
   end
 end

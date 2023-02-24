@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_02_22_065247) do
+ActiveRecord::Schema[7.1].define(version: 2023_02_24_075109) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -28,6 +28,15 @@ ActiveRecord::Schema[7.1].define(version: 2023_02_22_065247) do
     t.index ["user_id"], name: "index_password_reset_tokens_on_user_id"
   end
 
+  create_table "project_sources_tarballs", force: :cascade do |t|
+    t.binary "tarball"
+    t.json "config"
+    t.bigint "project_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_project_sources_tarballs_on_project_id"
+  end
+
   create_table "projects", force: :cascade do |t|
     t.string "name", default: "", null: false
     t.bigint "user_id", null: false
@@ -36,7 +45,6 @@ ActiveRecord::Schema[7.1].define(version: 2023_02_22_065247) do
     t.string "sources_location", default: "", null: false
     t.string "sources_kind", default: "", null: false
     t.string "sources_private_ssh_key"
-    t.datetime "sources_verified_at"
     t.string "sources_public_ssh_key"
     t.index ["name"], name: "index_projects_on_name"
     t.index ["sources_kind"], name: "index_projects_on_sources_kind"
@@ -63,6 +71,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_02_22_065247) do
 
   add_foreign_key "email_verification_tokens", "users"
   add_foreign_key "password_reset_tokens", "users"
+  add_foreign_key "project_sources_tarballs", "projects"
   add_foreign_key "projects", "users"
   add_foreign_key "sessions", "users"
 end
