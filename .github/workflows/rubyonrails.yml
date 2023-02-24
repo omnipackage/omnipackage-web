@@ -29,6 +29,10 @@ jobs:
       REDIS_URL: "redis://localhost:6379/1"
 
     steps:
+      - name: Install packages
+        run: |
+          sudo apt-get -y install gpg tar xz
+
       - name: Checkout code
         uses: actions/checkout@v3
 
