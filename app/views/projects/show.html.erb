@@ -11,8 +11,16 @@
 
 <p>
   <strong>SSH public key</strong>
-  <pre style="white-space: normal;"><%= @project.sources_public_ssh_key %></pre>
+  <pre><%= @project.sources_public_ssh_key %></pre>
   <%= button_to 'Generate new keys', project_generate_ssh_keys_path(@project.id), method: :post, class: 'btn btn-outline-warning btn-sm', form: { data: { turbo_confirm: "Are you sure?" } } %>
+</p>
+
+<p>
+  <strong>Build config</strong>
+  <% if @project.sources_verified? %>
+    <pre><%= @project.sources_tarball.config.pretty_inspect %></pre>
+  <% end %>
+  <%= button_to 'Fetch sources', project_fetch_sources_path(@project.id), method: :post, class: 'btn btn-outline-success btn-sm' %>
 </p>
 
 <br>

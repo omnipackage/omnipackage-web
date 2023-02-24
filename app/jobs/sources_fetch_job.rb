@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class SourcesFetchJob < ApplicationJob
+class SourcesFetchJob < ::ApplicationJob
   queue_as :default
 
   def perform(project_id)

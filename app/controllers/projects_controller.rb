@@ -56,6 +56,12 @@ class ProjectsController < ::ApplicationController
     end
   end
 
+  def fetch_sources
+    project = current_user.projects.find(params[:project_id])
+    ::SourcesFetchJob.perform_later(project.id)
+    redirect_to(project_path(project.id), notice: 'A background job has been started')
+  end
+
   private
 
   def find_project

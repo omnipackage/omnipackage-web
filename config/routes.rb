@@ -22,5 +22,6 @@ require 'sidekiq/web'
 
   resources :projects do
     post :generate_ssh_keys
+    post :fetch_sources
   end
 end

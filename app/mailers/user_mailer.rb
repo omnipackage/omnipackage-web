@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class UserMailer < ApplicationMailer
+class UserMailer < ::ApplicationMailer
   def password_reset
     @user = params[:user]
     @signed_id = @user.password_reset_tokens.create.signed_id(expires_in: 20.minutes)
