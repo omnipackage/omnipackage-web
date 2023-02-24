@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-['tar', 'gpg', 'xz', 'git', { 'ssh' => 'ssh -V' }].each do |b|
-  ok = if b.is_a?(::Hash)
-         system("#{b.keys.first} #{b.values.first} &> /dev/null")
-       else
-         system("#{b} --version &> /dev/null")
-       end
-  raise "please install #{b}" unless ok
+['tar', 'gpg', 'xz', 'git', { 'ssh-keygen' => 'ssh -V' }].each do |b|
+  name, cmd = if b.is_a?(::Hash)
+                [b.keys.first, b.values.first]
+              else
+                [b, "#{b} --version"]
+              end
+  raise "please install #{name}" unless system("#{cmd} &> /dev/null")
 end
