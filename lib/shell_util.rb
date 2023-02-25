@@ -34,7 +34,7 @@ module ShellUtil
   def compress_and_encrypt(source_dir, passphrase:, excludes: [], env: {})
     last_stdout, wait_threads = ::Open3.pipeline_r(
       [env, 'tar', *excludes.map { |e| "--exclude=#{e}" }, '-C', source_dir, '-cJf', '-', '.'],
-      [env, 'gpg', '-c', '--passphrase', passphrase, '--batch', '--yes']
+      [env, 'gpg', '-c', '--passphrase', passphrase, '--batch', '--yes', '--quiet']
     )
     last_stdout.binmode
     wait_threads.each(&:join)
@@ -43,7 +43,7 @@ module ShellUtil
 
   def decrypt(input, passphrase:, env: {})
     first_stdin, last_stdout, wait_threads = ::Open3.pipeline_rw(
-      [env, 'gpg', '-d', '--passphrase', passphrase, '--batch', '--yes']
+      [env, 'gpg', '-d', '--passphrase', passphrase, '--batch', '--yes', '--quiet']
       # [env, 'tar', '-xvJf', '-']
     )
     first_stdin.binmode
