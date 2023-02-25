@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_02_24_205843) do
+ActiveRecord::Schema[7.1].define(version: 2023_02_25_083029) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -67,6 +67,15 @@ ActiveRecord::Schema[7.1].define(version: 2023_02_24_205843) do
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
+  create_table "tasks", force: :cascade do |t|
+    t.bigint "sources_tarball_id", null: false
+    t.string "state", default: "", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["sources_tarball_id"], name: "index_tasks_on_sources_tarball_id"
+    t.index ["state"], name: "index_tasks_on_state"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", null: false
     t.string "password_digest", null: false
@@ -81,4 +90,5 @@ ActiveRecord::Schema[7.1].define(version: 2023_02_24_205843) do
   add_foreign_key "project_sources_tarballs", "projects"
   add_foreign_key "projects", "users"
   add_foreign_key "sessions", "users"
+  add_foreign_key "tasks", "project_sources_tarballs", column: "sources_tarball_id"
 end
