@@ -25,4 +25,8 @@ require 'sidekiq/web'
     post :fetch_sources
     get :download_tarball
   end
+
+  namespace :agent_api do
+    get 'rpc', to: 'rpc#call'
+  end
 end
