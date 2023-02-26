@@ -27,6 +27,6 @@ require 'sidekiq/web'
   end
 
   namespace :agent_api do
-    get 'rpc', to: 'rpc#call'
+    post 'api', to: 'api#call'
   end
 end
