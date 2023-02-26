@@ -17,11 +17,9 @@ class Agent
         when 'idle'
           schedule
         when 'busy'
-          agent_task = agent.agent_tasks.find(payload.fetch(:agent_task_id))
-          touch(agent_task)
+          busy(payload)
         when 'done'
-          agent_task = agent.agent_tasks.find(payload.fetch(:agent_task_id))
-          finish(agent_task)
+          finish(payload)
         else
           raise "unknown status #{payload[:status]}"
         end
@@ -32,7 +30,8 @@ class Agent
       def schedule
         ::ApplicationRecord.transaction(isolation: :serializable) do
           task = atomic_task_fetch
-          return unless task
+          raise ::ActiveRecord::Rollback unless task
+
           agent_task = agent.agent_tasks.create!(task: task, state: 'scheduled')
           {
             command: 'start',
@@ -42,31 +41,34 @@ class Agent
         end
       end
 
-      def atomic_task_fetch
-        sql = <<~SQL
-        UPDATE
-          tasks
-        SET
-          state = 'running'
-        WHERE id = (
-          SELECT id FROM tasks WHERE state = 'fresh' ORDER BY created_at ASC LIMIT 1 FOR UPDATE
-        ) RETURNING *;
+      def atomic_task_fetch # rubocop: disable Metrics/MethodLength
+        sql = <<~SQL.squish
+          UPDATE
+            tasks
+          SET
+            state = 'running'
+          WHERE id = (
+            SELECT id FROM tasks WHERE state = 'fresh' ORDER BY created_at ASC LIMIT 1 FOR UPDATE
+          ) RETURNING *;
         SQL
         pgresult = ::ApplicationRecord.connection.execute(sql)
         return if pgresult.values.empty?
+
         fields = pgresult.fields
-        ::Task.instantiate(::Hash[fields.zip(pgresult.values.sole)])
+        ::Task.instantiate(fields.zip(pgresult.values.sole).to_h)
       end
 
-      def touch(agent_task)
+      def busy(payload)
+        agent_task = agent.agent_tasks.find(payload.fetch(:agent_task_id))
         ::ApplicationRecord.transaction do
           # TODO: read log
-          agent_task.touch
-          agent_task.task.touch
+          agent_task.touch # rubocop: disable Rails/SkipsModelValidations
+          agent_task.task.touch # rubocop: disable Rails/SkipsModelValidations
         end
       end
 
-      def finish(agent_task)
+      def finish(payload)
+        agent_task = agent.agent_tasks.find(payload.fetch(:agent_task_id))
         ::ApplicationRecord.transaction do
           agent_task.done!
           agent_task.task.finished!
