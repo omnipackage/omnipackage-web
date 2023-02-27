@@ -7,22 +7,27 @@ module AgentApi
     rescue_from ::StandardError, with: :respond_error
 
     def call
-      url_methods = ::Agent::Api::Process::UrlMethods.new(method(:project_download_tarball_url))
-      process = ::Agent::Api::Process.new(current_agent, url_methods)
-      response_payload = process.call(params[:payload])
-      if response_payload
-        render(json: response_payload)
-      else
-        head(:ok)
-      end
+      url_methods = ::Task::Scheduler::UrlMethods.new(method(:project_download_tarball_url))
+      scheduler = ::Task::Scheduler.new(current_agent, url_methods)
+      response_payload = scheduler.call(params.fetch(:payload))
+      respond(response_payload)
     end
 
     private
 
     attr_reader :current_agent
 
+    def respond(payload)
+      response.set_header('X-NEXT-POLL-AFTER-SECONDS', 20)
+      if payload
+        render(json: payload)
+      else
+        head(:ok)
+      end
+    end
+
     def authorize
-      @current_agent = ::Agent.find_by!(apikey: params[:apikey])
+      @current_agent = ::Agent.find_by!(apikey: request.headers['X-APIKEY'] || params[:apikey])
     end
 
     def respond_error(exception)
