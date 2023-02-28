@@ -15,7 +15,7 @@ class Project
     def distros
       return unless config
 
-      ::Distro.by_ids(config['builds'].pluck('distro'))
+      ::Distro.by_ids(config['builds'].pluck('distro').uniq)
     end
   end
 end
