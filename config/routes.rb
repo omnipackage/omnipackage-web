@@ -27,6 +27,6 @@ require 'sidekiq/web'
   end
 
   namespace :agent_api do
-    post 'api', to: 'api#call'
+    post '/', to: 'api#call'
   end
 end
