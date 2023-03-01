@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/rails/rails.git
-  revision: 70e9c89ddc35e630fa861073a3799d891c099a00
+  revision: bde99e52ad5d25f9d670e91cbe719212eb5dcd42
   branch: main
   specs:
     actioncable (7.1.0.alpha)
@@ -174,7 +174,7 @@ GEM
     pry-rails (0.3.9)
       pry (>= 0.10.4)
     public_suffix (5.0.1)
-    puma (6.1.0)
+    puma (6.1.1)
       nio4r (~> 2.0)
     racc (1.6.2)
     rack (3.0.4.1)
@@ -194,7 +194,7 @@ GEM
     rake (13.0.6)
     redis (5.0.6)
       redis-client (>= 0.9.0)
-    redis-client (0.12.2)
+    redis-client (0.13.0)
       connection_pool
     regexp_parser (2.7.0)
     rexml (3.2.5)

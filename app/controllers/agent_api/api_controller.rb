@@ -18,7 +18,7 @@ module AgentApi
     attr_reader :current_agent
 
     def respond(payload)
-      response.set_header('X-NEXT-POLL-AFTER-SECONDS', 20)
+      response.set_header('X-NEXT-POLL-AFTER-SECONDS', rand(19..29))
       if payload
         render(json: payload)
       else

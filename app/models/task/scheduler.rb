@@ -12,7 +12,7 @@ class Task
     end
 
     def call(payload)
-      case payload.fetch(:status)
+      case payload.fetch(:state)
       when 'idle'
         schedule
       when 'busy'
@@ -20,7 +20,7 @@ class Task
       when 'done'
         finish(payload)
       else
-        raise "unknown status #{payload[:status]}"
+        raise "unknown state #{payload[:state]}"
       end
     end
 
