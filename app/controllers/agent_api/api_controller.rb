@@ -7,10 +7,15 @@ module AgentApi
     rescue_from ::StandardError, with: :respond_error
 
     def call
-      url_methods = ::Task::Scheduler::UrlMethods.new(method(:project_download_tarball_url))
+      url_methods = ::Task::Scheduler::UrlMethods.new(method(:agent_api_download_sources_tarball_url))
       scheduler = ::Task::Scheduler.new(current_agent, url_methods)
       response_payload = scheduler.call(params.fetch(:payload))
       respond(response_payload)
+    end
+
+    def sources_tarball
+      sources_tarball = current_agent.agent_tasks.find(params[:agent_task_id]).sources_tarball
+      send_data(sources_tarball.decrypted_tarball, filename: sources_tarball.decrypted_tarball_filename)
     end
 
     private
@@ -27,7 +32,8 @@ module AgentApi
     end
 
     def authorize
-      @current_agent = ::Agent.find_by!(apikey: request.headers['X-APIKEY'] || params[:apikey])
+      @current_agent = ::Agent.find_by(apikey: request.headers['X-APIKEY'] || params[:apikey])
+      head(:unauthorized) unless current_agent
     end
 
     def respond_error(exception)

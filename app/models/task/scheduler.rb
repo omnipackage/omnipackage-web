@@ -35,7 +35,7 @@ class Task
         {
           command: 'start',
           agent_task_id: agent_task.id,
-          sources_tarball_url: url_methods.tarball_url.call(task.project.id)
+          sources_tarball_url: url_methods.tarball_url.call(agent_task.id)
         }
       end
     end
