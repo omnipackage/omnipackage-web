@@ -66,7 +66,7 @@ class Task
         agent_task.touch # rubocop: disable Rails/SkipsModelValidations
         agent_task.task.touch # rubocop: disable Rails/SkipsModelValidations
       end
-      {}
+      nil
     end
 
     def finish(task_payload)
@@ -75,7 +75,7 @@ class Task
         agent_task.done!
         agent_task.task.finished!
       end
-      {}
+      nil
     end
   end
 end

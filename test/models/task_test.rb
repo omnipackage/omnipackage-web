@@ -4,7 +4,7 @@ require 'test_helper'
 
 class TaskTest < ::ActiveSupport::TestCase
   test 'factory and validation' do
-    o = build(:task)
+    o = create(:task)
     assert o.valid?
     assert o.sources_tarball.valid?
     assert o.state == 'fresh'

@@ -24,7 +24,7 @@ module AgentApi
 
     def respond(payload)
       response.set_header('X-NEXT-POLL-AFTER-SECONDS', rand(19..29))
-      if payload
+      if payload.is_a?(::Hash)
         render(json: payload)
       else
         head(:ok)
@@ -38,6 +38,8 @@ module AgentApi
 
     def respond_error(exception)
       payload = { error: exception.message }
+      ::Rails.logger.error(exception.message)
+      ::Rails.logger.error(exception.backtrace)
       # payload[:backtrace] = exception.backtrace if ::Rails.env.local?
       render(json: payload, status: :unprocessable_entity)
     end
