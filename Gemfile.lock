@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/rails/rails.git
-  revision: aa2052ec4ceb64682828154e8669ac0327c678db
+  revision: cc0951dbb8b4564f8263622e6f58f0b094e516d9
   branch: main
   specs:
     actioncable (7.1.0.alpha)
@@ -151,7 +151,7 @@ GEM
     matrix (0.4.2)
     method_source (1.0.0)
     mini_mime (1.1.2)
-    minitest (5.17.0)
+    minitest (5.18.0)
     net-imap (0.3.4)
       date
       net-protocol
@@ -210,9 +210,6 @@ GEM
       unicode-display_width (>= 2.4.0, < 3.0)
     rubocop-ast (1.27.0)
       parser (>= 3.2.1.0)
-    rubocop-performance (1.16.0)
-      rubocop (>= 1.7.0, < 2.0)
-      rubocop-ast (>= 0.4.0)
     rubocop-rails (2.18.0)
       activesupport (>= 4.2.0)
       rack (>= 1.1)
@@ -281,7 +278,6 @@ DEPENDENCIES
   rails!
   redis
   rubocop
-  rubocop-performance
   rubocop-rails
   rubocop-rake
   selenium-webdriver

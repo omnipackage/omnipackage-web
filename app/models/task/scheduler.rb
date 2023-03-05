@@ -16,9 +16,9 @@ class Task
       when 'idle'
         schedule
       when 'busy'
-        busy(payload)
-      when 'done'
-        finish(payload)
+        busy(payload.fetch(:task))
+      when 'finished'
+        finish(payload.fetch(:task))
       else
         raise "unknown state #{payload[:state]}"
       end
@@ -34,8 +34,10 @@ class Task
         agent_task = agent.agent_tasks.create!(task: task, state: 'scheduled')
         {
           command: 'start',
-          agent_task_id: agent_task.id,
-          sources_tarball_url: url_methods.tarball_url.call(agent_task.id)
+          task: {
+            id: agent_task.id,
+            sources_tarball_url: url_methods.tarball_url.call(agent_task.id)
+          }
         }
       end
     end
@@ -57,8 +59,8 @@ class Task
       ::Task.instantiate(fields.zip(pgresult.values.sole).to_h)
     end
 
-    def busy(payload)
-      agent_task = agent.agent_tasks.find(payload.fetch(:agent_task_id))
+    def busy(task_payload)
+      agent_task = agent.agent_tasks.find(task_payload.fetch(:id))
       ::ApplicationRecord.transaction do
         # TODO: read log
         agent_task.touch # rubocop: disable Rails/SkipsModelValidations
@@ -67,8 +69,8 @@ class Task
       {}
     end
 
-    def finish(payload)
-      agent_task = agent.agent_tasks.find(payload.fetch(:agent_task_id))
+    def finish(task_payload)
+      agent_task = agent.agent_tasks.find(task_payload.fetch(:id))
       ::ApplicationRecord.transaction do
         agent_task.done!
         agent_task.task.finished!
