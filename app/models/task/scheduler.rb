@@ -26,7 +26,7 @@ class Task
 
     private
 
-    def schedule
+    def schedule # rubocop: disable Metrics/MethodLength
       ::ApplicationRecord.transaction(isolation: :serializable) do
         task = atomic_task_fetch
         raise ::ActiveRecord::Rollback unless task
