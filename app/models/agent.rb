@@ -3,7 +3,7 @@
 class Agent < ::ApplicationRecord
   encrypts :apikey, deterministic: true
 
-  has_many :agent_tasks, class_name: '::Agent::Task', dependent: :destroy
+  has_many :tasks, class_name: '::Task', dependent: :destroy
   belongs_to :user, class_name: '::User', optional: true
 
   validates :apikey, presence: true, uniqueness: true
@@ -25,7 +25,7 @@ class Agent < ::ApplicationRecord
   end
 
   def status
-    if agent_tasks.busy.exists?
+    if tasks.running.exists?
       'busy'
     else
       'idle'

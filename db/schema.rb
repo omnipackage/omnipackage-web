@@ -10,20 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_03_11_134834) do
+ActiveRecord::Schema[7.1].define(version: 2023_03_11_200438) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "agent_tasks", force: :cascade do |t|
-    t.bigint "agent_id", null: false
-    t.bigint "task_id", null: false
-    t.string "state", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["agent_id"], name: "index_agent_tasks_on_agent_id"
-    t.index ["state"], name: "index_agent_tasks_on_state"
-    t.index ["task_id"], name: "index_agent_tasks_on_task_id"
-  end
 
   create_table "agents", force: :cascade do |t|
     t.string "apikey", null: false
@@ -87,6 +76,8 @@ ActiveRecord::Schema[7.1].define(version: 2023_03_11_134834) do
     t.string "state", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "agent_id"
+    t.index ["agent_id"], name: "index_tasks_on_agent_id"
     t.index ["sources_tarball_id"], name: "index_tasks_on_sources_tarball_id"
     t.index ["state"], name: "index_tasks_on_state"
   end
@@ -101,13 +92,12 @@ ActiveRecord::Schema[7.1].define(version: 2023_03_11_134834) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
-  add_foreign_key "agent_tasks", "agents"
-  add_foreign_key "agent_tasks", "tasks"
   add_foreign_key "agents", "users"
   add_foreign_key "email_verification_tokens", "users"
   add_foreign_key "password_reset_tokens", "users"
   add_foreign_key "project_sources_tarballs", "projects"
   add_foreign_key "projects", "users"
   add_foreign_key "sessions", "users"
+  add_foreign_key "tasks", "agents"
   add_foreign_key "tasks", "project_sources_tarballs", column: "sources_tarball_id"
 end

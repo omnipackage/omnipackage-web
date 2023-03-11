@@ -30,13 +30,11 @@ class Task
       ::ApplicationRecord.transaction(isolation: :serializable) do
         task = atomic_task_fetch
         raise ::ActiveRecord::Rollback unless task
-
-        agent_task = agent.agent_tasks.create!(task: task, state: 'scheduled')
         {
           command: 'start',
           task: {
-            id: agent_task.id,
-            sources_tarball_url: url_methods.tarball_url.call(agent_task.id)
+            id: task.id,
+            sources_tarball_url: url_methods.tarball_url.call(task.id)
           }
         }
       end
@@ -47,13 +45,14 @@ class Task
         UPDATE
           tasks
         SET
-          state = 'running'
+          state = 'running',
+          agent_id = #{agent.id}
         WHERE id = (
           SELECT t.id FROM tasks t
           JOIN project_sources_tarballs pst ON t.sources_tarball_id = pst.id
           JOIN projects p ON pst.project_id = p.id
           JOIN agents a ON (p.user_id = a.user_id OR a.user_id ISNULL)
-          WHERE t.state = 'fresh' AND a.id = #{agent.id}
+          WHERE t.state = 'scheduled' AND a.id = #{agent.id}
           ORDER BY t.created_at ASC LIMIT 1
           FOR UPDATE
         ) RETURNING *;
@@ -66,19 +65,17 @@ class Task
     end
 
     def busy(task_payload)
-      agent_task = agent.agent_tasks.find(task_payload.fetch(:id))
+      task = agent.tasks.find(task_payload.fetch(:id))
       ::ApplicationRecord.transaction do
-        agent_task.task.running!
-        agent_task.busy!
+        task.running!
       end
       nil
     end
 
     def finish(task_payload)
-      agent_task = agent.agent_tasks.find(task_payload.fetch(:id))
+      task = agent.tasks.find(task_payload.fetch(:id))
       ::ApplicationRecord.transaction do
-        agent_task.done!
-        agent_task.task.finished!
+        task.finished!
       end
       nil
     end

@@ -22,7 +22,7 @@ module AgentApi
     end
 
     def sources_tarball
-      sources_tarball = current_agent.agent_tasks.find(params[:agent_task_id]).sources_tarball
+      sources_tarball = current_agent.tasks.find(params[:task_id]).sources_tarball
       send_data(sources_tarball.decrypted_tarball, filename: sources_tarball.decrypted_tarball_filename)
     end
 
