@@ -43,7 +43,7 @@ class ProjectsController < ::ApplicationController
   end
 
   def destroy
-    current_user.projects.find(params[:id]).destroy!
+    find_project.destroy!
     redirect_to(projects_path, notice: 'Project has been successfully deleted')
   end
 

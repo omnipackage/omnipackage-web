@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Session < ::ApplicationRecord
-  belongs_to :user
+  belongs_to :user, class_name: '::User'
 
   attribute :user_agent, :string, default: ''
   attribute :ip_address, :string, default: ''

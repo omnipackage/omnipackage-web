@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_03_11_111854) do
+ActiveRecord::Schema[7.1].define(version: 2023_03_11_134834) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -31,7 +31,9 @@ ActiveRecord::Schema[7.1].define(version: 2023_03_11_111854) do
     t.datetime "updated_at", null: false
     t.datetime "last_seen_at"
     t.datetime "considered_offline_at"
+    t.bigint "user_id"
     t.index ["apikey"], name: "index_agents_on_apikey", unique: true
+    t.index ["user_id"], name: "index_agents_on_user_id"
   end
 
   create_table "email_verification_tokens", force: :cascade do |t|
@@ -95,11 +97,13 @@ ActiveRecord::Schema[7.1].define(version: 2023_03_11_111854) do
     t.datetime "verified_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "root", default: false, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
   add_foreign_key "agent_tasks", "agents"
   add_foreign_key "agent_tasks", "tasks"
+  add_foreign_key "agents", "users"
   add_foreign_key "email_verification_tokens", "users"
   add_foreign_key "password_reset_tokens", "users"
   add_foreign_key "project_sources_tarballs", "projects"

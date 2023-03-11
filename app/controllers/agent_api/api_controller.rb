@@ -15,7 +15,7 @@ module AgentApi
       current_agent.touch_last_seen(next_poll_after)
       response.set_header('X-NEXT-POLL-AFTER-SECONDS', next_poll_after)
       if response_payload.is_a?(::Hash)
-        render(json: payload)
+        render(json: response_payload)
       else
         head(:ok)
       end

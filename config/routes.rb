@@ -26,6 +26,8 @@ require 'sidekiq/web'
     get :download_tarball
   end
 
+  resources :agents, only: %i[index show create new destroy]
+
   namespace :agent_api do
     post '/', to: 'api#call'
     get '/sources_tarball/:agent_task_id', to: 'api#sources_tarball', as: 'download_sources_tarball'

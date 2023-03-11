@@ -49,7 +49,13 @@ class Task
         SET
           state = 'running'
         WHERE id = (
-          SELECT id FROM tasks WHERE state = 'fresh' ORDER BY created_at ASC LIMIT 1 FOR UPDATE
+          SELECT t.id FROM tasks t
+          JOIN project_sources_tarballs pst ON t.sources_tarball_id = pst.id
+          JOIN projects p ON pst.project_id = p.id
+          JOIN agents a ON (p.user_id = a.user_id OR a.user_id ISNULL)
+          WHERE t.state = 'fresh' AND a.id = #{agent.id}
+          ORDER BY t.created_at ASC LIMIT 1
+          FOR UPDATE
         ) RETURNING *;
       SQL
       pgresult = ::ApplicationRecord.connection.execute(sql)
