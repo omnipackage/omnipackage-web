@@ -1,0 +1,15 @@
+<h1>Edit agent <%= @agent.name %></h1>
+
+<%= render partial: 'form', locals: { agent: @agent } %>
+
+<br>
+
+<div class="row">
+  <div class="col-9">
+    <%= link_to 'Back to agent', agent_path(@agent.id), class: 'btn btn-link' %>
+  </div>
+
+  <div class="col-3 text-end">
+    <%= button_to 'Delete this agent', agent_path(@agent.id), method: :delete, class: 'btn btn-sm btn-outline-danger', form: { data: { turbo_confirm: "Are you sure?" } } %>
+  </div>
+</div>

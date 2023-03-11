@@ -7,6 +7,7 @@ class Agent < ::ApplicationRecord
   belongs_to :user, class_name: '::User', optional: true
 
   validates :apikey, presence: true, uniqueness: true
+  validates :name, presence: true, length: { maximum: 200 }
 
   scope :offline, -> { where('? > considered_offline_at', ::Time.now.utc) }
   scope :online, -> { offline.invert_where }
@@ -17,6 +18,7 @@ class Agent < ::ApplicationRecord
   end
 
   def offline?
+    return true unless considered_offline_at
     ::Time.now.utc > considered_offline_at
   end
 
@@ -24,11 +26,11 @@ class Agent < ::ApplicationRecord
     !offline?
   end
 
-  def status
-    if tasks.running.exists?
-      'busy'
-    else
-      'idle'
-    end
+  def busy?
+    online? && tasks.running.exists?
+  end
+
+  def idle?
+    online? && !tasks.running.exists?
   end
 end

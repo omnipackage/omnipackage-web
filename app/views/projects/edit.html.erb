@@ -1,15 +1,15 @@
-<div class="row">
-  <div class="col-9">
-    <h1>Edit project <%= @project.name %></h1>
-  </div>
-
-  <div class="col-3 text-end">
-    <%= button_to 'Delete this project', project_path, method: :delete, class: 'btn btn-outline-danger', form: { data: { turbo_confirm: "Are you sure?" } } %>
-  </div>
-</div>
+<h1>Edit project <%= @project.name %></h1>
 
 <%= render partial: 'form', locals: { project: @project } %>
 
 <br>
 
-<%= link_to 'Back to project', project_path(@project.id), class: 'btn btn-link' %>
+<div class="row">
+  <div class="col-9">
+    <%= link_to 'Back to project', project_path(@project.id), class: 'btn btn-link' %>
+  </div>
+
+  <div class="col-3 text-end">
+    <%= button_to 'Delete this project', project_path(@project.id), method: :delete, class: 'btn btn-sm btn-outline-danger', form: { data: { turbo_confirm: "Are you sure?" } } %>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+<%= form_with(url: agent.new_record? ? agents_path : agent_path(agent.id), method: agent.new_record? ? :post : :patch) do |f| %>
+  <div class="mb-3">
+    <%= f.label 'Name', class: 'form-label' %>
+
+    <div class="input-group has-validation">
+      <%= f.text_field(:name,
+            value: agent.name,
+            class: "form-control#{agent.errors.include?(:name) ? ' is-invalid' : ''}",
+            'aria-describedby' => 'validation-error-name'
+      )%>
+      <div id="validation-error-name" class="invalid-feedback">
+        <%= agent.errors.messages[:name].to_sentence %>
+      </div>
+    </div>
+  </div>
+
+  <% if current_user.root? %>
+    <div class="mb-3 form-check">
+      <%= f.check_box 'public', class: 'form-check-input', checked: agent.user.blank? %>
+      <%= f.label 'Public', class: 'form-check-label' %>
+    </div>
+  <% end %>
+
+  <%= f.submit 'Save', class: 'btn btn-primary' %>
+<% end %>

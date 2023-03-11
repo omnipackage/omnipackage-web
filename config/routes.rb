@@ -26,7 +26,7 @@ require 'sidekiq/web'
     get :download_tarball
   end
 
-  resources :agents, only: %i[index show create new destroy]
+  resources :agents
 
   namespace :agent_api do
     post '/', to: 'api#call'

@@ -2,7 +2,7 @@
 
 class AgentsController < ::ApplicationController
   def index
-    @agents = current_user.root? ? ::Agent.all : current_user.private_agents
+    @agents = (current_user.root? ? ::Agent.all : current_user.private_agents).order(created_at: :asc)
   end
 
   def show
@@ -13,14 +13,31 @@ class AgentsController < ::ApplicationController
     @agent = build_agent
   end
 
+  def edit
+    @agent = find_agent
+  end
+
   def create
     @agent = build_agent
-    @agent.user = nil if current_user.root? && params[:public]
+    @agent.user = nil if current_user.root? && params[:public] == '1'
+    @agent.name = params[:name].presence || "Agent #{::Agent.maximum(:id) + 1}"
+    @agent.apikey = ::SecureRandom.hex
     if @agent.valid?
       @agent.save!
       redirect_to(agents_path, notice: "Agent #{@agent.id} has been successfully created")
     else
       render(:new, status: :unprocessable_entity)
+    end
+  end
+
+  def update
+    @agent = find_agent
+    @agent.user = nil if current_user.root? && params[:public] == '1'
+    @agent.name = params[:name] if params[:name]
+    if @agent.save
+      redirect_to(agents_path(@agent.id), notice: "Agent #{@agent.id} has been successfully updated")
+    else
+      render(:edit, status: :unprocessable_entity)
     end
   end
 

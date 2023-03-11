@@ -3,9 +3,12 @@
 <table class="table">
   <thead>
     <tr>
-      <th scope="col">API key</th>
-      <th scope="col">Last seen</th>
+      <th scope="col">Name</th>
       <th scope="col">Status</th>
+      <th scope="col">Last seen</th>
+      <% if current_user.root? %>
+        <th scope="col">User</th>
+      <% end %>
       <th scope="col"></th>
     </tr>
   </thead>
@@ -13,13 +16,26 @@
   <tbody>
 
     <% @agents.each do |agent| %>
-      <tr class=<%= agent.offline? ? 'table-danger': 'table-success' %> >
-        <td><%= agent.apikey %></td>
+      <tr>
+        <td><%= agent.name %></td>
+        <td>
+          <% if agent.offline? %>
+            <span class="badge bg-secondary">Offline</span>
+          <% elsif agent.busy? %>
+            <span class="badge bg-success">Busy</span>
+            <% elsif agent.idle? %>
+              <span class="badge bg-info">Idle</span>
+          <% end %>
+        </td>
         <td><%= agent.last_seen_at %></td>
-        <td><%= agent.status %></td>
-        <td></td>
+        <% if current_user.root? %>
+          <th scope="col"><%= agent.user&.email %></th>
+        <% end %>
+        <td><%= link_to '...', agent_path(agent.id) %></td>
       </tr>
     <% end %>
 
   </tbody>
 </table>
+
+<%= link_to 'Create new agent', new_agent_path, class: 'btn btn-outline-primary' %>

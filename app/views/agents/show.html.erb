@@ -1,0 +1,16 @@
+<h1><%= @agent.name %></h1>
+
+<p>
+  <strong>API key</strong>
+  <pre><%= @agent.apikey %></pre>
+</p>
+
+<p>
+  <strong>Last seen at</strong>: <%= @agent.last_seen_at %>
+</p>
+
+<br>
+<p>
+  <%= link_to 'Edit agent', edit_agent_path(@agent.id), class: 'btn btn-link' %>
+  <%= link_to 'Back to agents list', agents_path, class: 'btn btn-link' %>
+</p>
