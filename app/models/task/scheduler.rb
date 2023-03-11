@@ -30,6 +30,7 @@ class Task
       ::ApplicationRecord.transaction(isolation: :serializable) do
         task = atomic_task_fetch
         raise ::ActiveRecord::Rollback unless task
+
         {
           command: 'start',
           task: {

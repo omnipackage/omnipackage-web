@@ -19,6 +19,7 @@ class Agent < ::ApplicationRecord
 
   def offline?
     return true unless considered_offline_at
+
     ::Time.now.utc > considered_offline_at
   end
 

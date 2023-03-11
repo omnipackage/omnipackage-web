@@ -3,5 +3,6 @@
 ::FactoryBot.define do
   factory :agent do
     apikey { ::Faker::Internet.password }
+    name { ::Faker::Movie.title }
   end
 end

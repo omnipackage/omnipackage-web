@@ -17,7 +17,7 @@ class AgentsController < ::ApplicationController
     @agent = find_agent
   end
 
-  def create
+  def create # rubocop: disable Metrics/AbcSize
     @agent = build_agent
     @agent.user = nil if current_user.root? && params[:public] == '1'
     @agent.name = params[:name].presence || "Agent #{::Agent.maximum(:id) + 1}"
@@ -30,7 +30,7 @@ class AgentsController < ::ApplicationController
     end
   end
 
-  def update
+  def update # rubocop: disable Metrics/AbcSize
     @agent = find_agent
     @agent.user = nil if current_user.root? && params[:public] == '1'
     @agent.name = params[:name] if params[:name]

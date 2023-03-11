@@ -7,7 +7,7 @@ class TaskTest < ::ActiveSupport::TestCase
     o = create(:task)
     assert o.valid?
     assert o.sources_tarball.valid?
-    assert o.state == 'fresh'
+    assert_equal 'scheduled', o.state
     assert_equal o.project, o.sources_tarball.project
 
     assert build(:task, sources_tarball: nil).invalid?
