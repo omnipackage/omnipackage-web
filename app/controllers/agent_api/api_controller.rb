@@ -6,11 +6,19 @@ module AgentApi
     skip_before_action :verify_authenticity_token
     rescue_from ::StandardError, with: :respond_error
 
-    def call
+    def call # rubocop: disable Metrics/MethodLength
       url_methods = ::Task::Scheduler::UrlMethods.new(method(:agent_api_download_sources_tarball_url))
       scheduler = ::Task::Scheduler.new(current_agent, url_methods)
       response_payload = scheduler.call(params.fetch(:payload))
-      respond(response_payload)
+
+      next_poll_after = rand(19..29)
+      current_agent.touch_last_seen(next_poll_after)
+      response.set_header('X-NEXT-POLL-AFTER-SECONDS', next_poll_after)
+      if response_payload.is_a?(::Hash)
+        render(json: payload)
+      else
+        head(:ok)
+      end
     end
 
     def sources_tarball
@@ -21,15 +29,6 @@ module AgentApi
     private
 
     attr_reader :current_agent
-
-    def respond(payload)
-      response.set_header('X-NEXT-POLL-AFTER-SECONDS', rand(19..29))
-      if payload.is_a?(::Hash)
-        render(json: payload)
-      else
-        head(:ok)
-      end
-    end
 
     def authorize
       @current_agent = ::Agent.find_by(apikey: request.headers['X-APIKEY'] || params[:apikey])
