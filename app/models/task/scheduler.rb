@@ -67,7 +67,10 @@ class Task
 
     def busy(task_payload)
       agent_task = agent.agent_tasks.find(task_payload.fetch(:id))
-      agent_task.task.touch # rubocop: disable Rails/SkipsModelValidations
+      ::ApplicationRecord.transaction do
+        agent_task.task.running!
+        agent_task.busy!
+      end
       nil
     end
 

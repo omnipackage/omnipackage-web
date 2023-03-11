@@ -23,4 +23,12 @@ class Agent < ::ApplicationRecord
   def online?
     !offline?
   end
+
+  def status
+    if agent_tasks.busy.exists?
+      'busy'
+    else
+      'idle'
+    end
+  end
 end

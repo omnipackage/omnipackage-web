@@ -3,9 +3,9 @@
 <table class="table">
   <thead>
     <tr>
-      <th scope="col">ID</th>
+      <th scope="col">API key</th>
       <th scope="col">Last seen</th>
-      <th scope="col"></th>
+      <th scope="col">Status</th>
       <th scope="col"></th>
     </tr>
   </thead>
@@ -14,9 +14,9 @@
 
     <% @agents.each do |agent| %>
       <tr class=<%= agent.offline? ? 'table-danger': 'table-success' %> >
-        <td><%= agent.id %></td>
+        <td><%= agent.apikey %></td>
         <td><%= agent.last_seen_at %></td>
-        <td></td>
+        <td><%= agent.status %></td>
         <td></td>
       </tr>
     <% end %>
