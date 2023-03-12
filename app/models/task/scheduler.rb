@@ -38,9 +38,11 @@ class Task
     def schedule
       ::ApplicationRecord.transaction(isolation: :serializable) do
         task = atomic_task_fetch
-        raise ::ActiveRecord::Rollback unless task
-
-        Command['start', task]
+        if task
+          Command['start', task]
+        else
+          raise ::ActiveRecord::Rollback
+        end
       end
     end
 
