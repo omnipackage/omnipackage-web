@@ -5,7 +5,7 @@ require 'sidekiq/web'
 ::Rails.application.routes.draw do
   root 'home#index'
 
-  mount ::Sidekiq::Web => '/sidekiq', :constraints => ::Session::RouteConstraint.new
+  mount ::Sidekiq::Web => '/sidekiq', constraints: ::Session::RouteConstraint.new(:root?)
 
   get  'sign_in', to: 'sessions#new'
   post 'sign_in', to: 'sessions#create'
