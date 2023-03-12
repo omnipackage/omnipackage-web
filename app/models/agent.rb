@@ -3,7 +3,7 @@
 class Agent < ::ApplicationRecord
   encrypts :apikey, deterministic: true
 
-  has_many :tasks, class_name: '::Task', dependent: :destroy
+  has_many :tasks, class_name: '::Task', dependent: :nullify
   belongs_to :user, class_name: '::User', optional: true
 
   validates :apikey, presence: true, uniqueness: true

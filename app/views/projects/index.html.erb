@@ -1,31 +1,33 @@
 <h1>Projects</h1>
 
-<% @projects.each do |project| %>
-  <div class="card">
-    <div class="card-header">
-      <%= project.name %>
-    </div>
+<div class="vstack gap-1">
+  <% @projects.each do |project| %>
+    <div class="card">
+      <div class="card-header">
+        <%= project.name %>
+      </div>
 
-    <div class="card-body">
-      <div class="card-text">
-        <p>
-          <span class="badge bg-<%= project.sources_verified? ? 'success' : 'danger' %>"><%= project.sources_kind %></span>
-          <span class="font-monospace"><%= project.sources_location %></span>
-        </p>
+      <div class="card-body">
+        <div class="card-text">
+          <p>
+            <span class="badge bg-<%= project.sources_verified? ? 'success' : 'danger' %>"><%= project.sources_kind %></span>
+            <span class="font-monospace"><%= project.sources_location %></span>
+          </p>
 
-        <p>
-          <% if project.sources_verified? %>
-            <% project.distros.each do |d| %>
-              <span class="badge text-bg-secondary"><%= d.name %></span>
+          <p>
+            <% if project.sources_verified? %>
+              <% project.distros.each do |d| %>
+                <span class="badge text-bg-secondary"><%= d.name %></span>
+              <% end %>
             <% end %>
-          <% end %>
-        </p>
+          </p>
 
-        <%= link_to 'More', project_path(project.id), class: 'card-link' %>
+          <%= link_to 'More', project_path(project.id), class: 'card-link' %>
+        </div>
       </div>
     </div>
-  </div>
-  <br>
-<% end %>
+  <% end %>
+</div>
 
+<br>
 <%= link_to 'Create new project', new_project_path, class: 'btn btn-outline-primary' %>

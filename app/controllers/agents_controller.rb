@@ -20,7 +20,7 @@ class AgentsController < ::ApplicationController
   def create # rubocop: disable Metrics/AbcSize
     @agent = build_agent
     @agent.user = nil if current_user.root? && params[:public] == '1'
-    @agent.name = params[:name].presence || "Agent #{::Agent.maximum(:id) + 1}"
+    @agent.name = params[:name]
     @agent.apikey = ::SecureRandom.hex
     if @agent.valid?
       @agent.save!
@@ -49,7 +49,7 @@ class AgentsController < ::ApplicationController
   private
 
   def build_agent
-    current_user.private_agents.build
+    current_user.private_agents.build(name: ::Faker::Lorem.sentence)
   end
 
   def find_agent

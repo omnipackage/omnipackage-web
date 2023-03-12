@@ -5,10 +5,6 @@
   <pre><%= @agent.apikey %></pre>
 </p>
 
-<p>
-  <strong>Last seen at</strong>: <%= @agent.last_seen_at %>
-</p>
-
 <br>
 <p>
   <%= link_to 'Edit agent', edit_agent_path(@agent.id), class: 'btn btn-link' %>

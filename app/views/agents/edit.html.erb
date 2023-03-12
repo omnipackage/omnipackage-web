@@ -10,6 +10,6 @@
   </div>
 
   <div class="col-3 text-end">
-    <%= button_to 'Delete this agent', agent_path(@agent.id), method: :delete, class: 'btn btn-sm btn-outline-danger', form: { data: { turbo_confirm: "Are you sure?" } } %>
+    <%= button_to 'Delete this agent', agent_path(@agent.id), method: :delete, class: 'btn btn-outline-danger', form: { data: { turbo_confirm: "Are you sure?" } } %>
   </div>
 </div>

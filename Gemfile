@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 gem 'bcrypt', '~> 3.1.7'
+gem 'faker'
 gem 'importmap-rails'
 gem 'pg'
 gem 'puma'
@@ -19,7 +20,6 @@ group :development, :test do
   gem 'brakeman', require: false
   gem 'bundle-audit', require: false
   gem 'factory_bot_rails'
-  gem 'faker'
   gem 'rubocop', require: false
   gem 'rubocop-rails', require: false
   gem 'rubocop-rake', require: false

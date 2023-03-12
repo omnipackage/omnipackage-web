@@ -31,7 +31,7 @@
         <% if current_user.root? %>
           <th scope="col"><%= agent.user&.email %></th>
         <% end %>
-        <td><%= link_to '...', agent_path(agent.id) %></td>
+        <td><%= link_to 'more', agent_path(agent.id), class: 'float-right' %></td>
       </tr>
     <% end %>
 

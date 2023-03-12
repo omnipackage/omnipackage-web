@@ -20,6 +20,11 @@ require 'sidekiq/web'
     resource :account,            only: %i[show]
   end
 
+  namespace :agent_api do
+    post '/', to: 'api#call'
+    get '/sources_tarball/:task_id', to: 'api#sources_tarball', as: 'download_sources_tarball'
+  end
+
   resources :projects do
     post :generate_ssh_keys
     post :fetch_sources
@@ -27,9 +32,4 @@ require 'sidekiq/web'
   end
 
   resources :agents
-
-  namespace :agent_api do
-    post '/', to: 'api#call'
-    get '/sources_tarball/:task_id', to: 'api#sources_tarball', as: 'download_sources_tarball'
-  end
 end
