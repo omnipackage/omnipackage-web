@@ -3,6 +3,7 @@
 class Project < ::ApplicationRecord
   belongs_to :user
   has_one :sources_tarball, class_name: '::Project::SourcesTarball', dependent: :destroy
+  has_many :tasks, class_name: '::Task', through: :sources_tarball
 
   encrypts :sources_private_ssh_key
 
