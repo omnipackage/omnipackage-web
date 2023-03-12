@@ -9,9 +9,8 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <%= render partial: 'layouts/navbar_link', locals: { path: projects_path, text: 'Projects', active: -> { params[:controller] == 'projects' } } %>
-
         <%= render partial: 'layouts/navbar_link', locals: { path: agents_path, text: 'Agents', active: -> { params[:controller] == 'agents' } } %>
-
+        <%= render partial: 'layouts/navbar_link', locals: { path: tasks_path, text: 'Tasks', active: -> { params[:controller] == 'tasks' } } %>
       </ul>
 
       <% if logged_in? %>

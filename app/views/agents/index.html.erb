@@ -29,9 +29,9 @@
         </td>
         <td><%= agent.last_seen_at %></td>
         <% if current_user.root? %>
-          <th scope="col"><%= agent.user&.email %></th>
+          <td><%= agent.user&.email %></td>
         <% end %>
-        <td><%= link_to 'more', agent_path(agent.id), class: 'float-right' %></td>
+        <td><%= link_to 'more', agent_path(agent.id) %></td>
       </tr>
     <% end %>
 

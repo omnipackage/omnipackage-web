@@ -32,4 +32,5 @@ require 'sidekiq/web'
   end
 
   resources :agents
+  resources :tasks, only: %i[index show destroy]
 end

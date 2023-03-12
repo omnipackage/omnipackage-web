@@ -11,9 +11,10 @@ class User < ::ApplicationRecord
 
   has_many :projects, class_name: '::Project', dependent: :destroy
   has_many :private_agents, class_name: '::Agent', dependent: :destroy
+  has_many :tasks, class_name: '::Task', through: :projects
 
-  validates :email, presence: true, uniqueness: true, format: { with: ::URI::MailTo::EMAIL_REGEXP }
-  validates :password, allow_nil: true, length: { minimum: PASSWORD_MIN_LENGTH }
+  validates :email, presence: true, uniqueness: true, format: { with: ::URI::MailTo::EMAIL_REGEXP }, length: { maximum: 300 }
+  validates :password, allow_nil: true, length: { minimum: PASSWORD_MIN_LENGTH, maximum: 30 }
 
   before_validation if: -> { email.present? } do
     self.email = email.downcase.strip
