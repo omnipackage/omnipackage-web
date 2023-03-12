@@ -2,42 +2,45 @@
 
 class Task
   class Scheduler
-    attr_reader :agent, :url_methods
+    attr_reader :agent
 
-    UrlMethods = ::Data.define(:tarball_url)
+    Command = ::Data.define(:command, :task) do
+      def to_hash(view_context)
+        result = { command: command }
+        result[:task] = {
+          id:                   task.id,
+          sources_tarball_url:  view_context.agent_api_download_sources_tarball_url(task.id)
+        } if task
+        result.freeze
+      end
+    end
 
-    def initialize(agent, url_methods)
+    def initialize(agent)
       @agent = agent
-      @url_methods = url_methods
     end
 
     def call(payload)
-      case payload.fetch(:state)
-      when 'idle'
-        schedule
-      when 'busy'
-        busy(payload.fetch(:task))
-      when 'finished'
-        finish(payload.fetch(:task))
-      else
-        raise "unknown state #{payload[:state]}"
+      state = payload.fetch(:state)
+      return schedule if state == 'idle'
+
+      task = agent.tasks.find_by(id: payload.fetch(:task).fetch(:id))
+      return Command['stop', nil] unless task
+
+      if state == 'busy'
+        busy(task)
+      elsif state == 'finished'
+        finish(task)
       end
     end
 
     private
 
-    def schedule # rubocop: disable Metrics/MethodLength
+    def schedule
       ::ApplicationRecord.transaction(isolation: :serializable) do
         task = atomic_task_fetch
         raise ::ActiveRecord::Rollback unless task
 
-        {
-          command: 'start',
-          task: {
-            id: task.id,
-            sources_tarball_url: url_methods.tarball_url.call(task.id)
-          }
-        }
+        Command['start', task]
       end
     end
 
@@ -65,20 +68,16 @@ class Task
       ::Task.instantiate(fields.zip(pgresult.values.sole).to_h)
     end
 
-    def busy(task_payload)
-      task = agent.tasks.find(task_payload.fetch(:id))
+    def busy(task)
       ::ApplicationRecord.transaction do
         task.running!
       end
-      nil
     end
 
-    def finish(task_payload)
-      task = agent.tasks.find(task_payload.fetch(:id))
+    def finish(task)
       ::ApplicationRecord.transaction do
         task.finished!
       end
-      nil
     end
   end
 end

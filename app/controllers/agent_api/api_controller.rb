@@ -7,15 +7,14 @@ module AgentApi
     rescue_from ::StandardError, with: :respond_error
 
     def call # rubocop: disable Metrics/MethodLength
-      url_methods = ::Task::Scheduler::UrlMethods.new(method(:agent_api_download_sources_tarball_url))
-      scheduler = ::Task::Scheduler.new(current_agent, url_methods)
-      response_payload = scheduler.call(params.fetch(:payload))
+      scheduler = ::Task::Scheduler.new(current_agent)
+      command = scheduler.call(params.fetch(:payload))
 
       next_poll_after = rand(19..29)
       current_agent.touch_last_seen(next_poll_after)
       response.set_header('X-NEXT-POLL-AFTER-SECONDS', next_poll_after)
-      if response_payload.is_a?(::Hash)
-        render(json: response_payload)
+      if command.is_a?(::Task::Scheduler::Command)
+        render(json: command.to_hash(view_context))
       else
         head(:ok)
       end
