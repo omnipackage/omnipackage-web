@@ -7,10 +7,12 @@ class Task
     Command = ::Data.define(:command, :task) do
       def to_hash(view_context)
         result = { command: command }
-        result[:task] = {
-          id:                   task.id,
-          sources_tarball_url:  view_context.agent_api_download_sources_tarball_url(task.id)
-        } if task
+        if task
+          result[:task] = {
+            id:                   task.id,
+            sources_tarball_url:  view_context.agent_api_download_sources_tarball_url(task.id)
+          }
+        end
         result.freeze
       end
     end

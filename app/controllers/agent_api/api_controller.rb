@@ -6,7 +6,7 @@ module AgentApi
     skip_before_action :verify_authenticity_token
     rescue_from ::StandardError, with: :respond_error
 
-    def call # rubocop: disable Metrics/MethodLength
+    def call
       scheduler = ::Task::Scheduler.new(current_agent)
       command = scheduler.call(params.fetch(:payload))
 
