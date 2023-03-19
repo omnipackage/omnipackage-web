@@ -34,4 +34,8 @@ class Agent < ::ApplicationRecord
   def idle?
     online? && !tasks.running.exists?
   end
+
+  def next_poll_after
+    rand(19..29)
+  end
 end

@@ -10,7 +10,7 @@ module AgentApi
       scheduler = ::Task::Scheduler.new(current_agent)
       command = scheduler.call(params.fetch(:payload))
 
-      next_poll_after = rand(19..29)
+      next_poll_after = current_agent.next_poll_after
       current_agent.touch_last_seen(next_poll_after)
       response.set_header('X-NEXT-POLL-AFTER-SECONDS', next_poll_after)
       if command.is_a?(::Task::Scheduler::Command)
