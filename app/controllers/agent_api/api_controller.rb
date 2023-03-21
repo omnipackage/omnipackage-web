@@ -25,6 +25,11 @@ module AgentApi
       send_data(sources_tarball.decrypted_tarball, filename: sources_tarball.decrypted_tarball_filename)
     end
 
+    def upload_artefact
+      #task = current_agent.tasks.find(params[:task_id])
+      sap params[:data]
+    end
+
     private
 
     attr_reader :current_agent
