@@ -25,7 +25,7 @@ module AgentApi
       send_data(sources_tarball.decrypted_tarball, filename: sources_tarball.decrypted_tarball_filename)
     end
 
-    def upload_artefact
+    def upload_artefact # rubocop:disable Metrics/AbcSize
       task = current_agent.tasks.find(params[:task_id])
       blob = ::ActiveStorage::Blob.create_and_upload!(
         io:           params[:data],
