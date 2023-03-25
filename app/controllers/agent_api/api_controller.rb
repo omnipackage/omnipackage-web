@@ -26,8 +26,15 @@ module AgentApi
     end
 
     def upload_artefact
-      # task = current_agent.tasks.find(params[:task_id])
-      sap params[:data]
+      task = current_agent.tasks.find(params[:task_id])
+      blob = ::ActiveStorage::Blob.create_and_upload!(
+        io:           params[:data],
+        filename:     params[:data].original_filename,
+        content_type: params[:data].content_type
+      )
+      task.artefacts.attach(blob)
+      # render json: { filelink: url_for(blob) }
+      head(:ok)
     end
 
     private
