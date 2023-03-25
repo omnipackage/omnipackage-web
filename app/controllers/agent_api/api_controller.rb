@@ -26,7 +26,7 @@ module AgentApi
     end
 
     def upload_artefact
-      #task = current_agent.tasks.find(params[:task_id])
+      # task = current_agent.tasks.find(params[:task_id])
       sap params[:data]
     end
 
