@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/rails/rails.git
-  revision: 99096b88ae7a7c9019f2cbcf867e29ba42768e65
+  revision: 65115f731c687500b38fbf38dc2c39aca8d7b0b7
   branch: main
   specs:
     actioncable (7.1.0.alpha)
@@ -65,7 +65,6 @@ GIT
       activerecord (= 7.1.0.alpha)
       activesupport (= 7.1.0.alpha)
       marcel (~> 1.0)
-      mini_mime (>= 1.1.0)
     activesupport (7.1.0.alpha)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       connection_pool (>= 2.2.5)
@@ -178,7 +177,7 @@ GEM
     pry-rails (0.3.9)
       pry (>= 0.10.4)
     public_suffix (5.0.1)
-    puma (6.1.1)
+    puma (6.2.0)
       nio4r (~> 2.0)
     racc (1.6.2)
     rack (3.0.7)
@@ -201,7 +200,7 @@ GEM
     redis-client (0.14.0)
       connection_pool
     regexp_parser (2.7.0)
-    reline (0.3.2)
+    reline (0.3.3)
       io-console (~> 0.5)
     rexml (3.2.5)
     rubocop (1.48.1)
@@ -224,7 +223,7 @@ GEM
       rubocop (~> 1.0)
     ruby-progressbar (1.13.0)
     rubyzip (2.3.2)
-    selenium-webdriver (4.8.3)
+    selenium-webdriver (4.8.5)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
