@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/rails/rails.git
-  revision: 055572ec36a749ce78ac0f8a0ed4c74421c08388
+  revision: c567850476dc443563b9be93a129eb09601e25af
   branch: main
   specs:
     actioncable (7.1.0.alpha)
@@ -97,7 +97,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    addressable (2.8.1)
+    addressable (2.8.2)
       public_suffix (>= 2.0.2, < 6.0)
     ast (2.4.2)
     awesome_print (1.9.2)
@@ -142,7 +142,7 @@ GEM
     irb (1.6.3)
       reline (>= 0.3.0)
     json (2.6.3)
-    loofah (2.19.1)
+    loofah (2.20.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.8.1)
