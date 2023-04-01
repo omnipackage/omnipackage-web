@@ -1,0 +1,210 @@
+[I 01.04.2023 16:24:26] starting build for ubuntu_22.04 in /tmp/build-omnipackage/sources_100, variables: {:version=>"1.3.5"}
+[I 01.04.2023 16:24:26] starting child process: podman image inspect omnipackage-ubuntu_22.04-9cfb79fcbd64bf9e8f5b8a587a9ac2126d7e4cac
+[D 01.04.2023 16:24:26] started child process with pid 5183
+[D 01.04.2023 16:24:26] finished child process pid 5183 exit 0
+[I 01.04.2023 16:24:26] starting child process: podman run --name omnipackage-ubuntu_22.04-9cfb79fcbd64bf9e8f5b8a587a9ac2126d7e4cac --entrypoint /bin/sh --mount type=bind,source=/tmp/build-omnipackage/sources_100,target=/source --mount type=bind,source=/tmp/build-omnipackage/sample-project-ubuntu_22.04/build,target=/output/build --mount type=bind,source=/tmp/build-omnipackage/sample-project-ubuntu_22.04/output,target=/output/ omnipackage-ubuntu_22.04-9cfb79fcbd64bf9e8f5b8a587a9ac2126d7e4cac -c "apt-get update && apt-get install -y build-essential debhelper gcc make && cp -R /source/* /output/build/ && cd /output/build && DEB_BUILD_OPTIONS=noddebs dpkg-buildpackage -b -tc"
+
+[D 01.04.2023 16:24:26] started child process with pid 5204
+Hit:1 http://security.ubuntu.com/ubuntu jammy-security InRelease
+Hit:2 http://archive.ubuntu.com/ubuntu jammy InRelease
+Hit:3 http://archive.ubuntu.com/ubuntu jammy-updates InRelease
+Hit:4 http://archive.ubuntu.com/ubuntu jammy-backports InRelease
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+build-essential is already the newest version (12.9ubuntu3).
+debhelper is already the newest version (13.6ubuntu1).
+gcc is already the newest version (4:11.2.0-1ubuntu1).
+make is already the newest version (4.3-4.1build1).
+0 upgraded, 0 newly installed, 0 to remove and 19 not upgraded.
+dpkg-buildpackage: warning:     debian/changelog(l5): badly formatted trailer line
+LINE:  -- Chuck Norris <chuck@norr.is>  
+dpkg-buildpackage: warning:     debian/changelog(l5): found end of file where expected more change data or trailer
+dpkg-buildpackage: info: source package sample-project
+dpkg-buildpackage: info: source version 1.3.5-0
+dpkg-buildpackage: info: source distribution stable
+dpkg-buildpackage: info: source changed by 
+dpkg-buildpackage: info: host architecture amd64
+ dpkg-source --before-build .
+dpkg-source: warning: build/debian/changelog(l5): badly formatted trailer line
+LINE:  -- Chuck Norris <chuck@norr.is>  
+dpkg-source: warning: build/debian/changelog(l5): found end of file where expected more change data or trailer
+ debian/rules clean
+dh clean --parallel
+dh: warning: Compatibility levels before 10 are deprecated (level 9 in use)
+   dh_auto_clean -O--parallel
+dh_auto_clean: warning: Compatibility levels before 10 are deprecated (level 9 in use)
+	make -j16 clean
+make[1]: Entering directory '/output/build'
+rm -f sample_project
+make[1]: Leaving directory '/output/build'
+   dh_clean -O--parallel
+	rm -f debian/debhelper-build-stamp
+	rm -rf debian/.debhelper/
+dh_clean: warning: Compatibility levels before 10 are deprecated (level 9 in use)
+	rm -f -- debian/sample-project.substvars debian/files
+	rm -fr -- debian/sample-project/ debian/tmp/
+	find .  \( \( \
+		\( -path .\*/.git -o -path .\*/.svn -o -path .\*/.bzr -o -path .\*/.hg -o -path .\*/CVS -o -path .\*/.pc -o -path .\*/_darcs \) -prune -o -type f -a \
+	        \( -name '#*#' -o -name '.*~' -o -name '*~' -o -name DEADJOE \
+		 -o -name '*.orig' -o -name '*.rej' -o -name '*.bak' \
+		 -o -name '.*.orig' -o -name .*.rej -o -name '.SUMS' \
+		 -o -name TAGS -o \( -path '*/.deps/*' -a -name '*.P' \) \
+		\) -exec rm -f {} + \) -o \
+		\( -type d -a -name autom4te.cache -prune -exec rm -rf {} + \) \)
+ debian/rules build
+dh build --parallel
+dh: warning: Compatibility levels before 10 are deprecated (level 9 in use)
+   dh_update_autotools_config -O--parallel
+   dh_auto_configure -O--parallel
+dh_auto_configure: warning: Compatibility levels before 10 are deprecated (level 9 in use)
+   dh_auto_build -O--parallel
+dh_auto_build: warning: Compatibility levels before 10 are deprecated (level 9 in use)
+	make -j16
+make[1]: Entering directory '/output/build'
+gcc -o sample_project main.c
+make[1]: Leaving directory '/output/build'
+   dh_auto_test -O--parallel
+dh_auto_test: warning: Compatibility levels before 10 are deprecated (level 9 in use)
+ debian/rules binary
+dh binary --parallel
+dh: warning: Compatibility levels before 10 are deprecated (level 9 in use)
+   dh_testroot -O--parallel
+   dh_prep -O--parallel
+	rm -f -- debian/sample-project.substvars
+	rm -fr -- debian/.debhelper/generated/sample-project/ debian/sample-project/ debian/tmp/
+   debian/rules override_dh_auto_install
+make[1]: Entering directory '/output/build'
+make install INSTALL_ROOT=/output/build/debian/sample-project
+make[2]: Entering directory '/output/build'
+mkdir -p /output/build/debian/sample-project/usr/bin/
+cp -p sample_project /output/build/debian/sample-project/usr/bin/
+make[2]: Leaving directory '/output/build'
+make[1]: Leaving directory '/output/build'
+   dh_installdocs -O--parallel
+dh_installdocs: warning: Compatibility levels before 10 are deprecated (level 9 in use)
+	install -d debian/sample-project/usr/share/doc/sample-project
+	install -d debian/.debhelper/generated/sample-project
+   dh_installchangelogs -O--parallel
+dh_installchangelogs: warning:     debian/changelog(l5): badly formatted trailer line
+LINE:  -- Chuck Norris <chuck@norr.is>  
+dh_installchangelogs: warning:     debian/changelog(l5): found end of file where expected more change data or trailer
+	install -p -m0644 debian/changelog debian/sample-project/usr/share/doc/sample-project/changelog.Debian
+   dh_installinit -O--parallel
+dh_installinit: warning: Compatibility levels before 10 are deprecated (level 9 in use)
+   dh_perl -O--parallel
+   dh_link -O--parallel
+   dh_strip_nondeterminism -O--parallel
+   dh_compress -O--parallel
+	cd debian/sample-project
+dh_compress: warning: Compatibility levels before 10 are deprecated (level 9 in use)
+	chmod a-x usr/share/doc/sample-project/changelog.Debian
+	gzip -9nf usr/share/doc/sample-project/changelog.Debian
+	cd '/output/build'
+   dh_fixperms -O--parallel
+	find debian/sample-project -true -print0 2>/dev/null | xargs -0r chown --no-dereference 0:0
+	find debian/sample-project ! -type l -a -true -a -true -print0 2>/dev/null | xargs -0r chmod go=rX,u+rw,a-s
+	find debian/sample-project/usr/share/doc -type f -a -true -a ! -regex 'debian/sample-project/usr/share/doc/[^/]*/examples/.*' -print0 2>/dev/null | xargs -0r chmod 0644
+	find debian/sample-project/usr/share/doc -type d -a -true -a -true -print0 2>/dev/null | xargs -0r chmod 0755
+	find debian/sample-project -type f \( -name '*.so.*' -o -name '*.so' -o -name '*.la' -o -name '*.a' -o -name '*.js' -o -name '*.css' -o -name '*.scss' -o -name '*.sass' -o -name '*.jpeg' -o -name '*.jpg' -o -name '*.png' -o -name '*.gif' -o -name '*.cmxs' -o -name '*.node' \) -a -true -a -true -print0 2>/dev/null | xargs -0r chmod 0644
+	find debian/sample-project/usr/bin -type f -a -true -a -true -print0 2>/dev/null | xargs -0r chmod a+x
+   dh_missing -O--parallel
+dh_missing: warning: Compatibility levels before 10 are deprecated (level 9 in use)
+   dh_strip -O--parallel
+dh_strip: warning: Compatibility levels before 10 are deprecated (level 9 in use)
+dh_strip: warning:     debian/changelog(l5): badly formatted trailer line
+LINE:  -- Chuck Norris <chuck@norr.is>  
+dh_strip: warning:     debian/changelog(l5): found end of file where expected more change data or trailer
+	debugedit --build-id --build-id-seed=sample-project/1.3.5-0 debian/sample-project/usr/bin/sample_project
+b5bd5079a463722c0a20676c81a2236d42a11b31
+	install -d debian/.debhelper/sample-project/dbgsym-root/usr/lib/debug/.build-id/b5
+	objcopy --only-keep-debug --compress-debug-sections debian/sample-project/usr/bin/sample_project debian/.debhelper/sample-project/dbgsym-root/usr/lib/debug/.build-id/b5/bd5079a463722c0a20676c81a2236d42a11b31.debug
+	chmod 0644 -- debian/.debhelper/sample-project/dbgsym-root/usr/lib/debug/.build-id/b5/bd5079a463722c0a20676c81a2236d42a11b31.debug
+	chown 0:0 -- debian/.debhelper/sample-project/dbgsym-root/usr/lib/debug/.build-id/b5/bd5079a463722c0a20676c81a2236d42a11b31.debug
+	strip --remove-section=.comment --remove-section=.note -o /tmp/98fsFUn1Rw/stripoJluLE debian/sample-project/usr/bin/sample_project
+	chmod --reference debian/sample-project/usr/bin/sample_project /tmp/98fsFUn1Rw/stripoJluLE
+	cat '/tmp/98fsFUn1Rw/stripoJluLE' > 'debian/sample-project/usr/bin/sample_project'
+	chmod --reference /tmp/98fsFUn1Rw/stripoJluLE debian/sample-project/usr/bin/sample_project
+	objcopy --add-gnu-debuglink debian/.debhelper/sample-project/dbgsym-root/usr/lib/debug/.build-id/b5/bd5079a463722c0a20676c81a2236d42a11b31.debug debian/sample-project/usr/bin/sample_project /tmp/98fsFUn1Rw/objcopyshtvPy
+	chmod --reference debian/sample-project/usr/bin/sample_project /tmp/98fsFUn1Rw/objcopyshtvPy
+	cat '/tmp/98fsFUn1Rw/objcopyshtvPy' > 'debian/sample-project/usr/bin/sample_project'
+	chmod --reference /tmp/98fsFUn1Rw/objcopyshtvPy debian/sample-project/usr/bin/sample_project
+	rm -fr debian/.debhelper/sample-project/dbgsym-root
+   dh_makeshlibs -O--parallel
+	rm -f debian/sample-project/DEBIAN/shlibs
+dh_makeshlibs: warning: Compatibility levels before 10 are deprecated (level 9 in use)
+   dh_shlibdeps -O--parallel
+dh_shlibdeps: warning: Compatibility levels before 10 are deprecated (level 9 in use)
+	install -d debian/sample-project/DEBIAN
+	dpkg-shlibdeps -Tdebian/sample-project.substvars debian/sample-project/usr/bin/sample_project
+   dh_installdeb -O--parallel
+dh_installdeb: warning: Compatibility levels before 10 are deprecated (level 9 in use)
+   dh_gencontrol -O--parallel
+	echo misc:Depends= >> debian/sample-project.substvars
+	echo misc:Pre-Depends= >> debian/sample-project.substvars
+	dpkg-gencontrol -psample-project -ldebian/changelog -Tdebian/sample-project.substvars -Pdebian/sample-project
+dpkg-gencontrol: warning:     debian/changelog(l5): badly formatted trailer line
+LINE:  -- Chuck Norris <chuck@norr.is>  
+dpkg-gencontrol: warning:     debian/changelog(l5): found end of file where expected more change data or trailer
+	chmod 0644 -- debian/sample-project/DEBIAN/control
+	chown 0:0 -- debian/sample-project/DEBIAN/control
+   dh_md5sums -O--parallel
+	cd debian/sample-project >/dev/null && xargs -r0 md5sum | perl -pe 'if (s@^\\@@) { s/\\\\/\\/g; }' > DEBIAN/md5sums
+	chmod 0644 -- debian/sample-project/DEBIAN/md5sums
+	chown 0:0 -- debian/sample-project/DEBIAN/md5sums
+   dh_builddeb -O--parallel
+	dpkg-deb --build debian/sample-project ..
+dpkg-deb: building package 'sample-project' in '../sample-project_1.3.5-0_amd64.deb'.
+ dpkg-genbuildinfo --build=binary -O../sample-project_1.3.5-0_amd64.buildinfo
+dpkg-genbuildinfo: warning:     debian/changelog(l5): badly formatted trailer line
+LINE:  -- Chuck Norris <chuck@norr.is>  
+dpkg-genbuildinfo: warning:     debian/changelog(l5): found end of file where expected more change data or trailer
+dpkg-genbuildinfo: warning:     debian/changelog(l5): badly formatted trailer line
+LINE:  -- Chuck Norris <chuck@norr.is>  
+dpkg-genbuildinfo: warning:     debian/changelog(l5): found end of file where expected more change data or trailer
+ dpkg-genchanges --build=binary -O../sample-project_1.3.5-0_amd64.changes
+dpkg-genchanges: warning:     debian/changelog(l5): badly formatted trailer line
+LINE:  -- Chuck Norris <chuck@norr.is>  
+dpkg-genchanges: warning:     debian/changelog(l5): found end of file where expected more change data or trailer
+dpkg-genchanges: warning:     debian/changelog(l5): badly formatted trailer line
+LINE:  -- Chuck Norris <chuck@norr.is>  
+dpkg-genchanges: warning:     debian/changelog(l5): found end of file where expected more change data or trailer
+dpkg-genchanges: info: binary-only upload (no source code included)
+ debian/rules clean
+dh clean --parallel
+dh: warning: Compatibility levels before 10 are deprecated (level 9 in use)
+   dh_auto_clean -O--parallel
+dh_auto_clean: warning: Compatibility levels before 10 are deprecated (level 9 in use)
+	make -j16 clean
+make[1]: Entering directory '/output/build'
+rm -f sample_project
+make[1]: Leaving directory '/output/build'
+   dh_clean -O--parallel
+	rm -f debian/debhelper-build-stamp
+	rm -rf debian/.debhelper/
+dh_clean: warning: Compatibility levels before 10 are deprecated (level 9 in use)
+	rm -f debian/sample-project.debhelper.log
+	rm -f -- debian/sample-project.substvars debian/files
+	rm -fr -- debian/sample-project/ debian/tmp/
+	find .  \( \( \
+		\( -path .\*/.git -o -path .\*/.svn -o -path .\*/.bzr -o -path .\*/.hg -o -path .\*/CVS -o -path .\*/.pc -o -path .\*/_darcs \) -prune -o -type f -a \
+	        \( -name '#*#' -o -name '.*~' -o -name '*~' -o -name DEADJOE \
+		 -o -name '*.orig' -o -name '*.rej' -o -name '*.bak' \
+		 -o -name '.*.orig' -o -name .*.rej -o -name '.SUMS' \
+		 -o -name TAGS -o \( -path '*/.deps/*' -a -name '*.P' \) \
+		\) -exec rm -f {} + \) -o \
+		\( -type d -a -name autom4te.cache -prune -exec rm -rf {} + \) \)
+ dpkg-source --after-build .
+dpkg-source: warning: build/debian/changelog(l5): badly formatted trailer line
+LINE:  -- Chuck Norris <chuck@norr.is>  
+dpkg-source: warning: build/debian/changelog(l5): found end of file where expected more change data or trailer
+dpkg-buildpackage: info: binary-only upload (no source included)
+[D 01.04.2023 16:24:35] finished child process pid 5204 exit 0
+[I 01.04.2023 16:24:35] successfully finished build for ubuntu_22.04, artefacts: ["/tmp/build-omnipackage/sample-project-ubuntu_22.04/output/sample-project_1.3.5-0_amd64.deb"], log: /tmp/build-omnipackage/sample-project-ubuntu_22.04/output/build.log
+[I 01.04.2023 16:24:35] starting child process: podman commit omnipackage-ubuntu_22.04-9cfb79fcbd64bf9e8f5b8a587a9ac2126d7e4cac omnipackage-ubuntu_22.04-9cfb79fcbd64bf9e8f5b8a587a9ac2126d7e4cac
+[D 01.04.2023 16:24:35] started child process with pid 5698
+[D 01.04.2023 16:24:35] finished child process pid 5698 exit 0
+[I 01.04.2023 16:24:35] starting child process: podman rm omnipackage-ubuntu_22.04-9cfb79fcbd64bf9e8f5b8a587a9ac2126d7e4cac
+[D 01.04.2023 16:24:35] started child process with pid 5741
+[D 01.04.2023 16:24:35] finished child process pid 5741 exit 0

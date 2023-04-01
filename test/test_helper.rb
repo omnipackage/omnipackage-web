@@ -17,5 +17,14 @@ module ActiveSupport
       post(sign_in_url, params: { email: user.email, password: 'Secret1*3*5*' })
       user
     end
+
+    def after_teardown
+      super
+      ::FileUtils.rm_rf(::ActiveStorage::Blob.service.root)
+    end
+
+    parallelize_setup do |i|
+      ::ActiveStorage::Blob.service.root = "#{::ActiveStorage::Blob.service.root}-#{i}"
+    end
   end
 end
