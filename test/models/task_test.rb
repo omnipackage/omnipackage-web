@@ -11,5 +11,8 @@ class TaskTest < ::ActiveSupport::TestCase
     assert_equal o.project, o.sources_tarball.project
 
     assert build(:task, sources_tarball: nil).invalid?
+    assert build(:task, distro_ids: ['ololo']).invalid?
+    assert build(:task, distro_ids: []).invalid?
+    assert build(:task, distro_ids: nil).invalid?
   end
 end

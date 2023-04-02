@@ -7,4 +7,15 @@ class Task < ::ApplicationRecord
   has_many :artefacts, class_name: '::Task::Artefact', dependent: :destroy
 
   enum state: %w[scheduled running finished error].index_with(&:itself), _default: 'scheduled'
+
+  attribute :distro_ids, :string, array: true, default: -> { ::Distro.ids }
+
+  validates :distro_ids, presence: true
+  validate do
+    errors.add(:distro_ids, "must be combination of #{::Distro.ids}") if distro_ids && (distro_ids - ::Distro.ids).any?
+  end
+
+  def distros
+    ::Distro.by_ids(distro_ids)
+  end
 end

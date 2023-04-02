@@ -20,6 +20,10 @@ class Distro
     def by_ids(ids)
       select { |i| ids.include?(i.id) }
     end
+
+    def ids
+      map(&:id)
+    end
   end
 
   attr_reader :id, :name, :image, :package_type, :setup

@@ -8,7 +8,7 @@ class Task
 
     attribute :distro, :string
 
-    validates :distro, presence: true, inclusion: { in: ::Distro.map(&:id) }
+    validates :distro, presence: true, inclusion: { in: ::Distro.ids }
     validates :attachment, presence: true
   end
 end

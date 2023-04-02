@@ -8,6 +8,7 @@
       <th scope="col">Created at</th>
       <th scope="col">Updated at</th>
       <th scope="col">Project</th>
+      <th scope="col">Distros</th>
       <th scope="col"></th>
     </tr>
   </thead>
@@ -21,6 +22,7 @@
         <td><%= task.created_at %></td>
         <td><%= task.updated_at %></td>
         <td><%= link_to task.project.name, project_path(task.project.id) %></td>
+        <td><%= task.distros.map(&:name).to_sentence %></td>
         <td><%= link_to 'more', task_path(task.id) %></td>
       </tr>
     <% end %>

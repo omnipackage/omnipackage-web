@@ -11,7 +11,8 @@ class Task
           result[:task] = {
             id:                   task.id,
             sources_tarball_url:  view_context.agent_api_download_sources_tarball_url(task.id),
-            upload_artefact_url:  view_context.agent_api_upload_artefact_url(task.id)
+            upload_artefact_url:  view_context.agent_api_upload_artefact_url(task.id),
+            distros:              task.distro_ids
           }
         end
         result.freeze
