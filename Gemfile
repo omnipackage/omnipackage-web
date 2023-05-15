@@ -29,6 +29,7 @@ end
 group :development do
   # gem 'authentication-zero'
   gem 'pry-rails'
+  gem 'foreman', require: false
 end
 
 group :test do

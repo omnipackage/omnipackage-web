@@ -131,6 +131,7 @@ GEM
       railties (>= 5.0.0)
     faker (3.2.0)
       i18n (>= 1.8.11, < 2)
+    foreman (0.87.2)
     globalid (1.1.0)
       activesupport (>= 5.0)
     i18n (1.13.0)
@@ -275,6 +276,7 @@ DEPENDENCIES
   capybara
   factory_bot_rails
   faker
+  foreman
   importmap-rails
   pg
   pry-rails
@@ -295,4 +297,4 @@ DEPENDENCIES
   webdrivers
 
 BUNDLED WITH
-   2.4.7
+   2.4.13
