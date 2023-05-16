@@ -3,6 +3,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
+gem 'aws-sdk-s3'
 gem 'bcrypt', '~> 3.1.7'
 gem 'faker'
 gem 'importmap-rails'
