@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_04_02_072217) do
+ActiveRecord::Schema[7.1].define(version: 2023_05_16_073335) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -91,6 +91,21 @@ ActiveRecord::Schema[7.1].define(version: 2023_04_02_072217) do
     t.index ["user_id"], name: "index_projects_on_user_id"
   end
 
+  create_table "repositories", force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.string "distro_id", null: false
+    t.string "bucket", null: false
+    t.string "endpoint"
+    t.string "access_key_id"
+    t.string "secret_access_key"
+    t.string "region"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["bucket"], name: "index_repositories_on_bucket"
+    t.index ["distro_id"], name: "index_repositories_on_distro_id"
+    t.index ["project_id"], name: "index_repositories_on_project_id"
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "user_agent"
@@ -137,6 +152,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_04_02_072217) do
   add_foreign_key "password_reset_tokens", "users"
   add_foreign_key "project_sources_tarballs", "projects"
   add_foreign_key "projects", "users"
+  add_foreign_key "repositories", "projects"
   add_foreign_key "sessions", "users"
   add_foreign_key "task_artefacts", "tasks"
   add_foreign_key "tasks", "agents"

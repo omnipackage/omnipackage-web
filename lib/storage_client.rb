@@ -14,14 +14,14 @@ class StorageClient
       region:             as_config['region']
     )
 
-    #@c = ::ActiveStorage::Blob.service.client.client
-    #raise "must be S3 service (#{c.class})" unless c.is_a?(::Aws::S3::Client)
+    # @c = ::ActiveStorage::Blob.service.client.client
+    # raise "must be S3 service (#{c.class})" unless c.is_a?(::Aws::S3::Client)
 
-    #c.get_object(
+    # c.get_object(
     #  bucket: 'artefacts',
     #  key: '4aemzyinq56tufyhkdcdyioxr3qf',
     #  response_target: 'download_testobject'
-    #)
+    # )
   end
 
   private
