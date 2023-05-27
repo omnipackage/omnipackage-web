@@ -24,44 +24,14 @@ Rails/UnknownEnv:
 Gemspec/RequireMFA:
   Enabled: false
 
+Style:
+  Enabled: false
+
 Layout/LineLength:
   Max: 180
-
-Style/Documentation:
-  Enabled: false
 
 Layout/HashAlignment:
   Enabled: false
 
-Style/ModuleFunction:
-  Enabled: false
-
-Style/RedundantConstantBase:
-  Enabled: false
-
-Style/CommentedKeyword:
-  Enabled: false
-
-Style/EmptyMethod:
-  Enabled: false
-
-Style/AccessorGrouping:
-  Enabled: false
-
-Style/FormatStringToken:
-  Enabled: false
-
 Rails/I18nLocaleTexts:
-  Enabled: false
-
-Style/HashSyntax:
-  Enabled: false
-
-Style/GuardClause:
-  Enabled: false
-
-Style/IfUnlessModifier:
-  Enabled: false
-
-Style/StringConcatenation:
   Enabled: false
