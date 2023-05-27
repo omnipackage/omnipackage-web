@@ -37,7 +37,7 @@ class StorageClient
   def ls(bucket:)
     b = c.bucket(bucket)
     b.objects
-    #c.list_objects(bucket: bucket, max_keys: 1000)
+    # c.list_objects(bucket: bucket, max_keys: 1000)
   end
 
   private
