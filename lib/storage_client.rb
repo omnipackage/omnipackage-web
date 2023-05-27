@@ -22,7 +22,7 @@ class StorageClient
       region:             config.fetch(:region),
       endpoint:           config.fetch(:endpoint, nil)
     }
-    @c = ::Aws::S3::Client.new(**args)
+    @c = ::Aws::S3::Resource.new(client: ::Aws::S3::Client.new(**args))
 
     # @c = ::ActiveStorage::Blob.service.client.client
     # raise "must be S3 service (#{c.class})" unless c.is_a?(::Aws::S3::Client)
@@ -32,6 +32,12 @@ class StorageClient
     #  key: '4aemzyinq56tufyhkdcdyioxr3qf',
     #  response_target: 'download_testobject'
     # )
+  end
+
+  def ls(bucket:)
+    b = c.bucket(bucket)
+    b.objects
+    #c.list_objects(bucket: bucket, max_keys: 1000)
   end
 
   private
