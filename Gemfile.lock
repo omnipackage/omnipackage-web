@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/rails/rails.git
-  revision: f043f74cdb6e3fdb5b914e8eddbca07544cd7aac
+  revision: c9cdd800d30ec38f079b3df0772ab47f4ba4b11f
   branch: main
   specs:
     actioncable (7.1.0.alpha)
@@ -103,7 +103,7 @@ GEM
     ast (2.4.2)
     awesome_print (1.9.2)
     aws-eventstream (1.2.0)
-    aws-partitions (1.785.0)
+    aws-partitions (1.786.0)
     aws-sdk-core (3.178.0)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.651.0)
@@ -112,7 +112,7 @@ GEM
     aws-sdk-kms (1.71.0)
       aws-sdk-core (~> 3, >= 3.177.0)
       aws-sigv4 (~> 1.1)
-    aws-sdk-s3 (1.129.0)
+    aws-sdk-s3 (1.130.0)
       aws-sdk-core (~> 3, >= 3.177.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.6)
@@ -226,7 +226,7 @@ GEM
     reline (0.3.6)
       io-console (~> 0.5)
     rexml (3.2.5)
-    rubocop (1.54.1)
+    rubocop (1.54.2)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
       parallel (~> 1.10)
