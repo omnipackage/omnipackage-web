@@ -49,7 +49,7 @@ class AgentsController < ::ApplicationController
   private
 
   def build_agent
-    current_user.private_agents.build(name: ::Faker::Lorem.sentence)
+    current_user.private_agents.build
   end
 
   def find_agent
