@@ -11,10 +11,14 @@ class Task
     validates :distro, presence: true, inclusion: { in: ::Distro.ids }
     validates :attachment, presence: true
 
+    def filename
+      attachment.filename.to_s
+    end
+
     def download(to:)
       ::FileUtils.mkdir_p(to) unless ::File.exist?(to)
 
-      ::File.open(::Pathname.new(to).join(attachment.filename.to_s), 'wb') do |f|
+      ::File.open(::Pathname.new(to).join(filename), 'wb') do |f|
         f.write(attachment.download)
       end
     end
