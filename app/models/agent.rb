@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Agent < ::ApplicationRecord
-  encrypts :apikey, deterministic: true
+  #encrypts :apikey, deterministic: true
 
   has_many :tasks, class_name: '::Task', dependent: :nullify
   belongs_to :user, class_name: '::User', optional: true
