@@ -5,7 +5,7 @@ require 'test_helper'
 class DistroTest < ::ActiveSupport::TestCase
   test 'all distros valid' do
     assert ::Distro.all.size.positive?
-    ::Distro.all.each do |d|
+    ::Distro.all.each do |d| # rubocop: disable Rails/FindEach
       assert d.id.is_a?(::String)
       assert d.name.is_a?(::String)
       assert d.setup.is_a?(::Array)
