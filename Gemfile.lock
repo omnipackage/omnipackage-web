@@ -320,7 +320,7 @@ DEPENDENCIES
   pry-rails
   puma
   rackup
-  rails (~> 7.1.0.beta1)
+  rails (~> 7.1.0.rc1)
   redis
   rubocop
   rubocop-performance
