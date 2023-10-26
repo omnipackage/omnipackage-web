@@ -19,10 +19,7 @@ module OmnipackageWeb
     # in config/environments, which are processed later.
     #
 
-    %w(lib).each do |i|
-      config.autoload_paths << config.root.join(i)
-      config.eager_load_paths << config.root.join(i)
-    end
+    config.autoload_lib(ignore: %w(assets tasks))
 
     config.active_job.queue_adapter = :sidekiq
     config.time_zone = 'UTC'
