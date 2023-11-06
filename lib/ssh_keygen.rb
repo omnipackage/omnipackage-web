@@ -27,6 +27,6 @@ class SshKeygen
   private
 
   def execute(*cli)
-    ::ShellUtil.execute_wo_io(*cli, env: env, timeout_sec: 10)
+    ::ShellUtil.execute(*cli, env: env, timeout_sec: 10)
   end
 end

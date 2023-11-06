@@ -15,6 +15,10 @@ class Task
       attachment.filename.to_s
     end
 
+    def filetype
+      attachment.filename.extension
+    end
+
     def download(to:)
       ::FileUtils.mkdir_p(to) unless ::File.exist?(to)
 

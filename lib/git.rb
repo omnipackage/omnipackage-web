@@ -15,13 +15,13 @@ class Git
 
   def ping(repo)
     with_ssh_key do |env|
-      ::ShellUtil.execute_wo_io(exe, 'ls-remote', '--exit-code', '-h', repo, env: env, timeout_sec: 8).success?
+      ::ShellUtil.execute(exe, 'ls-remote', '--exit-code', '-h', repo, env: env, timeout_sec: 8).success?
     end
   end
 
   def clone(repo, destination)
     with_ssh_key do |env|
-      ::ShellUtil.execute_wo_io(exe, 'clone', '--depth', '1', repo, destination, env: env, timeout_sec: 200).success?
+      ::ShellUtil.execute(exe, 'clone', '--depth', '1', repo, destination, env: env, timeout_sec: 200).success?
     end
   end
 

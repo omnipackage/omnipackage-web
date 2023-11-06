@@ -5,8 +5,16 @@ require 'open3'
 module ShellUtil
   module_function
 
-  def execute_wo_io(*cli, env: {}, timeout_sec: 30) # rubocop: disable Metrics/MethodLength
-    stdin, stdout_and_stderr, wait_thr = ::Open3.popen2e(env, *cli)
+  class ShellError < ::StandardError; end
+  ShellResult = ::Data.define(:exitcode, :out, :err, :cli) do
+    delegate :success?, to: :exitcode
+    def success!
+      raise ShellError, "`#{cli.join(' ').strip}` error: (#{exitcode}) #{err.present? ? err : out}"
+    end
+  end
+
+  def execute(*cli, chdir: ::Dir.pwd, env: {}, timeout_sec: 30) # rubocop: disable Metrics/MethodLength
+    stdin, stdout, stderr, wait_thr = ::Open3.popen3(env, *cli, chdir: chdir)
 
     begin
       ::Timeout.timeout(timeout_sec) do
@@ -16,10 +24,11 @@ module ShellUtil
       ::Process.kill('KILL', wait_thr.pid)
     end
 
+    ShellResult[wait_thr.value, stdout.read, stderr.read, cli]
+  ensure
     stdin.close
-    stdout_and_stderr.close
-
-    wait_thr.value
+    stdout.close
+    stderr.close
   end
 
   def shred(filepath)

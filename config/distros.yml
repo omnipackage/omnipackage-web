@@ -23,7 +23,7 @@ distros:
 
 - id: 'opensuse_15.4'
   name: 'openSUSE Leap 15.4'
-  image: 'opensuse/leap:15.3'
+  image: 'opensuse/leap:15.4'
   <<: *opensuse
 
 - id: 'opensuse_tumbleweed'
