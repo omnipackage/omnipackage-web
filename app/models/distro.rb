@@ -28,7 +28,7 @@ class Distro
 
   attr_reader :id, :name, :image, :package_type, :setup, :setup_repo
 
-  def initialize(id:, name:, image:, package_type:, setup:, setup_repo:)
+  def initialize(id:, name:, image:, package_type:, setup:, setup_repo:) # rubocop: disable Metrics/ParameterLists
     @id = id
     @name = name
     @package_type = package_type
