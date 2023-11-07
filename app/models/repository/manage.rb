@@ -20,9 +20,8 @@ class Repository
       case distro.package_type
       when 'rpm'
         ::Dir.mktmpdir do |dir|
-          sap dir
           artefacts.select { |i| i.filetype == 'rpm' }.each { |i| i.download(to: dir) }
-          rt = ::RepoManage::Runtime.new(executable: 'podman', workdir: dir, image: distro.image)
+          rt = ::RepoManage::Runtime.new(executable: 'podman', workdir: dir, image: distro.image, setup_cli: distro.setup_repo)
           ::RepoManage::Repo.new(runtime: rt, directory: dir, type: distro.package_type).refresh
           puts "*****"
           puts ::ShellUtil.execute("tree #{dir}").out

@@ -9,7 +9,8 @@ module ShellUtil
   ShellResult = ::Data.define(:exitcode, :out, :err, :cli) do
     delegate :success?, to: :exitcode
     def success!
-      raise ShellError, "`#{cli.join(' ').strip}` error: (#{exitcode}) #{err.present? ? err : out}"
+      return self if success?
+      raise ShellError, "`#{cli.join(' ').strip}` error: (#{exitcode}) #{err.presence || out}"
     end
   end
 

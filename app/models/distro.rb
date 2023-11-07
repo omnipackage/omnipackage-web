@@ -26,14 +26,15 @@ class Distro
     end
   end
 
-  attr_reader :id, :name, :image, :package_type, :setup
+  attr_reader :id, :name, :image, :package_type, :setup, :setup_repo
 
-  def initialize(id:, name:, image:, package_type:, setup:)
+  def initialize(id:, name:, image:, package_type:, setup:, setup_repo:)
     @id = id
     @name = name
     @package_type = package_type
     @image = image
     @setup = setup.freeze
+    @setup_repo = setup_repo.freeze
     freeze
   end
 
