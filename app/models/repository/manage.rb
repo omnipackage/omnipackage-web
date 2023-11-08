@@ -2,11 +2,12 @@
 
 class Repository
   class Manage
-    def call(task)
+    def publish(task)
       return unless task.finished?
 
       task.artefacts.group_by(&:distro).each do |distro, afacts|
         repo = task.project.repositories.find_by(distro_id: distro)
+        repo&.create_bucket_if_not_exists!
         ::Dir.mktmpdir do |dir|
           repo&.download_all(to: dir)
           create_or_update_repo_files(::Distro[distro], afacts, dir)

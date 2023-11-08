@@ -41,4 +41,12 @@ class Project < ::ApplicationRecord
   def sources_verified_at
     sources_tarball&.updated_at
   end
+
+  def create_default_repositories
+    distros.each do |dist|
+      next if repositories.exists?(distro_id: dist.id)
+
+      repositories.create!(distro_id: dist.id, bucket: dist.id.gsub(/[^0-9a-z]/i, '-'))
+    end
+  end
 end

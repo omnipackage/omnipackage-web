@@ -13,5 +13,6 @@ class SourcesFetchJob < ::ApplicationJob
     tb.tarball = source.tarball
     tb.config = source.config
     tb.save!
+    project.create_default_repositories
   end
 end

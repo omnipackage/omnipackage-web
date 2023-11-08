@@ -25,7 +25,10 @@ class Repository < ::ApplicationRecord
     storage_client.upload_dir(bucket: bucket, from: from)
   end
 
-  def make_public_readable! # rubocop: disable Metrics/MethodLength
+  def create_bucket_if_not_exists! # rubocop: disable Metrics/MethodLength
+    return if storage_client.bucket_exists?(bucket: bucket)
+
+    storage_client.create_bucket(bucket: bucket)
     policy = {
       "Version" => "2012-10-17",
       "Statement" => [
@@ -44,9 +47,5 @@ class Repository < ::ApplicationRecord
       ]
     }
     storage_client.set_policy(bucket: bucket, policy: policy)
-  end
-
-  def create_bucket!
-    storage_client.create_bucket(bucket: bucket)
   end
 end

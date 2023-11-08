@@ -81,6 +81,10 @@ class StorageClient
     c.bucket(bucket).create
   end
 
+  def bucket_exists?(bucket:)
+    c.bucket(bucket).exists?
+  end
+
   private
 
   attr_reader :c
