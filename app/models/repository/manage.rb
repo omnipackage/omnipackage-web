@@ -6,9 +6,11 @@ class Repository
       return unless task.finished?
 
       task.artefacts.group_by(&:distro).each do |distro, afacts|
+        repo = task.project.repositories.find_by(distro_id: distro)
         ::Dir.mktmpdir do |dir|
-          task.project.repositories.find_by(distro_id: distro)&.download_all(to: dir)
+          repo&.download_all(to: dir)
           create_or_update_repo_files(::Distro[distro], afacts, dir)
+          repo&.upload_all(from: dir)
         end
       end
     end

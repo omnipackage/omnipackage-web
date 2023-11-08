@@ -35,9 +35,38 @@ class StorageClient
   end
 
   def ls(bucket:)
-    b = c.bucket(bucket)
-    b.objects
+    c.bucket(bucket).objects
     # c.list_objects(bucket: bucket, max_keys: 1000)
+  end
+
+  def download_all(bucket:, to:)
+    ls(bucket: bucket).each do |object|
+      dirs = object.key.split('/')[0..-2]
+
+      if dirs.any?
+        fdir = ::Pathname.new(to).join(*dirs)
+        ::FileUtils.mkdir_p(fdir) unless ::File.exist?(fdir)
+      end
+
+      object.get(response_target: ::Pathname.new(to).join(object.key))
+    end
+  end
+
+  def upload_all(bucket:, from:)
+    ::Dir.glob(::Pathname.new(from).join('**/*')).each do |fpath|
+      next if ::File.directory?(fpath)
+
+      key = fpath.gsub(from, '')
+      key = key[1..-1] if key.start_with?('/')
+
+      upload(bucket: bucket, from: fpath, key: key)
+    end
+  end
+
+  def upload(bucket:, from:, key:)
+    ::File.open(from, 'rb') do |file|
+      c.bucket(bucket).object(key).put(body: file)
+    end
   end
 
   private

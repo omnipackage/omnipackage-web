@@ -18,15 +18,10 @@ class Repository < ::ApplicationRecord
   end
 
   def download_all(to:)
-    storage_client.ls(bucket: bucket).each do |object|
-      dirs = object.key.split('/')[0..-2]
+    storage_client.download_all(bucket: bucket, to: to)
+  end
 
-      if dirs.any?
-        fdir = ::Pathname.new(to).join(*dirs)
-        ::FileUtils.mkdir_p(fdir) unless ::File.exist?(fdir)
-      end
-
-      object.get(response_target: ::Pathname.new(to).join(object.key))
-    end
+  def upload_all(from:)
+    storage_client.upload_all(bucket: bucket, from: from)
   end
 end
