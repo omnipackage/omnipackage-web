@@ -39,7 +39,7 @@ class StorageClient
     # c.list_objects(bucket: bucket, max_keys: 1000)
   end
 
-  def download_all(bucket:, to:)
+  def download_dir(bucket:, to:)
     ls(bucket: bucket).each do |object|
       dirs = object.key.split('/')[0..-2]
 
@@ -52,7 +52,7 @@ class StorageClient
     end
   end
 
-  def upload_all(bucket:, from:)
+  def upload_dir(bucket:, from:)
     ::Dir.glob(::Pathname.new(from).join('**/*')).each do |fpath|
       next if ::File.directory?(fpath)
 
@@ -67,6 +67,18 @@ class StorageClient
     ::File.open(from, 'rb') do |file|
       c.bucket(bucket).object(key).put(body: file)
     end
+  end
+
+  def get_policy(bucket:)
+    ::JSON.parse(c.bucket(bucket).policy.policy.read)
+  end
+
+  def set_policy(bucket:, policy:)
+    c.client.put_bucket_policy(bucket: bucket, policy: ::JSON.dump(policy))
+  end
+
+  def create_bucket(bucket:)
+    c.bucket(bucket).create
   end
 
   private

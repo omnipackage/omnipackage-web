@@ -18,10 +18,35 @@ class Repository < ::ApplicationRecord
   end
 
   def download_all(to:)
-    storage_client.download_all(bucket: bucket, to: to)
+    storage_client.download_dir(bucket: bucket, to: to)
   end
 
   def upload_all(from:)
-    storage_client.upload_all(bucket: bucket, from: from)
+    storage_client.upload_dir(bucket: bucket, from: from)
+  end
+
+  def make_public_readable! # rubocop: disable Metrics/MethodLength
+    policy = {
+      "Version" => "2012-10-17",
+      "Statement" => [
+        {
+          "Effect" => "Allow",
+          "Principal" => { "AWS" => ["*"] },
+          "Action" => ["s3:GetBucketLocation", "s3:ListBucket"],
+          "Resource" => ["arn:aws:s3:::#{bucket}"]
+        },
+        {
+          "Effect" => "Allow",
+          "Principal" => { "AWS" => ["*"] },
+          "Action" => ["s3:GetObject"],
+          "Resource" => ["arn:aws:s3:::#{bucket}/*"]
+        }
+      ]
+    }
+    storage_client.set_policy(bucket: bucket, policy: policy)
+  end
+
+  def create_bucket!
+    storage_client.create_bucket(bucket: bucket)
   end
 end
