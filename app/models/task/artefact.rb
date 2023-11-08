@@ -19,10 +19,19 @@ class Task
       attachment.filename.extension
     end
 
-    def download(to:)
+    def download(to:, overwrite_existing: false) # rubocop: disable Metrics/MethodLength
       ::FileUtils.mkdir_p(to) unless ::File.exist?(to)
 
-      ::File.open(::Pathname.new(to).join(filename), 'wb') do |f|
+      fpath = ::Pathname.new(to).join(filename)
+      if ::File.exist?(fpath)
+        if overwrite_existing
+          ::File.delete(fpath)
+        else
+          raise "file #{fpath} already exists"
+        end
+      end
+
+      ::File.open(fpath, 'wb') do |f|
         f.write(attachment.download)
       end
     end
