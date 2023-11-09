@@ -24,6 +24,10 @@ class Distro
     def ids
       map(&:id)
     end
+
+    def all_to_hash
+      each_with_object({}) { |elem, acc| acc[elem.id] = elem.to_hash.except(:id) }.freeze
+    end
   end
 
   attr_reader :id, :name, :image, :package_type, :setup, :setup_repo
@@ -44,5 +48,16 @@ class Distro
 
   def deb?
     package_type == 'deb'
+  end
+
+  def to_hash
+    {
+      'id' => id,
+      'name' => name,
+      'package_type' => package_type,
+      'image' => image,
+      'setup' => setup,
+      'setup_repo' => setup_repo
+    }.freeze
   end
 end
