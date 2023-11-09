@@ -43,6 +43,11 @@ distros:
   image: 'fedora:38'
   <<: *fedora
 
+- id: 'fedora_39'
+  name: 'Fedora 39'
+  image: 'fedora:39'
+  <<: *fedora
+
 - id: 'debian_bullseye'
   name: 'Debian Bullseye'
   image: 'debian:bullseye'
