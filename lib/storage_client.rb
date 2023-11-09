@@ -23,20 +23,10 @@ class StorageClient
       endpoint:           config.fetch(:endpoint, nil)
     }
     @c = ::Aws::S3::Resource.new(client: ::Aws::S3::Client.new(**args))
-
-    # @c = ::ActiveStorage::Blob.service.client.client
-    # raise "must be S3 service (#{c.class})" unless c.is_a?(::Aws::S3::Client)
-
-    # c.get_object(
-    #  bucket: 'artefacts',
-    #  key: '4aemzyinq56tufyhkdcdyioxr3qf',
-    #  response_target: 'download_testobject'
-    # )
   end
 
   def ls(bucket:)
     c.bucket(bucket).objects
-    # c.list_objects(bucket: bucket, max_keys: 1000)
   end
 
   def download_dir(bucket:, to:)
@@ -75,6 +65,27 @@ class StorageClient
 
   def set_policy(bucket:, policy:)
     c.client.put_bucket_policy(bucket: bucket, policy: ::JSON.dump(policy))
+  end
+
+  def set_allow_public_read(bucket:) # rubocop: disable Metrics/MethodLength
+    policy = {
+      "Version" => "2012-10-17",
+      "Statement" => [
+        {
+          "Effect" => "Allow",
+          "Principal" => { "AWS" => ["*"] },
+          "Action" => ["s3:GetBucketLocation", "s3:ListBucket"],
+          "Resource" => ["arn:aws:s3:::#{bucket}"]
+        },
+        {
+          "Effect" => "Allow",
+          "Principal" => { "AWS" => ["*"] },
+          "Action" => ["s3:GetObject"],
+          "Resource" => ["arn:aws:s3:::#{bucket}/*"]
+        }
+      ]
+    }
+    set_policy(bucket: bucket, policy: policy)
   end
 
   def create_bucket(bucket:)

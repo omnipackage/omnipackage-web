@@ -9,9 +9,11 @@ opensuse: &opensuse
 debian: &debian
   package_type: 'deb'
   setup:
-  - 'apt-get update'
-  - 'apt-get install -y build-essential debhelper %{build_dependencies}'
-  setup_repo: []
+  - 'DEBIAN_FRONTEND=noninteractive apt-get update'
+  - 'DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential debhelper %{build_dependencies}'
+  setup_repo:
+  - 'DEBIAN_FRONTEND=noninteractive apt-get update'
+  - 'DEBIAN_FRONTEND=noninteractive apt-get -y install dpkg-dev'
 
 fedora: &fedora
   package_type: 'rpm'

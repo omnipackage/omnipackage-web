@@ -25,27 +25,10 @@ class Repository < ::ApplicationRecord
     storage_client.upload_dir(bucket: bucket, from: from)
   end
 
-  def create_bucket_if_not_exists! # rubocop: disable Metrics/MethodLength
+  def create_bucket_if_not_exists!
     return if storage_client.bucket_exists?(bucket: bucket)
 
     storage_client.create_bucket(bucket: bucket)
-    policy = {
-      "Version" => "2012-10-17",
-      "Statement" => [
-        {
-          "Effect" => "Allow",
-          "Principal" => { "AWS" => ["*"] },
-          "Action" => ["s3:GetBucketLocation", "s3:ListBucket"],
-          "Resource" => ["arn:aws:s3:::#{bucket}"]
-        },
-        {
-          "Effect" => "Allow",
-          "Principal" => { "AWS" => ["*"] },
-          "Action" => ["s3:GetObject"],
-          "Resource" => ["arn:aws:s3:::#{bucket}/*"]
-        }
-      ]
-    }
-    storage_client.set_policy(bucket: bucket, policy: policy)
+    storage_client.set_allow_public_read(bucket: bucket)
   end
 end
