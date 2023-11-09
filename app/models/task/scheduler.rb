@@ -84,6 +84,7 @@ class Task
       ::ApplicationRecord.transaction do
         task.finished!
       end
+      ::RepositoryPublishJob.perform_later(task.id)
     end
   end
 end

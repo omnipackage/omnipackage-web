@@ -5,6 +5,7 @@ module RepoManage
     class Deb < ::RepoManage::Repo
       def refresh
         runtime.execute('dpkg-scanpackages . /dev/null > Release').success!
+        runtime.execute('dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz').success!
       end
     end
   end
