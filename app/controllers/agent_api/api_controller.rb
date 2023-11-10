@@ -6,6 +6,8 @@ module AgentApi
     skip_before_action :verify_authenticity_token
     rescue_from ::StandardError, with: :respond_error
 
+    @@once = true
+
     def call # rubocop: disable Metrics/AbcSize, Metrics/MethodLength
       scheduler = ::Task::Scheduler.new(current_agent)
       command = scheduler.call(params.fetch(:payload))
@@ -13,8 +15,9 @@ module AgentApi
       next_poll_after = current_agent.next_poll_after
 
       response_hash = {}
-      if params[:sequence].to_i <= 1
+      if params[:sequence].to_i <= 1 || @@once
         response_hash[:distro_configs] = ::Distro.all_to_hash
+        @@once = false
       end
       current_agent.touch_last_seen(next_poll_after)
       response.set_header('X-NEXT-POLL-AFTER-SECONDS', next_poll_after)

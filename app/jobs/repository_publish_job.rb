@@ -24,7 +24,7 @@ class RepositoryPublishJob < ::ApplicationJob
     artefacts.select { |i| i.filetype == distro.package_type }.each { |i| i.download(to: dir, overwrite_existing: true) }
 
     rt = ::RepoManage::Runtime.new(executable: 'podman', workdir: dir, image: distro.image, setup_cli: distro.setup_repo)
-    ::RepoManage::Repo.new(runtime: rt, directory: dir, type: distro.package_type).refresh
+    ::RepoManage::Repo.new(runtime: rt, type: distro.package_type).refresh
 
     puts "*****" # rubocop: disable Rails/Output
     puts ::ShellUtil.execute("tree #{dir}").out # rubocop: disable Rails/Output

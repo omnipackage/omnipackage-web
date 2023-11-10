@@ -15,10 +15,11 @@ module RepoManage
       end
     end
 
-    attr_reader :directory, :runtime, :type
+    attr_reader :runtime, :type
 
-    def initialize(directory:, runtime:)
-      @directory = directory
+    delegate :workdir, to: :runtime
+
+    def initialize(runtime:)
       @runtime = runtime
     end
 
