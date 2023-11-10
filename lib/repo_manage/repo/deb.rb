@@ -3,16 +3,23 @@
 module RepoManage
   class Repo
     class Deb < ::RepoManage::Repo
-      def refresh
-        runtime.execute('dpkg-scanpackages . /dev/null > Packages').success!
-
+      def refresh # rubocop: disable Metrics/MethodLength
         ::File.open(::Pathname.new(workdir).join('generate_releases_script.sh'), 'w') do |file|
           file.write(generate_releases_script)
         end
 
-        runtime.execute('mv ./generate_releases_script.sh /tmp/ && chmod +x /tmp/generate_releases_script.sh').success!
-        runtime.execute('/tmp/generate_releases_script.sh > Release').success!
+        commands = [
+          'mkdir -p main',
+          'mv *.deb main/',
+          'dpkg-scanpackages main/ > main/Packages',
+          'mv ./generate_releases_script.sh /tmp/',
+          'chmod +x /tmp/generate_releases_script.sh',
+          '/tmp/generate_releases_script.sh > Release'
+        ]
+        runtime.execute(commands.join(' && ')).success!
       end
+      # root@user-VirtualBox:~# cat /etc/apt/sources.list.d/omni.list
+      # deb [trusted=yes allow-insecure=yes] http://10.0.2.2:9000/ubuntu-22-04 main/
 
       private
 

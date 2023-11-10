@@ -35,3 +35,9 @@ Layout/HashAlignment:
 
 Rails/I18nLocaleTexts:
   Enabled: false
+
+Layout/ClosingHeredocIndentation:
+  Enabled: false
+
+Layout/HeredocIndentation:
+  Enabled: false
