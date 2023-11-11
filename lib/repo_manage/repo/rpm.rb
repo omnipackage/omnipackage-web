@@ -4,7 +4,7 @@ module RepoManage
   class Repo
     class Rpm < ::RepoManage::Repo
       def refresh
-        runtime.execute('createrepo --update .').success!
+        runtime.execute('createrepo .').success!
       end
     end
   end

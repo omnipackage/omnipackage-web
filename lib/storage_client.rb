@@ -96,6 +96,16 @@ class StorageClient
     c.bucket(bucket).exists?
   end
 
+  def delete_bucket!(bucket:)
+    if bucket_exists?(bucket: bucket)
+      c.bucket(bucket).delete!
+    end
+  end
+
+  def url(bucket:)
+    c.bucket(bucket).url
+  end
+
   private
 
   attr_reader :c

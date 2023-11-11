@@ -31,4 +31,12 @@ class Repository < ::ApplicationRecord
     storage_client.create_bucket(bucket: bucket)
     storage_client.set_allow_public_read(bucket: bucket)
   end
+
+  def delete_bucket!
+    storage_client.delete_bucket!(bucket: bucket)
+  end
+
+  def url
+    storage_client.url(bucket: bucket)
+  end
 end
