@@ -1,1 +1,40 @@
 <h1>Task <%= @task.id %></h1>
+
+<h2>Artefacts</h2>
+
+<% @task.artefacts.group_by(&:distro).each do |distro, afacts| %>
+  <div class="card">
+    <div class="card-header">
+      <%= ::Distro[distro].name %>
+    </div>
+
+    <div class="card-body">
+      <table class="table table-sm">
+
+        <thead>
+          <tr>
+            <th scope="col">File</th>
+            <th scope="col">Content type</th>
+            <th scope="col">Size</th>
+            <th scope="col">Created at</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% afacts.each do |afact| %>
+            <tr>
+              <td><%= link_to afact.filename, rails_blob_path(afact.attachment.blob, disposition: 'attachment') %></td>
+              <td><%= afact.attachment.content_type %></td>
+              <td><%= number_to_human_size(afact.attachment.byte_size) %></td>
+              <td><%= afact.attachment.blob.created_at %></td>
+            </tr>
+          <% end %>
+
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
+  <br />
+<% end %>
