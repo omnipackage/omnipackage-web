@@ -30,6 +30,8 @@
     <% @project.distros.each do |d| %>
       <span class="badge text-bg-secondary"><%= d.name %></span>
     <% end %>
+
+    <%= button_to 'Trigger build', tasks_path(project_id: @project.id), method: :post, class: 'btn btn-outline-primary btn-sm' %>
   <% end %>
 </p>
 

@@ -18,6 +18,16 @@ class TasksController < ::ApplicationController
     redirect_to(tasks_path, notice: 'Task has been successfully deleted')
   end
 
+  def create
+    project = if current_user.root?
+                ::Project.find(params[:project_id])
+              else
+                projects.find(params[:project_id])
+              end
+    ::Task.create!(sources_tarball: project.sources_tarball)
+    redirect_to(tasks_path, notice: 'Task has been successfully created')
+  end
+
   private
 
   def find_task
