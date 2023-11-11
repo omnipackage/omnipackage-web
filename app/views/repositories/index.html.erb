@@ -9,7 +9,10 @@
 
       <div class="card-body">
         <div class="card-text">
+          <span class="font-monospace"><%= repo.url %></span>
         </div>
+
+        <%= link_to 'More', repository_path(repo.id), class: 'card-link' %>
       </div>
     </div>
   <% end %>

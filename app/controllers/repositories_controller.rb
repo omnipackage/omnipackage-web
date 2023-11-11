@@ -13,25 +13,12 @@ class RepositoriesController < ::ApplicationController
     @repository = build_repository
   end
 
-  def edit
-    @repository = find_repository
-  end
-
   def create
     @repository = assign_attributes(build_repository)
     if @repository.valid?
       redirect_to(repositories_path, notice: "Repository #{@repository.name} has been successfully created")
     else
       render(:new, status: :unprocessable_entity)
-    end
-  end
-
-  def update
-    @repository = assign_attributes(find_repository)
-    if @repository.save
-      redirect_to(repository_path(@repository.id), notice: "Repository #{@repository.name} has been successfully updated")
-    else
-      render(:edit, status: :unprocessable_entity)
     end
   end
 

@@ -1,0 +1,38 @@
+<h1>Repository for <%= @repository.distro.name %></h1>
+
+<p>
+  <span class="font-monospace"><%= @repository.url %></span>
+
+  <% if @repository.bucket_exists? %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">File</th>
+          <th scope="col">Size</th>
+          <th scope="col">Modified at</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <% @repository.ls.each do |fo| %>
+          <tr>
+            <td><%= fo.key %></td>
+            <td><%= number_to_human_size(fo.size) %></td>
+            <td><%= fo.last_modified_at %></td>
+          </tr>
+        <% end %>
+
+      </tbody>
+    </table>
+  <% else %>
+    <p>
+      <span>Storage bucket does not exists. Create it?</span>
+    </p>
+  <% end %>
+</p>
+
+<br>
+<p>
+  <%= link_to 'Back to repositories list', repositories_path, class: 'btn btn-link' %>
+</p>

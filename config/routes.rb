@@ -34,5 +34,5 @@ require 'sidekiq/web'
 
   resources :agents
   resources :tasks, only: %i[index show destroy]
-  resources :repositories
+  resources :repositories, except: %i[edit update]
 end

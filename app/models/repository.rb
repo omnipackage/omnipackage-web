@@ -6,6 +6,8 @@ class Repository < ::ApplicationRecord
 
   validates :distro_id, inclusion: { in: ::Distro.ids }
 
+  FileItem = ::Data.define(:key, :size, :last_modified_at)
+
   def distro
     ::Distro[distro_id]
   end
@@ -30,8 +32,12 @@ class Repository < ::ApplicationRecord
     storage_client.upload_dir(bucket: bucket, from: from)
   end
 
+  def bucket_exists?
+    storage_client.bucket_exists?(bucket: bucket)
+  end
+
   def create_bucket_if_not_exists!
-    return if storage_client.bucket_exists?(bucket: bucket)
+    return if bucket_exists?
 
     storage_client.create_bucket(bucket: bucket)
     storage_client.set_allow_public_read(bucket: bucket)
@@ -43,5 +49,11 @@ class Repository < ::ApplicationRecord
 
   def url
     storage_client.url(bucket: bucket)
+  end
+
+  def ls
+    return [] unless bucket_exists?
+
+    storage_client.ls(bucket: bucket).map { |i| FileItem[i.key, i.size, i.last_modified] }
   end
 end
