@@ -10,6 +10,7 @@ class User < ::ApplicationRecord
   has_many :sessions, class_name: '::Session', dependent: :destroy
 
   has_many :projects, class_name: '::Project', dependent: :destroy
+  has_many :repositories, through: :projects, class_name: '::Repository'
   has_many :private_agents, class_name: '::Agent', dependent: :destroy
   has_many :tasks, class_name: '::Task', through: :projects
 

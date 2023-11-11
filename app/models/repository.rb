@@ -2,11 +2,16 @@
 
 class Repository < ::ApplicationRecord
   belongs_to :project
+  has_one :user, through: :project, class_name: '::User'
 
   validates :distro_id, inclusion: { in: ::Distro.ids }
 
   def distro
     ::Distro[distro_id]
+  end
+
+  def distro=(dist)
+    self.distro_id = dist.id
   end
 
   def storage_client

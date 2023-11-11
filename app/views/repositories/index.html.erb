@@ -1,0 +1,19 @@
+<h1>Repositories</h1>
+
+<div class="vstack gap-1">
+  <% @repositories.each do |repo| %>
+    <div class="card">
+      <div class="card-header">
+        <%= repo.distro.name %>
+      </div>
+
+      <div class="card-body">
+        <div class="card-text">
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<br>
+<%= link_to 'Create new repository', new_repository_path, class: 'btn btn-outline-primary' %>
