@@ -7,17 +7,21 @@ module RepoManage
         write_releases_script
 
         commands = import_gpg_keys_commands + [
-          'mkdir -p main',
-          'mv *.deb main/',
-          'dpkg-scanpackages main/ > main/Packages',
+          'dpkg-scanpackages . > Packages',
+          "sed -e 's|Filename: .\/|Filename: |g' -i Packages", # HACK: remove ./ from filenames, otherwise apt install doesn't work with minio https://github.com/minio/minio/issues/18421
+
           'mv ./generate_releases_script.sh /tmp/',
           'chmod +x /tmp/generate_releases_script.sh',
-          '/tmp/generate_releases_script.sh > Release'
+
+          '/tmp/generate_releases_script.sh > Release',
+          "gpg --armor --detach-sign -o Release.gpg Release",
+          "gpg --armor --detach-sign --clearsign -o InRelease Release",
+          'mv public.key Release.key',
         ]
         runtime.execute(commands).success!
       end
-      # root@user-VirtualBox:~# cat /etc/apt/sources.list.d/omni.list
-      # deb [trusted=yes allow-insecure=yes] http://10.0.2.2:9000/ubuntu-22-04 main/
+
+      # curl -fsSL http://localhost:9000/1-ubuntu-22-04/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/omnipackage-1-ubuntu-22-04/.gpg > /dev/null
 
       private
 
