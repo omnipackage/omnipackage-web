@@ -3,7 +3,7 @@
 module RepoManage
   class Repo
     class Deb < ::RepoManage::Repo
-      def refresh
+      def refresh # rubocop: disable Metrics/MethodLength
         write_releases_script
 
         commands = import_gpg_keys_commands + [
