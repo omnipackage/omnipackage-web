@@ -21,6 +21,10 @@ class Gpg
     end
   end
 
+  def key_id(path_to_private_key)
+    ::ShellUtil.execute('gpg', '--show-keys', path_to_private_key).success!.out.lines[1].strip
+  end
+
   private
 
   def write_file(path, content)

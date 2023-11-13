@@ -26,7 +26,7 @@ module RepoManage
 
     def call
       runtime.setup
-      import_gpg_key
+      write_gpg_keys
       refresh
       runtime.finalize
     end
@@ -36,19 +36,20 @@ module RepoManage
     def refresh
     end
 
-    def import_gpg_key
+    def write_gpg_keys
       write_file(::Pathname.new(homedir).join('key.priv'), gpg_key.priv)
       write_file(::Pathname.new(homedir).join('key.pub'), gpg_key.pub)
-
-      commands = [
-        'gpg --import /root/key.priv',
-        'gpg --show-keys /root/key.priv > /root/showkeys'
-      ]
-      runtime.execute(commands).success!
     end
 
     def gpg_key_id
-      ::File.read(::Pathname.new(homedir).join('showkeys')).lines[1].strip
+      ::Gpg.new.key_id(::Pathname.new(homedir).join('key.priv').to_s)
+    end
+
+    def import_gpg_keys_commands
+      [
+        'gpg --import /root/key.priv',
+        'gpg --import /root/key.pub'
+      ]
     end
 
     def write_file(path, content)

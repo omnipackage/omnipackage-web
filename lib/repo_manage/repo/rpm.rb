@@ -4,32 +4,20 @@ module RepoManage
   class Repo
     class Rpm < ::RepoManage::Repo
       def refresh
-        setup_rpmmacros
+        write_rpmmacros
 
-        commands = [
-          'rpm --import /root/key.pub > /root/importpub',
-          'rpm --showrc --verbose --addsign *.rpm > /root/rpmsign',
+        commands = import_gpg_keys_commands + [
+          'rpm --import /root/key.pub',
+          'rpm --showrc --verbose --addsign *.rpm',
           'createrepo .',
-          'gpg --detach-sign --armor repodata/repomd.xml'
+          'gpg --detach-sign --armor --verbose --yes --always-trust repodata/repomd.xml'
         ]
         runtime.execute(commands).success!
       end
 
       private
 
-      def setup_rpmmacros
-=begin
-
-      rpmmacros = <<~FILE
-      %_signature gpg
-      %_gpg_name #{keyid}
-      %_gpg_pass -
-      %__gpg_sign_cmd %{__gpg} gpg --force-v3-sigs --batch --no-verbose --no-armor --passphrase-file /root/passphrase --no-secmem-warning -u %{_gpg_name} -sbo %{__signature_filename} --digest-algo sha256 %{__plaintext_filename}'
-      FILE
-=end
-        #       %__gpg_sign_cmd %{__gpg} gpg --batch --verbose --no-armor --no-secmem-warning -u "%{_gpg_name}" -sbo %{__signature_filename} --digest-algo sha256 %{__plaintext_filename}'
-
-        # write_file(::Pathname.new(homedir).join('passphrase'), "\n")
+      def write_rpmmacros
         rpmmacros = <<~FILE
         %_signature gpg
         %_gpg_name #{gpg_key_id}
