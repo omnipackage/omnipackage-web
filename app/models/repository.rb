@@ -60,14 +60,6 @@ class Repository < ::ApplicationRecord
     storage_client.ls(bucket: bucket).map { |i| FileItem[i.key, i.size, i.last_modified] }
   end
 
-  def generate_gpg_keys
-    key = ::Gpg.new.generate_keys('OmniPackage', 'info@omnipackage.org')
-    update(
-      gpg_key_private: key.priv,
-      gpg_key_public: key.pub
-    )
-  end
-
   def gpg_key
     ::Gpg::Key[gpg_key_private, gpg_key_public]
   end

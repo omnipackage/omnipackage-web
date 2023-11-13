@@ -46,11 +46,16 @@ class Project < ::ApplicationRecord
     "#{user.id}-#{distro.id}".gsub(/[^0-9a-z]/i, '-')
   end
 
+  def generate_gpg_keys
+    ::Gpg.new.generate_keys('OmniPackage', 'info@omnipackage.org')
+  end
+
   def create_default_repositories
     distros.each do |dist|
       next if repositories.exists?(distro_id: dist.id)
 
-      repositories.create!(distro_id: dist.id, bucket: default_bucket(dist)).generate_gpg_keys
+      gpg = generate_gpg_keys
+      repositories.create!(distro_id: dist.id, bucket: default_bucket(dist), gpg_key_public: gpg.pub, gpg_key_private: gpg.priv)
     end
   end
 end
