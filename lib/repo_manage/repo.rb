@@ -19,7 +19,7 @@ module RepoManage
 
     delegate :workdir, :homedir, to: :runtime
 
-    def initialize(runtime:, gpg_key: ::Gpg.new.generate_keys('Oleg', 'oleg@omnipackage.org'))
+    def initialize(runtime:, gpg_key:)
       @runtime = runtime
       @gpg_key = gpg_key
     end
