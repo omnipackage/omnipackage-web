@@ -9,5 +9,7 @@
     access_key_id { nil }
     secret_access_key { nil }
     region { nil }
+    gpg_key_private { '-----BEGIN PGP PUBLIC KEY BLOCK-----' }
+    gpg_key_public { '-----BEGIN PGP PUBLIC KEY BLOCK-----' }
   end
 end

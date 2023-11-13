@@ -50,7 +50,7 @@ class Project < ::ApplicationRecord
     distros.each do |dist|
       next if repositories.exists?(distro_id: dist.id)
 
-      repositories.create!(distro_id: dist.id, bucket: default_bucket(dist))
+      repositories.create!(distro_id: dist.id, bucket: default_bucket(dist)).generate_gpg_keys
     end
   end
 end

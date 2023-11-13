@@ -5,6 +5,9 @@ class Repository < ::ApplicationRecord
   has_one :user, through: :project, class_name: '::User'
 
   validates :distro_id, inclusion: { in: ::Distro.ids }
+  validates :gpg_key_private, :gpg_key_public, presence: true
+
+  encrypts :gpg_key_private
 
   FileItem = ::Data.define(:key, :size, :last_modified_at)
 
@@ -55,5 +58,17 @@ class Repository < ::ApplicationRecord
     return [] unless bucket_exists?
 
     storage_client.ls(bucket: bucket).map { |i| FileItem[i.key, i.size, i.last_modified] }
+  end
+
+  def generate_gpg_keys
+    key = ::Gpg.new.generate_keys('OmniPackage', 'info@omnipackage.org')
+    update(
+      gpg_key_private: key.priv,
+      gpg_key_public: key.pub
+    )
+  end
+
+  def gpg_key
+    ::Gpg::Key[gpg_key_private, gpg_key_public]
   end
 end

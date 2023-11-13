@@ -3,12 +3,10 @@
 module RepoManage
   class Repo
     class Deb < ::RepoManage::Repo
-      def refresh # rubocop: disable Metrics/MethodLength
-        ::File.open(::Pathname.new(workdir).join('generate_releases_script.sh'), 'w') do |file|
-          file.write(generate_releases_script)
-        end
+      def refresh
+        write_releases_script
 
-        commands = [
+        commands = import_gpg_keys_commands + [
           'mkdir -p main',
           'mv *.deb main/',
           'dpkg-scanpackages main/ > main/Packages',
@@ -23,9 +21,9 @@ module RepoManage
 
       private
 
-      def generate_releases_script
+      def write_releases_script # rubocop: disable Metrics/MethodLength
         # credit: https://earthly.dev/blog/creating-and-hosting-your-own-deb-packages-and-apt-repo/
-        <<~SCRIPT
+        script = <<~SCRIPT
 #!/bin/sh
 set -e
 
@@ -57,6 +55,8 @@ do_hash "MD5Sum" "md5sum"
 do_hash "SHA1" "sha1sum"
 do_hash "SHA256" "sha256sum"
 SCRIPT
+
+        write_file(::Pathname.new(workdir).join('generate_releases_script.sh'), script)
       end
     end
   end
