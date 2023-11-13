@@ -38,7 +38,7 @@ module RepoManage
 
     def write_gpg_keys
       write_file(::Pathname.new(homedir).join('key.priv'), gpg_key.priv)
-      write_file(::Pathname.new(homedir).join('key.pub'), gpg_key.pub)
+      write_file(::Pathname.new(workdir).join('public.key'), gpg_key.pub)
     end
 
     def gpg_key_id
@@ -48,7 +48,7 @@ module RepoManage
     def import_gpg_keys_commands
       [
         'gpg --import /root/key.priv',
-        'gpg --import /root/key.pub'
+        'gpg --import public.key'
       ]
     end
 

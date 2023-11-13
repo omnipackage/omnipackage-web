@@ -22,7 +22,13 @@ class Gpg
   end
 
   def key_id(path_to_private_key)
-    ::ShellUtil.execute('gpg', '--show-keys', path_to_private_key).success!.out.lines[1].strip
+    ::ShellUtil.execute(exe, '--show-keys', path_to_private_key).success!.out.lines[1].strip
+  end
+
+  def key_info(key_string)
+    ::ShellUtil.execute("#{exe} --show-keys --with-fingerprint <<HERE
+#{key_string}
+HERE").success!.out
   end
 
   private

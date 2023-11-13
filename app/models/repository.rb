@@ -63,4 +63,13 @@ class Repository < ::ApplicationRecord
   def gpg_key
     ::Gpg::Key[gpg_key_private, gpg_key_public]
   end
+
+  def gpg_public_key_info
+    ::Gpg.new.key_info(gpg_key_public)
+  end
+
+  def regenerate_gpg_keys
+    gpg = project.generate_gpg_keys
+    update!(gpg_key_public: gpg.pub, gpg_key_private: gpg.priv)
+  end
 end

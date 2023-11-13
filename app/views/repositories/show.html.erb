@@ -2,7 +2,14 @@
 
 <p>
   <span class="font-monospace"><%= @repository.url %></span>
+</p>
 
+<p>
+  <strong>GPG public key fingerprint</strong>
+  <pre class="pre-line-wrap"><%= @repository.gpg_public_key_info %></pre>
+</p>
+
+<p>
   <% if @repository.bucket_exists? %>
     <table class="table table-sm">
       <thead>
