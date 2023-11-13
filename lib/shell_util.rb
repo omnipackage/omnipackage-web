@@ -24,7 +24,14 @@ module ShellUtil
         wait_thr.join
       end
     rescue ::Timeout::Error
-      ::Process.kill('KILL', wait_thr.pid)
+      ::Process.kill('TERM', wait_thr.pid)
+      begin
+        ::Timeout.timeout(10) do
+          wait_thr.join
+        end
+      rescue ::Timeout::Error
+        ::Process.kill('KILL', wait_thr.pid)
+      end
     end
 
     ShellResult[wait_thr.value, stdout.read, stderr.read, cli]
@@ -32,15 +39,6 @@ module ShellUtil
     stdin.close
     stdout.close
     stderr.close
-  end
-
-  def shred(filepath)
-    filesize = ::File.size(filepath)
-    [0xFF, 0xAA, 0x55, 0x00].each do |byte|
-      ::File.open(filepath, 'wb') do |f|
-        filesize.times { f.print(byte.chr) }
-      end
-    end
   end
 
   def compress_and_encrypt(source_dir, passphrase:, excludes: [], env: {})

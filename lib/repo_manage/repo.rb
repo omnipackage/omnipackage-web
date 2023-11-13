@@ -15,15 +15,46 @@ module RepoManage
       end
     end
 
-    attr_reader :runtime, :type
+    attr_reader :runtime, :type, :gpg_key
 
-    delegate :workdir, to: :runtime
+    delegate :workdir, :homedir, to: :runtime
 
-    def initialize(runtime:)
+    def initialize(runtime:, gpg_key: ::Gpg.new.generate_keys('Oleg', 'oleg@omnipackage.org'))
       @runtime = runtime
+      @gpg_key = gpg_key
     end
 
+    def call
+      runtime.setup
+      import_gpg_key
+      refresh
+      runtime.finalize
+    end
+
+    private
+
     def refresh
+    end
+
+    def import_gpg_key
+      write_file(::Pathname.new(homedir).join('key.priv'), gpg_key.priv)
+      write_file(::Pathname.new(homedir).join('key.pub'), gpg_key.pub)
+
+      commands = [
+        'gpg --import /root/key.priv',
+        'gpg --show-keys /root/key.priv > /root/showkeys'
+      ]
+      runtime.execute(commands).success!
+    end
+
+    def gpg_key_id
+      ::File.read(::Pathname.new(homedir).join('showkeys')).lines[1].strip
+    end
+
+    def write_file(path, content)
+      ::File.open(path, 'w') do |file|
+        file.write(content)
+      end
     end
   end
 end

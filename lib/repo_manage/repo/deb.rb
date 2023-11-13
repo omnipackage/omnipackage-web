@@ -16,7 +16,7 @@ module RepoManage
           'chmod +x /tmp/generate_releases_script.sh',
           '/tmp/generate_releases_script.sh > Release'
         ]
-        runtime.execute(commands.join(' && ')).success!
+        runtime.execute(commands).success!
       end
       # root@user-VirtualBox:~# cat /etc/apt/sources.list.d/omni.list
       # deb [trusted=yes allow-insecure=yes] http://10.0.2.2:9000/ubuntu-22-04 main/

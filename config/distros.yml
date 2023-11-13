@@ -20,7 +20,7 @@ fedora: &fedora
   setup:
   - 'dnf install -y rpmdevtools tar %{build_dependencies}'
   setup_repo:
-  - 'dnf install -y createrepo_c'
+  - 'dnf install -y createrepo_c rpm-sign'
 
 distros:
 - id: 'opensuse_15.3'

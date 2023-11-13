@@ -27,7 +27,7 @@ module RepoManage
       end
 
       def rm(container_name)
-        ::ShellUtil.execute("#{executable} rm #{container_name}")
+        ::ShellUtil.execute("#{executable} rm -f #{container_name}")
       end
     end
   end

@@ -20,8 +20,7 @@ class SshKeygen
       Key[::File.read(priv_keyfilepath), ::File.read(pub_keyfilepath)]
     end
   ensure
-    ::ShellUtil.shred(priv_keyfilepath) unless ::Rails.env.local?
-    ::FileUtils.remove_entry(dir)
+    ::FileUtils.remove_entry_secure(dir)
   end
 
   private

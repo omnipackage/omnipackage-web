@@ -12,11 +12,13 @@ class RepositoryPublishJob < ::ApplicationJob
         publish(repo, afacts)
       end
     end
+    nil
   end
 
   private
 
-  def publish(repo, afacts)
+  def publish(repo, afacts) # rubocop: disable Metrics/AbcSize
+    ::Rails.logger.info("Publishing to #{repo.id} for #{repo.distro.name}")
     repo.create_bucket_if_not_exists!
     ::Dir.mktmpdir do |dir|
       repo.download_all(to: dir)
@@ -33,6 +35,6 @@ class RepositoryPublishJob < ::ApplicationJob
     artefacts.select { |i| i.filetype == distro.package_type }.each { |i| i.download(to: dir, overwrite_existing: true) }
 
     rt = ::RepoManage::Runtime.new(executable: 'podman', workdir: dir, image: distro.image, setup_cli: distro.setup_repo)
-    ::RepoManage::Repo.new(runtime: rt, type: distro.package_type).refresh
+    ::RepoManage::Repo.new(runtime: rt, type: distro.package_type).call
   end
 end

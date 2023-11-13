@@ -36,7 +36,6 @@ class Git
     )
     yield(env)
   ensure
-    ::ShellUtil.shred(keyfile.path) unless ::Rails.env.local?
-    keyfile.unlink
+    ::FileUtils.remove_entry_secure(keyfile.path)
   end
 end
