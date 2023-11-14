@@ -23,6 +23,10 @@ class Project < ::ApplicationRecord
     ::Project::Sources.new(kind: sources_kind, location: sources_location, ssh_private_key: sources_private_ssh_key)
   end
 
+  def safe_name
+    name.downcase.gsub(/[^0-9a-z]/i, '_')
+  end
+
   def generate_ssh_keys
     keys = ::SshKeygen.new.generate
     if keys

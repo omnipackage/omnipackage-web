@@ -10,6 +10,11 @@
 </p>
 
 <p>
+  <strong>Add repository and install package</strong>
+  <pre class="pre-line-wrap"><%= @repository.installable_cli %></pre>
+</p>
+
+<p>
   <% if @repository.bucket_exists? %>
     <table class="table table-sm">
       <thead>

@@ -5,6 +5,10 @@ opensuse: &opensuse
   - 'zypper --non-interactive install -y rpmdevtools %{build_dependencies}'
   setup_repo:
   - 'zypper --non-interactive install -y createrepo_c'
+  install_steps:
+  - 'zypper addrepo %{url}/%{project_safe_name}.repo'
+  - 'zypper refresh'
+  - 'zypper install %{installable_package_name}'
 
 debian: &debian
   package_type: 'deb'
@@ -14,6 +18,11 @@ debian: &debian
   setup_repo:
   - 'DEBIAN_FRONTEND=noninteractive apt-get update'
   - 'DEBIAN_FRONTEND=noninteractive apt-get -y install dpkg-dev'
+  install_steps:
+  - "echo 'deb %{url} stable/' | sudo tee /etc/apt/sources.list.d/omnipackage_%{project_safe_name}.list"
+  - "curl -fsSL #{url}/stable/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/omnipackage_%{project_safe_name}.gpg > /dev/null"
+  - "sudo apt update"
+  - "sudo apt install %{installable_package_name}"
 
 fedora: &fedora
   package_type: 'rpm'
@@ -21,6 +30,9 @@ fedora: &fedora
   - 'dnf install -y rpmdevtools tar %{build_dependencies}'
   setup_repo:
   - 'dnf install -y createrepo_c rpm-sign'
+  install_steps:
+  - "dnf config-manager --add-repo %{url}/%{project_safe_name}.repo"
+  - "dnf install %{installable_package_name}"
 
 distros:
 - id: 'opensuse_15.3'

@@ -20,7 +20,7 @@ class Project
     end
 
     def installable_package_name(for_distro)
-      config['builds'].find { |i| i['distro'] == for_distro }['installable_package_name']
+      config['builds'].find { |i| i['distro'] == for_distro }&.dig('installable_package_name')
     end
   end
 end

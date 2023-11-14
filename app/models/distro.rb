@@ -30,15 +30,16 @@ class Distro
     end
   end
 
-  attr_reader :id, :name, :image, :package_type, :setup, :setup_repo
+  attr_reader :id, :name, :image, :package_type, :setup, :setup_repo, :install_steps
 
-  def initialize(id:, name:, image:, package_type:, setup:, setup_repo:) # rubocop: disable Metrics/ParameterLists
-    @id = id
-    @name = name
-    @package_type = package_type
-    @image = image
-    @setup = setup.freeze
-    @setup_repo = setup_repo.freeze
+  def initialize(**kwargs)
+    @id = kwargs.fetch(:id)
+    @name = kwargs.fetch(:name)
+    @package_type = kwargs.fetch(:package_type)
+    @image = kwargs.fetch(:image)
+    @setup = kwargs.fetch(:setup).freeze
+    @setup_repo = kwargs.fetch(:setup_repo).freeze
+    @install_steps = kwargs.fetch(:install_steps).freeze
     freeze
   end
 

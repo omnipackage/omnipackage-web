@@ -32,10 +32,12 @@ class RepositoryPublishJob < ::ApplicationJob
     ::Rails.logger.error("Repo #{repo.id} publish error: #{e.message}")
   end
 
-  def create_or_update_repo_files(repo, artefacts, dir)
+  def create_or_update_repo_files(repo, artefacts, dir) # rubocop: disable Metrics/AbcSize
     artefacts.select { |i| i.filetype == repo.distro.package_type }.each { |i| i.download(to: dir, overwrite_existing: true) }
 
     rt = ::RepoManage::Runtime.new(executable: 'podman', workdir: dir, image: repo.distro.image, setup_cli: repo.distro.setup_repo)
-    ::RepoManage::Repo.new(runtime: rt, type: repo.distro.package_type, gpg_key: repo.gpg_key).call
+    reposrv = ::RepoManage::Repo.new(runtime: rt, type: repo.distro.package_type, gpg_key: repo.gpg_key)
+    reposrv.call
+    reposrv.write_rpm_repo_file(repo.project.safe_name, repo.distro.name, repo.url)
   end
 end

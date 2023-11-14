@@ -31,6 +31,9 @@ module RepoManage
       runtime.finalize
     end
 
+    def write_rpm_repo_file(*)
+    end
+
     private
 
     def refresh

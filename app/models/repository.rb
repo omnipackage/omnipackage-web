@@ -72,4 +72,14 @@ class Repository < ::ApplicationRecord
     gpg = project.generate_gpg_keys
     update!(gpg_key_public: gpg.pub, gpg_key_private: gpg.priv)
   end
+
+  def installable_package_name
+    project.installable_package_name(distro.id)
+  end
+
+  def installable_cli
+    distro.install_steps.map do |command|
+      format(command, project_safe_name: project.safe_name, installable_package_name: installable_package_name, url: url)
+    end.join("\n")
+  end
 end

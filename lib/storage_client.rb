@@ -16,7 +16,7 @@ class StorageClient
 
   def initialize(config = {})
     args = {
-      force_path_style:   true,
+      force_path_style:   config.fetch(:force_path_style, false),
       access_key_id:      config.fetch(:access_key_id),
       secret_access_key:  config.fetch(:secret_access_key),
       region:             config.fetch(:region),
