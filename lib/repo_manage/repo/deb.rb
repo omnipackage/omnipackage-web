@@ -5,7 +5,7 @@ module RepoManage
     class Deb < ::RepoManage::Repo
       def refresh # rubocop: disable Metrics/MethodLength
         write_releases_script
-
+=begin
         commands = import_gpg_keys_commands + [
           'dpkg-scanpackages . > Packages',
           "sed -e 's|Filename: .\/|Filename: |g' -i Packages", # HACK: remove ./ from filenames, otherwise apt install doesn't work with minio https://github.com/minio/minio/issues/18421
@@ -18,10 +18,28 @@ module RepoManage
           "gpg --armor --detach-sign --clearsign -o InRelease Release",
           'mv public.key Release.key',
         ]
+=end
+
+        commands = import_gpg_keys_commands + [
+          'chmod +x ./generate_releases_script.sh',
+          'mv ./generate_releases_script.sh /tmp/',
+
+          'mkdir stable',
+          'mv *.deb stable/',
+          'dpkg-scanpackages stable/ > stable/Packages',
+          'cat stable/Packages | gzip -9 > stable/Packages.gz',
+
+          'cd stable/',
+          '/tmp/generate_releases_script.sh > Release',
+          'gpg --armor --detach-sign -o Release.gpg Release',
+          'gpg --armor --detach-sign --clearsign -o InRelease Release',
+          'mv ../public.key Release.key',
+        ]
+
         runtime.execute(commands).success!
       end
 
-      # curl -fsSL http://localhost:9000/1-ubuntu-22-04/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/omnipackage-1-ubuntu-22-04/.gpg > /dev/null
+      # curl -fsSL http://localhost:9000/1-ubuntu-22-04/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/omnipackage-1-ubuntu-22-04.gpg > /dev/null
 
       private
 

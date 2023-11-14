@@ -9,6 +9,7 @@ class RepositoryPublishJob < ::ApplicationJob
 
     task.artefacts.group_by(&:distro).each do |distro, afacts|
       task.project.repositories.where(distro_id: distro).find_each do |repo|
+        # next unless repo.distro_id == 'ubuntu_22.04'
         publish(repo, afacts)
       end
     end
