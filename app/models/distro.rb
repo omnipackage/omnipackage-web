@@ -26,7 +26,7 @@ class Distro
     end
 
     def all_to_hash
-      each_with_object({}) { |elem, acc| acc[elem.id] = elem.to_hash.except(:id) }.freeze
+      each_with_object({}) { |elem, acc| acc[elem.id] = elem.to_hash }.freeze
     end
   end
 

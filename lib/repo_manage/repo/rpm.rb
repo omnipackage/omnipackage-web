@@ -10,7 +10,7 @@ module RepoManage
           'rpm --import public.key',
           'rpm --showrc --verbose --addsign *.rpm',
           'createrepo .',
-          'gpg --detach-sign --armor --verbose --yes --always-trust repodata/repomd.xml',
+          'gpg --no-tty --batch --detach-sign --armor --verbose --yes --always-trust repodata/repomd.xml',
           'mv public.key repodata/repomd.xml.key'
         ]
         runtime.execute(commands).success!

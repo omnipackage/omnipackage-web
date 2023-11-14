@@ -47,8 +47,8 @@ module RepoManage
 
     def import_gpg_keys_commands
       [
-        'gpg --import /root/key.priv',
-        'gpg --import public.key'
+        'gpg --no-tty --batch --import /root/key.priv',
+        'gpg --no-tty --batch --import public.key'
       ]
     end
 

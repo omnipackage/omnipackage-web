@@ -46,7 +46,7 @@ class Project
     private
 
     def read_config(dir)
-      ::YAML.load_file(::File.join(dir, '.omnipackage', 'config.yml'))
+      ::YAML.load_file(::File.join(dir, '.omnipackage', 'config.yml'), aliases: true)
     end
 
     def tarball_excludes

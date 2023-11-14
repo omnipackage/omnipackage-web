@@ -18,5 +18,9 @@ class Project
 
       ::Distro.by_ids(config['builds'].pluck('distro').uniq)
     end
+
+    def installable_package_name(for_distro)
+      config['builds'].find { |i| i['distro'] == for_distro }['installable_package_name']
+    end
   end
 end

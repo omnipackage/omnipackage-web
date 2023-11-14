@@ -21,18 +21,17 @@ module RepoManage
 =end
 
         commands = import_gpg_keys_commands + [
-          'chmod +x ./generate_releases_script.sh',
-          'mv ./generate_releases_script.sh /tmp/',
+          'chmod +x /root/generate_releases_script.sh',
 
-          'mkdir stable',
+          'mkdir -p stable',
           'mv *.deb stable/',
           'dpkg-scanpackages stable/ > stable/Packages',
           'cat stable/Packages | gzip -9 > stable/Packages.gz',
 
           'cd stable/',
-          '/tmp/generate_releases_script.sh > Release',
-          'gpg --armor --detach-sign -o Release.gpg Release',
-          'gpg --armor --detach-sign --clearsign -o InRelease Release',
+          '/root/generate_releases_script.sh > Release',
+          'gpg --no-tty --batch --yes --armor --detach-sign -o Release.gpg Release',
+          'gpg --no-tty --batch --yes --armor --detach-sign --clearsign -o InRelease Release',
           'mv ../public.key Release.key',
         ]
 
@@ -78,7 +77,7 @@ do_hash "SHA1" "sha1sum"
 do_hash "SHA256" "sha256sum"
 SCRIPT
 
-        write_file(::Pathname.new(workdir).join('generate_releases_script.sh'), script)
+        write_file(::Pathname.new(homedir).join('generate_releases_script.sh'), script)
       end
     end
   end

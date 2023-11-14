@@ -22,7 +22,6 @@ class Project
           true
         end
       ensure
-        # TODO: shred all files maybe?
         ::FileUtils.remove_entry(dir)
       end
 
