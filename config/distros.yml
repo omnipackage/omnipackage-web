@@ -29,7 +29,7 @@ fedora: &fedora
   setup:
   - 'dnf install -y rpmdevtools tar %{build_dependencies}'
   setup_repo:
-  - 'dnf install -y createrepo_c rpm-sign'
+  - 'dnf install -y createrepo rpm-sign'
   install_steps:
   - "dnf config-manager --add-repo %{url}/%{project_safe_name}.repo"
   - "dnf install %{installable_package_name}"

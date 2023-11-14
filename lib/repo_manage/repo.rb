@@ -25,10 +25,8 @@ module RepoManage
     end
 
     def call
-      runtime.setup
       write_gpg_keys
       refresh
-      runtime.finalize
     end
 
     def write_rpm_repo_file(*)

@@ -12,20 +12,13 @@ module RepoManage
       @homedir = ::Dir.mktmpdir
     end
 
-    def setup
-      execute(setup_cli, timeout_sec: 600)
-    end
+    def execute(commands, timeout_sec: 600)
+      raise 'execute can only be used once' if frozen?
 
-    def execute(commands, timeout_sec: 60)
-      raise 'the runtime has been already finalized' if frozen?
-
-      ::ShellUtil.execute(build_container_cli(commands), timeout_sec: timeout_sec).success!
+      ::ShellUtil.execute(build_container_cli(setup_cli + commands), timeout_sec: timeout_sec).success!
       image_cache.commit(container_name)
     ensure
       image_cache.rm(container_name)
-    end
-
-    def finalize
       ::FileUtils.remove_entry_secure(homedir)
       freeze
     end

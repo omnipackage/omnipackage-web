@@ -23,11 +23,11 @@ module RepoManage
       end
 
       def commit(container_name)
-        ::ShellUtil.execute("#{executable} commit #{container_name} #{container_name}")
+        ::ShellUtil.execute("#{executable} commit #{container_name} #{container_name}").success!
       end
 
       def rm(container_name)
-        ::ShellUtil.execute("#{executable} rm -f #{container_name}")
+        ::ShellUtil.execute("#{executable} rm -f #{container_name}").success!
       end
     end
   end
