@@ -51,15 +51,19 @@ class Project < ::ApplicationRecord
   end
 
   def generate_gpg_keys
-    ::Gpg.new.generate_keys('OmniPackage', 'info@omnipackage.org')
+    ::Gpg.new.generate_keys(user.email, user.email)
+  end
+
+  def create_default_repository(distro)
+    return if repositories.exists?(distro_id: distro.id)
+
+    gpg = generate_gpg_keys
+    repositories.create!(distro_id: distro.id, bucket: default_bucket(distro), gpg_key_public: gpg.pub, gpg_key_private: gpg.priv)
   end
 
   def create_default_repositories
-    distros.each do |dist|
-      next if repositories.exists?(distro_id: dist.id)
-
-      gpg = generate_gpg_keys
-      repositories.create!(distro_id: dist.id, bucket: default_bucket(dist), gpg_key_public: gpg.pub, gpg_key_private: gpg.priv)
+    distros.each do |distro|
+      create_default_repository(distro)
     end
   end
 end

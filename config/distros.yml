@@ -34,6 +34,16 @@ fedora: &fedora
   - "dnf config-manager --add-repo %{url}/%{project_safe_name}.repo"
   - "dnf install %{installable_package_name}"
 
+mageia: &mageia
+  package_type: 'rpm'
+  setup:
+  - 'dnf install -y --allowerasing rpmdevtools tar %{build_dependencies}'
+  setup_repo:
+  - 'dnf install -y createrepo rpm-sign'
+  install_steps:
+  - "dnf config-manager --add-repo %{url}/%{project_safe_name}.repo"
+  - "dnf install %{installable_package_name}"
+
 distros:
 - id: 'opensuse_15.3'
   name: 'openSUSE Leap 15.3'
@@ -79,3 +89,13 @@ distros:
   name: 'Ubutntu 23.10'
   image: 'ubuntu:23.10'
   <<: *debian
+
+- id: 'mageia_8'
+  name: 'Mageia 8'
+  image: 'mageia:8'
+  <<: *mageia
+
+- id: 'mageia_cauldron'
+  name: 'Mageia Cauldron'
+  image: 'mageia:cauldron'
+  <<: *mageia
