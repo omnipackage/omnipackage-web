@@ -6,6 +6,7 @@
       <th scope="col">Name</th>
       <th scope="col">Status</th>
       <th scope="col">Last seen</th>
+      <th scope="col">Arch</th>
       <% if current_user.root? %>
         <th scope="col">User</th>
       <% end %>
@@ -28,6 +29,7 @@
           <% end %>
         </td>
         <td><%= agent.last_seen_at %></td>
+        <td><%= agent.arch %></td>
         <% if current_user.root? %>
           <td><%= agent.user&.email %></td>
         <% end %>

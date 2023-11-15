@@ -16,7 +16,8 @@ module AgentApi
 
       response_hash = {}
       if params[:sequence].to_i <= 1 || @@once
-        response_hash[:distro_configs] = ::Distro.all_to_hash
+        response_hash[:distro_configs] = ::Distro.load_from_file
+        ::Rails.logger.info("Sending all distro configs to agent #{current_agent.id}")
         @@once = false
       end
       current_agent.touch_last_seen(next_poll_after)

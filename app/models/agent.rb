@@ -8,6 +8,7 @@ class Agent < ::ApplicationRecord
 
   validates :apikey, presence: true, uniqueness: true
   validates :name, presence: true, length: { maximum: 200 }
+  validates :arch, presence: true, inclusion: { in: ::Distro.arches }
 
   scope :offline, -> { where('? > considered_offline_at', ::Time.now.utc) }
   scope :online, -> { offline.invert_where }
@@ -37,5 +38,9 @@ class Agent < ::ApplicationRecord
 
   def next_poll_after
     rand(19..29)
+  end
+
+  def supported_distros
+    ::Distro.all.select { |d| d.arch == arch }
   end
 end

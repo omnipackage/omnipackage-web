@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_11_13_090813) do
+ActiveRecord::Schema[7.1].define(version: 2023_11_15_123208) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -50,6 +50,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_13_090813) do
     t.datetime "considered_offline_at"
     t.bigint "user_id"
     t.string "name", default: "", null: false
+    t.string "arch", limit: 100, null: false
     t.index ["apikey"], name: "index_agents_on_apikey", unique: true
     t.index ["user_id"], name: "index_agents_on_user_id"
   end

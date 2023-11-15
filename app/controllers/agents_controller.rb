@@ -17,10 +17,11 @@ class AgentsController < ::ApplicationController
     @agent = find_agent
   end
 
-  def create # rubocop: disable Metrics/AbcSize
+  def create # rubocop: disable Metrics/AbcSize, Metrics/MethodLength
     @agent = build_agent
     @agent.user = nil if current_user.root? && params[:public] == '1'
     @agent.name = params[:name]
+    @agent.arch = params[:arch]
     @agent.apikey = ::SecureRandom.hex
     if @agent.valid?
       @agent.save!
@@ -34,6 +35,7 @@ class AgentsController < ::ApplicationController
     @agent = find_agent
     @agent.user = nil if current_user.root? && params[:public] == '1'
     @agent.name = params[:name] if params[:name]
+    @agent.arch = params[:arch] if params[:arch]
     if @agent.save
       redirect_to(agents_path(@agent.id), notice: "Agent #{@agent.id} has been successfully updated")
     else

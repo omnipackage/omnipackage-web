@@ -50,7 +50,7 @@ class Task
       end
     end
 
-    def atomic_task_fetch # rubocop: disable Metrics/MethodLength
+    def atomic_task_fetch # rubocop: disable Metrics/MethodLength, Metrics/AbcSize
       sql = <<~SQL.squish
         UPDATE
           tasks
@@ -62,7 +62,10 @@ class Task
           JOIN project_sources_tarballs pst ON t.sources_tarball_id = pst.id
           JOIN projects p ON pst.project_id = p.id
           JOIN agents a ON (p.user_id = a.user_id OR a.user_id ISNULL)
-          WHERE t.state = 'scheduled' AND a.id = #{agent.id}
+          WHERE
+            t.state = 'scheduled' AND
+            a.id = #{agent.id} AND
+            t.distro_ids::varchar[] && ARRAY[#{agent.supported_distros.map { |d| "'#{d.id}'" }.join(',')}]::varchar[]
           ORDER BY t.created_at ASC LIMIT 1
           FOR UPDATE
         ) RETURNING *;
