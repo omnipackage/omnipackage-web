@@ -58,7 +58,7 @@ class Repository
 
     def build_runtime(workdir)
       ::RepoManage::Runtime.new(
-        executable: ::ApplicationSettings.fetch(:container_runtime),
+        executable: ::APP_SETTINGS.fetch(:container_runtime),
         workdir:    workdir,
         image:      repository.distro.image,
         setup_cli:  repository.distro.setup_repo
