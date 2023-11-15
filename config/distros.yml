@@ -27,19 +27,9 @@ debian: &debian
 fedora: &fedora
   package_type: 'rpm'
   setup:
-  - 'dnf install -y rpmdevtools tar %{build_dependencies}'
-  setup_repo:
-  - 'dnf install -y createrepo rpm-sign'
-  install_steps:
-  - "dnf config-manager --add-repo %{url}/%{project_safe_name}.repo"
-  - "dnf install %{installable_package_name}"
-
-mageia: &mageia
-  package_type: 'rpm'
-  setup:
   - 'dnf install -y --allowerasing rpmdevtools tar %{build_dependencies}'
   setup_repo:
-  - 'dnf install -y createrepo rpm-sign'
+  - 'dnf install -y --allowerasing createrepo rpm-sign'
   install_steps:
   - "dnf config-manager --add-repo %{url}/%{project_safe_name}.repo"
   - "dnf install %{installable_package_name}"
@@ -93,9 +83,9 @@ distros:
 - id: 'mageia_8'
   name: 'Mageia 8'
   image: 'mageia:8'
-  <<: *mageia
+  <<: *fedora
 
 - id: 'mageia_cauldron'
   name: 'Mageia Cauldron'
   image: 'mageia:cauldron'
-  <<: *mageia
+  <<: *fedora
