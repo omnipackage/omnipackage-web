@@ -20,7 +20,7 @@ debian: &debian
   - 'DEBIAN_FRONTEND=noninteractive apt-get -y install dpkg-dev'
   install_steps:
   - "echo 'deb %{url} stable/' | sudo tee /etc/apt/sources.list.d/omnipackage_%{project_safe_name}.list"
-  - "curl -fsSL #{url}/stable/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/omnipackage_%{project_safe_name}.gpg > /dev/null"
+  - "curl -fsSL %{url}/stable/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/omnipackage_%{project_safe_name}.gpg > /dev/null"
   - "sudo apt update"
   - "sudo apt install %{installable_package_name}"
 
