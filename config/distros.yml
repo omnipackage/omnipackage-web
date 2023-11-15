@@ -70,11 +70,6 @@ distros:
   image: 'ubuntu:22.04'
   <<: *debian
 
-- id: 'ubuntu_22.10'
-  name: 'Ubuntu 22.10'
-  image: 'ubuntu:22.10'
-  <<: *debian
-
 - id: 'ubuntu_23.04'
   name: 'Ubutntu 23.04'
   image: 'ubuntu:23.04'
