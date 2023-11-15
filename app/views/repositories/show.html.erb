@@ -29,7 +29,7 @@
 
         <% @repository.ls.each do |fo| %>
           <tr>
-            <td><%= fo.key %></td>
+            <td><%= link_to(fo.key, fo.url) %></td>
             <td><%= number_to_human_size(fo.size) %></td>
             <td><%= fo.last_modified_at %></td>
           </tr>

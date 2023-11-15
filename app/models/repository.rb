@@ -9,7 +9,7 @@ class Repository < ::ApplicationRecord
 
   encrypts :gpg_key_private
 
-  FileItem = ::Data.define(:key, :size, :last_modified_at)
+  FileItem = ::Data.define(:key, :size, :last_modified_at, :url)
 
   def distro
     ::Distro[distro_id]
@@ -57,7 +57,7 @@ class Repository < ::ApplicationRecord
   def ls
     return [] unless bucket_exists?
 
-    storage_client.ls(bucket: bucket).map { |i| FileItem[i.key, i.size, i.last_modified] }
+    storage_client.ls(bucket: bucket).map { |i| FileItem[i.key, i.size, i.last_modified, i.public_url] }
   end
 
   def gpg_key

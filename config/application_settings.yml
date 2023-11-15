@@ -1,0 +1,11 @@
+default: &default
+  container_runtime: 'podman'
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default

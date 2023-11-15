@@ -8,3 +8,7 @@
               end
   raise "please install #{name}" unless system("#{cmd} &> /dev/null")
 end
+
+if ['docker', 'podman'].none? { |cmd| system("#{cmd} &> /dev/null") }
+  raise 'docker or podman must be installed'
+end

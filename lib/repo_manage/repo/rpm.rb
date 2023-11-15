@@ -14,22 +14,24 @@ module RepoManage
           'mv public.key repodata/repomd.xml.key'
         ]
         runtime.execute(commands).success!
+
+        write_repo_file
       end
 
-      def write_rpm_repo_file(project_safe_name, distro_name, url)
+      private
+
+      def write_repo_file
         repo = <<~FILE
         [#{project_safe_name}]
         name=#{project_safe_name} (#{distro_name})
         type=rpm-md
-        baseurl=#{url}
+        baseurl=#{distro_url}
         gpgcheck=1
-        gpgkey=#{url}/repodata/repomd.xml.key
+        gpgkey=#{distro_url}/repodata/repomd.xml.key
         enabled=1
         FILE
         write_file(::Pathname.new(workdir).join("#{project_safe_name}.repo"), repo)
       end
-
-      private
 
       def write_rpmmacros
         rpmmacros = <<~FILE
