@@ -21,6 +21,10 @@ class Distro
       select { |i| ids.include?(i.id) }
     end
 
+    def by_arch(arch)
+      select { |d| d.arch == arch }
+    end
+
     def ids
       map(&:id)
     end

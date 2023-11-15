@@ -41,6 +41,6 @@ class Agent < ::ApplicationRecord
   end
 
   def supported_distros
-    ::Distro.all.select { |d| d.arch == arch }
+    ::Distro.by_arch(arch)
   end
 end
