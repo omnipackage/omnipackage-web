@@ -9,7 +9,7 @@ module RepoManage
         commands = import_gpg_keys_commands + [
           'rpm --import public.key',
           'rpm --addsign *.rpm',
-          'createrepo .',
+          'createrepo --retain-old-md=0 --compatibility .',
           'gpg --no-tty --batch --detach-sign --armor --verbose --yes --always-trust repodata/repomd.xml',
           'mv public.key repodata/repomd.xml.key'
         ]

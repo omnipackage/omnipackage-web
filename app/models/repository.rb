@@ -36,6 +36,13 @@ class Repository < ::ApplicationRecord
     storage_client.upload_dir(bucket: bucket, from: from)
   end
 
+  def delete_deleted_files(from:)
+    storage_client.ls(bucket: bucket).each do |fo|
+      local_path = ::Pathname.new(from).join(fo.key)
+      fo.delete unless ::File.exist?(local_path)
+    end
+  end
+
   def bucket_exists?
     storage_client.bucket_exists?(bucket: bucket)
   end

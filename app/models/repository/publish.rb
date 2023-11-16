@@ -43,6 +43,7 @@ class Repository
       build_repo_manage(dir).sync
 
       repository.upload_all(from: dir)
+      repository.delete_deleted_files(from: dir)
     end
 
     def build_repo_manage(dir)
