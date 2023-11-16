@@ -10,6 +10,7 @@ module RepoManage
       @image = image
       @setup_cli = setup_cli
       @homedir = ::Dir.mktmpdir
+      @image_cache = ::RepoManage::Runtime::ImageCache.new(executable: executable)
     end
 
     def execute(commands, timeout_sec: 900)
@@ -24,6 +25,8 @@ module RepoManage
     end
 
     private
+
+    attr_reader :image_cache
 
     def mounts
       {
@@ -50,16 +53,8 @@ module RepoManage
       end.join(' ')
     end
 
-    def image_cache
-      @image_cache ||= ::RepoManage::Runtime::ImageCache.new(executable: executable)
-    end
-
     def container_name
       @container_name ||= image_cache.generate_container_name(image, setup_cli)
-    end
-
-    def image_to_run
-      @image_to_run ||= image_cache.image(container_name, image)
     end
 
     def build_container_cli(commands)
@@ -72,7 +67,7 @@ module RepoManage
       ::File.open(::Pathname.new(homedir).join('script'), 'w') { |file| file.write(script) }
 =end
       <<~CLI
-        #{executable} run --name #{container_name} --entrypoint /bin/bash --workdir #{mounts[workdir]} #{mount_cli} #{envs_cli} #{image_to_run} -c "#{commands.join(' && ')}"
+        #{executable} run --name #{container_name} --entrypoint /bin/bash --workdir #{mounts[workdir]} #{mount_cli} #{envs_cli} #{image_cache.image(container_name, image)} -c "#{commands.join(' && ')}"
       CLI
     end
   end
