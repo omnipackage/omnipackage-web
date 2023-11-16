@@ -43,7 +43,7 @@ module RepoManage
     end
 
     def gpg_key_id
-      ::Gpg.new.key_id(::Pathname.new(homedir).join('key.priv').to_s)
+      ::Gpg.new.key_id(gpg_key.priv)
     end
 
     def import_gpg_keys_commands
