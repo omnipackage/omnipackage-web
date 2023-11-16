@@ -17,7 +17,7 @@
           <p>
             <% if project.sources_verified? %>
               <% project.distros.each do |d| %>
-                <span class="badge text-bg-secondary"><%= d.name %></span>
+                <span class="badge text-bg-secondary"><%= d.fullname %></span>
               <% end %>
             <% end %>
           </p>

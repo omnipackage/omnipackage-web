@@ -47,6 +47,10 @@ class Distro
     define_method(attr) { config.fetch(attr) }
   end
 
+  def fullname
+    "#{name} (#{arch})"
+  end
+
   def rpm?
     package_type == 'rpm'
   end
