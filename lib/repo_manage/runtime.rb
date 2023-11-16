@@ -2,15 +2,16 @@
 
 module RepoManage
   class Runtime
-    attr_reader :executable, :workdir, :image, :setup_cli, :homedir
+    attr_reader :executable, :workdir, :image, :setup_cli, :homedir, :limits
 
-    def initialize(workdir:, image:, setup_cli:, executable:)
+    def initialize(workdir:, image:, setup_cli:, executable:, limits: ::RepoManage::Runtime::Limits.new)
       @executable = executable
       @workdir = workdir
       @image = image
       @setup_cli = setup_cli
       @homedir = ::Dir.mktmpdir
       @image_cache = ::RepoManage::Runtime::ImageCache.new(executable: executable)
+      @limits = limits
     end
 
     def execute(commands, timeout_sec: 900)
@@ -67,7 +68,7 @@ module RepoManage
       ::File.open(::Pathname.new(homedir).join('script'), 'w') { |file| file.write(script) }
 =end
       <<~CLI
-        #{executable} run --name #{container_name} --entrypoint /bin/bash --workdir #{mounts[workdir]} #{mount_cli} #{envs_cli} #{image_cache.image(container_name, image)} -c "#{commands.join(' && ')}"
+        #{executable} run --name #{container_name} --entrypoint /bin/bash --workdir #{mounts[workdir]} #{mount_cli} #{envs_cli} #{limits.to_cli} #{image_cache.image(container_name, image)} -c "#{commands.join(' && ')}"
       CLI
     end
   end
