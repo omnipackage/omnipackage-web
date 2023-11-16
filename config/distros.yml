@@ -24,14 +24,14 @@ debian: &debian
   - "sudo apt update"
   - "sudo apt install %{installable_package_name}"
 
-fedora: &fedora
+redhat: &redhat
   package_type: 'rpm'
   setup:
   - 'dnf install -y --allowerasing rpmdevtools tar %{build_dependencies}'
   setup_repo:
   - 'dnf install -y --allowerasing createrepo rpm-sign'
   install_steps:
-  - "dnf config-manager --add-repo %{url}/%{project_safe_name}.repo"
+  - "curl -o /etc/yum.repos.d/%{project_safe_name}.repo %{url}/%{project_safe_name}.repo"
   - "dnf install %{installable_package_name}"
 
 arch_x86_64: &arch_x86_64
@@ -59,18 +59,30 @@ distros:
 - id: 'fedora_38'
   name: 'Fedora 38'
   image: 'fedora:38'
-  <<: *fedora
+  <<: *redhat
   <<: *arch_x86_64
 
 - id: 'fedora_39'
   name: 'Fedora 39'
   image: 'fedora:39'
-  <<: *fedora
+  <<: *redhat
+  <<: *arch_x86_64
+
+- id: 'debian_buster'
+  name: 'Debian buster'
+  image: 'debian:buster'
+  <<: *debian
   <<: *arch_x86_64
 
 - id: 'debian_bullseye'
-  name: 'Debian Bullseye'
+  name: 'Debian bullseye'
   image: 'debian:bullseye'
+  <<: *debian
+  <<: *arch_x86_64
+
+- id: 'debian_bookworm'
+  name: 'Debian bookworm'
+  image: 'debian:bookworm'
   <<: *debian
   <<: *arch_x86_64
 
@@ -95,11 +107,35 @@ distros:
 - id: 'mageia_8'
   name: 'Mageia 8'
   image: 'mageia:8'
-  <<: *fedora
+  <<: *redhat
   <<: *arch_x86_64
 
 - id: 'mageia_cauldron'
   name: 'Mageia Cauldron'
   image: 'mageia:cauldron'
-  <<: *fedora
+  <<: *redhat
+  <<: *arch_x86_64
+
+- id: 'almalinux_8'
+  name: 'AlmaLinux 8'
+  image: 'almalinux:8'
+  <<: *redhat
+  <<: *arch_x86_64
+
+- id: 'almalinux_9'
+  name: 'AlmaLinux 9'
+  image: 'almalinux:9'
+  <<: *redhat
+  <<: *arch_x86_64
+
+- id: 'rockylinux_8'
+  name: 'Rocky Linux 8'
+  image: 'rockylinux:8'
+  <<: *redhat
+  <<: *arch_x86_64
+
+- id: 'rockylinux_9'
+  name: 'Rocky Linux 9'
+  image: 'rockylinux:9'
+  <<: *redhat
   <<: *arch_x86_64
