@@ -1,0 +1,33 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Status</th>
+      <th scope="col">Last seen</th>
+      <th scope="col">Arch</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+    <% agents.each do |agent| %>
+      <tr>
+        <td><%= agent.name %></td>
+        <td>
+          <% if agent.offline? %>
+            <span class="badge bg-secondary">Offline</span>
+          <% elsif agent.busy? %>
+            <span class="badge bg-success">Busy</span>
+          <% elsif agent.idle? %>
+            <span class="badge bg-info">Idle</span>
+          <% end %>
+        </td>
+        <td><%= agent.last_seen_at %></td>
+        <td><%= agent.arch %></td>
+        <td><%= link_to 'more', agent_path(agent.id) %></td>
+      </tr>
+    <% end %>
+
+  </tbody>
+</table>

@@ -1,43 +1,9 @@
 <h1>Agents</h1>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Name</th>
-      <th scope="col">Status</th>
-      <th scope="col">Last seen</th>
-      <th scope="col">Arch</th>
-      <% if current_user.root? %>
-        <th scope="col">User</th>
-      <% end %>
-      <th scope="col"></th>
-    </tr>
-  </thead>
+<h3>Public agents</h3>
+<%= render partial: 'list', locals: { agents: @agents_public } %>
 
-  <tbody>
-
-    <% @agents.each do |agent| %>
-      <tr>
-        <td><%= agent.name %></td>
-        <td>
-          <% if agent.offline? %>
-            <span class="badge bg-secondary">Offline</span>
-          <% elsif agent.busy? %>
-            <span class="badge bg-success">Busy</span>
-            <% elsif agent.idle? %>
-              <span class="badge bg-info">Idle</span>
-          <% end %>
-        </td>
-        <td><%= agent.last_seen_at %></td>
-        <td><%= agent.arch %></td>
-        <% if current_user.root? %>
-          <td><%= agent.user&.email %></td>
-        <% end %>
-        <td><%= link_to 'more', agent_path(agent.id) %></td>
-      </tr>
-    <% end %>
-
-  </tbody>
-</table>
+<h3>Your private agents</h3>
+<%= render partial: 'list', locals: { agents: @agents_private } %>
 
 <%= link_to 'Create new agent', new_agent_path, class: 'btn btn-outline-primary' %>

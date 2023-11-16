@@ -6,6 +6,7 @@ class Repository < ::ApplicationRecord
 
   validates :distro_id, inclusion: { in: ::Distro.ids }
   validates :gpg_key_private, :gpg_key_public, presence: true
+  validates :bucket, format: /(?!(^xn--|.+-s3alias$))^[a-z0-9][a-z0-9-]{1,61}[a-z0-9]\z/, uniqueness: { scope: :endpoint }
 
   encrypts :gpg_key_private
 

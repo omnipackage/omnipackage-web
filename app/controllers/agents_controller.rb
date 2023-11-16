@@ -2,7 +2,8 @@
 
 class AgentsController < ::ApplicationController
   def index
-    @agents = (current_user.root? ? ::Agent.all : current_user.private_agents).order(created_at: :asc)
+    @agents_public = ::Agent.public_shared.order(created_at: :asc)
+    @agents_private = current_user.private_agents.order(created_at: :asc)
   end
 
   def show

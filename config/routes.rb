@@ -27,9 +27,8 @@ require 'sidekiq/web'
   end
 
   resources :projects do
-    post :generate_ssh_keys
-    post :fetch_sources
-    get :download_tarball
+    resources :ssh_keys, only: %i[create]
+    resources :sources, only: %i[index create]
   end
 
   resources :agents

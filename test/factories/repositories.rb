@@ -4,7 +4,7 @@
   factory :repository do
     project { association :project }
     distro_id { ::Distro.all.sample.id }
-    bucket { ::Faker::Address.city }
+    bucket { ::Faker::Internet.uuid }
     endpoint { nil }
     access_key_id { nil }
     secret_access_key { nil }

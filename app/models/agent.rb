@@ -12,6 +12,7 @@ class Agent < ::ApplicationRecord
 
   scope :offline, -> { where('? > considered_offline_at', ::Time.now.utc) }
   scope :online, -> { offline.invert_where }
+  scope :public_shared, -> { where(user_id: nil) }
 
   def touch_last_seen(next_poll_after)
     tm = ::Time.now.utc
