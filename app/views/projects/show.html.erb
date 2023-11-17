@@ -7,6 +7,7 @@
   <% else %>
     <span class="badge bg-danger">unverified</span>
   <% end %>
+  <span class="font-monospace"><%= @project.sources_subdir %></span>
   <%= button_to 'Trigger fetch sources', project_sources_path(@project.id), method: :post, class: 'btn btn-outline-primary btn-sm' %>
 </p>
 

@@ -11,7 +11,8 @@
         <div class="card-text">
           <p>
             <span class="badge bg-<%= project.sources_verified? ? 'success' : 'danger' %>"><%= project.sources_kind %></span>
-            <span class="font-monospace"><%= project.sources_location %></span>
+            <span class="font-monospace"><%= project.sources_location %></span> |
+            <span class="font-monospace"><%= project.sources_subdir %></span>
           </p>
 
           <p>
