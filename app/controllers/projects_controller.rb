@@ -61,6 +61,7 @@ class ProjectsController < ::ApplicationController
     object.name = params[:name]
     object.sources_location = params[:sources_location]
     object.sources_kind = params[:sources_kind]
+    object.sources_subdir = params[:sources_subdir]
     object
   end
 end

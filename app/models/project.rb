@@ -12,15 +12,17 @@ class Project < ::ApplicationRecord
 
   attribute :name, :string, default: ''
   attribute :sources_location, :string
+  attribute :sources_subdir, :string, default: ''
 
   validates :name, presence: true, length: { in: 2..150 }
   validates :sources_location, presence: true, length: { in: 2..8000 }
   validates :sources_kind, presence: true
+  validates :sources_subdir, length: { in: 0..500 }, format: { without: /\..|\A\// }
 
   delegate :distros, :installable_package_name, to: :sources_tarball, allow_nil: true
 
   def sources
-    ::Project::Sources.new(kind: sources_kind, location: sources_location, ssh_private_key: sources_private_ssh_key)
+    ::Project::Sources.new(kind: sources_kind, location: sources_location, subdir: sources_subdir, ssh_private_key: sources_private_ssh_key)
   end
 
   def safe_name
@@ -47,7 +49,7 @@ class Project < ::ApplicationRecord
   end
 
   def default_bucket(distro)
-    "#{user.id}-#{distro.id}".gsub(/[^0-9a-z]/i, '-')
+    "#{user.id}-#{safe_name}-#{distro.id}".gsub(/[^0-9a-z]/i, '-')
   end
 
   def generate_gpg_keys

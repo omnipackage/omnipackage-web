@@ -59,5 +59,29 @@
 
   </div>
 
+  <div class="row mb-3">
+
+    <div class="col-sm-2">
+      <%= f.label 'Sub directory, if your project located in a subdirectory', class: 'col-form-label' %>
+    </div>
+
+    <div class="col-sm-10">
+
+      <div class="input-group has-validation">
+        <%= f.text_field(:sources_subdir,
+              value: project.sources_subdir,
+              class: "form-control#{project.errors.include?(:sources_subdir) ? ' is-invalid' : ''}",
+              required: false,
+              'aria-describedby' => 'validation-error-sources_subdir'
+        )%>
+        <div id="validation-error-sources_subdir" class="invalid-feedback">
+          <%= project.errors.messages[:sources_subdir].to_sentence %>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
   <%= f.submit 'Save', class: 'btn btn-primary' %>
 <% end %>

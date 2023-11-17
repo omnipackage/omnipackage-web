@@ -14,6 +14,12 @@ class ProjectTest < ::ActiveSupport::TestCase
     end
     assert build(:project, sources_kind: :git).valid?
     assert build(:project, sources_kind: 'git').valid?
+    assert build(:project, sources_subdir: '/../etc/').invalid?
+    assert build(:project, sources_subdir: '../etc/passwd').invalid?
+    assert build(:project, sources_subdir: '../../..etc/passwd').invalid?
+    assert build(:project, sources_subdir: '/').invalid?
+    assert build(:project, sources_subdir: '/etc').invalid?
+    assert build(:project, sources_subdir: 'test/sample_project').valid?
   end
 
   test 'generate ssh keys' do

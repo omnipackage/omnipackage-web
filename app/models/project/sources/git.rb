@@ -3,8 +3,9 @@
 class Project
   class Sources
     class Git < ::Project::Sources
-      def initialize(location:, ssh_private_key:)
-        super(location: location)
+      def initialize(**kwargs)
+        super
+        ssh_private_key = kwargs.fetch(:ssh_private_key)
         @git = ::Git.new(ssh_private_key: ssh_private_key)
       end
 
@@ -17,7 +18,7 @@ class Project
         return unless git.clone(location, dir)
 
         if block_given?
-          yield(dir)
+          yield(::Pathname.new(dir).join(subdir).to_s)
         else
           true
         end

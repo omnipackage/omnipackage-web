@@ -3,30 +3,28 @@
 class Project
   class Sources
     class << self
-      def new(kind:, location:, ssh_private_key: nil) # rubocop: disable Metrics/MethodLength
-        case kind
+      def new(**kwargs) # rubocop: disable Metrics/MethodLength
+        case kwargs.fetch(:kind)
         when 'git'
-          ::Project::Sources::Git.allocate.tap do |o|
-            o.send(:initialize, location: location, ssh_private_key: ssh_private_key)
-          end
+          ::Project::Sources::Git
         when 'localfs'
           raise 'only available in local envs' unless ::Rails.env.local?
 
-          ::Project::Sources::Localfs.allocate.tap do |o|
-            o.send(:initialize, location: location)
-          end
+          ::Project::Sources::Localfs
         else
-          raise "unsupported sources kind '#{kind}'"
-        end
+          raise "unsupported sources kind '#{kwargs}'"
+        end.allocate.tap { |o| o.send(:initialize, **kwargs.except(:kind)) }
       end
     end
 
     Envelop = ::Data.define(:config, :tarball)
 
-    attr_reader :location
+    attr_reader :location, :subdir
 
-    def initialize(location:)
-      @location = location
+    def initialize(**kwargs)
+      @location = kwargs.fetch(:location)
+      @subdir = kwargs.fetch(:subdir, '')
+      raise "forbidden subdir '#{subdir}'" if subdir.start_with?('/') || subdir.include?('..')
     end
 
     def sync
