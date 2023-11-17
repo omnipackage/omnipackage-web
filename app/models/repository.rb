@@ -10,7 +10,7 @@ class Repository < ::ApplicationRecord
 
   encrypts :gpg_key_private
 
-  after_commit :delete_bucket!, on: :destroy
+  # after_commit :delete_bucket!, on: :destroy
 
   FileItem = ::Data.define(:key, :size, :last_modified_at, :url)
 

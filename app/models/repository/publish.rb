@@ -9,7 +9,7 @@ class Repository
       @logger = ::ActiveSupport::TaggedLogging.new(::Rails.logger)
     end
 
-    def call(artefacts) # rubocop: disable Metrics/AbcSize
+    def call(artefacts) # rubocop: disable Metrics/AbcSize, Metrics/MethodLength
       logger.tagged('publish', "repo=#{repository.id}", "project=#{repository.project.id}", "distro=#{repository.distro.id}") do
         logger.info('start')
 
@@ -19,8 +19,10 @@ class Repository
           sync_repo_files(artefacts, dir)
           logger.info("finish\n#{::ShellUtil.execute("tree #{dir}").out}")
         end
+        repository.update!(published_at: ::Time.now.utc)
       rescue ::StandardError => e
         logger.info("error: #{e.message}")
+        repository.update!(last_publish_error: e.message)
       end
     end
 

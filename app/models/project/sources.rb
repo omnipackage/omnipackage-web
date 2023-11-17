@@ -3,7 +3,7 @@
 class Project
   class Sources
     class << self
-      def new(**kwargs) # rubocop: disable Metrics/MethodLength
+      def new(**kwargs)
         case kwargs.fetch(:kind)
         when 'git'
           ::Project::Sources::Git

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_11_17_083036) do
+ActiveRecord::Schema[7.1].define(version: 2023_11_17_113815) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -105,6 +105,8 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_17_083036) do
     t.datetime "updated_at", null: false
     t.string "gpg_key_private"
     t.string "gpg_key_public"
+    t.datetime "published_at"
+    t.string "last_publish_error"
     t.index ["bucket"], name: "index_repositories_on_bucket"
     t.index ["distro_id"], name: "index_repositories_on_distro_id"
     t.index ["endpoint", "bucket"], name: "index_repositories_on_endpoint_and_bucket", unique: true
