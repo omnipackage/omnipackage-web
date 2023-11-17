@@ -6,39 +6,34 @@ class Repository
 
     def initialize(repository)
       @repository = repository
+      @logger = ::ActiveSupport::TaggedLogging.new(::Rails.logger)
     end
 
-    def call(artefacts)
-      log_start
+    def call(artefacts) # rubocop: disable Metrics/AbcSize
+      logger.tagged('publish', "repo=#{repository.id}", "project=#{repository.project.id}", "distro=#{repository.distro.id}") do
+        logger.info('start')
 
-      repository.create_bucket_if_not_exists!
+        repository.create_bucket_if_not_exists!
 
-      ::Dir.mktmpdir do |dir|
-        sync_repo_files(artefacts, dir)
-        log_finish(dir)
+        ::Dir.mktmpdir do |dir|
+          sync_repo_files(artefacts, dir)
+          logger.info("finish\n#{::ShellUtil.execute("tree #{dir}").out}")
+        end
+      rescue ::StandardError => e
+        logger.info("error: #{e.message}")
       end
-    rescue ::StandardError => e
-      log_error(e)
     end
 
     private
 
-    def log_start
-      ::Rails.logger.info("Publishing #{repository.project.name} for #{repository.distro.name} (repository ##{repository.id})")
-    end
-
-    def log_finish(dir)
-      ::Rails.logger.info("Done publishing for #{repository.distro.name} (##{repository.id})\n" + ::ShellUtil.execute("tree #{dir}").out)
-    end
-
-    def log_error(exception)
-      ::Rails.logger.error("Repository for #{repository.distro.name} (##{repository.id}) publish error: #{exception.message}")
-    end
+    attr_reader :logger
 
     def sync_repo_files(artefacts, dir)
-      repository.download_all(to: dir)
+      suitable_artefacts = artefacts.select { |i| i.filetype == repository.distro.package_type }
+      return if suitable_artefacts.empty?
 
-      artefacts.select { |i| i.filetype == repository.distro.package_type }.each { |i| i.download(to: dir, overwrite_existing: true) }
+      repository.download_all(to: dir)
+      suitable_artefacts.each { |i| i.download(to: dir, overwrite_existing: true) }
 
       build_repo_manage(dir).sync
 
@@ -52,7 +47,7 @@ class Repository
         type:               repository.distro.package_type,
         gpg_key:            repository.gpg_key,
         project_safe_name:  repository.project.safe_name,
-        distro_name:        repository.distro.name,
+        distro_name:        repository.distro.fullname,
         distro_url:         repository.url
       )
     end

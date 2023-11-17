@@ -5,7 +5,7 @@
 <% @task.artefacts.group_by(&:distro).each do |distro, afacts| %>
   <div class="card">
     <div class="card-header">
-      <%= ::Distro[distro].name %>
+      <%= ::Distro[distro].name %><%= afacts.any?(&:error?) ? ' [ERROR]' : '' %>
     </div>
 
     <div class="card-body">

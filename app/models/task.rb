@@ -18,4 +18,8 @@ class Task < ::ApplicationRecord
   def distros
     ::Distro.by_ids(distro_ids)
   end
+
+  def errors?
+    artefacts.failed.exists?
+  end
 end

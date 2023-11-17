@@ -46,7 +46,7 @@ module AgentApi
         filename:     params[:data].original_filename,
         content_type: params[:data].content_type
       )
-      task.artefacts.create!(attachment: blob, distro: params[:distro])
+      task.artefacts.create!(attachment: blob, distro: params[:distro], error: params[:error])
       # render json: { filelink: url_for(blob) }
       head(:ok)
     end

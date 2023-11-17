@@ -90,13 +90,13 @@ distros:
   arch: x86_64
 
 - id: 'ubuntu_23.04'
-  name: 'Ubutntu 23.04 Lunar Lobster'
+  name: 'Ubuntu 23.04 Lunar Lobster'
   image: 'ubuntu:23.04'
   <<: *debian
   arch: x86_64
 
 - id: 'ubuntu_23.10'
-  name: 'Ubutntu 23.10 Mantic Minotaur'
+  name: 'Ubuntu 23.10 Mantic Minotaur'
   image: 'ubuntu:23.10'
   <<: *debian
   arch: x86_64

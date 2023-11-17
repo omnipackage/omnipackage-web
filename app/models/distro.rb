@@ -48,7 +48,7 @@ class Distro
   end
 
   def fullname
-    "#{name} (#{arch})"
+    "#{name} [#{arch}]"
   end
 
   def rpm?
