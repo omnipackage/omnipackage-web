@@ -19,7 +19,7 @@ class Repository
           sync_repo_files(artefacts, dir)
           logger.info("finish\n#{::ShellUtil.execute("tree #{dir}").out}")
         end
-        repository.update!(published_at: ::Time.now.utc)
+        repository.update!(published_at: ::Time.now.utc, last_publish_error: nil)
       rescue ::StandardError => e
         logger.info("error: #{e.message}")
         repository.update!(last_publish_error: e.message)
