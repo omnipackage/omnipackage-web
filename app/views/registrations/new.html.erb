@@ -1,40 +1,51 @@
-<h1>Sign up</h1>
+<div class="container pt-3 text-center">
+  <h5 class="text-center">Sign up</h5>
 
-<div class="row">
+  <div class="row">
+    <div class="col-md-3">
+    </div>
 
-  <div class="col">
-    <%= form_with(url: sign_up_path) do |form| %>
-      <div class="mb-3">
-        <%= form.label :email, class: "form-label" %>
-        <%= form.email_field :email, value: @user.email, autofocus: true, autocomplete: "email", class: "form-control#{@user.errors.include?(:email) ? ' is-invalid' : ''}", 'aria-describedby' => 'validation-error-email' %>
-        <div id="validation-error-email" class="invalid-feedback">
-          <%= @user.errors.messages[:email].to_sentence %>
+    <div class="col-md-6">
+      <div class="card p-3">
+        <div class="card-body">
+
+          <%= form_with(url: sign_up_path) do |form| %>
+            <div class="mb-3 text-start">
+              <%= form.label :email, class: "form-label" %>
+              <%= form.email_field :email, value: @user.email, autofocus: true, autocomplete: "email", class: "form-control#{@user.errors.include?(:email) ? ' is-invalid' : ''}", 'aria-describedby' => 'validation-error-email' %>
+              <div id="validation-error-email" class="invalid-feedback">
+                <%= @user.errors.messages[:email].to_sentence %>
+              </div>
+              <div class="form-text">will also be used for automatic GPG key generation</div>
+            </div>
+
+            <div class="mb-3 text-start">
+              <%= form.label :password, class: "form-label" %>
+              <%= form.password_field :password, required: true, autocomplete: "new-password", class: "form-control#{@user.errors.include?(:password) ? ' is-invalid' : ''}", 'aria-describedby' => 'validation-error-password' %>
+              <div id="validation-error-password" class="invalid-feedback">
+                <%= @user.errors.messages[:password].to_sentence %>
+              </div>
+              <div class="form-text"><%= ::User::PASSWORD_MIN_LENGTH %> characters minimum</div>
+            </div>
+
+            <div class="mb-3 text-start">
+              <%= form.label :password_confirmation, class: "form-label" %>
+              <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", class: "form-control#{@user.errors.include?(:password_confirmation) ? ' is-invalid' : ''}", 'aria-describedby' => 'validation-error-password_confirmation' %>
+              <div id="validation-error-password_confirmation" class="invalid-feedback">
+                <%= @user.errors.messages[:password_confirmation].to_sentence %>
+              </div>
+            </div>
+
+            <div>
+              <%= form.submit "Sign up", class: "btn btn-primary w-100" %>
+            </div>
+          <% end %>
+
         </div>
       </div>
+    </div>
 
-      <div class="mb-3">
-        <%= form.label :password, class: "form-label" %>
-        <%= form.password_field :password, required: true, autocomplete: "new-password", class: "form-control#{@user.errors.include?(:password) ? ' is-invalid' : ''}", 'aria-describedby' => 'validation-error-password' %>
-        <div id="validation-error-password" class="invalid-feedback">
-          <%= @user.errors.messages[:password].to_sentence %>
-        </div>
-        <div><%= ::User::PASSWORD_MIN_LENGTH %> characters minimum.</div>
-      </div>
-
-      <div class="mb-3">
-        <%= form.label :password_confirmation, class: "form-label" %>
-        <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", class: "form-control#{@user.errors.include?(:password_confirmation) ? ' is-invalid' : ''}", 'aria-describedby' => 'validation-error-password_confirmation' %>
-        <div id="validation-error-password_confirmation" class="invalid-feedback">
-          <%= @user.errors.messages[:password_confirmation].to_sentence %>
-        </div>
-      </div>
-
-      <div>
-        <%= form.submit "Sign up", class: "btn btn-primary" %>
-      </div>
-    <% end %>
-  </div>
-
-  <div class="col">
+    <div class="col-md-3">
+    </div>
   </div>
 </div>
