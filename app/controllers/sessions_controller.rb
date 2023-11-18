@@ -28,4 +28,9 @@ class SessionsController < ::ApplicationController
     sign_out if session == current_session
     redirect_to(sessions_path, notice: 'That session has been logged out')
   end
+
+  def destroy_all_but_current
+    current_user.sessions.where.not(id: current_session).destroy_all
+    redirect_to(sessions_path, notice: 'All other sessions have been logged out')
+  end
 end

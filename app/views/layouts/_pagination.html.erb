@@ -1,23 +1,25 @@
 <%# locals: (pagination:) -%>
 
-<nav aria-label="pagination">
-  <ul class="pagination">
-    <li class="page-item">
-      <a class="page-link <%= pagination.first? ? 'disabled' : '' %>" href="<%= pagination.prev_page_link %>" aria-label="Previous">
-        <span aria-hidden="true">&laquo;</span>
-      </a>
-    </li>
-
-    <% 1.upto(pagination.pages) do |i| %>
-      <li class="page-item <%= pagination.page == i ? 'active' : '' %>">
-        <a class="page-link" href="<%= pagination.page_link(i) %>"><%= i %></a>
+<% if pagination.pages > 1 %>
+  <nav aria-label="pagination">
+    <ul class="pagination">
+      <li class="page-item">
+        <a class="page-link <%= pagination.first? ? 'disabled' : '' %>" href="<%= pagination.prev_page_link %>" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
       </li>
-    <% end %>
 
-    <li class="page-item">
-      <a class="page-link <%= pagination.last? ? 'disabled' : '' %>" href="<%= pagination.next_page_link %>" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-      </a>
-    </li>
-  </ul>
-</nav>
+      <% 1.upto(pagination.pages) do |i| %>
+        <li class="page-item <%= pagination.page == i ? 'active' : '' %>">
+          <a class="page-link" href="<%= pagination.page_link(i) %>"><%= i %></a>
+        </li>
+      <% end %>
+
+      <li class="page-item">
+        <a class="page-link <%= pagination.last? ? 'disabled' : '' %>" href="<%= pagination.next_page_link %>" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+<% end %>

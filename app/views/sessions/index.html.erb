@@ -2,4 +2,15 @@
 
 <%= render partial: 'sessions', locals: { sessions: @sessions } %>
 
-<%= render partial: 'layouts/pagination', locals: { pagination: @pagination } %>
+<div class="container">
+
+  <div class="row">
+    <div class="col">
+      <%= render partial: 'layouts/pagination', locals: { pagination: @pagination } %>
+    </div>
+
+    <div class="col">
+      <%= button_to 'Log out all but current', destroy_all_but_current_sessions_path, method: :delete, class: 'btn btn-outline-warning float-end' %>
+    </div>
+  </div>
+</div>

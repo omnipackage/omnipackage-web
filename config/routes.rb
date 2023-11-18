@@ -11,7 +11,9 @@ require 'sidekiq/web'
   post 'sign_in', to: 'sessions#create'
   get  'sign_up', to: 'registrations#new'
   post 'sign_up', to: 'registrations#create'
-  resources :sessions, only: %i[index show destroy]
+  resources :sessions, only: %i[index show destroy] do
+    delete 'destroy_all_but_current', on: :collection
+  end
   resource  :password, only: %i[edit update]
   namespace :identity do
     resource :email,              only: %i[edit update]
