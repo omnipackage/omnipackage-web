@@ -22,7 +22,7 @@
         <td><%= task.created_at %></td>
         <td><%= task.updated_at %></td>
         <td><%= link_to task.project.name, project_path(task.project.id) %></td>
-        <td><%= task.distros.map(&:fullname).to_sentence %></td>
+        <td><%= task.distros.map(&:name).to_sentence %></td>
         <td><%= link_to 'more', task_path(task.id) %></td>
       </tr>
     <% end %>

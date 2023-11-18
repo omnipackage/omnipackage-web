@@ -49,7 +49,7 @@ class Repository
         type:               repository.distro.package_type,
         gpg_key:            repository.gpg_key,
         project_safe_name:  repository.project.safe_name,
-        distro_name:        repository.distro.fullname,
+        distro_name:        repository.distro.name,
         distro_url:         repository.url
       )
     end

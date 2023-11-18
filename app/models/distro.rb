@@ -43,12 +43,8 @@ class Distro
     freeze
   end
 
-  %w[id name image package_type setup setup_repo install_steps arch].each do |attr|
+  %w[id name image package_type setup setup_repo install_steps arch image_info_url].each do |attr|
     define_method(attr) { config.fetch(attr) }
-  end
-
-  def fullname
-    "#{name} [#{arch}]"
   end
 
   def rpm?
@@ -57,6 +53,10 @@ class Distro
 
   def deb?
     package_type == 'deb'
+  end
+
+  def family
+    %w(opensuse ubuntu fedora debian mageia rocky alma).find { |i| id.include?(i) } || 'unknown'
   end
 
   private

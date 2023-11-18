@@ -12,6 +12,7 @@
         <%= render partial: 'layouts/navbar_link', locals: { path: agents_path, text: 'Agents', active: -> { params[:controller] == 'agents' } } %>
         <%= render partial: 'layouts/navbar_link', locals: { path: tasks_path, text: 'Tasks', active: -> { params[:controller] == 'tasks' } } %>
         <%= render partial: 'layouts/navbar_link', locals: { path: repositories_path, text: 'Repositories', active: -> { params[:controller] == 'repositories' } } %>
+        <%= render partial: 'layouts/navbar_link', locals: { path: distros_path, text: 'Distros', active: -> { params[:controller] == 'distros' } } %>
       </ul>
 
       <% if logged_in? %>
