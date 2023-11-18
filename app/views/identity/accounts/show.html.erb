@@ -1,21 +1,25 @@
-<p>
-  Signed as <strong><%= @user.email %></strong>
-</p>
+<h5>Your account</h5>
 
-<p>
-  <%= link_to "Change email address", edit_identity_email_path %>
-</p>
+<div class="container pt-3">
 
-<p>
-  <%= link_to "Change password", edit_password_path %>
-</p>
+  <p>
+    Signed as <strong><%= @user.email %></strong>
+  </p>
 
-<p>
-  <%= link_to "Devices & Sessions", sessions_path %>
-</p>
+  <p>
+    <%= link_to "Change email address", edit_identity_email_path %>
+  </p>
 
-<br>
+  <p>
+    <%= link_to "Change password", edit_password_path %>
+  </p>
 
-<p>
-  <%= button_to "Log out", current_session, method: :delete, class: 'btn btn-outline-warning' %>
-</p>
+  <p>
+    <%= link_to "Devices & Sessions", sessions_path %>
+  </p>
+
+  <p>
+    <%= button_to "Log out", current_session, method: :delete, class: 'btn btn-outline-warning' %>
+  </p>
+
+</div>

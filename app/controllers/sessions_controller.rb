@@ -5,7 +5,7 @@ class SessionsController < ::ApplicationController
   before_action :require_no_authentication, only: %i[new create]
 
   def index
-    @sessions = current_user.sessions.order(created_at: :desc)
+    @pagination, @sessions = ::Pagination.new(current_user.sessions.order(created_at: :desc), self).call
   end
 
   def new
