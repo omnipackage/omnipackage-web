@@ -35,9 +35,9 @@ module Identity
     private
 
     def set_user
-      @token = PasswordResetToken.find_signed!(params[:sid])
+      @token = ::PasswordResetToken.find_signed!(params[:sid])
       @user = @token.user
-    rescue StandardError
+    rescue ::StandardError
       redirect_to(new_identity_password_reset_path, alert: 'That password reset link is invalid')
     end
 

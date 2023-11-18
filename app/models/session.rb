@@ -6,7 +6,7 @@ class Session < ::ApplicationRecord
   attribute :user_agent, :string, default: ''
   attribute :ip_address, :string, default: ''
 
-  after_create_commit :notify
+  # after_create_commit :notify
 
   class << self
     def authenticate(cookies)

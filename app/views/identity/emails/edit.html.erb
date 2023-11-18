@@ -1,14 +1,13 @@
 <% if current_user.verified? %>
-  <h1>Change your email</h1>
+  <h5>Change your email</h5>
 <% else %>
-  <h1>Verify your email</h1>
+  <h5>Verify your email</h5>
   <p>We sent a verification email to the address below. Check that email and follow those instructions to confirm it's your email address.</p>
   <p><%= button_to "Re-send verification email", identity_email_verification_path, class: 'btn btn-link' %></p>
 <% end %>
 
-<div class="row">
-
-  <div class="col">
+<div class="container">
+  <div class="w-25">
     <%= form_with(url: identity_email_path, method: :patch) do |form| %>
       <div class="mb-3">
         <%= form.label :email, "New email", class: "form-label" %>
@@ -19,8 +18,5 @@
         <%= form.submit "Save changes", class: "btn btn-primary" %>
       </div>
     <% end %>
-  </div>
-
-  <div class="col">
   </div>
 </div>
