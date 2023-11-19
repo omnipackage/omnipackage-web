@@ -26,7 +26,7 @@ class SessionsController < ::ApplicationController
     session = current_user.sessions.find(params[:id])
     session.destroy
     sign_out if session == current_session
-    redirect_to(sessions_path, notice: 'That session has been logged out')
+    redirect_to(root_path, notice: 'That session has been logged out')
   end
 
   def destroy_all_but_current

@@ -1,10 +1,4 @@
-<br>
-<br>
-
-<hr>
-<div class="container">
-  <% if ::Rails.env.development? %>
-    <pre><%= params.to_unsafe_h.pretty_inspect %></pre>
-    <pre><%= @pagination&.to_h %></pre>
-  <% end %>
-</div>
+<% if ::Rails.env.development? %>
+  <pre><%= params.to_unsafe_h.pretty_inspect %></pre>
+  <pre><%= @pagination&.to_h %></pre>
+<% end %>

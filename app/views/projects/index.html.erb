@@ -1,34 +1,38 @@
-<h1>Projects</h1>
+<h5>Projects</h5>
 
-<div class="vstack gap-1">
-  <% @projects.each do |project| %>
-    <div class="card">
-      <div class="card-header">
-        <%= project.name %>
-      </div>
+<div class="container pt-2">
+  <div class="vstack gap-1">
+    <% @projects.each do |project| %>
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title"><%= project.name %></h5>
 
-      <div class="card-body">
-        <div class="card-text">
-          <p>
-            <span class="badge bg-<%= project.sources_verified? ? 'success' : 'danger' %>"><%= project.sources_kind %></span>
-            <span class="font-monospace"><%= project.sources_location %></span> |
-            <span class="font-monospace"><%= project.sources_subdir %></span>
-          </p>
+          <div class="card-text">
 
-          <p>
-            <% if project.sources_verified? %>
-              <% project.distros.each do |d| %>
-                <span class="badge text-bg-secondary"><%= d.name %></span>
-              <% end %>
+            <span class="badge bg-<%= project.sources_verified? ? 'success' : 'danger' %>"><%= project.sources_kind.upcase %></span>
+            <%= project.sources_location %>
+            <% if project.sources_subdir.present? %>
+              | <%= project.sources_subdir %>
             <% end %>
-          </p>
 
-          <%= link_to 'More', project_path(project.id), class: 'card-link' %>
+            <span class="float-end">
+              <% if project.sources_verified? %>
+                <% project.distros.map(&:family).uniq.each do |df| %>
+                  <img src="<%= asset_path("distros/#{df}.svg") %>" alt="<%= df + ' logo' %>" width="24px" hight="24px">
+                <% end %>
+              <% end %>
+            </span>
+
+            <div class="pt-2">
+              <%= link_to 'More', project_path(project.id), class: 'card-link' %>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  <% end %>
-</div>
+    <% end %>
+  </div>
 
-<br>
-<%= link_to 'Create new project', new_project_path, class: 'btn btn-outline-primary' %>
+  <div class="pt-3">
+    <%= link_to 'Create new project', new_project_path, class: 'btn btn-primary' %>
+  </div>
+</div>
