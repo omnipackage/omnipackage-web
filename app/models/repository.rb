@@ -5,7 +5,7 @@ class Repository < ::ApplicationRecord
   has_one :user, through: :project, class_name: '::User'
 
   validates :distro_id, inclusion: { in: ::Distro.ids }
-  validates :gpg_key_private, :gpg_key_public, presence: true
+  validates :gpg_key_private, :gpg_key_public, presence: true, allow_nil: true
   validates :bucket, format: /(?!(^xn--|.+-s3alias$))^[a-z0-9][a-z0-9-]{1,61}[a-z0-9]\z/, uniqueness: { scope: :endpoint }
 
   encrypts :gpg_key_private
@@ -71,16 +71,15 @@ class Repository < ::ApplicationRecord
   end
 
   def gpg_key
-    ::Gpg::Key[gpg_key_private, gpg_key_public]
+    if gpg_key_private && gpg_key_public
+      ::Gpg::Key[gpg_key_private, gpg_key_public]
+    else
+      user.gpg_key
+    end
   end
 
   def gpg_public_key_info
-    ::Gpg.new.key_info(gpg_key_public)
-  end
-
-  def regenerate_gpg_keys
-    gpg = project.generate_gpg_keys
-    update!(gpg_key_public: gpg.pub, gpg_key_private: gpg.priv)
+    ::Gpg.new.key_info(gpg_key.pub)
   end
 
   def installable_package_name

@@ -42,11 +42,8 @@ class SessionsFlowTest < ::ActionDispatch::IntegrationTest
     sign_in_as @user
 
     delete session_url(@user.sessions.last)
-    assert_redirected_to sessions_url
+    assert_redirected_to root_url
 
-    follow_redirect!
-
-    assert_redirected_to sign_in_url
     follow_redirect!
 
     assert_response :success

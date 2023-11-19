@@ -16,14 +16,29 @@ class User < ::ApplicationRecord
 
   validates :email, presence: true, uniqueness: true, format: { with: ::URI::MailTo::EMAIL_REGEXP }, length: { maximum: 300 }
   validates :password, allow_nil: true, length: { minimum: PASSWORD_MIN_LENGTH, maximum: 30 }
+  validates :gpg_key_private, :gpg_key_public, presence: true
+
+  encrypts :gpg_key_private
 
   before_validation if: -> { email.present? } do
     self.email = email.downcase.strip
   end
-
   before_validation if: :email_changed?, unless: :new_record? do
     self.verified_at = nil
   end
+  before_create :generate_gpg_keys
 
-  def verified? = verified_at.present?
+  def verified?
+    verified_at.present?
+  end
+
+  def gpg_key
+    ::Gpg::Key[gpg_key_private, gpg_key_public]
+  end
+
+  def generate_gpg_keys
+    gpg = ::Gpg.new.generate_keys(email, email)
+    self.gpg_key_private = gpg.priv
+    self.gpg_key_public = gpg.pub
+  end
 end

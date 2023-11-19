@@ -52,14 +52,10 @@ class Project < ::ApplicationRecord
     "#{user.id}-#{safe_name}-#{distro.id}".gsub(/[^0-9a-z]/i, '-')
   end
 
-  def generate_gpg_keys
-    ::Gpg.new.generate_keys(user.email, user.email)
-  end
-
   def create_default_repository(distro)
     return if repositories.exists?(distro_id: distro.id)
 
-    gpg = generate_gpg_keys
+    gpg = user.gpg_key
     repositories.create!(distro_id: distro.id, bucket: default_bucket(distro), gpg_key_public: gpg.pub, gpg_key_private: gpg.priv)
   end
 
