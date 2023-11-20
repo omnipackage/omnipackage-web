@@ -78,10 +78,6 @@ class Repository < ::ApplicationRecord
     end
   end
 
-  def gpg_public_key_info
-    ::Gpg.new.key_info(gpg_key.pub)
-  end
-
   def installable_package_name
     project.installable_package_name(distro.id)
   end

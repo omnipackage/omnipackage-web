@@ -15,10 +15,8 @@
 
   <div class="mt-5">
     <h6>GPG key</h6>
-    <pre><%= @user.gpg_public_key_info %></pre>
-    <%= link_to 'Download key', '#', class: 'link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover m-1' %>
-    <%= link_to 'Upload key', '#', class: 'link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover m-1' %>
-    <%= link_to 'Generate new key', '#', class: 'link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover m-1' %>
+    <pre><%= @user.gpg_key.public_info.strip %></pre>
+    <%= link_to 'Manage', gpg_keys_path, class: 'link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover m-1' %>
   </div>
 
 

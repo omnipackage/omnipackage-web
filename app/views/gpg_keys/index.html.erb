@@ -1,0 +1,19 @@
+<h5>
+  <% if @key_source.is_a?(::Repository) %>
+    Repository's <%= link_to @key_source.id, repository_path(@key_source) %>
+  <% else %>
+    Your account's
+  <% end %>
+  GPG key
+</h5>
+
+<div class="container pt-3">
+  <pre><%= @key.public_info.strip %></pre>
+
+  <div class="pt-3">
+    <div>
+      <%= link_to 'Download', { format: :gzip }, class: 'link-secondary' %>
+    </div>
+    <small class="text-muted">Save both public and private keys as backup. Keep them in a safe place.</small>
+  </div>
+</div>

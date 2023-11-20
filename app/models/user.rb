@@ -26,7 +26,7 @@ class User < ::ApplicationRecord
   before_validation if: :email_changed?, unless: :new_record? do
     self.verified_at = nil
   end
-  before_create :generate_gpg_keys
+  before_validation :generate_gpg_keys, on: :create
 
   def verified?
     verified_at.present?
@@ -40,9 +40,5 @@ class User < ::ApplicationRecord
     gpg = ::Gpg.new.generate_keys(email, email)
     self.gpg_key_private = gpg.priv
     self.gpg_key_public = gpg.pub
-  end
-
-  def gpg_public_key_info
-    ::Gpg.new.key_info(gpg_key.pub)
   end
 end

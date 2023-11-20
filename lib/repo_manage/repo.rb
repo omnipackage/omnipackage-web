@@ -43,7 +43,7 @@ module RepoManage
     end
 
     def gpg_key_id
-      ::Gpg.new.key_id(gpg_key.priv)
+      gpg_key.private_id
     end
 
     def import_gpg_keys_commands

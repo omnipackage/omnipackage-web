@@ -1,7 +1,15 @@
 # frozen_string_literal: true
 
 class Gpg
-  Key = ::Data.define(:priv, :pub)
+  Key = ::Data.define(:priv, :pub) do
+    def private_id
+      ::Gpg.new.key_id(priv)
+    end
+
+    def public_info
+      ::Gpg.new.key_info(pub)
+    end
+  end
 
   attr_reader :exe
 
