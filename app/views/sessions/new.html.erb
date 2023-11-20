@@ -1,39 +1,28 @@
 <div class="container pt-3 text-center">
   <h5 class="text-center">Sign in</h5>
 
-  <div class="row">
-    <div class="col-md-3">
-    </div>
+  <div class="card p-3 shadow mb-5 bg-body-tertiary rounded block-center mx-auto" style="width: 500px">
+    <div class="card-body">
 
-    <div class="col-md-6">
-      <div class="card p-3 shadow mb-5 bg-body-tertiary rounded">
-        <div class="card-body">
-
-          <%= form_with(url: sign_in_path) do |form| %>
-            <div class="mb-3">
-              <%= form.email_field :email, value: params[:email_hint], autofocus: true, required: true, autocomplete: "email", class: "form-control", placeholder: 'Email' %>
-            </div>
-
-            <div class="mb-3">
-              <%= form.password_field :password, required: true, autocomplete: "current-password", class: "form-control", placeholder: 'Password' %>
-            </div>
-
-            <div>
-              <%= form.submit "Sign in", class: "btn btn-primary w-100" %>
-            </div>
-          <% end %>
-
+      <%= form_with(url: sign_in_path) do |form| %>
+        <div class="mb-3">
+          <%= form.email_field :email, value: params[:email_hint], autofocus: true, required: true, autocomplete: "email", class: "form-control", placeholder: 'Email' %>
         </div>
-      </div>
 
-      <div>
-        Don't have an account? <%= link_to "Sign up", sign_up_path %> <div class="vr"></div>
-        <%= link_to "Forgot your password?", new_identity_password_reset_path %>
-      </div>
-    </div>
+        <div class="mb-3">
+          <%= form.password_field :password, required: true, autocomplete: "current-password", class: "form-control", placeholder: 'Password' %>
+        </div>
 
-    <div class="col-md-3">
+        <div>
+          <%= form.submit "Sign in", class: "btn btn-primary w-100" %>
+        </div>
+      <% end %>
     </div>
+  </div>
+
+  <div class="text-center">
+    Don't have an account? <%= link_to "Sign up", sign_up_path %> <div class="vr"></div>
+    <%= link_to "Forgot your password?", new_identity_password_reset_path %>
   </div>
 
 </div>

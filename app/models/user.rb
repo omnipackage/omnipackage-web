@@ -41,4 +41,8 @@ class User < ::ApplicationRecord
     self.gpg_key_private = gpg.priv
     self.gpg_key_public = gpg.pub
   end
+
+  def gpg_public_key_info
+    ::Gpg.new.key_info(gpg_key.pub)
+  end
 end
