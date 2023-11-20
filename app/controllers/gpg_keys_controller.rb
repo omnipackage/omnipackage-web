@@ -6,13 +6,11 @@ class GpgKeysController < ::ApplicationController
     @key = key_source.gpg_key
 
     respond_to do |format|
-      format.html do
+      format.html do # rubocop: disable Lint/EmptyBlock
       end
 
       format.gzip do
-        response.headers["Cache-Control"] = "no-cache, no-store"
-        response.headers["Pragma"] = "no-cache"
-        response.headers["Expires"] = "Mon, 01 Jan 1990 00:00:00 GMT"
+        set_nocache
       end
     end
   end
