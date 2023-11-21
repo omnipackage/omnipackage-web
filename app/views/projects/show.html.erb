@@ -18,7 +18,7 @@
 
     <div>
       <div class="btn-group" role="group" aria-label="sources manage">
-        <%= button_to 'Trigger fetch sources', project_sources_path(@project.id), method: :post, class: 'btn btn-link btn-sm' %>
+        <%= button_to 'Fetch sources', project_sources_path(@project.id), method: :post, class: 'btn btn-link btn-sm' %>
         <% if @project.sources_verified? %>
           <%= link_to 'Download cached sources tarball', project_sources_path(@project.id), class: 'btn btn-link btn-sm' %>
         <% end %>
@@ -35,6 +35,7 @@
     </h6>
 
     <div class="collapse" id="collapseSshKey">
+      <small>Add this key to your sources repository with read only access. Usually these types of keys called "deployment keys" or something like that.</small>
       <div class="bg-body-tertiary p-2 rounded-2">
         <pre class="pre-line-wrap"><%= @project.sources_public_ssh_key %></pre>
       </div>
@@ -45,29 +46,15 @@
   </div>
 
   <div class="pt-3">
+    <h6>Triggers</h6>
+
+    <%= button_to 'Build now', tasks_path(project_id: @project.id), method: :post, class: 'btn btn-link btn-sm' %>
+  </div>
+
+  <div class="pt-3">
     <h6>Repositories</h6>
     <%= render partial: 'projects/repos', locals: { repositories: @project.repositories } %>
   </div>
-
-  <p>
-    <strong>Build config</strong>
-    <% if @project.sources_verified? %>
-      <pre><%= ::YAML.dump(@project.sources_tarball.config) %></pre>
-      <%= link_to 'Download cached sources tarball', project_sources_path(@project.id), class: 'btn btn-link' %>
-    <% end %>
-  </p>
-
-  <p>
-    <% if @project.sources_verified? %>
-      <strong>Distros</strong>
-      <% @project.distros.each do |d| %>
-        <span class="badge text-bg-secondary"><%= d.name %></span>
-      <% end %>
-
-      <%= button_to 'Trigger build', tasks_path(project_id: @project.id), method: :post, class: 'btn btn-outline-primary btn-sm' %>
-    <% end %>
-  </p>
-
 
   <div class="pt-3">
     <%= link_to 'Back to projects list', projects_path, class: 'btn btn-link' %>
