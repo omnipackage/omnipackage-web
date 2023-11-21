@@ -10,6 +10,9 @@ class Repository < ::ApplicationRecord
 
   encrypts :gpg_key_private
 
+  scope :without_own_gpg_key, -> { where(gpg_key_private: nil, gpg_key_public: nil) }
+  scope :with_own_gpg_key, -> { without_own_gpg_key.invert_where }
+
   # after_commit :delete_bucket!, on: :destroy
 
   FileItem = ::Data.define(:key, :size, :last_modified_at, :url)
@@ -71,11 +74,15 @@ class Repository < ::ApplicationRecord
   end
 
   def gpg_key
-    if gpg_key_private && gpg_key_public
+    if with_own_gpg_key?
       ::Gpg::Key[gpg_key_private, gpg_key_public]
     else
       user.gpg_key
     end
+  end
+
+  def with_own_gpg_key?
+    gpg_key_private && gpg_key_public
   end
 
   def installable_package_name

@@ -7,6 +7,13 @@ require 'sidekiq/web'
 
   mount ::Sidekiq::Web => '/sidekiq', constraints: ::Session::RouteConstraint.new(:root?)
 
+  concern :gpg_keys do
+    get 'gpg_key', to: 'gpg_keys#index', as: :index_gpg_key
+    post 'gpg_key/generate', to: 'gpg_keys#generate', as: :generate_gpg_key
+    post 'gpg_key/upload', to: 'gpg_keys#upload', as: :upload_gpg_key
+    delete 'gpg_key/destroy', to: 'gpg_keys#destroy', as: :destroy_gpg_key
+  end
+
   get  'sign_in', to: 'sessions#new'
   post 'sign_in', to: 'sessions#create'
   get  'sign_up', to: 'registrations#new'
@@ -20,6 +27,10 @@ require 'sidekiq/web'
     resource :email_verification, only: %i[edit create]
     resource :password_reset,     only: %i[new edit create update]
     resource :account,            only: %i[show]
+  end
+
+  scope '/account' do
+    concerns :gpg_keys
   end
 
   namespace :agent_api do
@@ -36,8 +47,7 @@ require 'sidekiq/web'
   resources :agents
   resources :tasks, only: %i[index show destroy create]
   resources :repositories, except: %i[edit update] do
-    resources :gpg_keys, only: %i[index create update destroy]
+    concerns :gpg_keys
   end
   resources :distros, only: %i[index]
-  resources :gpg_keys, only: %i[index create update destroy]
 end

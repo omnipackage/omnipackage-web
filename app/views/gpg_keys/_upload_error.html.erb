@@ -1,0 +1,10 @@
+<%# locals: (error:) -%>
+
+<% if error.present? %>
+  <div class="card p-3 shadow mb-5 bg-body-tertiary rounded block-center mx-auto">
+    <div class="text-danger">
+      <p><strong>Something is wrong with the keys</strong></p>
+      <p><%= error %></p>
+    </div>
+  </div>
+<% end %>

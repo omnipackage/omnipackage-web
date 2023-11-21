@@ -8,12 +8,146 @@
 </h5>
 
 <div class="container pt-3">
-  <pre><%= @key.public_info.strip %></pre>
+  <% if @current_key %>
+    <div class="bg-body-tertiary p-2 rounded-2">
+      <pre><%= @current_key&.public_info&.strip %></pre>
+    </div>
+  <% else %>
+    <strong>No saved key. Please, generate or upload new key</strong>
+  <% end %>
+
+  <% if @current_key %>
+    <div class="pt-3">
+      <div>
+        <%= link_to 'Download', { format: :gzip } %>
+      </div>
+      <small class="text-muted">Save both public and private keys as backup. Keep them in a safe place.</small>
+    </div>
+
+    <div class="pt-3">
+      <h6>The key is used in following respositories:</h6>
+      <%= render partial: 'gpg_keys/affected_repos', locals: { key_source: @key_source}  %>
+    </div>
+  <% end %>
 
   <div class="pt-3">
-    <div>
-      <%= link_to 'Download', { format: :gzip }, class: 'link-secondary' %>
+    <div class="card">
+      <div class="card-body">
+        <h6 class="card-title text-danger">Danger zone</h6>
+
+        <div>
+          <a href="#" data-bs-toggle="modal" data-bs-target="#generate_key_modal">Generate new key</a>
+        </div>
+        <small class="text-muted">Generate new key and destroy previous one.</small>
+
+        <div class="pt-3">
+          <a href="#" data-bs-toggle="modal" data-bs-target="#upload_key_modal">Upload existing key</a>
+        </div>
+        <small class="text-muted">Upload your own key. Your key must not use passphrase.</small>
+
+        <% if !@key_source.is_a?(::User) && @current_key %>
+          <div class="pt-3">
+            <a href="#" data-bs-toggle="modal" data-bs-target="#delete_key_modal">Delete this key</a>
+          </div>
+          <small class="text-muted">Deleting repository-specific key will result in that repository using your account's key.</small>
+        <% end %>
+
+      </div>
     </div>
-    <small class="text-muted">Save both public and private keys as backup. Keep them in a safe place.</small>
   </div>
+
+</div>
+
+
+
+
+<div class="modal fade" id="generate_key_modal" tabindex="-1" aria-labelledby="generateModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body">
+        <p>
+          A new pair of private and public keys will be generated. New packages published to affected repositories will be signed with the new key.
+        </p>
+
+        <% if @current_key %>
+          <p class="text-warning">
+            Old keys will be removed. This operation cannot be undone.
+          </p>
+        <% end %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <%= button_to 'Generate new key', gpg_generate_polymorphic_path, method: :post, class: 'btn btn-danger' %>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="delete_key_modal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body">
+        <p>
+          Deleting repository-specifi key means that all new packages will be signed with account's key.
+        </p>
+
+        <% if @current_key %>
+          <p class="text-warning">
+            This operation cannot be undone.
+          </p>
+        <% end %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <%= button_to 'Delete this key', gpg_destroy_polymorphic_path, method: :delete, class: 'btn btn-danger' %>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="upload_key_modal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
+  <%= form_with(url: gpg_upload_polymorphic_path, method: :post, id: 'upload_gpg_key_form') do |form| %>
+
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-body">
+          <p>
+            Use your existing key. New packages published to affected repositories will be signed with new key.
+          </p>
+
+          <div class="mb-3">
+            <%= form.label 'Public key', class: 'form-label' %>
+            <%= form.text_area :public_key, class: 'form-control' %>
+            <div id="publicKeyHelp" class="form-text">hint: export with <span class="font-monospace bg-body-tertiary">gpg --export --armor</span></div>
+          </div>
+
+          <div class="mb-3">
+            <%= form.label 'Private key', class: 'form-label' %>
+            <%= form.text_area :private_key, class: 'form-control' %>
+            <div id="privateKeyHelp" class="form-text">hint: export with <span class="font-monospace bg-body-tertiary">gpg --export-secret-key --armor</span></div>
+          </div>
+
+          <%= turbo_frame_tag 'gpg_keys_upload_error' do %>
+          <% end %>
+
+          <% if @current_key %>
+            <p class="text-warning">
+              Old key will be removed.
+            </p>
+          <% end %>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <%= form.submit 'Upload keys', class: 'btn btn-danger' %>
+        </div>
+      </div>
+    </div>
+
+  <% end %>
+
+  <script>
+    document.getElementById('upload_gpg_key_form').reset();
+   </script>
 </div>

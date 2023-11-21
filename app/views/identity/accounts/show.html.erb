@@ -15,8 +15,10 @@
 
   <div class="mt-5">
     <h6>GPG key</h6>
-    <pre><%= @user.gpg_key.public_info.strip %></pre>
-    <%= link_to 'Manage', gpg_keys_path, class: 'link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover m-1' %>
+    <div class="bg-body-tertiary p-2 rounded-2">
+      <pre><%= @user.gpg_key.public_info.strip %></pre>
+    </div>
+    <%= link_to 'Manage', index_gpg_key_path, class: 'link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover m-1' %>
   </div>
 
 

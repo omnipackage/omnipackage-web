@@ -21,6 +21,7 @@ module ShellUtil
 
     begin
       ::Timeout.timeout(timeout_sec) do
+        yield(stdin) if block_given?
         wait_thr.join
       end
     rescue ::Timeout::Error

@@ -1,59 +1,66 @@
-<h1>Repository for <%= @repository.distro.name %></h1>
+<h5>
+  Repository for <%= @repository.distro.name %>
+</h5>
 
-<p>
-  <span class="font-monospace"><%= @repository.url %></span>
-</p>
+<div class="container pt-3">
+  <div class="pb-3">
+    <small class="text-body-secondary">Published at <span><%= @repository.published_at %></span></small>
+  </div
 
-<p>
-  Published at <span><%= @repository.published_at %></span>
-</p>
-
-<p>
-  <strong>GPG public key fingerprint</strong>
-  <pre class="pre-line-wrap"><%= @repository.gpg_key.public_info %></pre>
-</p>
-
-<p>
-  <strong>Add repository and install package</strong>
-  <pre class="pre-line-wrap"><%= @repository.installable_cli %></pre>
-</p>
-
-<p>
-  <strong>Last publish error</strong>
-  <pre class="pre-line-wrap"><%= @repository.last_publish_error %></pre>
-</p>
-
-<p>
-  <% if @repository.bucket_exists? %>
-    <table class="table table-sm">
-      <thead>
-        <tr>
-          <th scope="col">File</th>
-          <th scope="col">Size</th>
-          <th scope="col">Modified at</th>
-        </tr>
-      </thead>
-
-      <tbody>
-
-        <% @repository.ls.each do |fo| %>
+  <div class="pt-3">
+    <% if @repository.bucket_exists? %>
+      <div>Storage url <span class="font-monospace bg-body-tertiary"><%= @repository.url %></span></div>
+      <table class="table table-sm">
+        <thead>
           <tr>
-            <td><%= link_to(fo.key, fo.url) %></td>
-            <td><%= number_to_human_size(fo.size) %></td>
-            <td><%= fo.last_modified_at %></td>
+            <th scope="col">File</th>
+            <th scope="col">Size</th>
+            <th scope="col">Modified at</th>
           </tr>
-        <% end %>
+        </thead>
 
-      </tbody>
-    </table>
-  <% else %>
-    <p>
-      <span>Storage bucket does not exists. Create it?</span>
-    </p>
-  <% end %>
-</p>
+        <tbody>
 
-<br>
-<p>
-  <%= link_to 'Back to repositories list', repositories_path, class: 'btn btn-link' %>
-</p>
+          <% @repository.ls.each do |fo| %>
+            <tr>
+              <td><%= link_to(fo.key, fo.url) %></td>
+              <td><%= number_to_human_size(fo.size) %></td>
+              <td><%= fo.last_modified_at %></td>
+            </tr>
+          <% end %>
+
+        </tbody>
+      </table>
+    <% elsif @repository.last_publish_error %>
+      <h6>Last publish error</h6>
+      <pre><%= @repository.last_publish_error %></pre>
+    <% else %>
+      <div class="text-danger">Storage bucket does not exists.</div>
+    <% end %>
+  </div>
+
+  <div class="pt-3">
+    <h6>GPG key</h6>
+    <div class="bg-body-tertiary p-2 rounded-2">
+      <pre><%= @repository.gpg_key.public_info.strip %></pre>
+    </div>
+    <% if @repository.with_own_gpg_key? %>
+      <%= link_to 'Manage', repository_index_gpg_key_path(@repository), class: 'link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover m-1' %>
+    <% else %>
+      <div class="text-secondary">The respository doesn't have its own GPG key and uses key from your account</div>
+      <%= link_to "Create repository-specific key", repository_index_gpg_key_path(@repository), class: 'link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover m-1' %>
+      <%= link_to "Manage account's GPG key", index_gpg_key_path, class: 'link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover m-1' %>
+    <% end %>
+  </div>
+
+  <div class="pt-3">
+    <strong>Add repository and install package</strong>
+    <div class="bg-body-tertiary p-2 rounded-2">
+      <pre><%= @repository.installable_cli %></pre>
+    </div>
+  </div>
+
+  <div class="pt-3">
+    <%= link_to 'Back to repositories list', repositories_path, class: 'btn btn-link' %>
+  </div>
+</div>

@@ -41,6 +41,25 @@ HERE").success!.out.lines[1].strip
 HERE").success!.out
   end
 
+  def test_key(key)
+    within_tmp_dir do |dir, env|
+      ::ShellUtil.execute(exe, '--import', env: env, chdir: dir, timeout_sec: 1) do |stdin|
+        stdin.write(key.priv)
+        stdin.close
+      end.success!
+
+      ::ShellUtil.execute(exe, '--import', env: env, chdir: dir, timeout_sec: 1) do |stdin|
+        stdin.write(key.pub)
+        stdin.close
+      end.success!
+
+      ::ShellUtil.execute(exe, '-o', '/dev/null', '-as', '-', env: env, chdir: dir, timeout_sec: 1) do |stdin|
+        stdin.write('random string to encrypt')
+        stdin.close
+      end.success!
+    end
+  end
+
   private
 
   def write_file(path, content)
@@ -50,10 +69,11 @@ HERE").success!.out
   end
 
   def within_tmp_dir
-    ::Dir.mktmpdir do |dir|
-      env = { 'GNUPGHOME' => dir }
-      yield(dir, env)
-    end
+    dir = ::Dir.mktmpdir
+    env = { 'GNUPGHOME' => dir }
+    yield(dir, env)
+  ensure
+    ::FileUtils.remove_entry_secure(dir)
   end
 
   def batch_generate_keys(name, email)
