@@ -26,7 +26,15 @@
 
     <div class="pt-3">
       <h6>The key is used in following respositories:</h6>
-      <%= render partial: 'gpg_keys/affected_repos', locals: { key_source: @key_source}  %>
+      <ul>
+        <% if @key_source.is_a?(::Repository) %>
+          <li><%= link_to @key_source.bucket, repository_path(@key_source) %></li>
+        <% else %>
+          <% current_user.repositories.without_own_gpg_key.find_each do |repo| %>
+            <li><%= link_to repo.bucket, repository_path(repo) %></li>
+          <% end %>
+        <% end %>
+      </ul>
     </div>
   <% end %>
 
@@ -114,7 +122,7 @@
       <div class="modal-content">
         <div class="modal-body">
           <p>
-            Use your existing key. New packages published to affected repositories will be signed with new key.
+            Use your existing key. New packages published to affected repositories will be signed with the new key.
           </p>
 
           <div class="mb-3">

@@ -24,19 +24,18 @@ class GpgKeysController < ::ApplicationController
     redirect_to(gpg_index_polymorphic_path, notice: 'New GPG key has been successfully generated')
   end
 
-  def upload
+  def upload # rubocop: disable Metrics/AbcSize, Metrics/MethodLength
     key = ::Gpg::Key[params.fetch(:private_key), params.fetch(:public_key)]
-
-    begin
-      ::Gpg.new.test_key(key)
-    rescue ::StandardError => e
-      @error = e.message
-    end
+    key_error = validate_key(key)
 
     respond_to do |format|
-      if @error || !key_source.update(gpg_key_private: key.priv, gpg_key_public: key.pub)
-        @error ||= key_source.errors.full_messages.to_sentence
-        format.turbo_stream
+      if key_error || !key_source.update(gpg_key_private: key.priv, gpg_key_public: key.pub)
+        format.turbo_stream do
+          render(turbo_stream: turbo_stream.update('gpg_keys_upload_error', partial: 'gpg_keys/upload_error', locals: { error: key_error || key_source.errors.full_messages.to_sentence }))
+        end
+        format.html do
+          redirect_to(gpg_index_polymorphic_path, alert: 'Error uploading keys')
+        end
       else
         format.html do
           redirect_to(gpg_index_polymorphic_path, notice: 'New GPG key has been successfully uploaded')
@@ -85,6 +84,12 @@ class GpgKeysController < ::ApplicationController
     else
       key_source.gpg_key
     end
+  end
+
+  def validate_key(key)
+    ::Gpg.new.test_key(key)
+  rescue ::StandardError => e
+    e.message
   end
 
   def keys_export_gzip(key)

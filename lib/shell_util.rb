@@ -16,7 +16,7 @@ module ShellUtil
     end
   end
 
-  def execute(*cli, chdir: ::Dir.pwd, env: {}, timeout_sec: 30) # rubocop: disable Metrics/MethodLength
+  def execute(*cli, chdir: ::Dir.pwd, env: {}, timeout_sec: 30, term_timeout_sec: 10) # rubocop: disable Metrics/MethodLength, Metrics/AbcSize
     stdin, stdout, stderr, wait_thr = ::Open3.popen3(env, *cli, chdir: chdir)
 
     begin
@@ -27,7 +27,7 @@ module ShellUtil
     rescue ::Timeout::Error
       ::Process.kill('TERM', wait_thr.pid)
       begin
-        ::Timeout.timeout(10) do
+        ::Timeout.timeout(term_timeout_sec) do
           wait_thr.join
         end
       rescue ::Timeout::Error

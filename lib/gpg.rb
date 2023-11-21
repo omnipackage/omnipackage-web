@@ -41,7 +41,7 @@ HERE").success!.out.lines[1].strip
 HERE").success!.out
   end
 
-  def test_key(key)
+  def test_key(key) # rubocop: disable Metrics/AbcSize, Metrics/MethodLength
     within_tmp_dir do |dir, env|
       ::ShellUtil.execute(exe, '--import', env: env, chdir: dir, timeout_sec: 1) do |stdin|
         stdin.write(key.priv)
