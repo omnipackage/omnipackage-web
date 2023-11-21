@@ -1,16 +1,18 @@
 <div class="container pt-3 text-center">
   <h5 class="text-center">Sign in</h5>
 
-  <div class="card p-3 shadow mb-5 bg-body-tertiary rounded block-center mx-auto" style="width: 500px">
+  <div class="card p-3 shadow mb-3 bg-body-tertiary rounded block-center mx-auto" style="width: 500px">
     <div class="card-body">
 
       <%= form_with(url: sign_in_path) do |form| %>
-        <div class="mb-3">
-          <%= form.email_field :email, value: params[:email_hint], autofocus: true, required: true, autocomplete: "email", class: "form-control", placeholder: 'Email' %>
+        <div class="form-floating mb-3">
+          <%= form.email_field :email, value: params[:email_hint], autofocus: true, required: true, autocomplete: "email", class: "form-control", placeholder: 'name@example.com' %>
+          <%= form.label :email %>
         </div>
 
-        <div class="mb-3">
+        <div class="form-floating mb-3">
           <%= form.password_field :password, required: true, autocomplete: "current-password", class: "form-control", placeholder: 'Password' %>
+          <%= form.label :password %>
         </div>
 
         <div>
