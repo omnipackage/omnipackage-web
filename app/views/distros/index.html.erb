@@ -3,9 +3,9 @@
 <div class="container pt-3">
 
   <% @distros.group_by(&:family).each do |family, distros| %>
-    <div class="row pt-3 pb-3">
-      <div class="col-1">
-        <img src="<%= asset_path("distros/#{family}.svg") %>" alt="<%= family + ' logo' %>" width="64px" hight="64px">
+    <div class="row pt-3 pb-3 align-items-center">
+      <div class="col-md-auto">
+        <%= render partial: 'layouts/distro_icon', locals: { family: family, size: 64 } %>
       </div>
 
       <div class="col-11">

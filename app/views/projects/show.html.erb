@@ -1,43 +1,77 @@
-<h1>Project <%= @project.name %></h1>
+<h5>Project <%= @project.name %></h5>
 
-<p>
-  <strong>Sources:</strong> <span class="badge bg-secondary"><%= @project.sources_kind %></span> <span class="font-monospace"><%= @project.sources_location %></span>
-  <% if @project.sources_verified? %>
-    <span class="badge bg-success">verified <%= @project.sources_verified_at %></span>
-  <% else %>
-    <span class="badge bg-danger">unverified</span>
-  <% end %>
-  <span class="font-monospace"><%= @project.sources_subdir %></span>
-  <%= button_to 'Trigger fetch sources', project_sources_path(@project.id), method: :post, class: 'btn btn-outline-primary btn-sm' %>
-</p>
+<div class="container pt-3">
+  <div class="pt-3">
+    <h6>Sources</h6>
 
-<p>
-  <strong>SSH public key</strong>
-  <pre class="pre-line-wrap"><%= @project.sources_public_ssh_key %></pre>
-  <%= button_to 'Generate new keys', project_ssh_keys_path(@project.id), method: :post, class: 'btn btn-outline-primary btn-sm', form: { data: { turbo_confirm: "Are you sure?" } } %>
-</p>
-
-<p>
-  <strong>Build config</strong>
-  <% if @project.sources_verified? %>
-    <pre><%= @project.sources_tarball.config.pretty_inspect %></pre>
-    <%= link_to 'Download cached sources tarball', project_sources_path(@project.id), class: 'btn btn-link' %>
-  <% end %>
-</p>
-
-<p>
-  <% if @project.sources_verified? %>
-    <strong>Distros</strong>
-    <% @project.distros.each do |d| %>
-      <span class="badge text-bg-secondary"><%= d.name %></span>
+    <span class="badge text-secondary"><%= @project.sources_kind.upcase %></span> <span class="font-monospace bg-body-tertiary"><%= @project.sources_location %></span>
+    <% if @project.sources_verified? %>
+      <span class="badge text-success">verified <%= time_ago_in_words(@project.sources_verified_at) %> ago</span>
+    <% else %>
+      <span class="badge text-danger">unverified</span>
+    <% end %>
+    <% if @project.sources_subdir.present? %>
+      <div class="text-secondary">
+        Subdir <span class="font-monospace bg-body-tertiary"><%= @project.sources_subdir %></span>
+      </div>
     <% end %>
 
-    <%= button_to 'Trigger build', tasks_path(project_id: @project.id), method: :post, class: 'btn btn-outline-primary btn-sm' %>
-  <% end %>
-</p>
+    <div>
+      <div class="btn-group" role="group" aria-label="sources manage">
+        <%= button_to 'Trigger fetch sources', project_sources_path(@project.id), method: :post, class: 'btn btn-link btn-sm' %>
+        <% if @project.sources_verified? %>
+          <%= link_to 'Download cached sources tarball', project_sources_path(@project.id), class: 'btn btn-link btn-sm' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
 
-<br>
-<p>
-  <%= link_to 'Edit project', edit_project_path(@project.id), class: 'btn btn-link' %>
-  <%= link_to 'Back to projects list', projects_path, class: 'btn btn-link' %>
-</p>
+  <div class="pt-3">
+    <h6>
+      SSH public key
+      <a href="#collapseSshKey" class="link-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSshKey" aria-expanded="false" aria-controls="collapseSshKey">
+        show
+      </a>
+    </h6>
+
+    <div class="collapse" id="collapseSshKey">
+      <div class="bg-body-tertiary p-2 rounded-2">
+        <pre class="pre-line-wrap"><%= @project.sources_public_ssh_key %></pre>
+      </div>
+
+      <%= button_to 'Generate new key', project_ssh_keys_path(@project.id), method: :post, class: 'btn btn-link btn-sm', form: { data: { turbo_confirm: "You will have to add newly generated key to the sources repository. Continue?" } } %>
+    </div>
+
+  </div>
+
+  <div class="pt-3">
+    <h6>Repositories</h6>
+    <%= render partial: 'projects/repos', locals: { repositories: @project.repositories } %>
+  </div>
+
+  <p>
+    <strong>Build config</strong>
+    <% if @project.sources_verified? %>
+      <pre><%= ::YAML.dump(@project.sources_tarball.config) %></pre>
+      <%= link_to 'Download cached sources tarball', project_sources_path(@project.id), class: 'btn btn-link' %>
+    <% end %>
+  </p>
+
+  <p>
+    <% if @project.sources_verified? %>
+      <strong>Distros</strong>
+      <% @project.distros.each do |d| %>
+        <span class="badge text-bg-secondary"><%= d.name %></span>
+      <% end %>
+
+      <%= button_to 'Trigger build', tasks_path(project_id: @project.id), method: :post, class: 'btn btn-outline-primary btn-sm' %>
+    <% end %>
+  </p>
+
+
+  <div class="pt-3">
+    <%= link_to 'Back to projects list', projects_path, class: 'btn btn-link' %>
+    <%= link_to 'Edit project', edit_project_path(@project.id), class: 'btn btn-link' %>
+  </div>
+
+</div>

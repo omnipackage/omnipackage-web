@@ -1,11 +1,18 @@
-<h5>
-  Repository for <%= @repository.distro.name %>
-</h5>
+<h5>Repository for <%= @repository.distro.name %></h5>
 
 <div class="container pt-3">
-  <div class="pb-3">
-    <small class="text-body-secondary">Published at <span><%= @repository.published_at %></span></small>
-  </div
+  <% if @repository.published_at %>
+    <div class="pb-3">
+      <small class="text-body-secondary">Published <span><%= @repository.published_at %></span></small>
+    </div
+  <% end %>
+
+  <% if @repository.last_publish_error %>
+    <div class="pb-3">
+      <h6 class="text-danger">Last publish error</h6>
+      <pre class="pre-line-wrap"><%= @repository.last_publish_error %></pre
+    </div>
+  <% end %>
 
   <div class="pt-3">
     <% if @repository.bucket_exists? %>
@@ -31,9 +38,6 @@
 
         </tbody>
       </table>
-    <% elsif @repository.last_publish_error %>
-      <h6>Last publish error</h6>
-      <pre><%= @repository.last_publish_error %></pre>
     <% else %>
       <div class="text-danger">Storage bucket does not exists.</div>
     <% end %>
@@ -53,8 +57,8 @@
     <% end %>
   </div>
 
-  <div class="pt-3">
-    <strong>Add repository and install package</strong>
+  <div class="pt-5">
+    <strong>Package installation steps</strong>
     <div class="bg-body-tertiary p-2 rounded-2">
       <pre><%= @repository.installable_cli %></pre>
     </div>

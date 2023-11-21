@@ -1,0 +1,20 @@
+<%# locals: (repo:) -%>
+
+<div class="card">
+  <div class="card-body">
+
+    <h6 class="card-title">
+      <%= link_to repo.distro.name, repository_path(repo.id), class: 'card-link' %>
+    </h6>
+
+    <div class="card-text">
+      <% if repo.last_publish_error %>
+        <span class="text-danger">Last publish unsuccessful</span>
+      <% elsif repo.published_at %>
+        <span class="text-body-secondary">Published <span><%= time_ago_in_words(repo.published_at) %> ago</span></span>
+      <% else %>
+        <span class="text-body-secondary">Empty respository</span>
+      <% end %>
+    </div>
+  </div>
+</div>
