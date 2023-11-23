@@ -5,15 +5,13 @@
     <h6>Sources</h6>
 
     <span class="badge text-secondary"><%= @project.sources_kind.upcase %></span> <span class="font-monospace bg-body-tertiary"><%= @project.sources_location %></span>
+    <% if @project.sources_subdir.present? %>
+      <span class="badge text-secondary">SUBDIR</span><span class="font-monospace text-secondary bg-body-tertiary"><%= @project.sources_subdir %></span>
+    <% end %>
     <% if @project.sources_verified? %>
       <span class="badge text-success">verified <%= time_ago_in_words(@project.sources_verified_at) %> ago</span>
     <% else %>
       <span class="badge text-danger">unverified</span>
-    <% end %>
-    <% if @project.sources_subdir.present? %>
-      <div class="text-secondary">
-        Subdir <span class="font-monospace bg-body-tertiary"><%= @project.sources_subdir %></span>
-      </div>
     <% end %>
 
     <div>

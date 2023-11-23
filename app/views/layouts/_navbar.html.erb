@@ -12,7 +12,6 @@
           <%= render partial: 'layouts/navbar_link', locals: { path: projects_path, text: 'Projects', active: -> { params[:controller] == 'projects' } } %>
           <%= render partial: 'layouts/navbar_link', locals: { path: agents_path, text: 'Agents', active: -> { params[:controller] == 'agents' } } %>
           <%= render partial: 'layouts/navbar_link', locals: { path: tasks_path, text: 'Tasks', active: -> { params[:controller] == 'tasks' } } %>
-          <%= render partial: 'layouts/navbar_link', locals: { path: repositories_path, text: 'Repositories', active: -> { params[:controller] == 'repositories' } } %>
         <% end %>
 
         <%= render partial: 'layouts/navbar_link', locals: { path: distros_path, text: 'Supported distros', active: -> { params[:controller] == 'distros' } } %>

@@ -1,4 +1,4 @@
-<h5>Repository for <%= @repository.distro.name %></h5>
+<h5>Repository for <%= @repository.distro.name %> of <%= @repository.project.name %> project</h5>
 
 <div class="container pt-3">
   <% if @repository.published_at %>
@@ -65,6 +65,6 @@
   </div>
 
   <div class="pt-3">
-    <%= link_to 'Back to repositories list', repositories_path, class: 'btn btn-link' %>
+    <%= link_to 'Back to project', project_path(@repository.project), class: 'btn btn-link' %>
   </div>
 </div>

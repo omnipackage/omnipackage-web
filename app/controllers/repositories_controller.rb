@@ -1,16 +1,12 @@
 # frozen_string_literal: true
 
 class RepositoriesController < ::ApplicationController
-  def index
-    @repositories = current_user.repositories
-  end
-
   def show
     @repository = find_repository
   end
 
-  def new
-    @repository = build_repository
+  def edit
+    @repository = find_repository
   end
 
   def create
@@ -28,7 +24,7 @@ class RepositoriesController < ::ApplicationController
       repository.delete_bucket!
     end
     repository.destroy!
-    redirect_to(repositories_path, notice: 'Repository has been successfully deleted')
+    redirect_to(project_path(repository.project), notice: 'Repository has been successfully deleted')
   end
 
   private

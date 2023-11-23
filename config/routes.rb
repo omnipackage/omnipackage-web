@@ -46,7 +46,7 @@ require 'sidekiq/web'
 
   resources :agents
   resources :tasks, only: %i[index show destroy create]
-  resources :repositories, except: %i[edit update] do
+  resources :repositories, only: %i[show edit update destroy] do
     concerns :gpg_keys
   end
   resources :distros, only: %i[index]
