@@ -18,8 +18,8 @@
       <% @tasks.each do |task| %>
         <tr>
           <td><%= task.state %><%= task.errors? ? ' with errors' : '' %></td>
-          <td><%= time_ago_in_words(task.created_at) %></td>
-          <td><%= time_ago_in_words(task.updated_at) %></td>
+          <td><%= time_ago_in_words(task.created_at) %> ago</td>
+          <td><%= time_ago_in_words(task.updated_at) %> ago</td>
           <td><%= link_to task.project.name, project_path(task.project.id) %></td>
           <td>
             <% task.distros.map(&:family).uniq.each do |df| %>

@@ -23,6 +23,10 @@ class Task
       attachment.filename.extension
     end
 
+    def distro_object
+      ::Distro[distro]
+    end
+
     def download(to:, overwrite_existing: false) # rubocop: disable Metrics/MethodLength
       ::FileUtils.mkdir_p(to) unless ::File.exist?(to)
 
