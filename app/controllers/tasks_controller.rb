@@ -2,7 +2,7 @@
 
 class TasksController < ::ApplicationController
   def index
-    @tasks = current_user.tasks.order(created_at: :desc)
+    @pagination, @tasks = ::Pagination.new(current_user.tasks.order(created_at: :desc), self).call
   end
 
   def show

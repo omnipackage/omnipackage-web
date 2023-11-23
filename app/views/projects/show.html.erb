@@ -57,6 +57,28 @@
   <div class="pt-3">
     <%= link_to 'Back to projects list', projects_path, class: 'btn btn-link' %>
     <%= link_to 'Edit project', edit_project_path(@project.id), class: 'btn btn-link' %>
+    <a class="btn btn-link link-danger" href="#" data-bs-toggle="modal" data-bs-target="#delete_project_modal">Delete project</a>
   </div>
 
+</div>
+
+
+<div class="modal fade" id="delete_project_modal" tabindex="-1" aria-labelledby="delete_project_modal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <p>
+          Deleting the project will also delete all respositories and files.
+        </p>
+
+        <p class="text-warning">
+          This operation cannot be undone.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <%= button_to 'Yes, delete this project and all repositories', project_path(@project.id), method: :delete, class: 'btn btn-danger' %>
+      </div>
+    </div>
+  </div>
 </div>

@@ -1,4 +1,4 @@
 <% if ::Rails.env.development? %>
-  <!--<pre><%= params.to_unsafe_h.pretty_inspect %></pre>-->
+  <pre><%= params.to_unsafe_h.pretty_inspect %></pre>
   <pre><%= @pagination&.to_h %></pre>
 <% end %>

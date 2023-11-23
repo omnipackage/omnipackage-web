@@ -1,8 +1,8 @@
-<h1>Reset your password</h1>
+<h5>Reset your password</h5>
 
-<div class="row">
+<div class="container pt-3">
 
-  <div class="col">
+  <div style="width: 300px">
     <%= form_with(url: identity_password_reset_path, method: :patch) do |form| %>
       <%= form.hidden_field :sid, value: params[:sid] %>
 
@@ -21,9 +21,6 @@
         <%= form.submit "Save changes", class: 'btn btn-primary' %>
       </div>
     <% end %>
-
   </div>
 
-  <div class="col">
-  </div>
 </div>

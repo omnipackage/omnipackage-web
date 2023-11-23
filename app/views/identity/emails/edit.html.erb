@@ -6,8 +6,9 @@
   <p><%= button_to "Re-send verification email", identity_email_verification_path, class: 'btn btn-link' %></p>
 <% end %>
 
-<div class="container">
-  <div class="w-25">
+<div class="container pt-3">
+
+  <div style="width: 300px">
     <%= form_with(url: identity_email_path, method: :patch) do |form| %>
       <div class="mb-3">
         <%= form.label :email, "New email", class: "form-label" %>
@@ -19,4 +20,5 @@
       </div>
     <% end %>
   </div>
+
 </div>
