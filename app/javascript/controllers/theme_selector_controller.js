@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = [ "currentThemeDark", "currentThemeLight", "activeThemeLight", "activeThemeDark", "activeThemeAuto" ]
+  static targets = [ "currentTheme", "preferedTheme", "themeButton" ]
 
   connect() {
     let theme = this.getCookie("theme")
@@ -12,101 +12,41 @@ export default class extends Controller {
       this.set_theme(this.prefered_theme())
       this.set_active("auto")
     }
+
+    this.preferedThemeTargets.forEach((element, index) => {
+      element.hidden = element.dataset.theme != this.prefered_theme()
+    })
   }
 
-  light() {
-    this.set_theme("light")
-    this.save_theme("light")
-    this.set_active("light")
-  }
+  switch(event) {
+    let new_theme = event.target.dataset.theme
 
-  dark() {
-    this.set_theme("dark")
-    this.save_theme("dark")
-    this.set_active("dark")
+    this.set_theme(new_theme == "auto" ? this.prefered_theme() : new_theme)
+    this.save_theme(new_theme)
+    this.set_active(new_theme)
   }
-
-  auto() {
-    this.set_theme(this.prefered_theme())
-    this.save_theme("auto")
-    this.set_active("auto")
-  }
-
-  //current_theme() {
-  //  return document.querySelector("html").getAttribute("data-bs-theme")
-  //}
 
   prefered_theme() {
+    // document.querySelector("html").getAttribute("data-bs-theme")
     return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
   }
 
   set_theme(theme) {
     document.querySelector("html").setAttribute("data-bs-theme", theme)
 
-    if (theme == "light") {
-      this.currentThemeDarkTargets.forEach((element, index) => {
-        element.hidden = true
-      })
-      this.currentThemeLightTargets.forEach((element, index) => {
-        element.hidden = false
-      })
-    } else {
-      this.currentThemeLightTargets.forEach((element, index) => {
-        element.hidden = true
-      })
-      this.currentThemeDarkTargets.forEach((element, index) => {
-        element.hidden = false
-      })
-    }
+    this.currentThemeTargets.forEach((element, index) => {
+      element.hidden = element.dataset.theme != theme
+    })
   }
 
   set_active(theme) {
-    switch(theme) {
-      case "dark":
-        this.activeThemeLightTargets.forEach((element, index) => {
-          this.remove_active_class(element)
-        })
-        this.activeThemeDarkTargets.forEach((element, index) => {
-          this.add_active_class(element)
-        })
-        this.activeThemeAutoTargets.forEach((element, index) => {
-          this.remove_active_class(element)
-        })
-        break;
-      case "light":
-        this.activeThemeLightTargets.forEach((element, index) => {
-          this.add_active_class(element)
-        })
-        this.activeThemeDarkTargets.forEach((element, index) => {
-          this.remove_active_class(element)
-        })
-        this.activeThemeAutoTargets.forEach((element, index) => {
-          this.remove_active_class(element)
-        })
-        break;
-      case "auto":
-        this.activeThemeLightTargets.forEach((element, index) => {
-          this.remove_active_class(element)
-        })
-        this.activeThemeDarkTargets.forEach((element, index) => {
-          this.remove_active_class(element)
-        })
-        this.activeThemeAutoTargets.forEach((element, index) => {
-          this.add_active_class(element)
-        })
-        break;
-    }
-  }
-
-  add_active_class(element) {
-    if (element.classList.contains("active")) {
-      return
-    }
-    element.classList.add("active")
-  }
-
-  remove_active_class(element) {
-    element.classList.remove("active")
+    this.themeButtonTargets.forEach((element, index) => {
+      if (element.dataset.theme == theme) {
+        element.classList.add("active")
+      } else {
+        element.classList.remove("active")
+      }
+    })
   }
 
   save_theme(theme) {
@@ -117,7 +57,7 @@ export default class extends Controller {
     const d = new Date();
     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
     let expires = "expires="+d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";SameSite=Strict;path=/";
   }
 
   getCookie(cname) {
