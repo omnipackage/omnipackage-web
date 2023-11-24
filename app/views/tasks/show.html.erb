@@ -1,19 +1,29 @@
 <h5>
   CI task #<%= @task.id %>
-  <small class="text-body-secondary">created <%= time_ago_in_words(@task.created_at) %> ago</small>
+  <small class="text-body-secondary">
+    created <%= time_ago_in_words(@task.created_at) %> ago for
+    <%= link_to @task.project.name, project_path(@task.project), class: 'link-secondary' %>
+    project
+  </small>
 </h5>
+
+<div class="pb-3 text-secondary">
+  <%= @task.state.capitalize %>
+  <% unless @task.scheduled? %>
+    <span>on <%= link_to @task.agent.name, agent_path(@task.agent), class: 'link-secondary' %></span>
+  <% end %>
+  <%= time_ago_in_words(@task.updated_at) %> ago
+</div>
 
 <div class="container pt-3">
 
-  <div class="pb-3 text-secondary">
-    <%= @task.state.capitalize %>
-    <% unless @task.scheduled? %>
-      <span>on <%= @task.agent.name %></span>
-    <% end %>
-    <%= time_ago_in_words(@task.updated_at) %> ago
-  </div>
-
-  <h6>Artefacts</h6>
+  <% if @task.artefacts.any? %>
+    <h6>Artefacts</h6>
+  <% elsif @task.scheduled? || @task.running? %>
+    <h6>No artefacts yet<h6>
+  <% else %>
+    <h6>No artefacts<h6>
+  <% end %>
   <div class="vstack gap-3">
 
     <% @task.artefacts.group_by(&:distro).sort_by { |i| d = ::Distro[i.first]; [d.family, d.name] }.each do |distro, afacts| %>

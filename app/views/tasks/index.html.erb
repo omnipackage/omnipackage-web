@@ -1,4 +1,4 @@
-<h5>CI tasks</h5>
+<h5>Tasks</h5>
 
 <div class="container pt-3">
   <table class="table">
@@ -9,7 +9,6 @@
         <th scope="col">Updated</th>
         <th scope="col">Project</th>
         <th scope="col">Distros</th>
-        <th scope="col"></th>
       </tr>
     </thead>
 
@@ -17,7 +16,12 @@
 
       <% @tasks.each do |task| %>
         <tr>
-          <td><%= task.state %><%= task.errors? ? ' with errors' : '' %></td>
+          <td>
+            <%= link_to task.state, task_path(task.id) %>
+            <% if task.errors? %>
+              <span class="text-danger">with errors</span>
+            <% end %>
+          </td>
           <td><%= time_ago_in_words(task.created_at) %> ago</td>
           <td><%= time_ago_in_words(task.updated_at) %> ago</td>
           <td><%= link_to task.project.name, project_path(task.project.id) %></td>
@@ -26,7 +30,6 @@
               <%= render partial: 'layouts/distro_icon', locals: { family: df, size: 16 } %>
             <% end %>
           </td>
-          <td><%= link_to 'more', task_path(task.id) %></td>
         </tr>
       <% end %>
 
@@ -35,6 +38,10 @@
 
   <div>
     <%= render partial: 'layouts/pagination', locals: { pagination: @pagination } %>
+  </div>
+
+  <div class="pt-3">
+    <%= link_to "Agents", agents_path %>
   </div>
 
 </div>
