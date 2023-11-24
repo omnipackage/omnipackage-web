@@ -16,24 +16,49 @@
         <%= render partial: 'layouts/navbar_link', locals: { path: distros_path, text: 'Supported distros', active: -> { params[:controller] == 'distros' } } %>
       </ul>
 
-      <% if logged_in? %>
 
-        <div class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <%= current_user.email %>
-          </a>
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item dropdown" data-controller="theme-selector">
+          <button class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-brightness-high opacity-50" data-theme-selector-target="currentThemeLight"></i>
+            <i class="bi bi-moon-stars opacity-50" data-theme-selector-target="currentThemeDark"></i>
+          </button>
           <ul class="dropdown-menu">
-            <li><%= link_to "Account", identity_account_path, class: 'dropdown-item' %></li>
+            <li>
+              <button data-action="theme-selector#light" class="dropdown-item"><i class="bi bi-brightness-high me-2 opacity-50 theme-icon"></i> Light</button>
+            </li>
+            <li>
+              <button data-action="theme-selector#dark" class="dropdown-item"><i class="bi bi-moon-stars me-2 opacity-50 theme-icon"></i> Dark</button>
+            </li>
             <li><hr class="dropdown-divider"></li>
-            <li><%= button_to "Log out", current_session, method: :delete, class: 'dropdown-item' %></li>
+            <li>
+              <button data-action="theme-selector#auto" class="dropdown-item">
+                <i class="bi bi-brightness-high me-2 opacity-50" data-theme-selector-target="currentThemeLight"></i>
+                <i class="bi bi-moon-stars me-2 opacity-50" data-theme-selector-target="currentThemeDark"></i>
+                Auto
+              </button>
+            </li>
           </ul>
-        </div>
+        </li>
 
-      <% else %>
-
-        <%= link_to "Sign up", sign_up_path, class: 'btn btn-outline-success' %>
-
+        <% if logged_in? %>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <%= current_user.email %>
+            </a>
+            <ul class="dropdown-menu">
+              <li><%= link_to "Account", identity_account_path, class: 'dropdown-item' %></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><%= button_to "Log out", current_session, method: :delete, class: 'dropdown-item' %></li>
+            </ul>
+          </li>
+        <% else %>
+          <li class="nav-item">
+            <%= link_to "Sign up", sign_up_path, class: 'btn btn-outline-success' %>
+          </li>
       <% end %>
+
+      </ul>
 
     </div>
   </div>
