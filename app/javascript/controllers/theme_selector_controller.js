@@ -5,14 +5,7 @@ export default class extends Controller {
   static targets = [ "currentTheme", "preferedTheme", "themeButton" ]
 
   connect() {
-    let theme = cookies.get("theme")
-    if (theme && theme != "auto") {
-      this.set_theme(theme)
-      this.set_active(theme)
-    } else {
-      this.set_theme(this.prefered_theme())
-      this.set_active("auto")
-    }
+    this.set_theme(cookies.get("theme") || "auto")
 
     this.preferedThemeTargets.forEach((element, index) => {
       element.hidden = element.dataset.theme != this.prefered_theme()
@@ -22,8 +15,7 @@ export default class extends Controller {
   switch(event) {
     let new_theme = event.target.dataset.theme
 
-    this.set_theme(new_theme == "auto" ? this.prefered_theme() : new_theme)
-    this.set_active(new_theme)
+    this.set_theme(new_theme)
     cookies.set("theme", new_theme, 12345)
   }
 
@@ -33,6 +25,11 @@ export default class extends Controller {
   }
 
   set_theme(theme) {
+    this.set_active(theme)
+
+    if (theme == "auto") {
+      theme = this.prefered_theme()
+    }
     document.querySelector("html").setAttribute("data-bs-theme", theme)
 
     this.currentThemeTargets.forEach((element, index) => {
