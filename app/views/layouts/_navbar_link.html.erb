@@ -1,3 +1,5 @@
+<%# locals: (text:, path:, active:) -%>
+
 <li class="nav-item">
   <% if active.call %>
     <%= link_to text, path, class: 'nav-link active', 'aria-current' => 'page' %>
