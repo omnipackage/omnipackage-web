@@ -1,30 +1,35 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = [ "currentThemeDark", "currentThemeLight" ]
+  static targets = [ "currentThemeDark", "currentThemeLight", "activeThemeLight", "activeThemeDark", "activeThemeAuto" ]
 
   connect() {
     let theme = this.getCookie("theme")
     if (theme && theme != "auto") {
       this.set_theme(theme)
+      this.set_active(theme)
     } else {
       this.set_theme(this.prefered_theme())
+      this.set_active("auto")
     }
   }
 
   light() {
     this.set_theme("light")
     this.save_theme("light")
+    this.set_active("light")
   }
 
   dark() {
     this.set_theme("dark")
     this.save_theme("dark")
+    this.set_active("dark")
   }
 
   auto() {
     this.set_theme(this.prefered_theme())
     this.save_theme("auto")
+    this.set_active("auto")
   }
 
   //current_theme() {
@@ -53,6 +58,55 @@ export default class extends Controller {
         element.hidden = false
       })
     }
+  }
+
+  set_active(theme) {
+    switch(theme) {
+      case "dark":
+        this.activeThemeLightTargets.forEach((element, index) => {
+          this.remove_active_class(element)
+        })
+        this.activeThemeDarkTargets.forEach((element, index) => {
+          this.add_active_class(element)
+        })
+        this.activeThemeAutoTargets.forEach((element, index) => {
+          this.remove_active_class(element)
+        })
+        break;
+      case "light":
+        this.activeThemeLightTargets.forEach((element, index) => {
+          this.add_active_class(element)
+        })
+        this.activeThemeDarkTargets.forEach((element, index) => {
+          this.remove_active_class(element)
+        })
+        this.activeThemeAutoTargets.forEach((element, index) => {
+          this.remove_active_class(element)
+        })
+        break;
+      case "auto":
+        this.activeThemeLightTargets.forEach((element, index) => {
+          this.remove_active_class(element)
+        })
+        this.activeThemeDarkTargets.forEach((element, index) => {
+          this.remove_active_class(element)
+        })
+        this.activeThemeAutoTargets.forEach((element, index) => {
+          this.add_active_class(element)
+        })
+        break;
+    }
+  }
+
+  add_active_class(element) {
+    if (element.classList.contains("active")) {
+      return
+    }
+    element.classList.add("active")
+  }
+
+  remove_active_class(element) {
+    element.classList.remove("active")
   }
 
   save_theme(theme) {

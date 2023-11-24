@@ -25,14 +25,20 @@
           </button>
           <ul class="dropdown-menu">
             <li>
-              <button data-action="theme-selector#light" class="dropdown-item"><i class="bi bi-brightness-high me-2 opacity-50 theme-icon"></i> Light</button>
+              <button data-action="theme-selector#light" class="dropdown-item" data-theme-selector-target="activeThemeLight">
+                <i class="bi bi-brightness-high me-2 opacity-50 theme-icon"></i>
+                Light
+              </button>
             </li>
             <li>
-              <button data-action="theme-selector#dark" class="dropdown-item"><i class="bi bi-moon-stars me-2 opacity-50 theme-icon"></i> Dark</button>
+              <button data-action="theme-selector#dark" class="dropdown-item" data-theme-selector-target="activeThemeDark">
+                <i class="bi bi-moon-stars me-2 opacity-50 theme-icon"></i>
+                Dark
+              </button>
             </li>
             <li><hr class="dropdown-divider"></li>
             <li>
-              <button data-action="theme-selector#auto" class="dropdown-item">
+              <button data-action="theme-selector#auto" class="dropdown-item" data-theme-selector-target="activeThemeAuto">
                 <i class="bi bi-brightness-high me-2 opacity-50" data-theme-selector-target="currentThemeLight"></i>
                 <i class="bi bi-moon-stars me-2 opacity-50" data-theme-selector-target="currentThemeDark"></i>
                 Auto
