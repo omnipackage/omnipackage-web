@@ -32,13 +32,16 @@
       </a>
     </h6>
 
-    <div class="collapse" id="collapseSshKey">
+    <div class="collapse" id="collapseSshKey" data-controller="clipboard">
       <small>Add this key to your sources repository with read only access. Usually these types of keys called "deployment keys" or something like that.</small>
       <div class="bg-body-tertiary p-2 rounded-2">
-        <pre class="pre-line-wrap"><%= @project.sources_public_ssh_key %></pre>
+        <pre class="pre-line-wrap" data-clipboard-target="source"><%= @project.sources_public_ssh_key %></pre>
       </div>
 
-      <%= button_to 'Generate new key', project_ssh_keys_path(@project.id), method: :post, class: 'btn btn-link btn-sm', form: { data: { turbo_confirm: "You will have to add newly generated key to the sources repository. Continue?" } } %>
+      <div class="btn-group" role="group" aria-label="ssh key manage">
+        <button data-action="clipboard#copy" class="btn btn-link btn-sm"><i class="bi bi-copy me-1"></i>Copy to clipboard</button>
+        <%= button_to 'Generate new key', project_ssh_keys_path(@project.id), method: :post, class: 'btn btn-link btn-sm link-warning', form: { data: { turbo_confirm: "You will have to add newly generated key to the sources repository. Continue?" } } %>
+      </div>
     </div>
 
   </div>
