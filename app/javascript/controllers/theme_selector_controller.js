@@ -6,13 +6,13 @@ export default class extends Controller {
 
   connect() {
     this.set_theme(cookies.get("theme") || "auto")
-
-    this.preferedThemeTargets.forEach((element, index) => {
-      element.hidden = element.dataset.theme != this.prefered_theme()
-    })
   }
 
-  switch(event) {
+  preferedThemeTargetConnected(element) {
+    element.hidden = element.dataset.theme != this.prefered_theme()
+  }
+
+  setCurrentTheme(event) {
     let new_theme = event.target.dataset.theme
 
     this.set_theme(new_theme)
@@ -32,13 +32,13 @@ export default class extends Controller {
     }
     document.querySelector("html").setAttribute("data-bs-theme", theme)
 
-    this.currentThemeTargets.forEach((element, index) => {
+    this.currentThemeTargets.forEach(element => {
       element.hidden = element.dataset.theme != theme
     })
   }
 
   set_active(theme) {
-    this.themeButtonTargets.forEach((element, index) => {
+    this.themeButtonTargets.forEach(element => {
       if (element.dataset.theme == theme) {
         element.classList.add("active")
       } else {

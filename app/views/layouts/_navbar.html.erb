@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+<nav class="navbar navbar-expand-lg bg-body-secondary">
   <div class="container-fluid">
     <a class="navbar-brand" href="/">OmniPackage</a>
 
@@ -20,27 +20,27 @@
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
         <li class="nav-item dropdown" data-controller="theme-selector">
           <button class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="bi bi-brightness-high opacity-50" data-theme-selector-target="currentTheme" data-theme="light"></i>
-            <i class="bi bi-moon-stars opacity-50" data-theme-selector-target="currentTheme" data-theme="dark"></i>
+            <i class="bi bi-sun opacity-70" data-theme-selector-target="currentTheme" data-theme="light"></i>
+            <i class="bi bi-moon opacity-70" data-theme-selector-target="currentTheme" data-theme="dark"></i>
           </button>
           <ul class="dropdown-menu">
             <li>
-              <button data-action="theme-selector#switch" class="dropdown-item" data-theme-selector-target="themeButton" data-theme="light">
-                <i class="bi bi-brightness-high me-2 opacity-50 theme-icon"></i>
+              <button data-action="theme-selector#setCurrentTheme" class="dropdown-item" data-theme-selector-target="themeButton" data-theme="light">
+                <i class="bi bi-sun me-2 opacity-50 theme-icon"></i>
                 Light
               </button>
             </li>
             <li>
-              <button data-action="theme-selector#switch" class="dropdown-item" data-theme-selector-target="themeButton" data-theme="dark">
-                <i class="bi bi-moon-stars me-2 opacity-50 theme-icon"></i>
+              <button data-action="theme-selector#setCurrentTheme" class="dropdown-item" data-theme-selector-target="themeButton" data-theme="dark">
+                <i class="bi bi-moon me-2 opacity-50 theme-icon"></i>
                 Dark
               </button>
             </li>
             <li><hr class="dropdown-divider"></li>
             <li>
-              <button data-action="theme-selector#switch" class="dropdown-item" data-theme-selector-target="themeButton" data-theme="auto">
-                <i class="bi bi-brightness-high me-2 opacity-50" data-theme-selector-target="preferedTheme" data-theme="light"></i>
-                <i class="bi bi-moon-stars me-2 opacity-50" data-theme-selector-target="preferedTheme" data-theme="dark"></i>
+              <button data-action="theme-selector#setCurrentTheme" class="dropdown-item" data-theme-selector-target="themeButton" data-theme="auto">
+                <i class="bi bi-sun me-2 opacity-50" data-theme-selector-target="preferedTheme" data-theme="light"></i>
+                <i class="bi bi-moon me-2 opacity-50" data-theme-selector-target="preferedTheme" data-theme="dark"></i>
                 Auto
               </button>
             </li>

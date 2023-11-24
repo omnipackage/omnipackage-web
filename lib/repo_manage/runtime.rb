@@ -14,7 +14,7 @@ module RepoManage
       @limits = limits
     end
 
-    def execute(commands, timeout_sec: 900)
+    def execute(commands, timeout_sec: 30.minutes.to_i)
       raise 'execute can only be used once' if frozen?
 
       ::ShellUtil.execute(build_container_cli(setup_cli + commands), timeout_sec: timeout_sec).success!
