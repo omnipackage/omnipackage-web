@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Project < ::ApplicationRecord
-  belongs_to :user
+  belongs_to :user, class_name: '::User', inverse_of: :projects
   has_one :sources_tarball, class_name: '::Project::SourcesTarball', dependent: :destroy
   has_many :tasks, class_name: '::Task', through: :sources_tarball
   has_many :repositories, dependent: :destroy

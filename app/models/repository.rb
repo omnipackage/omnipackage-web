@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Repository < ::ApplicationRecord
-  belongs_to :project
+  belongs_to :project, class_name: '::Project', inverse_of: :repositories
   has_one :user, through: :project, class_name: '::User'
 
   validates :distro_id, inclusion: { in: ::Distro.ids }
