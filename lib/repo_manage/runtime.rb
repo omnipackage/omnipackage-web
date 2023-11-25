@@ -14,7 +14,7 @@ module RepoManage
       @limits = limits
     end
 
-    def execute(commands)
+    def execute(commands) # rubocop: disable Metrics/AbcSize
       raise 'execute can only be used once' if frozen?
 
       ::ShellUtil.execute(build_container_cli(setup_cli + commands), timeout_sec: limits.execute_timeout).success!
