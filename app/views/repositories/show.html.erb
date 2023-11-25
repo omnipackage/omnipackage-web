@@ -9,8 +9,11 @@
 
   <% if @repository.last_publish_error %>
     <div class="pb-3">
-      <h6 class="text-danger">Last publish error</h6>
-      <pre class="pre-line-wrap"><%= @repository.last_publish_error %></pre
+      <h6 class="text-danger">
+        Last publish error
+        <small class="text-body-secondary">updated <%= time_ago_in_words(@repository.updated_at) %> ago</small>
+      </h6>
+      <pre class="pre-line-wrap"><%= @repository.last_publish_error %></pre>
     </div>
   <% end %>
 
