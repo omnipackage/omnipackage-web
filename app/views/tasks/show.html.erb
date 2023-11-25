@@ -9,7 +9,7 @@
 
 <div class="pb-3 text-secondary">
   <%= @task.state.capitalize %>
-  <% unless @task.scheduled? %>
+  <% if !@task.scheduled? && @task.agent %>
     <span>on <%= link_to @task.agent.name, agent_path(@task.agent), class: 'link-secondary' %></span>
   <% end %>
   <%= time_ago_in_words(@task.updated_at) %> ago
