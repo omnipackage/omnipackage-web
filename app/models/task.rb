@@ -7,7 +7,14 @@ class Task < ::ApplicationRecord
   has_one :user, class_name: '::User', through: :project
   has_many :artefacts, class_name: '::Task::Artefact', dependent: :destroy
 
-  enum state: %w[scheduled running finished error].index_with(&:itself), _default: 'scheduled'
+  enum :state, %w[scheduled running finished error].index_with(&:itself), default: 'scheduled'
+
+  after_create_commit { broadcast_prepend_to :tasks, partial: 'tasks/task_list_item', locals: { task: self } }
+  after_update_commit do
+    broadcast_replace_to :tasks, partial: 'tasks/task_list_item', locals: { task: self }
+    broadcast_update_to self, partial: 'tasks/task', locals: { task: self }
+  end
+  after_destroy_commit { broadcast_remove_to :tasks }
 
   attribute :distro_ids, :string, array: true, default: -> { ::Distro.ids }
 
