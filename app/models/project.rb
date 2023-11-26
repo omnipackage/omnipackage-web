@@ -20,7 +20,7 @@ class Project < ::ApplicationRecord
   validates :sources_kind, presence: true
   validates :sources_subdir, length: { in: 0..500 }, format: { without: /\..|\A\// }
 
-  after_update_commit -> { broadcast_replace_to(self, partial: 'projects/project', locals: { project: self }) }
+  after_update_commit -> { broadcast_update_to(self, partial: 'projects/project', locals: { project: self }) }
 
   delegate :distros, :installable_package_name, to: :sources_tarball, allow_nil: true
 

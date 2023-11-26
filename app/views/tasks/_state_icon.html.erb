@@ -1,0 +1,16 @@
+<%# locals: (task:) -%>
+
+<span class="m-1">
+  <% case task.state %>
+  <% when 'running' %>
+    <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+  <% when 'scheduled' %>
+    <i class="bi bi-alarm-fill"></i>
+  <% when 'finished' %>
+    <% if task.errors? %>
+      <i class="bi bi-exclamation-circle-fill text-danger"></i>
+    <% else %>
+      <i class="bi bi-check-circle-fill text-success"></i>
+    <% end %>
+  <% end %>
+</span>

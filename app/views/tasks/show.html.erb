@@ -8,6 +8,7 @@
 </h5>
 
 <div class="pb-3 text-secondary">
+  <%= render partial: 'tasks/state_icon', locals: { task: @task } %>
   <%= @task.state.capitalize %>
   <% if !@task.scheduled? && @task.agent %>
     <span>on <%= link_to @task.agent.name, agent_path(@task.agent), class: 'link-secondary' %></span>

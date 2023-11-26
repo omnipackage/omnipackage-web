@@ -1,2 +1,5 @@
 <%= turbo_stream_from @project %>
-<%= render partial: 'projects/project', locals: { project: @project } %>
+
+<div id=<%= dom_id(@project) %>
+  <%= render partial: 'projects/project', locals: { project: @project } %>
+</div>

@@ -1,42 +1,9 @@
 <h5>Tasks</h5>
 
 <div class="container pt-3">
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">State</th>
-        <th scope="col">Created</th>
-        <th scope="col">Updated</th>
-        <th scope="col">Project</th>
-        <th scope="col">Distros</th>
-      </tr>
-    </thead>
-
-    <tbody>
-
-      <% @tasks.each do |task| %>
-        <tr>
-          <td>
-            <%= link_to task.state, task_path(task.id) %>
-            <% if task.errors? %>
-              <span class="text-danger">with errors</span>
-            <% end %>
-          </td>
-          <td><%= time_ago_in_words(task.created_at) %> ago</td>
-          <td><%= time_ago_in_words(task.updated_at) %> ago</td>
-          <td><%= link_to task.project.name, project_path(task.project.id) %></td>
-          <td>
-            <% task.distros.map(&:family).uniq.each do |df| %>
-              <%= render partial: 'layouts/distro_icon', locals: { family: df, size: 16 } %>
-            <% end %>
-          </td>
-        </tr>
-      <% end %>
-
-    </tbody>
-  </table>
-
-  <div>
+  <%= render partial: 'tasks/tasks_list', locals: { tasks: @tasks } %>
+  
+  <div class="pt-3">
     <%= render partial: 'layouts/pagination', locals: { pagination: @pagination } %>
   </div>
 
