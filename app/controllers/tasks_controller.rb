@@ -11,8 +11,8 @@ class TasksController < ::ApplicationController
 
   def create
     project = current_user.projects.find(params[:project_id])
-    ::Task.create!(sources_tarball: project.sources_tarball)
-    redirect_to(tasks_path, notice: 'Task has been successfully created')
+    task = ::Task.create!(sources_tarball: project.sources_tarball)
+    redirect_to(tasks_path(highlight: task.id))
   end
 
   def destroy

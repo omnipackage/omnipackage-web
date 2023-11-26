@@ -5,7 +5,7 @@
 <ul class="list-group list-group-flush" id="tasks">
 
   <% tasks.each do |task| %>
-    <%= render partial: 'tasks/task_list_item', locals: { task: task } %>
+    <%= render partial: 'tasks/task_list_item', locals: { task: task, highlight: params[:highlight].to_i == task.id } %>
   <% end %>
 
 </ul>

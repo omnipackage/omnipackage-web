@@ -1,6 +1,6 @@
-<%# locals: (task:) -%>
+<%# locals: (task:, highlight: false) -%>
 
-<li class="list-group-item" id="<%= dom_id(task) %>">
+<li class="list-group-item <%= highlight ? 'highlight-animate-added-item' : '' %>" id="<%= dom_id(task) %>">
   <span>
     <%= render partial: 'tasks/state_icon', locals: { task: task } %>
     <%= link_to task.state, task_path(task.id) %>

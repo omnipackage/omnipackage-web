@@ -9,12 +9,16 @@ class Task < ::ApplicationRecord
 
   enum :state, %w[scheduled running finished error].index_with(&:itself), default: 'scheduled'
 
-  after_create_commit { broadcast_prepend_to :tasks, partial: 'tasks/task_list_item', locals: { task: self } }
+  after_create_commit do
+    broadcast_prepend_to :tasks, partial: 'tasks/task_list_item', locals: { task: self, highlight: true }
+  end
   after_update_commit do
     broadcast_replace_to :tasks, partial: 'tasks/task_list_item', locals: { task: self }
     broadcast_update_to self, partial: 'tasks/task', locals: { task: self }
   end
-  after_destroy_commit { broadcast_remove_to :tasks }
+  after_destroy_commit do
+    broadcast_remove_to :tasks
+  end
 
   attribute :distro_ids, :string, array: true, default: -> { ::Distro.ids }
 

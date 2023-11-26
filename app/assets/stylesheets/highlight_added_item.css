@@ -1,0 +1,11 @@
+.highlight-animate-added-item {
+  background-color: grey;
+  animation-name: bckanim;
+  animation-fill-mode: forwards;
+  animation-duration: 2s;
+  animation-delay: 0s;
+}
+@keyframes bckanim {
+  0% { background-color: grey; }
+  100% { background-color: transparent; }
+}
