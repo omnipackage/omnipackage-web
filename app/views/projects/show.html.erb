@@ -1,5 +1,5 @@
 <%- project = @project %>
-<%= turbo_stream_from project %>
+<%= turbo_stream_from current_user, project %>
 
 <div id="<%= dom_id(project) %>">
 
