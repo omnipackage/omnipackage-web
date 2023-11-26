@@ -34,7 +34,7 @@ class ProjectsController < ::ApplicationController
     if @project.save
       if %w[sources_location sources_kind].intersect?(@project.previous_changes.keys)
         @project.sources_tarball&.destroy
-        ::SourcesFetchJob.perform_later(@project.id)
+        ::SourcesFetchJob.start(@project)
       end
       redirect_to(project_path(@project.id), notice: "Project #{@project.name} has been successfully updated")
     else

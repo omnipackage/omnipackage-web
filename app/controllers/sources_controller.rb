@@ -10,8 +10,7 @@ class SourcesController < ::ApplicationController
   end
 
   def create
-    ::SourcesFetchJob.perform_later(project.id)
-    redirect_to(project_path(project.id), notice: 'A background job has been started')
+    ::SourcesFetchJob.start(project)
   end
 
   private

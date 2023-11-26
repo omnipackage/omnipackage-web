@@ -8,7 +8,8 @@ class Project < ::ApplicationRecord
 
   encrypts :sources_private_ssh_key
 
-  enum sources_kind: (%w[git] + (::Rails.env.local? ? %w[localfs] : [])).index_with(&:itself), _default: 'git'
+  enum :sources_kind, (%w[git] + (::Rails.env.local? ? %w[localfs] : [])).index_with(&:itself), default: 'git'
+  enum :sources_status, %w[unverified fetching verified].index_with(&:itself), default: 'unverified'
 
   attribute :name, :string, default: ''
   attribute :sources_location, :string
@@ -18,6 +19,8 @@ class Project < ::ApplicationRecord
   validates :sources_location, presence: true, length: { in: 2..8000 }
   validates :sources_kind, presence: true
   validates :sources_subdir, length: { in: 0..500 }, format: { without: /\..|\A\// }
+
+  after_update_commit -> { broadcast_replace_to(self, partial: 'projects/project', locals: { project: self }) }
 
   delegate :distros, :installable_package_name, to: :sources_tarball, allow_nil: true
 
@@ -41,7 +44,7 @@ class Project < ::ApplicationRecord
   end
 
   def sources_verified?
-    sources_tarball.present?
+    sources_tarball.present? && verified?
   end
 
   def sources_verified_at

@@ -1,0 +1,37 @@
+<%# locals: (project:) -%>
+
+<span class="badge text-secondary"><%= project.sources_kind.upcase %></span> <span class="font-monospace bg-body-tertiary"><%= project.sources_location %></span>
+<% if project.sources_subdir.present? %>
+  <span class="badge text-secondary">SUBDIR</span><span class="font-monospace text-secondary bg-body-tertiary"><%= project.sources_subdir %></span>
+<% end %>
+<% case project.sources_status %>
+<% when 'unverified' %>
+  <span class="badge text-danger">unverified</span>
+  <% if project.sources_fetch_error.present? %>
+    <div class="card p-3 m-3 shadow bg-body-tertiary rounded block-center mx-auto">
+      <div class="text-danger">
+        <p><%= project.sources_fetch_error %></p>
+      </div>
+    </div>
+  <% end %>
+<% when 'verified' %>
+  <span class="badge text-success">verified <%= time_ago_in_words(project.sources_verified_at) %> ago</span>
+<% when 'fetching' %>
+  <!--<span class="badge text-warning">fetching...</span>-->
+<% end %>
+
+<div>
+  <div class="btn-group" role="group" aria-label="sources manage">
+    <% if project.fetching? %>
+      <button class="btn btn-link btn-sm" type="button" disabled>
+        <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+      </button>
+      Fetching...
+    <% else %>
+      <%= button_to 'Fetch sources', project_sources_path(project.id), method: :post, class: 'btn btn-link btn-sm' %>
+    <% end %>
+    <% if project.sources_verified? %>
+      <%= link_to 'Download cached sources tarball', project_sources_path(project.id), class: 'btn btn-link btn-sm' %>
+    <% end %>
+  </div>
+</div>

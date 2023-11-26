@@ -21,7 +21,7 @@ class Git
 
   def clone(repo, destination)
     with_ssh_key do |env|
-      ::ShellUtil.execute(exe, 'clone', '--depth', '1', repo, destination, env: env, timeout_sec: 200).success?
+      ::ShellUtil.execute(exe, 'clone', '--depth', '1', repo, destination, env: env, timeout_sec: 300).success!
     end
   end
 
