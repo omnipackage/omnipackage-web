@@ -35,11 +35,14 @@
     </div>
 
     <div class="pt-3">
-      <h6>Triggers</h6>
+      <h6>CI</h6>
 
-      <% if project.sources_verified? %>
-        <%= button_to 'Build now', tasks_path(project_id: project.id), method: :post, class: 'btn btn-link btn-sm' %>
-      <% end %>
+      <div class="btn-group" role="group" aria-label="ci manage">
+        <%= link_to 'Tasks', project_tasks_path(project), class: 'btn btn-link btn-sm' %>
+        <% if project.sources_verified? %>
+          <%= button_to 'Build now', project_tasks_path(project), method: :post, class: 'btn btn-link btn-sm' %>
+        <% end %>
+      </div>
     </div>
 
     <div class="pt-3">

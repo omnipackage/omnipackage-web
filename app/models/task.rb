@@ -12,6 +12,7 @@ class Task < ::ApplicationRecord
 
   after_create_commit do
     broadcast_prepend_later_to [user, :tasks], partial: 'tasks/task', locals: { task: self, highlight: true }
+    broadcast_prepend_later_to [project, :tasks], partial: 'tasks/task', locals: { task: self, highlight: true }
   end
   after_update_commit do
     broadcast_replace_later_to [user, :tasks], partial: 'tasks/task', locals: { task: self }

@@ -1,6 +1,11 @@
-<%= turbo_stream_from [current_user, :tasks] %>
+<% if @project %>
+  <%= turbo_stream_from [current_user, :tasks] %>
+  <h5>Tasks for <%= @project.name %> </h5> 
+<% else %>
+  <%= turbo_stream_from [@project, :tasks] %>
+  <h5>Tasks</h5>
+<% end %>
 
-<h5>Tasks</h5>
 
 <div class="container pt-3">
   <ul class="list-group list-group-flush" id="tasks">
