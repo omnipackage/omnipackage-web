@@ -13,16 +13,17 @@ class Repository
       logger.tagged('publish', "repo=#{repository.id}", "project=#{repository.project.id}", "distro=#{repository.distro.id}") do
         logger.info('start')
 
+        repository.publishing!
         repository.create_bucket_if_not_exists!
 
         ::Dir.mktmpdir do |dir|
           sync_repo_files(artefacts, dir)
           logger.info("finish\n#{::ShellUtil.execute("tree #{dir}").out}")
         end
-        repository.update!(published_at: ::Time.now.utc, last_publish_error: nil)
+        repository.update!(published_at: ::Time.now.utc, last_publish_error: nil, publish_status: 'published')
       rescue ::StandardError => e
         logger.info("error: #{e.message}")
-        repository.update!(last_publish_error: e.message)
+        repository.update!(last_publish_error: e.message, publish_status: 'pending')
       end
     end
 

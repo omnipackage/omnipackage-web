@@ -1,20 +1,29 @@
-<%# locals: (repo:) -%>
+<%# locals: (repository:) -%>
 
-<div class="card">
-  <div class="card-body">
+<div id="<%= dom_id(repository) %>">
+  <div class="card m-1 shadow-sm">
+    <div class="card-body">
 
-    <h6 class="card-title">
-      <%= link_to repo.distro.name, repository_path(repo), class: 'card-link' %>
-    </h6>
+      <h6 class="card-title">
+        <% case repository.publish_status %>
+        <% when 'published' %>
+          <i class="bi bi-check-circle-fill text-success"></i>
+        <% when 'pending' %>
+          <% if repository.last_publish_error %>
+            <i class="bi bi-exclamation-circle-fill text-danger"></i>
+          <% else %>
+            <i class="bi bi-alarm-fill"></i>
+          <% end %>
+        <% when 'publishing' %>
+          <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+        <% end %>
 
-    <div class="card-text">
-      <% if repo.last_publish_error %>
-        <span class="text-danger">Last publish unsuccessful</span>
-      <% elsif repo.published_at %>
-        <span class="text-body-secondary">Published <span><%= time_ago_in_words(repo.published_at) %> ago</span></span>
-      <% else %>
-        <span class="text-body-secondary">Empty respository</span>
-      <% end %>
+        <%= link_to repository.distro.name, repository_path(repository), class: 'card-link' %>
+      </h6>
+
+      <div class="card-text">
+
+      </div>
     </div>
   </div>
 </div>

@@ -6,6 +6,7 @@ class Task < ::ApplicationRecord
   has_one :project, class_name: '::Project', through: :sources_tarball
   has_one :user, class_name: '::User', through: :project
   has_many :artefacts, class_name: '::Task::Artefact', dependent: :destroy
+  has_many :repositories, ->(task) { where(distro_id: task.distro_ids) }, through: :project, class_name: '::Repository'
 
   enum :state, %w[scheduled running finished error].index_with(&:itself), default: 'scheduled'
 
@@ -14,7 +15,7 @@ class Task < ::ApplicationRecord
   end
   after_update_commit do
     broadcast_replace_later_to [user, :tasks], partial: 'tasks/task', locals: { task: self }
-    broadcast_update_later_to [user, self], template: 'tasks/show', assigns: { task: self }
+    broadcast_update_later_to self, template: 'tasks/show', assigns: { task: self }
   end
   after_destroy_commit do
     broadcast_remove_to :tasks

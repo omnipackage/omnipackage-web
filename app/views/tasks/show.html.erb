@@ -1,5 +1,5 @@
   <%- task = @task %>
-<%= turbo_stream_from current_user, task %>
+<%= turbo_stream_from task %>
 
 <div id="<%= dom_id(task) %>">
 

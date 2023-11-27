@@ -4,13 +4,13 @@
   <% repositories.group_by { |repo| repo.distro.family }.each do |family, repos| %>
     <div class="row align-items-center">
       <div class="col-md-auto">
-        <%= render partial: 'layouts/distro_icon', locals: { family: family, size: 48 } %>
+        <%= render partial: 'layouts/distro_icon', locals: { family: family, size: 32 } %>
       </div>
 
       <div class="col">
         <div class="card-group">
           <% repos.each do |repo| %>
-            <%= render partial: 'projects/repo', locals: { repo: repo } %>
+            <%= render partial: 'projects/repo', locals: { repository: repo } %>
           <% end %>
         </div>
       </div>

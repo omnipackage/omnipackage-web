@@ -1,5 +1,6 @@
 <%- project = @project %>
-<%= turbo_stream_from current_user, project %>
+<%= turbo_stream_from project %>
+<%= turbo_stream_from [project, :repositories] %>
 
 <div id="<%= dom_id(project) %>">
 
