@@ -17,7 +17,7 @@ class Task < ::ApplicationRecord
   after_update_commit do
     broadcast_replace_later_to [user, :tasks], partial: 'tasks/task', locals: { task: self }
     broadcast_replace_later_to [project, :tasks], partial: 'tasks/task', locals: { task: self }
-    broadcast_update_later_to self, template: 'tasks/show', assigns: { task: self }
+    broadcast_replace_later_to self, template: 'tasks/show', assigns: { task: self }
   end
   after_destroy_commit do
     broadcast_remove_to :tasks
