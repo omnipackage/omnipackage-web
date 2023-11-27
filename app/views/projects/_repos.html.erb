@@ -4,7 +4,7 @@
   <% repositories.group_by { |repo| repo.distro.family }.each do |family, repos| %>
     <div class="row align-items-center">
       <div class="col-md-auto">
-        <%= render partial: 'layouts/distro_icon', locals: { family: family, size: 32 } %>
+        <%= render partial: 'layouts/distro_icon', locals: { family: family, size: 48 } %>
       </div>
 
       <div class="col">

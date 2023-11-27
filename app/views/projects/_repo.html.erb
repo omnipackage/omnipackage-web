@@ -1,29 +1,14 @@
 <%# locals: (repository:) -%>
 
-<div id="<%= dom_id(repository) %>">
-  <div class="card m-1 shadow-sm">
-    <div class="card-body">
+<div class="card" id="<%= dom_id(repository) %>">
+  <div class="card-body">
 
-      <h6 class="card-title">
-        <% case repository.publish_status %>
-        <% when 'published' %>
-          <i class="bi bi-check-circle-fill text-success"></i>
-        <% when 'pending' %>
-          <% if repository.last_publish_error %>
-            <i class="bi bi-exclamation-circle-fill text-danger"></i>
-          <% else %>
-            <i class="bi bi-alarm-fill"></i>
-          <% end %>
-        <% when 'publishing' %>
-          <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-        <% end %>
+    <h6 class="card-title">
+      <%= link_to repository.distro.name, repository_path(repository), class: 'card-link' %>
+    </h6>
 
-        <%= link_to repository.distro.name, repository_path(repository), class: 'card-link' %>
-      </h6>
-
-      <div class="card-text">
-
-      </div>
+    <div class="card-text">
+      <%= render partial: 'repositories/publishing_status', locals: { repository: repository } %>
     </div>
   </div>
 </div>
