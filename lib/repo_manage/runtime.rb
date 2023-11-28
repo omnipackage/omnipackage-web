@@ -16,6 +16,8 @@ module RepoManage
     end
 
     def execute(commands) # rubocop: disable Metrics/AbcSize, Metrics/MethodLength
+      ::Rails.error.set_context(image: image, limits: limits.inspect, container_name: container_name)
+
       raise 'execute can only be used once' if frozen?
 
       mutex.with_lock(container_name, timeout_sec: limits.execute_timeout + 30, wait_sec: limits.execute_timeout) do
