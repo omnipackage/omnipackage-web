@@ -15,11 +15,15 @@ module RepoManage
       end
 
       def image(container_name, default_image)
-        if ::ShellUtil.execute("#{executable} image inspect #{container_name}").success?
+        if exists?(container_name)
           container_name
         else
           default_image
         end
+      end
+
+      def exists?(image)
+        ::ShellUtil.execute("#{executable} image inspect #{image}").success?
       end
 
       def commit(container_name)

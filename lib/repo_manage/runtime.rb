@@ -15,16 +15,22 @@ module RepoManage
       @mutex = ::DistributedMutex.new
     end
 
-    def execute(commands) # rubocop: disable Metrics/AbcSize
+    def execute(commands) # rubocop: disable Metrics/AbcSize, Metrics/MethodLength
       raise 'execute can only be used once' if frozen?
 
-      mutex.with_lock(container_name, timeout_sec: limits.execute_timeout + 1, wait_sec: limits.execute_timeout + 1) do
-        ::ShellUtil.execute(build_container_cli(setup_cli + commands), timeout_sec: limits.execute_timeout).success!
-        image_cache.commit(container_name)
-      ensure
-        image_cache.rm(container_name)
-        ::FileUtils.remove_entry_secure(homedir)
-        freeze
+      mutex.with_lock(container_name, timeout_sec: limits.execute_timeout + 30, wait_sec: limits.execute_timeout) do
+        if image_cache.exists?(container_name)
+          image_cache.rm(container_name)
+        end
+
+        begin
+          ::ShellUtil.execute(build_container_cli(setup_cli + commands), timeout_sec: limits.execute_timeout).success!
+          image_cache.commit(container_name)
+        ensure
+          ::FileUtils.remove_entry_secure(homedir)
+          image_cache.rm(container_name)
+          freeze
+        end
       end
     end
 

@@ -2,6 +2,7 @@
 
 class RepositoryPublishJob < ::ApplicationJob
   queue_as :long
+  retry_on ::StandardError, wait: 10.seconds, attempts: 3
 
   class << self
     def start(task)
