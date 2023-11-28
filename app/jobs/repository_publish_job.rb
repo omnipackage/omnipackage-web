@@ -8,17 +8,20 @@ class RepositoryPublishJob < ::ApplicationJob
       return unless task.finished?
 
       task.repositories.update(publish_status: 'pending')
-      perform_later(task.id)
+      jobs = []
+      task.artefacts.group_by(&:distro).each do |distro, afacts|
+        task.repositories.where(distro_id: distro).ids.each do |repo_id|
+          jobs << new(repo_id, afacts.map(&:id))
+        end
+      end
+      ::ActiveJob.perform_all_later(jobs)
     end
   end
 
-  def perform(task_id)
-    task = ::Task.find(task_id)
+  def perform(repository_id, artefacts_ids)
+    repo = ::Repository.find(repository_id)
+    afacts = ::Task::Artefact.find(artefacts_ids)
 
-    task.artefacts.group_by(&:distro).each do |distro, afacts|
-      task.repositories.where(distro_id: distro).find_each do |repo|
-        ::Repository::Publish.new(repo).call(afacts)
-      end
-    end
+    ::Repository::Publish.new(repo).call(afacts)
   end
 end
