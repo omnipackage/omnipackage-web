@@ -14,15 +14,17 @@ class StorageClient
     end
   end
 
+  attr_reader :config
+
   def initialize(config = {})
-    args = {
+    @config = {
       force_path_style:   config.fetch(:force_path_style, false),
       access_key_id:      config.fetch(:access_key_id),
       secret_access_key:  config.fetch(:secret_access_key),
       region:             config.fetch(:region),
       endpoint:           config.fetch(:endpoint, nil)
     }
-    @c = ::Aws::S3::Resource.new(client: ::Aws::S3::Client.new(**args))
+    @c = ::Aws::S3::Resource.new(client: ::Aws::S3::Client.new(**@config))
   end
 
   def ls(bucket:)

@@ -2,8 +2,9 @@
 
 <li class="list-group-item <%= highlight ? 'highlight-animate-added-item' : '' %>" id="<%= dom_id(task) %>">
   <span>
+    <%= link_to "##{task.id}", task_path(task.id) %>
     <%= render partial: 'tasks/state_icon', locals: { task: task } %>
-    <%= link_to task.state, task_path(task.id) %>
+    <%= task.state %>
     <% if task.errors? %>
       <small class="text-danger">with errors</small>
     <% end %>

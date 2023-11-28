@@ -16,11 +16,13 @@ class Repository < ::ApplicationRecord
     broadcast_replace_later_to [project, :repositories], partial: 'projects/repo', locals: { repository: self }
     broadcast_replace_later_to [self, :show], template: 'repositories/show', assigns: { repository: self }
   end
+  after_destroy_commit do
+    ::DeleteBucketJob.perform_later(storage_client.config, bucket)
+    broadcast_remove_to :repositories
+  end
 
   scope :without_own_gpg_key, -> { where(gpg_key_private: nil, gpg_key_public: nil) }
   scope :with_own_gpg_key, -> { without_own_gpg_key.invert_where }
-
-  # after_commit :delete_bucket!, on: :destroy
 
   FileItem = ::Data.define(:key, :size, :last_modified_at, :url)
 
