@@ -12,22 +12,25 @@ module RepoManage
       @homedir = ::Dir.mktmpdir
       @image_cache = ::RepoManage::Runtime::ImageCache.new(executable: executable)
       @limits = limits
+      @mutex = ::DistributedMutex.new
     end
 
     def execute(commands) # rubocop: disable Metrics/AbcSize
       raise 'execute can only be used once' if frozen?
 
-      ::ShellUtil.execute(build_container_cli(setup_cli + commands), timeout_sec: limits.execute_timeout).success!
-      image_cache.commit(container_name)
-    ensure
-      image_cache.rm(container_name)
-      ::FileUtils.remove_entry_secure(homedir)
-      freeze
+      mutex.with_lock(container_name, timeout_sec: limits.execute_timeout + 1, wait_sec: limits.execute_timeout + 1) do
+        ::ShellUtil.execute(build_container_cli(setup_cli + commands), timeout_sec: limits.execute_timeout).success!
+        image_cache.commit(container_name)
+      ensure
+        image_cache.rm(container_name)
+        ::FileUtils.remove_entry_secure(homedir)
+        freeze
+      end
     end
 
     private
 
-    attr_reader :image_cache
+    attr_reader :image_cache, :mutex
 
     def mounts
       {

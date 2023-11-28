@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class SourcesFetchJob < ::ApplicationJob
-  queue_as :default
+  queue_as :long
 
   class << self
     def start(project)

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class RepositoryPublishJob < ::ApplicationJob
-  queue_as :default
+  queue_as :long
 
   class << self
     def start(task)

@@ -232,6 +232,8 @@ GEM
       redis-client (>= 0.17.0)
     redis-client (0.18.0)
       connection_pool
+    redlock (2.0.6)
+      redis-client (>= 0.14.1, < 1.0.0)
     regexp_parser (2.8.2)
     reline (0.4.0)
       io-console (~> 0.5)
@@ -324,6 +326,7 @@ DEPENDENCIES
   rackup
   rails
   redis
+  redlock
   rubocop
   rubocop-performance
   rubocop-rails

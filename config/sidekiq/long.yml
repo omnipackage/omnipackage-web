@@ -1,0 +1,5 @@
+:queues:
+  - long
+
+production:
+  :concurrency: 25
