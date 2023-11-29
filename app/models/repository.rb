@@ -12,14 +12,9 @@ class Repository < ::ApplicationRecord
 
   enum :publish_status, %w[pending publishing published].index_with(&:itself), default: 'pending'
 
-  after_update_commit do
-    broadcast_replace_later_to [project, :repositories], partial: 'projects/repo', locals: { repository: self }
-    broadcast_replace_later_to [self, :show], template: 'repositories/show', assigns: { repository: self }
-  end
-  after_destroy_commit do
-    ::DeleteBucketJob.perform_later(storage_client.config, bucket)
-    broadcast_remove_to :repositories
-  end
+  ::Broadcasts::Repository.attach!(self)
+
+  after_destroy_commit { ::DeleteBucketJob.perform_later(storage_client.config, bucket) }
 
   scope :without_own_gpg_key, -> { where(gpg_key_private: nil, gpg_key_public: nil) }
   scope :with_own_gpg_key, -> { without_own_gpg_key.invert_where }

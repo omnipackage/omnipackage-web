@@ -5,8 +5,6 @@ class Project
     belongs_to :project, class_name: '::Project'
     has_many :tasks, class_name: '::Task', dependent: :destroy
 
-    # after_update_commit -> { project.broadcast_replace_to(project, partial: 'projects/project', locals: { project: project }) }
-
     def decrypted_tarball
       ::ShellUtil.decrypt(tarball, passphrase: ::Rails.application.credentials.sources_tarball_passphrase)
     end
