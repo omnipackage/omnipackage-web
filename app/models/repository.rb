@@ -19,8 +19,6 @@ class Repository < ::ApplicationRecord
   scope :without_own_gpg_key, -> { where(gpg_key_private: nil, gpg_key_public: nil) }
   scope :with_own_gpg_key, -> { without_own_gpg_key.invert_where }
 
-  FileItem = ::Data.define(:key, :size, :last_modified_at, :url)
-
   def distro
     ::Distro[distro_id]
   end
@@ -37,44 +35,8 @@ class Repository < ::ApplicationRecord
     end
   end
 
-  def download_all(to:)
-    storage_client.download_dir(bucket: bucket, to: to)
-  end
-
-  def upload_all(from:)
-    storage_client.upload_dir(bucket: bucket, from: from)
-  end
-
-  def delete_deleted_files(from:)
-    storage_client.ls(bucket: bucket).each do |fo|
-      local_path = ::Pathname.new(from).join(fo.key)
-      fo.delete unless ::File.exist?(local_path)
-    end
-  end
-
-  def bucket_exists?
-    storage_client.bucket_exists?(bucket: bucket)
-  end
-
-  def create_bucket_if_not_exists!
-    return if bucket_exists?
-
-    storage_client.create_bucket(bucket: bucket)
-    storage_client.set_allow_public_read(bucket: bucket)
-  end
-
-  def delete_bucket!
-    storage_client.delete_bucket!(bucket: bucket)
-  end
-
-  def url
-    storage_client.url(bucket: bucket)
-  end
-
-  def ls
-    return [] unless bucket_exists?
-
-    storage_client.ls(bucket: bucket).map { |i| FileItem[i.key, i.size, i.last_modified, i.public_url] }
+  def storage
+    ::Repository::Storage.new(storage_client, bucket)
   end
 
   def gpg_key
@@ -95,7 +57,7 @@ class Repository < ::ApplicationRecord
 
   def installable_cli
     distro.install_steps.map do |command|
-      format(command, project_safe_name: project.safe_name, installable_package_name: installable_package_name, url: url)
+      format(command, project_safe_name: project.safe_name, installable_package_name: installable_package_name, url: storage.url)
     end.join("\n")
   end
 end

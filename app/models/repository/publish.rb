@@ -6,6 +6,7 @@ class Repository
 
     def initialize(repository)
       @repository = repository
+      @storage = repository.storage
       @logger = ::ActiveSupport::TaggedLogging.new(::Rails.logger)
     end
 
@@ -14,7 +15,7 @@ class Repository
         logger.info('start')
 
         repository.publishing!
-        repository.create_bucket_if_not_exists!
+        storage.create_bucket_if_not_exists!
 
         ::Dir.mktmpdir do |dir|
           sync_repo_files(artefacts, dir)
@@ -29,19 +30,19 @@ class Repository
 
     private
 
-    attr_reader :logger
+    attr_reader :logger, :storage
 
     def sync_repo_files(artefacts, dir)
       suitable_artefacts = artefacts.select { |i| i.filetype == repository.distro.package_type }
       return if suitable_artefacts.empty?
 
-      repository.download_all(to: dir)
+      storage.download_all(to: dir)
       suitable_artefacts.each { |i| i.download(to: dir, overwrite_existing: true) }
 
       build_repo_manage(dir).sync
 
-      repository.upload_all(from: dir)
-      repository.delete_deleted_files(from: dir)
+      storage.upload_all(from: dir)
+      storage.delete_deleted_files(from: dir)
     end
 
     def build_repo_manage(dir)
@@ -51,7 +52,7 @@ class Repository
         gpg_key:            repository.gpg_key,
         project_safe_name:  repository.project.safe_name,
         distro_name:        repository.distro.name,
-        distro_url:         repository.url
+        distro_url:         storage.url
       )
     end
 

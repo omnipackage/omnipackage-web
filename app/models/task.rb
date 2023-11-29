@@ -15,6 +15,7 @@ class Task < ::ApplicationRecord
   attribute :distro_ids, :string, array: true, default: -> { ::Distro.ids }
 
   validates :distro_ids, presence: true
+  validates_with ::Distro::DistrosValidator
   validate do
     errors.add(:distro_ids, "must be combination of #{::Distro.ids}") if distro_ids && (distro_ids - ::Distro.ids).any?
   end
