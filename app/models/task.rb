@@ -10,7 +10,7 @@ class Task < ::ApplicationRecord
 
   enum :state, %w[scheduled running finished error].index_with(&:itself), default: 'scheduled'
 
-  ::Broadcasts::Task.attach!(self)
+  broadcast_with ::Broadcasts::Task
 
   attribute :distro_ids, :string, array: true, default: -> { ::Distro.ids }
 

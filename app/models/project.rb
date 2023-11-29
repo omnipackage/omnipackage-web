@@ -20,7 +20,7 @@ class Project < ::ApplicationRecord
   validates :sources_kind, presence: true
   validates :sources_subdir, length: { in: 0..500 }, format: { without: /\..|\A\// }
 
-  ::Broadcasts::Project.attach!(self)
+  broadcast_with ::Broadcasts::Project
 
   delegate :distros, :installable_package_name, to: :sources_tarball, allow_nil: true
 

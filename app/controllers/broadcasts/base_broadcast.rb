@@ -2,13 +2,13 @@
 
 module Broadcasts
   class BaseBroadcast
-    class << self
-      def attach!(ar_model_class)
-        ar_model_class.instance_exec(self) do |this|
-          after_create_commit { this.new(self).create }
-          after_update_commit { this.new(self).update }
-          after_destroy_commit { this.new(self).destroy }
-        end
+    module AR
+      def broadcast_with(klass)
+        raise ::ArgumentError, "wrong broadcaster class #{klass}" unless klass < ::Broadcasts::BaseBroadcast
+
+        after_create_commit { klass.new(self).create }
+        after_update_commit { klass.new(self).update }
+        after_destroy_commit { klass.new(self).destroy }
       end
     end
 

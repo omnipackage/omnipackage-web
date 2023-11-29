@@ -12,7 +12,7 @@ class Repository < ::ApplicationRecord
 
   enum :publish_status, %w[pending publishing published].index_with(&:itself), default: 'pending'
 
-  ::Broadcasts::Repository.attach!(self)
+  broadcast_with ::Broadcasts::Repository
 
   after_destroy_commit { ::DeleteBucketJob.perform_later(storage_client.config, bucket) }
 
