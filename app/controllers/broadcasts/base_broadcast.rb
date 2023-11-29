@@ -6,6 +6,7 @@ module Broadcasts
       def broadcast_with(klass)
         raise ::ArgumentError, "wrong broadcaster class #{klass}" unless klass < ::Broadcasts::BaseBroadcast
 
+        # TODO with new turbo-rails version add `unless suppressed_turbo_broadcasts?`
         after_create_commit { klass.new(self).create }
         after_update_commit { klass.new(self).update }
         after_destroy_commit { klass.new(self).destroy }
