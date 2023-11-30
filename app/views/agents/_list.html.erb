@@ -5,7 +5,6 @@
       <th scope="col">Status</th>
       <th scope="col">Last seen</th>
       <th scope="col">Arch</th>
-      <th scope="col"></th>
     </tr>
   </thead>
 
@@ -13,7 +12,7 @@
 
     <% agents.each do |agent| %>
       <tr>
-        <td><%= agent.name %></td>
+        <td><%= link_to agent.name, agent_path(agent.id) %></td>
         <td>
           <% if agent.offline? %>
             <span class="badge bg-secondary">Offline</span>
@@ -25,7 +24,6 @@
         </td>
         <td><%= agent.last_seen_at %></td>
         <td><%= agent.arch %></td>
-        <td><%= link_to 'more', agent_path(agent.id) %></td>
       </tr>
     <% end %>
 

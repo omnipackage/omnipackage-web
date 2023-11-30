@@ -1,9 +1,9 @@
-<h1>Agents</h1>
+<h5>Your private CI agents</h5>
 
-<h3>Public agents</h3>
-<%= render partial: 'list', locals: { agents: @agents_public } %>
+<div class="container pt-3">
+  <%= render partial: 'list', locals: { agents: @agents_private } %>
 
-<h3>Your private agents</h3>
-<%= render partial: 'list', locals: { agents: @agents_private } %>
-
-<%= link_to 'Create new agent', new_agent_path, class: 'btn btn-outline-primary' %>
+  <div class="pt-3">
+    <%= link_to 'Create new agent', new_agent_path, class: 'btn btn-outline-primary' %>
+  </div>
+</div>
