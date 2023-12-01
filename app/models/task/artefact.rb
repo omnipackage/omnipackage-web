@@ -10,7 +10,7 @@ class Task
     attribute :error, :boolean, default: false
 
     scope :failed, -> { where(error: true) }
-    scope :successful, -> { failed.invert_where }
+    scope :successful, -> { where.not(error: true) }
 
     validates :distro, presence: true, inclusion: { in: ::Distro.ids }
     validates :attachment, presence: true

@@ -1,5 +1,13 @@
 <% if logged_in? %>
-  <h1>Dashboard</h1>
+  <div class="card" style="width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title">CI agents</h5>
+      <p class="card-text">
+        <%= ::Agent.public_shared.online.count %> public agents online
+      </p>
+      <%= link_to 'Your private agents', agents_path, class: 'card-link' %>
+    </div>
+  </div>
 <% else %>
   <div class="p-5 mb-4 bg-body-tertiary rounded-3">
     <div class="container-fluid py-5">
