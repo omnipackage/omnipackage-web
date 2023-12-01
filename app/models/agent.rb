@@ -12,9 +12,14 @@ class Agent < ::ApplicationRecord
 
   broadcast_with ::Broadcasts::Agent
 
+  after_update_commit do
+    ::AgentStatusCheckJob.set(wait_until: considered_offline_at + rand(1..5).seconds).perform_later(id)
+  end
+
   scope :offline, -> { where('? > considered_offline_at', ::Time.now.utc) }
   scope :online, -> { where('? <= considered_offline_at', ::Time.now.utc) }
   scope :public_shared, -> { where(user_id: nil) }
+  scope :busy, -> { joins(:tasks).where(tasks: { state: 'running' }) }
 
   def touch_last_seen(next_poll_after)
     tm = ::Time.now.utc

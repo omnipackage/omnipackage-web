@@ -1,0 +1,17 @@
+<%# locals: (dashboard:) -%>
+
+<%= turbo_stream_from :agents %>
+
+<div id="dashboard">
+
+  <div class="card" style="width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title">CI agents</h5>
+      <p class="card-text">
+        <span id="public_agents_online_count"><%= ::Agent.public_shared.online.count %></span> public agents online
+      </p>
+      <%= link_to 'Your private agents', agents_path, class: 'card-link' %>
+    </div>
+  </div>
+
+</div>
