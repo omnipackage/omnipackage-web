@@ -1,0 +1,29 @@
+<%# locals: (agent:) -%>
+
+<li class="list-group-item" id="<%= dom_id(agent) %>">
+  <span>
+    <% if agent.offline? %>
+      <span class="badge bg-secondary">Offline</span>
+    <% elsif agent.busy? %>
+      <span class="badge bg-success">Busy</span>
+    <% elsif agent.idle? %>
+      <span class="badge bg-info">Idle</span>
+    <% end %>
+  </span>
+
+  <span class="text-primary">
+    <%= link_to agent.name, agent_path(agent.id) %>
+  </span>
+
+  <span class="text-secondary">
+    <%= agent.arch %>
+  </span>
+
+  <span class="float-end text-secondary">
+    <% if agent.last_seen_at %>
+      Last seen <%= time_ago_in_words(agent.last_seen_at) %> ago
+    <% else %>
+      Never seen online
+    <% end %>
+  </span>
+</li>

@@ -10,6 +10,8 @@ class Agent < ::ApplicationRecord
   validates :name, presence: true, length: { maximum: 200 }
   validates :arch, presence: true, inclusion: { in: ::Distro.arches }
 
+  broadcast_with ::Broadcasts::Agent
+
   scope :offline, -> { where('? > considered_offline_at', ::Time.now.utc) }
   scope :online, -> { offline.invert_where }
   scope :public_shared, -> { where(user_id: nil) }

@@ -2,7 +2,7 @@
 
 class ProjectsController < ::ApplicationController
   def index
-    @projects = current_user.projects.order(:name)
+    @pagination, @projects = ::Pagination.new(current_user.projects.order(:name), self).call
   end
 
   def show

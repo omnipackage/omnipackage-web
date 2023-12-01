@@ -1,7 +1,17 @@
 <h5>Your private CI agents</h5>
 
+<%= turbo_stream_from [current_user, :agents] %>
+
 <div class="container pt-3">
-  <%= render partial: 'list', locals: { agents: @agents_private } %>
+  <ul class="list-group list-group-flush" id="agents">
+    <% @agents_private.each do |agent| %>
+      <%= render partial: 'agents/agent', locals: { agent: agent } %>
+    <% end %>
+  </ul>
+
+  <div class="pt-3">
+    <%= render partial: 'layouts/pagination', locals: { pagination: @pagination } %>
+  </div>
 
   <div class="pt-3">
     <%= link_to 'Create new agent', new_agent_path, class: 'btn btn-outline-primary' %>

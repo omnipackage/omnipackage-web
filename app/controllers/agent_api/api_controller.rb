@@ -63,8 +63,7 @@ module AgentApi
 
     def respond_error(exception)
       payload = { error: exception.message }
-      ::Rails.logger.error(exception.message)
-      ::Rails.logger.error(exception.backtrace)
+      ::Rails.error.report(exception)
       # payload[:backtrace] = exception.backtrace if ::Rails.env.local?
       render(json: payload, status: :unprocessable_entity)
     end
