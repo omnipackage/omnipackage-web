@@ -13,7 +13,7 @@ export default class extends Controller {
   }
 
   setCurrentTheme(event) {
-    let new_theme = event.target.dataset.theme
+    let new_theme = event.params.theme
 
     this.set_theme(new_theme)
     cookies.set("theme", new_theme, 12345)
