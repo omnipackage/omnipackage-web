@@ -17,7 +17,7 @@ class Repository < ::ApplicationRecord
   after_destroy_commit { ::DeleteBucketJob.perform_later(storage_client.config, bucket) }
 
   scope :without_own_gpg_key, -> { where(gpg_key_private: nil, gpg_key_public: nil) }
-  scope :with_own_gpg_key, -> { where.not(gpg_key_private: nil, gpg_key_public: nil) }
+  scope :with_own_gpg_key, -> { where('gpg_key_private IS NOT NULL AND gpg_key_public IS NOT NULL') }
 
   def distro
     ::Distro[distro_id]

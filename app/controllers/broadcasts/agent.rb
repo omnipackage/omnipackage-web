@@ -2,6 +2,10 @@
 
 module Broadcasts
   class Agent < ::Broadcasts::BaseBroadcast
+    def create
+      refresh_public_agents_count
+    end
+
     def update
       ::Turbo::StreamsChannel.broadcast_replace_later_to(
         [model.user, :agents],
@@ -9,10 +13,6 @@ module Broadcasts
         partial: 'agents/agent',
         locals: { agent: model }
       )
-      refresh_public_agents_count
-    end
-
-    def create
       refresh_public_agents_count
     end
 
