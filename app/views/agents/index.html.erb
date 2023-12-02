@@ -1,7 +1,6 @@
 <h5>Your private CI agents</h5>
 
 <%= turbo_stream_from [current_user, :agents] %>
-<%= turbo_stream_from :agents %>
 
 <div class="container pt-3">
   <div class="row">
@@ -22,13 +21,7 @@
     </div>
 
     <div class="col-md-4">
-      <div class="card">
-        <div class="card-body">
-          <p class="card-text">
-            <span id="public_agents_busy_count"><%= @agents_public.online.busy.count %></span> of <span id="public_agents_online_count"><%= @agents_public.online.count %></span> public agents busy
-          </p>
-        </div>
-      </div>
+      <%= render partial: 'agents/public_agents_summary' %>
     </div>
 
   </div>

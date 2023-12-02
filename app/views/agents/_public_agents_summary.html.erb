@@ -1,0 +1,14 @@
+<%= turbo_stream_from :agents %>
+
+<div class="card" style="width: 18rem;" id="public_agents_summary">
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">CI public agents</h5>
+      <p class="card-text">
+        <span><%= ::Agent.public_shared.online.count %></span> online
+        <br />
+        <span><%= ::Agent.public_shared.online.busy.count %></span> busy
+      </p>
+    </div>
+  </div>
+</div>

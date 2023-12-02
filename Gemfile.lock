@@ -336,7 +336,7 @@ DEPENDENCIES
   sprockets-rails
   stimulus-rails
   super_awesome_print
-  turbo-rails (>= 2.0.0.pre.beta.1)
+  turbo-rails (>= 2.0.0.beta)
   tzinfo-data
   webdrivers
 
