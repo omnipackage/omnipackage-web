@@ -5,14 +5,14 @@ module Broadcasts
     def create # rubocop: disable Metrics/MethodLength
       ::Turbo::StreamsChannel.broadcast_prepend_later_to(
         [model.user, :tasks],
-        target: dom_id(model),
+        target: 'tasks',
         partial: 'tasks/task',
         locals: { task: model, highlight: true }
       )
 
       ::Turbo::StreamsChannel.broadcast_prepend_later_to(
         [model.project, :tasks],
-        target: dom_id(model),
+        target: 'tasks',
         partial: 'tasks/task',
         locals: { task: model, highlight: true }
       )
@@ -39,6 +39,13 @@ module Broadcasts
         template: 'tasks/show',
         assigns: { task: model },
         layout: false
+      )
+
+      ::Turbo::StreamsChannel.broadcast_update_later_to(
+        model,
+        target: "task_state_icon_#{model.id}",
+        partial: 'tasks/state_icon',
+        locals: { task: model }
       )
     end
 

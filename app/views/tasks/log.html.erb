@@ -1,0 +1,24 @@
+<%= turbo_stream_from @log %>
+<%= turbo_stream_from @log.task %>
+
+<div>
+  <h5>
+    Log for task <%= link_to "##{@log.task.id}", task_path(@log.task) %>
+    <small class="text-body-secondary">
+      <span id="task_state_icon_<%= @log.task.id %>">
+        <%= render partial: 'tasks/state_icon', locals: { task: @log.task } %>
+      </span>
+    </small>
+  </h5>
+
+  <div class="container pt-1">
+    <div class="pt-1 pb-2">
+      <%= link_to 'Raw text', log_task_path(@log.task, format: :text) %>
+    </div>
+
+    <div class="overflow-auto vh-100">
+      <pre id="task_log_<%= @log.id %>_text"><%= @log.text %></pre>
+    </div>
+  </div>
+
+</div>

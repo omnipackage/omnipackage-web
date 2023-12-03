@@ -25,7 +25,14 @@ class TasksController < ::ApplicationController
   end
 
   def log
-    render(plain: task.log.text)
+    respond_to do |format|
+      format.text do
+        render(plain: task.log.text)
+      end
+      format.html do
+        @log = task.log
+      end
+    end
   end
 
   private
