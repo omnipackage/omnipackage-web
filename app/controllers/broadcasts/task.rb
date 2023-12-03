@@ -18,7 +18,7 @@ module Broadcasts
       )
     end
 
-    def update # rubocop: disable Metrics/MethodLength
+    def update # rubocop: disable Metrics/MethodLength, Metrics/AbcSize
       ::Turbo::StreamsChannel.broadcast_replace_later_to(
         [model.user, :tasks],
         target: dom_id(model),
