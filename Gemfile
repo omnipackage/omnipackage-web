@@ -13,7 +13,7 @@ gem 'redlock'
 gem 'sidekiq'
 gem 'sprockets-rails'
 gem 'stimulus-rails'
-gem 'turbo-rails', '>= 2.0.0.beta'
+gem 'turbo-rails'
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 group :development, :test do
