@@ -31,9 +31,9 @@ class Task
       return Command['stop', nil] unless task
 
       if state == 'busy'
-        busy(task)
+        busy(task, payload[:livelog])
       elsif state == 'finished'
-        finish(task)
+        finish(task, payload[:livelog])
       end
     end
 
@@ -77,14 +77,16 @@ class Task
       ::Task.instantiate(fields.zip(pgresult.values.sole).to_h)
     end
 
-    def busy(task)
+    def busy(task, log)
       ::ApplicationRecord.transaction do
+        task.append_log(log)
         task.running!
       end
     end
 
-    def finish(task)
+    def finish(task, log)
       ::ApplicationRecord.transaction do
+        task.append_log(log)
         task.finished!
       end
       ::RepositoryPublishJob.start(task)

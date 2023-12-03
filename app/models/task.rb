@@ -7,6 +7,7 @@ class Task < ::ApplicationRecord
   has_one :user, class_name: '::User', through: :project
   has_many :artefacts, class_name: '::Task::Artefact', dependent: :destroy
   has_many :repositories, ->(task) { where(distro_id: task.distro_ids) }, through: :project, class_name: '::Repository'
+  has_one :log, class_name: '::Task::Log', dependent: :destroy
 
   enum :state, %w[scheduled running finished error].index_with(&:itself), default: 'scheduled'
 
@@ -16,8 +17,13 @@ class Task < ::ApplicationRecord
 
   validates :distro_ids, presence: true
   validates_with ::Distro::DistrosValidator
-  validate do
-    errors.add(:distro_ids, "must be combination of #{::Distro.ids}") if distro_ids && (distro_ids - ::Distro.ids).any?
+
+  before_create do
+    build_log
+  end
+
+  def append_log(text)
+    log.append(text)
   end
 
   def distros

@@ -11,7 +11,7 @@ class TasksController < ::ApplicationController
   end
 
   def show
-    @task = current_user.tasks.find(params[:id])
+    @task = task
   end
 
   def create
@@ -24,9 +24,17 @@ class TasksController < ::ApplicationController
     redirect_to(tasks_path, notice: 'Task has been successfully deleted')
   end
 
+  def log
+    render(plain: task.log.text)
+  end
+
   private
 
   def project
     @project ||= current_user.projects.find_by(id: params[:project_id])
+  end
+
+  def task
+    @task ||= current_user.tasks.find(params[:id])
   end
 end
