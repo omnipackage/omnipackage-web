@@ -34,11 +34,10 @@ module Broadcasts
       )
 
       ::Turbo::StreamsChannel.broadcast_replace_later_to(
-        model,
+        [model, :show],
         target: dom_id(model),
-        template: 'tasks/show',
-        assigns: { task: model },
-        layout: false
+        partial: 'tasks/task_show',
+        locals: { task: model },
       )
 
       ::Turbo::StreamsChannel.broadcast_update_later_to(

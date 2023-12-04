@@ -1,0 +1,83 @@
+<%# locals: (task:) -%>
+
+<%= turbo_stream_from [task, :show] %>
+
+<div id="<%= dom_id(task) %>">
+
+  <h5>
+    CI task #<%= task.id %>
+    <small class="text-body-secondary">
+      created <%= time_ago_in_words(task.created_at) %> ago for
+      <%= link_to task.project.name, project_path(task.project), class: 'link-secondary' %>
+      project
+    </small>
+  </h5>
+
+  <div class="pb-3 text-secondary">
+    <%= render partial: 'tasks/state_icon', locals: { task: task } %>
+    <%= task.state.capitalize %>
+    <% if !task.scheduled? && task.agent %>
+      <span>on <%= link_to task.agent.name, agent_path(task.agent), class: 'link-secondary' %></span>
+    <% end %>
+    <%= time_ago_in_words(task.updated_at) %> ago
+  </div>
+
+  <div class="container pt-1">
+
+    <div class="pb-3">
+      <%= link_to 'Log', log_task_path(task) %>
+    </div>
+
+    <% if task.artefacts.any? %>
+      <h6>Artefacts</h6>
+    <% elsif task.scheduled? || task.running? %>
+      <h6>No artefacts yet<h6>
+    <% else %>
+      <h6>No artefacts<h6>
+    <% end %>
+    <div class="vstack gap-3">
+
+      <% task.artefacts.group_by(&:distro).sort_by { |i| d = ::Distro[i.first]; [d.family, d.name] }.each do |distro, afacts| %>
+        <div class="card">
+          <div class="card-header">
+            <%= render partial: 'layouts/distro_icon', locals: { family: ::Distro[distro].family, size: 24 } %>
+            <%= ::Distro[distro].name %>
+            <% if afacts.any?(&:error?) %>
+              <span class="badge text-bg-danger">ERRORS<span>
+            <% end %>
+          </div>
+
+          <div class="card-body">
+            <table class="table table-sm">
+
+              <thead>
+                <tr>
+                  <th scope="col">File</th>
+                  <th scope="col">Content type</th>
+                  <th scope="col">Size</th>
+                  <th scope="col">Created at</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <% afacts.each do |afact| %>
+                  <tr>
+                    <td><%= link_to afact.filename, rails_blob_path(afact.attachment.blob, disposition: 'attachment') %></td>
+                    <td><%= afact.attachment.content_type %></td>
+                    <td><%= number_to_human_size(afact.attachment.byte_size) %></td>
+                    <td><%= afact.attachment.blob.created_at %></td>
+                  </tr>
+                <% end %>
+
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+      <% end %>
+
+    </div>
+
+  </div>
+
+</div>
