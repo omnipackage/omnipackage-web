@@ -13,7 +13,7 @@ class Agent < ::ApplicationRecord
   broadcast_with ::Broadcasts::Agent
 
   after_update_commit do
-    ::AgentStatusCheckJob.set(wait_until: considered_offline_at + rand(1..5).seconds).perform_later(id)
+    ::AgentStatusCheckJob.set(wait_until: considered_offline_at + rand(1..5).seconds).perform_later(id) if considered_offline_at
   end
 
   scope :offline, -> { where('? > considered_offline_at', ::Time.now.utc) }
