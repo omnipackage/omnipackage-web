@@ -19,7 +19,7 @@
     <% else 'finished' %>
       <%= time_ago_in_words(task.finished_at) %> ago
       <span class="ms-3">
-        <i class="bi bi-alarm"></i>
+        <i class="bi bi-stopwatch"></i>
         <%= task.duration.humanized %>
       </span>
     <% end %>
