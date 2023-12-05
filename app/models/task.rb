@@ -33,4 +33,14 @@ class Task < ::ApplicationRecord
   def errors?
     artefacts.failed.exists?
   end
+
+  def finish!
+    update!(state: 'finished', finished_at: ::Time.now.utc)
+  end
+
+  def duration
+    return if !started_at || !finished_at
+
+    ::ActiveSupport::Duration.build(finished_at - started_at)
+  end
 end

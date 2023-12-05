@@ -56,7 +56,8 @@ class Task
           tasks
         SET
           state = 'running',
-          agent_id = #{agent.id}
+          agent_id = #{agent.id},
+          started_at = NOW() at time zone 'utc'
         WHERE id = (
           SELECT t.id FROM tasks t
           JOIN project_sources_tarballs pst ON t.sources_tarball_id = pst.id
@@ -87,7 +88,7 @@ class Task
     def finish(task, log)
       ::ApplicationRecord.transaction do
         task.append_log(log)
-        task.finished!
+        task.finish!
       end
       ::RepositoryPublishJob.start(task)
     end
