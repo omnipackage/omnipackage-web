@@ -20,12 +20,7 @@
       <%= time_ago_in_words(task.finished_at) %> ago
       <span class="ms-3">
         <i class="bi bi-alarm"></i>
-        <%- d = task.duration %>
-        <% if d.in_hours >= 1 %>
-          <%= sprintf("%02d:%02d:%02d", d.parts[:hours], d.parts[:minutes], d.parts[:seconds]) %>
-        <% else %>
-          <%= sprintf("%02d:%02d", d.parts[:minutes], d.parts[:seconds]) %>
-        <% end %>
+        <%= task.duration.humanized %>
       </span>
     <% end %>
   </span>

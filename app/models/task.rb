@@ -41,6 +41,6 @@ class Task < ::ApplicationRecord
   def duration
     return if !started_at || !finished_at
 
-    ::ActiveSupport::Duration.build(finished_at - started_at)
+    ::Duration.build(finished_at - started_at)
   end
 end
