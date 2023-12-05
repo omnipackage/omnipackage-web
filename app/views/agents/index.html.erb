@@ -12,8 +12,21 @@
       </ul>
 
       <div class="pt-3">
-        <%= render partial: 'layouts/pagination', locals: { pagination: @pagination } %>
+        <%= render partial: 'layouts/pagination', locals: { pagination: @pagination_private } %>
       </div>
+
+      <%= render layout: 'layouts/admin_area' do %>
+        <h6>Public agents</h6>
+        <ul class="list-group list-group-flush" id="agents">
+          <% @agents_public.each do |agent| %>
+            <%= render partial: 'agents/agent', locals: { agent: agent } %>
+          <% end %>
+        </ul>
+
+        <div class="pt-3">
+          <%= render partial: 'layouts/pagination', locals: { pagination: @pagination_public } %>
+        </div>
+      <% end %>
 
       <div class="pt-3">
         <%= link_to 'Create new agent', new_agent_path, class: 'btn btn-outline-primary' %>

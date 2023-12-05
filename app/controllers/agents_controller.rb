@@ -2,8 +2,8 @@
 
 class AgentsController < ::ApplicationController
   def index
-    @pagination, @agents_private = ::Pagination.new(current_user.private_agents.order(created_at: :asc), self).call
-    @agents_public = ::Agent.public_shared.order(created_at: :asc)
+    @pagination_private, @agents_private = ::Pagination.new(current_user.private_agents.order(created_at: :asc), self).call
+    @pagination_public, @agents_public = ::Pagination.new(::Agent.public_shared.order(created_at: :asc), self).call 
   end
 
   def show
