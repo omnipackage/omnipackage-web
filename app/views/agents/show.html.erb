@@ -1,17 +1,30 @@
-<h1><%= @agent.name %></h1>
+<h5>Agent <%= @agent.name %></h5>
 
-<p>
-  <strong>API key</strong>
-  <pre><%= @agent.apikey %></pre>
-</p>
+<div class="container pt-3">
+  <div>
+    <h6>API key</h6>
+    <a href="#collapseApiKey" class="link-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseApiKey" aria-expanded="false" aria-controls="collapseApiKey">
+      show
+    </a>
+    <div class="collapse" id="collapseApiKey" data-controller="clipboard">
+      <div class="bg-body-tertiary p-2 rounded-2">
+        <pre data-clipboard-target="source"><%= @agent.apikey %></pre>
+      </div>
+      <div class="btn-group" role="group" aria-label="api key manage">
+        <button data-action="clipboard#copy" class="btn btn-link btn-sm"><i class="bi bi-copy me-1"></i>Copy to clipboard</button>
+      </div>
+    </div>
+  </div>
 
-<p>
-  <strong>Arch</strong>
-  <pre><%= @agent.arch %></pre>
-</p>
+  <div class="pt-3">
+    <h6>Arch</h6>
+    <span class="text-monospace"><%= @agent.arch %></span>
+  </div>
 
-<br>
-<p>
-  <%= link_to 'Edit agent', edit_agent_path(@agent.id), class: 'btn btn-link' %>
-  <%= link_to 'Back to agents list', agents_path, class: 'btn btn-link' %>
-</p>
+  <div class="btn-group pt-3" role="group" aria-label="agent links">
+    <%= link_to 'Edit agent', edit_agent_path(@agent.id), class: 'btn btn-link' %>
+    <%= link_to 'Back to agents list', agents_path, class: 'btn btn-link' %>
+    <%= button_to 'Delete this agent', agent_path(@agent.id), method: :delete, class: 'btn btn-link link-danger', form: { data: { turbo_confirm: "Are you sure?" } } %>
+  </div>
+
+</div>

@@ -18,12 +18,11 @@ class AgentsController < ::ApplicationController
     @agent = find_agent
   end
 
-  def create # rubocop: disable Metrics/AbcSize, Metrics/MethodLength
+  def create # rubocop: disable Metrics/AbcSize
     @agent = build_agent
     @agent.user = nil if current_user.root? && params[:public] == '1'
     @agent.name = params[:name]
     @agent.arch = params[:arch]
-    @agent.apikey = ::SecureRandom.hex
     if @agent.valid?
       @agent.save!
       redirect_to(agents_path, notice: "Agent #{@agent.id} has been successfully created")
