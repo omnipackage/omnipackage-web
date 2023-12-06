@@ -2,6 +2,7 @@
 
 class Agent < ::ApplicationRecord
   encrypts :apikey, deterministic: true
+  has_secure_token :apikey
 
   has_many :tasks, class_name: '::Task', dependent: :nullify
   belongs_to :user, class_name: '::User', optional: true
@@ -13,7 +14,6 @@ class Agent < ::ApplicationRecord
   broadcast_with ::Broadcasts::Agent
 
   after_update_commit :schedule_status_check
-  before_validation :build_apikey, on: :create
 
   scope :offline, -> { where('? > considered_offline_at', ::Time.now.utc) }
   scope :online, -> { where('? <= considered_offline_at', ::Time.now.utc) }
@@ -52,10 +52,6 @@ class Agent < ::ApplicationRecord
   end
 
   private
-
-  def build_apikey
-    self.apikey = ::SecureRandom.hex unless apikey
-  end
 
   def schedule_status_check
     ::AgentStatusCheckJob.set(wait_until: considered_offline_at + rand(1..5).seconds).perform_later(id) if considered_offline_at
