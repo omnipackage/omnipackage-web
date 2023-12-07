@@ -17,10 +17,9 @@ class AgentsController < ::ApplicationController
     @agent = find_agent
   end
 
-  def create # rubocop: disable Metrics/AbcSize
+  def create
     @agent = build_agent
-    @agent.name = params[:name]
-    @agent.arch = params[:arch]
+    @agent.assign_attributes(agent_params)
     if @agent.valid?
       @agent.save!
       redirect_to(agents_path, notice: "Agent #{@agent.id} has been successfully created")
@@ -29,10 +28,9 @@ class AgentsController < ::ApplicationController
     end
   end
 
-  def update # rubocop: disable Metrics/AbcSize
+  def update
     @agent = find_agent
-    @agent.name = params[:name] if params[:name]
-    @agent.arch = params[:arch] if params[:arch]
+    @agent.assign_attributes(agent_params)
     if @agent.save
       redirect_to(agents_path(@agent.id), notice: "Agent #{@agent.id} has been successfully updated")
     else
@@ -46,6 +44,10 @@ class AgentsController < ::ApplicationController
   end
 
   private
+
+  def agent_params
+    params.require(:agent).permit(:name, :arch)
+  end
 
   def build_agent
     current_user.private_agents.build

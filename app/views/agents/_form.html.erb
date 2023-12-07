@@ -1,22 +1,20 @@
-<%= form_with(url: agent.new_record? ? agents_path : agent_path(agent.id), method: agent.new_record? ? :post : :patch) do |f| %>
+<%= form_with(model: agent) do |f| %>
   <div class="mb-3">
-    <%= f.label 'Name', class: 'form-label' %>
 
-    <div class="input-group has-validation">
-      <%= f.text_field(:name,
-            value: agent.name,
-            class: "form-control#{agent.errors.include?(:name) ? ' is-invalid' : ''}",
-            'aria-describedby' => 'validation-error-name'
-      )%>
-      <div id="validation-error-name" class="invalid-feedback">
-        <%= agent.errors.messages[:name].to_sentence %>
-      </div>
+    <%= f.label :name, class: 'form-label' %>
+    <%= f.text_field :name,
+          value:  agent.name,
+          class:  "form-control #{agent.errors.include?(:name) ? 'is-invalid' : ''}",
+          aria:   { describedby: 'validation-error-name' }
+    %>
+    <div id="validation-error-name" class="invalid-feedback d-block">
+      <%= agent.errors.messages_for(:name).to_sentence %>
     </div>
+
   </div>
 
   <div class="mb-3">
-    <%= f.label 'Arch', class: 'form-label' %>
-
+    <%= f.label :arch, class: 'form-label' %>
     <%= f.collection_select :arch, ::Distro.arches, :itself, :itself, include_blank: false, selected: agent.arch, class: 'form-select' %>
   </div>
 
