@@ -4,16 +4,16 @@ class Project
   class Sources
     class << self
       def new(**kwargs)
-        case kwargs.fetch(:kind)
-        when 'git'
-          ::Project::Sources::Git
-        when 'localfs'
-          raise 'only available in local envs' unless ::Rails.env.local?
+        kind = kwargs.delete(:kind)
+        raise "unsupported sources kind '#{kwargs}'" unless kinds.include?(kind)
 
-          ::Project::Sources::Localfs
-        else
-          raise "unsupported sources kind '#{kwargs}'"
-        end.allocate.tap { |o| o.send(:initialize, **kwargs.except(:kind)) }
+        ::Project::Sources.const_get(kind.camelize, false).allocate.tap { |o| o.send(:initialize, **kwargs) }
+      end
+
+      def kinds
+        i = %w[git]
+        i << 'localfs' if ::Rails.env.local?
+        i.freeze
       end
     end
 

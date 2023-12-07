@@ -8,17 +8,13 @@ class Project < ::ApplicationRecord
 
   encrypts :sources_private_ssh_key
 
-  enum :sources_kind, (%w[git] + (::Rails.env.local? ? %w[localfs] : [])).index_with(&:itself), default: 'git'
+  enum :sources_kind, ::Project::Sources.kinds.index_with(&:itself), default: ::Project::Sources.kinds.first
   enum :sources_status, %w[unverified fetching verified].index_with(&:itself), default: 'unverified'
 
-  attribute :name, :string, default: ''
-  attribute :sources_location, :string
-  attribute :sources_subdir, :string, default: ''
-
-  validates :name, presence: true, length: { in: 2..150 }
-  validates :sources_location, presence: true, length: { in: 2..8000 }
+  validates :name, presence: true, length: { maximum: 150 }, format: { with: /\A[A-Za-z0-9 ]+\z/ }
+  validates :sources_location, presence: true, length: { maximum: 8000 }
   validates :sources_kind, presence: true
-  validates :sources_subdir, length: { in: 1..500 }, format: { without: /\..|\A\// }, allow_blank: true
+  validates :sources_subdir, length: { maximum: 500 }, format: { without: /\..|\A\// }, allow_blank: true
 
   broadcast_with ::Broadcasts::Project
 
