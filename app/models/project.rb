@@ -18,7 +18,7 @@ class Project < ::ApplicationRecord
   validates :name, presence: true, length: { in: 2..150 }
   validates :sources_location, presence: true, length: { in: 2..8000 }
   validates :sources_kind, presence: true
-  validates :sources_subdir, length: { in: 0..500 }, format: { without: /\..|\A\// }
+  validates :sources_subdir, length: { in: 1..500 }, format: { without: /\..|\A\// }, allow_blank: true
 
   broadcast_with ::Broadcasts::Project
 

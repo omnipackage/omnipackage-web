@@ -18,7 +18,8 @@ class ProjectsController < ::ApplicationController
   end
 
   def create
-    @project = assign_attributes(build_project)
+    @project = build_project
+    @project.assign_attributes(project_params)
     if @project.valid?
       @project.generate_ssh_keys
       @project.save!
@@ -30,7 +31,8 @@ class ProjectsController < ::ApplicationController
   end
 
   def update
-    @project = assign_attributes(find_project)
+    @project = find_project
+    @project.assign_attributes(project_params)
     if @project.save
       if %w[sources_location sources_kind].intersect?(@project.previous_changes.keys)
         @project.sources_tarball&.destroy
@@ -57,11 +59,7 @@ class ProjectsController < ::ApplicationController
     current_user.projects.build
   end
 
-  def assign_attributes(object)
-    object.name = params[:name]
-    object.sources_location = params[:sources_location]
-    object.sources_kind = params[:sources_kind]
-    object.sources_subdir = params[:sources_subdir]
-    object
+  def project_params
+    params.require(:project).permit(:name, :sources_location, :sources_kind, :sources_subdir)
   end
 end
