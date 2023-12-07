@@ -1,41 +1,19 @@
-<h5>Your private CI agents</h5>
+<h5>CI agents</h5>
 
 <%= turbo_stream_from [current_user, :agents] %>
 
 <div class="container pt-3">
-  <div class="row">
-    <div class="col-md-8">
-      <ul class="list-group list-group-flush" id="agents">
-        <% @agents_private.each do |agent| %>
-          <%= render partial: 'agents/agent', locals: { agent: agent } %>
-        <% end %>
-      </ul>
+  <ul class="list-group list-group-flush" id="agents">
+    <% @agents.each do |agent| %>
+      <%= render partial: 'agents/agent', locals: { agent: agent } %>
+    <% end %>
+  </ul>
 
-      <div class="pt-3">
-        <%= render partial: 'layouts/pagination', locals: { pagination: @pagination_private } %>
-      </div>
+  <div class="pt-3">
+    <%= render partial: 'layouts/pagination', locals: { pagination: @pagination } %>
+  </div>
 
-      <%= render layout: 'layouts/admin_area' do %>
-        <h6>Public agents</h6>
-        <ul class="list-group list-group-flush" id="agents">
-          <% @agents_public.each do |agent| %>
-            <%= render partial: 'agents/agent', locals: { agent: agent } %>
-          <% end %>
-        </ul>
-
-        <div class="pt-3">
-          <%= render partial: 'layouts/pagination', locals: { pagination: @pagination_public } %>
-        </div>
-      <% end %>
-
-      <div class="pt-3">
-        <%= link_to 'Create new agent', new_agent_path, class: 'btn btn-outline-primary' %>
-      </div>
-    </div>
-
-    <div class="col-md-4">
-      <%= render partial: 'agents/public_agents_summary' %>
-    </div>
-
+  <div class="pt-3">
+    <%= link_to 'Create new agent', new_agent_path, class: 'btn btn-outline-primary' %>
   </div>
 </div>

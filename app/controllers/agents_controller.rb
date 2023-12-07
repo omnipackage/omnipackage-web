@@ -2,8 +2,7 @@
 
 class AgentsController < ::ApplicationController
   def index
-    @pagination_private, @agents_private = ::Pagination.new(current_user.private_agents.order(created_at: :asc), self).call
-    @pagination_public, @agents_public = ::Pagination.new(::Agent.public_shared.order(created_at: :asc), self).call
+    @pagination, @agents = ::Pagination.new(current_user.private_agents.order(created_at: :asc), self).call
   end
 
   def show
@@ -20,7 +19,6 @@ class AgentsController < ::ApplicationController
 
   def create # rubocop: disable Metrics/AbcSize
     @agent = build_agent
-    @agent.user = nil if current_user.root? && params[:public] == '1'
     @agent.name = params[:name]
     @agent.arch = params[:arch]
     if @agent.valid?
@@ -33,7 +31,6 @@ class AgentsController < ::ApplicationController
 
   def update # rubocop: disable Metrics/AbcSize
     @agent = find_agent
-    @agent.user = nil if current_user.root? && params[:public] == '1'
     @agent.name = params[:name] if params[:name]
     @agent.arch = params[:arch] if params[:arch]
     if @agent.save
@@ -55,10 +52,6 @@ class AgentsController < ::ApplicationController
   end
 
   def find_agent
-    if current_user.root?
-      ::Agent.all
-    else
-      current_user.private_agents
-    end.find(params[:id])
+    current_user.private_agents.find(params[:id])
   end
 end
