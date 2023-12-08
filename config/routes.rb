@@ -53,4 +53,6 @@ require 'sidekiq/web'
     concerns :gpg_keys
   end
   resources :distros, only: %i[index]
+
+  get ':project_id/install', to: 'installs#index', as: 'package_install'
 end
