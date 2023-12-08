@@ -1,0 +1,42 @@
+<%# locals: (family:, repos:) -%>
+
+<%- acc_id = ->(distro_id) { "collapse-accordion-#{distro_id.gsub(/[^0-9a-z]/i, '-')}" } %>
+
+<div class="accordion" id="accordion-<%= family %>">
+
+  <% repos.sort_by { |i| i.distro.name }.each do |repo| %>
+
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#<%= acc_id.call(repo.distro.id) %>" aria-expanded="false" aria-controls="<%= acc_id.call(repo.distro.id) %>">
+          <%= repo.distro.name %>
+        </button>
+      </h2>
+
+      <div id="<%= acc_id.call(repo.distro.id) %>" class="accordion-collapse collapse" data-bs-parent="#accordion-<%= family %>">
+        <div class="accordion-body">
+
+          <h6>Package installation steps for <%= repo.distro.name %></h6>
+          <div class="bg-body-tertiary p-2 rounded-2">
+            <pre id="steps-pre-<%= acc_id.call(repo.distro.id) %>"><%= repo.installable_cli %></pre>
+          </div>
+
+          <div class="btn-group" role="group" aria-label="installation step manage">
+            <button onclick="copyTextToClipboard('#steps-pre-<%= acc_id.call(repo.distro.id) %>')" class="btn btn-link btn-sm">Copy to clipboard</button>
+            <button class="btn btn-link btn-sm link-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-gpg-key-<%= acc_id.call(repo.distro.id) %>" aria-expanded="false" aria-controls="#collapse-gpg-key-<%= acc_id.call(repo.distro.id) %>">
+              GPG key
+            </button>
+          </div>
+
+          <div class="collapse" id="collapse-gpg-key-<%= acc_id.call(repo.distro.id) %>">
+            <div class="bg-body-tertiary p-2 rounded-2">
+              <pre><%= repo.gpg_key.public_info.strip %></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <% end %>
+
+</div>
