@@ -9,11 +9,19 @@
 
   <body>
     <div class="container p-3">
-      <h1>Install <%= @project.name %></h1>
+      <h1 class="text-center">Install <%= @project.name %></h1>
 
       <div class="vstack gap-5 pt-3">
         <% @project.repositories.group_by { |repo| repo.distro.family }.each do |family, repos| %>
-          <%= render partial: 'installs/distro_family', locals: { family: family, repos: repos } %>
+          <div class="row align-items-center">
+            <div class="col-md-auto">
+              <%= render partial: 'layouts/distro_icon', locals: { family: family, size: 64 } %>
+            </div>
+
+            <div class="col-md-11">
+              <%= render partial: 'installs/repos', locals: { family: family, repos: repos } %>
+            </div>
+          </div>
         <% end %>
       </div>
 
@@ -21,8 +29,8 @@
   </body>
 
   <footer class="pt-5">
-    <div class="p-5 bg-body-tertiary">
-      <div class="container-fluid py-5 text-center">
+    <div class="p-3 bg-body-tertiary">
+      <div class="container-fluid py-3 text-center">
         Powered by <%= link_to 'OmniPackage', root_path %>
       </div>
     </div>
