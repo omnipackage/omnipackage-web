@@ -3,7 +3,15 @@
 <div class="container pt-3">
 
   <div>
-    Signed as <strong><%= @user.email %></strong>
+    <div>
+      <p>Signed as <strong><%= @user.email %></strong></p>
+      <p>
+        Name <strong><%= @user.name.presence || 'unspecified' %></strong>
+        <a href="#" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover m-1" data-bs-toggle="modal" data-bs-target="#changeAccountModal">
+          <i class="bi bi-pencil-square"></i> change
+        </a>
+      </p>
+    </div>
 
     <div>
       <%= link_to 'Change email address', edit_identity_email_path, class: 'link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover m-1' %>
@@ -28,5 +36,24 @@
 
   <div class="mt-5">
     <%= button_to "Log out", current_session, method: :delete, class: 'btn link-warning' %>
+  </div>
+</div>
+
+
+<div class="modal fade" id="changeAccountModal" tabindex="-1" aria-labelledby="changeAccountModalTitle" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <%= form_with(model: @user, url: identity_account_path, method: :patch) do |form| %>
+        <div class="modal-body">
+          <%= form.label :name, class: "form-label" %>
+          <%= form.text_field :name, class: "form-control", autocomplete: 'off' %>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <%= form.submit "Save changes", class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>

@@ -17,7 +17,7 @@ class GpgKeysController < ::ApplicationController
   end
 
   def generate
-    gpg = ::Gpg.new.generate_keys(current_user.email, current_user.email)
+    gpg = ::Gpg.new.generate_keys(current_user.displayed_name, current_user.email)
     key_source.gpg_key_private = gpg.priv
     key_source.gpg_key_public = gpg.pub
     key_source.save!

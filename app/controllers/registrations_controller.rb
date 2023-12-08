@@ -14,7 +14,7 @@ class RegistrationsController < ::ApplicationController
     if @user.save
       sign_in(@user)
 
-      send_email_verification
+      send_email_verification(@user)
       redirect_to(root_path, notice: 'Welcome! You have signed up successfully')
     else
       render(:new, status: :unprocessable_entity)
@@ -27,7 +27,7 @@ class RegistrationsController < ::ApplicationController
     params.permit(:email, :password, :password_confirmation)
   end
 
-  def send_email_verification
-    ::UserMailer.with(user: @user).email_verification.deliver_later
+  def send_email_verification(user)
+    ::UserMailer.with(user: user).email_verification.deliver_later
   end
 end

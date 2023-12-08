@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_12_05_174047) do
+ActiveRecord::Schema[7.1].define(version: 2023_12_07_172049) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -166,6 +166,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_05_174047) do
     t.boolean "root", default: false, null: false
     t.string "gpg_key_private"
     t.string "gpg_key_public"
+    t.string "name", limit: 2000, default: "", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 

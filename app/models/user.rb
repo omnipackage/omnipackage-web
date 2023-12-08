@@ -36,8 +36,12 @@ class User < ::ApplicationRecord
     ::Gpg::Key[gpg_key_private, gpg_key_public]
   end
 
+  def displayed_name
+    name.presence || email
+  end
+
   def generate_gpg_keys
-    gpg = ::Gpg.new.generate_keys(email, email)
+    gpg = ::Gpg.new.generate_keys(displayed_name, email)
     self.gpg_key_private = gpg.priv
     self.gpg_key_public = gpg.pub
   end

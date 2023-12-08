@@ -26,7 +26,7 @@ require 'sidekiq/web'
     resource :email,              only: %i[edit update]
     resource :email_verification, only: %i[edit create]
     resource :password_reset,     only: %i[new edit create update]
-    resource :account,            only: %i[show]
+    resource :account,            only: %i[show update]
   end
 
   scope '/account' do

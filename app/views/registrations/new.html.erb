@@ -7,28 +7,59 @@
       <%= form_with(url: sign_up_path) do |form| %>
         <div class="mb-3 text-start">
           <%= form.label :email, class: "form-label" %>
-          <%= form.email_field :email, value: @user.email, autofocus: true, autocomplete: "email", class: "form-control#{@user.errors.include?(:email) ? ' is-invalid' : ''}", 'aria-describedby' => 'validation-error-email' %>
-          <div id="validation-error-email" class="invalid-feedback">
-            <%= @user.errors.messages[:email].to_sentence %>
+          <%= form.email_field :email,
+            required:     true,
+            value:        @user.email,
+            autofocus:    true,
+            autocomplete: "email",
+            class:        "form-control #{@user.errors.include?(:email) ? 'is-invalid' : ''}",
+            aria:         { describedby: 'validation-error-email' }
+          %>
+          <div id="validation-error-email" class="invalid-feedback d-block">
+            <%= @user.errors.messages_for(:email).to_sentence %>
           </div>
-          <div class="form-text">will also be used for GPG keys generation, but you can upload your own keys later</div>
+          <div class="form-text">Email will also be used for GPG keys generation, but you can upload your own keys later</div>
         </div>
 
         <div class="mb-3 text-start">
           <%= form.label :password, class: "form-label" %>
-          <%= form.password_field :password, required: true, autocomplete: "new-password", class: "form-control#{@user.errors.include?(:password) ? ' is-invalid' : ''}", 'aria-describedby' => 'validation-error-password' %>
-          <div id="validation-error-password" class="invalid-feedback">
-            <%= @user.errors.messages[:password].to_sentence %>
+          <%= form.password_field :password,
+            required:     true,
+            autocomplete: "new-password",
+            class:        "form-control #{@user.errors.include?(:password) ? 'is-invalid' : ''}",
+            aria:         { describedby: 'validation-error-password' }
+          %>
+          <div id="validation-error-password" class="invalid-feedback d-block">
+            <%= @user.errors.messages_for(:password).to_sentence %>
           </div>
           <div class="form-text"><%= ::User::PASSWORD_MIN_LENGTH %> characters minimum</div>
         </div>
 
         <div class="mb-3 text-start">
           <%= form.label :password_confirmation, class: "form-label" %>
-          <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", class: "form-control#{@user.errors.include?(:password_confirmation) ? ' is-invalid' : ''}", 'aria-describedby' => 'validation-error-password_confirmation' %>
-          <div id="validation-error-password_confirmation" class="invalid-feedback">
-            <%= @user.errors.messages[:password_confirmation].to_sentence %>
+          <%= form.password_field :password_confirmation,
+            required:     true,
+            autocomplete: "new-password",
+            class:        "form-control #{@user.errors.include?(:password_confirmation) ? 'is-invalid' : ''}",
+            aria:         { describedby: 'validation-error-password_confirmation' }
+          %>
+          <div id="validation-error-password_confirmation" class="invalid-feedback d-block">
+            <%= @user.errors.messages_for(:password_confirmation).to_sentence %>
           </div>
+        </div>
+
+        <div class="mb-3 text-start">
+          <%= form.label :name, class: "form-label" %>
+          <%= form.text_field :name,
+            required:     false,
+            value:        @user.name,
+            class:        "form-control #{@user.errors.include?(:name) ? 'is-invalid' : ''}",
+            aria:         { describedby: 'validation-error-name' }
+          %>
+          <div id="validation-error-name" class="invalid-feedback d-block">
+            <%= @user.errors.messages_for(:name).to_sentence %>
+          </div>
+          <div class="form-text">Optional user name will be used in places like GPG keys. Set this to your name, or name of your company, or leave it blank and then email will be used for these purposes instead</div>
         </div>
 
         <div>
