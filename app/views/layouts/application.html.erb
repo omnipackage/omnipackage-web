@@ -24,11 +24,13 @@
     <div class="container pt-3">
       <%= yield %>
     </div>
-  </body>
 
-  <footer>
-    <div class="container pt-5">
-      <%= render partial: 'layouts/footer' %>
-    </div>
-  </footer>
+    <footer class="pt-5">
+      <div class="p-3 bg-body-tertiary">
+        <div class="container-fluid py-3">
+          <%= render partial: 'layouts/footer' %>
+        </div>
+      </div>
+    </footer>
+  </body>
 </html>
