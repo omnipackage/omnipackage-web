@@ -1,4 +1,8 @@
-<% if ::Rails.env.development? %>
-  <pre><%= params.to_unsafe_h.pretty_inspect %></pre>
-  <pre><%= @pagination&.to_h %></pre>
-<% end %>
+<div class="p-3 bg-body-tertiary">
+  <div class="container-fluid py-3">
+    <% if ::Rails.env.development? %>
+      <pre><%= params.to_unsafe_h.pretty_inspect %></pre>
+      <pre><%= @pagination&.to_h %></pre>
+    <% end %>
+  </div>
+</div>
