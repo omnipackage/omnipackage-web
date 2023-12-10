@@ -33,6 +33,10 @@ class Distro
       map(&:arch).uniq
     end
 
+    def by_package_type(package_type)
+      select { |d| d.package_type == package_type }
+    end
+
     def load_from_file
       ::YAML.load_file(::Rails.root.join('config/distros.yml'), aliases: true)
     end

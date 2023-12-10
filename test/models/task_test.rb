@@ -15,4 +15,17 @@ class TaskTest < ::ActiveSupport::TestCase
     assert build(:task, distro_ids: []).invalid?
     assert build(:task, distro_ids: nil).invalid?
   end
+
+  test 'create' do
+    project = create(:project_with_sources)
+    task = ::Task.create(project: project)
+
+    assert_equal 1, project.tasks.count
+  end
+
+  test '1create' do
+    task = create(:task)
+
+    assert_equal 1, Task.all.count
+  end
 end

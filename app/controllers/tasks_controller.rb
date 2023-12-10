@@ -15,7 +15,7 @@ class TasksController < ::ApplicationController
   end
 
   def create
-    task = ::Task.create!(sources_tarball: project.sources_tarball)
+    task = ::Task.create!(project: project)
     redirect_to(project_tasks_path(project, highlight: task.id))
   end
 

@@ -5,8 +5,11 @@ class InboundWebhooksController < ::ActionController::Base # rubocop: disable Ra
   before_action :verify!
 
   def trigger
-    ::Task.create!(sources_tarball: @webhook.project.sources_tarball)
-    head(:ok)
+    if ::Task.new(project: @webhook.project).save
+      head(:ok)
+    else
+      head(:unprocessable_entity)
+    end
   end
 
   private
