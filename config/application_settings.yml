@@ -1,5 +1,5 @@
 default: &default
-  container_runtime: 'podman'
+  container_runtime: podman
 
 development:
   <<: *default

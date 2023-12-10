@@ -7,13 +7,19 @@ class Project
         kind = kwargs.delete(:kind)
         raise "unsupported sources kind '#{kwargs}'" unless kinds.include?(kind)
 
-        ::Project::Sources.const_get(kind.camelize, false).allocate.tap { |o| o.send(:initialize, **kwargs) }
+        klass(kind).allocate.tap { |o| o.send(:initialize, **kwargs) }
       end
 
       def kinds
         i = %w[git]
         i << 'localfs' if ::Rails.env.local?
         i.freeze
+      end
+
+      private
+
+      def klass(kind)
+        ::Project::Sources.const_get(kind.camelize, false)
       end
     end
 
