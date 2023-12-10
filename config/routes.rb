@@ -55,4 +55,6 @@ require 'sidekiq/web'
   resources :distros, only: %i[index]
 
   get ':project_id/install', to: 'installs#index', as: 'package_install'
+
+  post 'inbound_webhooks/:key', to: 'inbound_webhooks#trigger', as: 'trigger_webhook_path'
 end

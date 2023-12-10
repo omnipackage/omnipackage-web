@@ -4,7 +4,8 @@ class Project < ::ApplicationRecord
   belongs_to :user, class_name: '::User', inverse_of: :projects
   has_one :sources_tarball, class_name: '::Project::SourcesTarball', dependent: :destroy
   has_many :tasks, class_name: '::Task', through: :sources_tarball
-  has_many :repositories, dependent: :destroy
+  has_many :repositories, class_name: '::Repository', dependent: :destroy
+  has_many :webhooks, class_name: '::Webhook', dependent: :destroy
 
   encrypts :sources_private_ssh_key
 
