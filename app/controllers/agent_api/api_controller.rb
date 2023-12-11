@@ -56,7 +56,7 @@ module AgentApi
     attr_reader :current_agent
 
     def authorize
-      apikey = request.headers['Authorization']&.delete('Bearer: ') || params[:apikey]
+      apikey = request.headers['Authorization']&.split(' ')&.last || params[:apikey]
       @current_agent = ::Agent.find_by(apikey: apikey)
       head(:unauthorized) unless current_agent
     end

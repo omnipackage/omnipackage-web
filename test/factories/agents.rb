@@ -2,7 +2,6 @@
 
 ::FactoryBot.define do
   factory :agent do
-    apikey { ::Faker::Internet.password }
     name { ::Faker::Movie.title }
     arch { 'x86_64' }
   end
