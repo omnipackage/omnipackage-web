@@ -80,4 +80,13 @@
 
   </div>
 
+  <div class="pt-3">
+    <div class="btn-group" role="group" aria-label="webhooks buttons">
+      <%= link_to 'Back to tasks list', tasks_path, class: 'btn btn-link' %>
+      <%= button_to task_path(task), method: :delete, class: 'btn btn-link link-danger', form: { data: { turbo_confirm: "Delete this task?" } } do %>
+        Delete task
+      <% end %>
+    </div>
+  </div>
+
 </div>

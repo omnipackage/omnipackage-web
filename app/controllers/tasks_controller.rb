@@ -20,7 +20,7 @@ class TasksController < ::ApplicationController
   end
 
   def destroy
-    find_task.destroy!
+    task.destroy!
     redirect_to(tasks_path, notice: 'Task has been successfully deleted')
   end
 
