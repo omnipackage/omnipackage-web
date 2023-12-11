@@ -1,0 +1,26 @@
+<%# locals: (webhook:) -%>
+
+<div class="card p-1 shadow mb-1 bg-body-tertiary rounded mx-auto">
+  <div class="card-body">
+    <%= form_with(model: webhook, url: webhook.new_record? ? project_webhooks_path(webhook.project)  : project_webhook_path(webhook.project) ) do |f| %>
+
+      <div class="mb-5">
+        <%= f.label :secret, class: 'form-label' %>
+        <div id="secret-help" class="form-text">
+          Optional secret key for signature verification. Only works with Github for now
+        </div>
+        <%= f.text_field :secret,
+              value:  webhook.secret,
+              class:  "form-control #{webhook.errors.include?(:secret) ? 'is-invalid' : ''}",
+              aria:   { describedby:  'validation-error-secret secret-help' },
+              placeholder: ''
+        %>
+        <div id="validation-error-secret" class="invalid-feedback d-block">
+          <%= webhook.errors.messages_for(:secret).to_sentence %>
+        </div>
+      </div>
+
+      <%= f.submit 'Save', class: 'btn btn-primary' %>
+    <% end %>
+  </div>
+</div>

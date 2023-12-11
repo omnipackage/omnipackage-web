@@ -1,0 +1,17 @@
+<h5>Webhooks for <%= @project.name %></h5>
+
+<div class="container pt-3">
+  <ul class="list-group">
+    <% @webhooks.find_each do |wh| %>
+      <li class="list-group-item">
+        <%= render partial: 'webhooks/webhook', locals: { webhook: wh } %>
+      </li>
+    <% end %>
+  </ul>
+
+  <div class="pt-3">
+    <%= link_to new_project_webhook_path, class: 'btn btn-outline-primary' do %>
+      <i class="bi bi-plus-circle"></i> Add new webhook
+    <% end %>
+  </div>
+</div>

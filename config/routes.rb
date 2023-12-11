@@ -43,6 +43,7 @@ require 'sidekiq/web'
     resources :ssh_keys, only: %i[create]
     resources :sources, only: %i[index create]
     resources :tasks, only: %i[index create]
+    resources :webhooks, only: %i[index create show new update destroy]
   end
 
   resources :agents
@@ -56,5 +57,5 @@ require 'sidekiq/web'
 
   get ':project_id/install', to: 'installs#index', as: 'package_install'
 
-  post 'inbound_webhooks/:key', to: 'inbound_webhooks#trigger', as: 'trigger_webhook_path'
+  post 'inbound_webhooks/:key', to: 'inbound_webhooks#trigger', as: 'trigger_webhook'
 end

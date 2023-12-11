@@ -1,0 +1,15 @@
+<h5>Webhook <code><%= @webhook.key %></code></h5>
+
+<div class="container pt-3">
+
+  <pre>curl -X POST <%= trigger_webhook_url(@webhook.key) %></pre>
+
+  <%= render partial: 'webhooks/form', locals: { webhook: @webhook } %>
+
+  <div class="btn-group" role="group" aria-label="webhooks buttons">
+    <%= link_to 'Back to webhooks list', project_webhooks_path(@webhook.project), class: 'btn btn-link' %>
+    <%= button_to project_webhook_path(@webhook.project.id, @webhook.id), method: :delete, class: 'btn btn-link link-danger', form: { data: { turbo_confirm: "Delete this webhook?" } } do %>
+      Delete this webhook
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+<%# locals: (webhook:) -%>
+
+<span>
+
+  <%= link_to project_webhook_path(webhook.project.id, webhook.id), class: 'btn btn-sm btn-link' do %>
+    <%= webhook.key %>
+  <% end %>
+
+  <code>
+    <%= trigger_webhook_url(webhook.key) %>
+  </code>
+
+</span>

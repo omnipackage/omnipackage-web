@@ -1,0 +1,9 @@
+<%# locals: (project:) -%>
+
+<div class="btn-group" role="group" aria-label="ci manage">
+  <% if project.sources_verified? %>
+    <%= button_to 'Build now', project_tasks_path(project), method: :post, class: 'btn btn-link btn-sm' %>
+  <% end %>
+  <%= link_to 'Webhooks', project_webhooks_path(project), class: 'btn btn-link btn-sm' %>
+  <%= link_to 'Tasks', project_tasks_path(project), class: 'btn btn-link btn-sm' %>
+</div>

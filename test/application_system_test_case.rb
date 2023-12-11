@@ -12,7 +12,7 @@ class ApplicationSystemTestCase < ::ActionDispatch::SystemTestCase
     find('input[name="commit"]').click
 
     assert_current_path root_url
-    assert_text user.email # navbar
+    assert_text user.displayed_name # navbar
     assert page.has_css?('.alert-success', text: 'Signed in successfully')
     user
   end
