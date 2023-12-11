@@ -26,7 +26,7 @@ builds:
   rpm:
     spec_template: '.omnipackage/sample_project.spec.liquid'
 
-- distro: 'debian_bullseye'
+- distro: 'debian_10'
   build_dependencies: ['gcc', 'make']
   deb:
     debian_templates: '.omnipackage/deb'
@@ -36,7 +36,7 @@ builds:
   deb:
     debian_templates: '.omnipackage/deb'
 
-- distro: 'ubuntu_22.10'
+- distro: 'ubuntu_23.04'
   build_dependencies: ['gcc', 'make']
   deb:
     debian_templates: '.omnipackage/deb'

@@ -37,4 +37,10 @@ class ProjectTest < ::ActiveSupport::TestCase
   test 'safe name' do
     assert_equal 'proj__12_gfd', build(:project, name: 'ProJ  12 gfd').safe_name
   end
+
+  test 'default repositories' do
+    project = create(:project_with_sources)
+    project.create_default_repositories
+    assert_equal 7, project.repositories.count
+  end
 end

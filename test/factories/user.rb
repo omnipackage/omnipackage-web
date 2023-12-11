@@ -5,5 +5,6 @@
     email           { ::Faker::Internet.email }
     password_digest { ::BCrypt::Password.create('Secret1*3*5*') }
     verified_at     { ::Time.now.utc }
+    name            { ::Faker::Internet.username }
   end
 end

@@ -5,7 +5,7 @@ class InboundWebhooksController < ::ActionController::Base # rubocop: disable Ra
   before_action :verify!
 
   def trigger
-    if ::Task.new(project: @webhook.project).save
+    if ::Task.new(project: webhook.project).save
       head(:ok)
     else
       head(:unprocessable_entity)
@@ -15,15 +15,17 @@ class InboundWebhooksController < ::ActionController::Base # rubocop: disable Ra
   private
 
   def verify!
-    @webhook = ::Webhook.find_by!(key: params[:key])
+    return unless webhook.secret
 
-    if @webhook.secret
-      request.body.rewind
+    request.body.rewind
 
-      github_signature = request.headers['X-Hub-Signature-256']
-      return if github_signature && @webhook.verify_github(request.body.read, github_signature)
+    github_signature = request.headers['X-Hub-Signature-256']
+    return if github_signature && webhook.verify_github(request.body.read, github_signature)
 
-      head(:unauthorized)
-    end
+    head(:unauthorized)
+  end
+
+  def webhook
+    @webhook ||= ::Webhook.find_by!(key: params[:key])
   end
 end
