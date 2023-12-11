@@ -33,7 +33,8 @@ class WebhooksController < ::ApplicationController
   end
 
   def destroy
-    find_webhook.destroy
+    @webhook = find_webhook
+    @webhook.destroy
     redirect_to(project_webhooks_path(@webhook.project), notice: "Webhook has been successfully deleted")
   end
 

@@ -2,7 +2,9 @@
 
 <div class="container pt-3">
 
-  <pre>curl -X POST <%= trigger_webhook_url(@webhook.key) %></pre>
+  <pre>
+curl -X POST <%= trigger_webhook_url(@webhook.key) %><%= @webhook.secret.present? ? " -H '#{@webhook.sample_header_github.first}: #{@webhook.sample_header_github.last}'" : ''%>
+  </pre>
 
   <%= render partial: 'webhooks/form', locals: { webhook: @webhook } %>
 
