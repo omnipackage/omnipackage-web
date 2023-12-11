@@ -8,20 +8,23 @@ class Webhook < ::ApplicationRecord
 
   validates :key, presence: true, uniqueness: true
 
-  def sha256(payload_body)
-    ::OpenSSL::HMAC.hexdigest(::OpenSSL::Digest.new('sha256'), secret, payload_body.to_s)
+  before_validation do
+    self.secret = nil if secret.blank?
   end
 
-  def verify_github(payload_body, payload_signature)
+  def verify(request)
     return true unless secret
 
-    signature = 'sha256=' + sha256(payload_body)
-    ::Rack::Utils.secure_compare(signature, payload_signature)
+    ::Rack::Utils.secure_compare('sha256=' + sha256_hmac(request.raw_post), request.headers['X-Hub-Signature-256'].to_s)
+  end
+
+  def sha256_hmac(payload_body)
+    ::OpenSSL::HMAC.hexdigest(::OpenSSL::Digest.new('sha256'), secret.to_s, payload_body.to_s)
   end
 
   def sample_header_github(payload_body = nil)
     return unless secret
 
-    ['X-Hub-Signature-256', 'sha256=' + sha256(payload_body)]
+    'X-Hub-Signature-256: sha256=' + sha256_hmac(payload_body)
   end
 end

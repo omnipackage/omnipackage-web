@@ -15,14 +15,7 @@ class InboundWebhooksController < ::ActionController::Base # rubocop: disable Ra
   private
 
   def verify!
-    return unless webhook.secret
-
-    request.body.rewind
-
-    github_signature = request.headers['X-Hub-Signature-256']
-    return if github_signature && webhook.verify_github(request.body.read, github_signature)
-
-    head(:unauthorized)
+    head(:unauthorized) unless webhook.verify(request)
   end
 
   def webhook
