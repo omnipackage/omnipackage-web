@@ -23,25 +23,26 @@ class ProjectsFlowTest < ::ActionDispatch::IntegrationTest
   end
 
   test 'create project' do
-    post projects_path, params: { project: { name: 'TestProject', sources_location: 'git@someurl.com/test', sources_kind: 'git' } }
-
-    assert_redirected_to projects_path
-    assert_equal 1, @user.projects.count
+    assert_difference('@user.projects.count') do
+      post projects_path, params: { project: { name: 'TestProject', sources_location: 'git@someurl.com/test', sources_kind: 'git' } }
+      assert_redirected_to projects_path
+    end
     assert_enqueued_with job: ::SourcesFetchJob, args: [@user.projects.first.id]
   end
 
   test 'not create invalid project' do
-    post projects_path, params: { project: { name: 'TestProject', sources_location: 'git@someurl.com/test', sources_kind: 'git', sources_subdir: '../../../etc/passwd' } }
-
-    assert_response :unprocessable_entity
-    assert_equal 0, @user.projects.count
+    assert_no_difference('@user.projects.count') do
+      post projects_path, params: { project: { name: 'TestProject', sources_location: 'git@someurl.com/test', sources_kind: 'git', sources_subdir: '../../../etc/passwd' } }
+      assert_response :unprocessable_entity
+    end
   end
 
   test 'delete project' do
     project = create(:project, user: @user)
-    delete project_path(project)
-    assert_redirected_to projects_path
-    assert_equal 0, @user.projects.count
+    assert_difference('@user.projects.count', -1) do
+      delete project_path(project)
+      assert_redirected_to projects_path
+    end
   end
 
   test 'create project with real sources' do
