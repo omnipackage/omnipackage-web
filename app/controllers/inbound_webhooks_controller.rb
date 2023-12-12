@@ -5,11 +5,10 @@ class InboundWebhooksController < ::ActionController::Base # rubocop: disable Ra
   before_action :verify!
 
   def trigger
-    if ::Task.new(project: webhook.project).save
-      head(:ok)
-    else
-      head(:unprocessable_entity)
-    end
+    ::Task.start( webhook.project)
+    head(:ok)
+  rescue ::ActiveRecord::RecordInvalid
+    head(:unprocessable_entity)
   end
 
   private

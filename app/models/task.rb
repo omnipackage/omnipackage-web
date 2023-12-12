@@ -22,6 +22,12 @@ class Task < ::ApplicationRecord
     build_log
   end
 
+  class << self
+    def start(project)
+      create!(sources_tarball: project.sources_tarball)
+    end
+  end
+
   def append_log(text)
     log.append(text)
   end

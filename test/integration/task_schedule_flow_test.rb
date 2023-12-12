@@ -12,7 +12,6 @@ class TaskScheduleFlowTest < ::ActionDispatch::IntegrationTest
   end
 
   teardown do
-    ::Project::SourcesTarball.where(project_id: @project.id).destroy_all # TODO fix creation of multiple tarballs
     @project.destroy!
     @user.destroy!
     @agent.destroy!
@@ -30,10 +29,15 @@ class TaskScheduleFlowTest < ::ActionDispatch::IntegrationTest
     task.reload
     assert task.running?
 
+    post agent_api_path, headers: { 'Authorization' => "Bearer: #{@agent.apikey}" }, params: { payload: { state: 'busy', task: { id: task.id }, livelog: 'The quick brown fox jumps over the lazy dog\n' } }
+    assert_response :success
+    task.reload
+    assert task.running?
+
     post agent_api_path, headers: { 'Authorization' => "Bearer: #{@agent.apikey}" }, params: { payload: { state: 'finished', task: { id: task.id }, livelog: 'The quick brown fox jumps over the lazy dog' } }
     assert_response :success
     task.reload
     assert task.finished?
-    assert_equal 'The quick brown fox jumps over the lazy dog', task.log.text
+    assert_equal 'The quick brown fox jumps over the lazy dog\nThe quick brown fox jumps over the lazy dog', task.log.text
   end
 end
