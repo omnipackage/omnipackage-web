@@ -5,7 +5,7 @@ class InboundWebhooksController < ::ActionController::Base # rubocop: disable Ra
   before_action :verify!
 
   def trigger
-    ::Task.start( webhook.project)
+    ::Task.start(webhook.project)
     head(:ok)
   rescue ::ActiveRecord::RecordInvalid
     head(:unprocessable_entity)
