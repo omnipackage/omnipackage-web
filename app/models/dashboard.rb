@@ -12,10 +12,10 @@ class Dashboard
   end
 
   def projects
-    @projects ||= user.projects
+    @projects ||= user.projects.includes(:sources_tarball)
   end
 
-  def projects_by_distro(distro_id)
-    projects.select { |i| i.distros.map(&:id).include?(distro_id) }
+  def projects_by_distro(distro)
+    projects.select { |i| i.distros.map(&:id).include?(distro.id) }
   end
 end

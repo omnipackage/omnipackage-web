@@ -16,7 +16,7 @@
                 <h6 class="card-title"><%= d.name %> <small class="text-secondary"><%= d.arch %></small></h6>
 
                 <ul class="list-group list-group-flush">
-                  <% @dashboard.projects_by_distro(d.id).each do |proj| %>
+                  <% @dashboard.projects_by_distro(d).each do |proj| %>
                     <li class="list-group-item">
                       <div class="row align-items-center">
                         <div class="col-md-auto fs-4">
