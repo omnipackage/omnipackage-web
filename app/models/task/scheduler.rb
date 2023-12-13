@@ -64,7 +64,7 @@ class Task
           JOIN projects p ON pst.project_id = p.id
           JOIN agents a ON (p.user_id = a.user_id OR a.user_id ISNULL)
           WHERE
-            t.state = 'scheduled' AND
+            t.state = 'pending_build' AND
             a.id = #{agent.id} AND
             t.distro_ids::varchar[] && ARRAY[#{agent.supported_distros.map { |d| "'#{d.id}'" }.join(',')}]::varchar[]
           ORDER BY t.created_at ASC LIMIT 1

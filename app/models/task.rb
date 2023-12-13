@@ -9,7 +9,7 @@ class Task < ::ApplicationRecord
   has_many :repositories, ->(task) { where(distro_id: task.distro_ids) }, through: :project, class_name: '::Repository'
   has_one :log, class_name: '::Task::Log', dependent: :destroy
 
-  enum :state, %w[scheduled running finished error].index_with(&:itself), default: 'scheduled'
+  enum :state, %w[pending_fetch pending_build running finished error].index_with(&:itself), default: 'pending_fetch'
 
   broadcast_with ::Broadcasts::Task
 
@@ -23,8 +23,10 @@ class Task < ::ApplicationRecord
   end
 
   class << self
-    def start(project)
-      create!(sources_tarball: project.sources_tarball)
+    def start(project, skip_fetch: false)
+      task = create!(sources_tarball: project.sources_tarball, state: skip_fetch ? 'pending_build' : 'pending_fetch')
+      ::SourcesFetchJob.start(project, task) unless skip_fetch
+      task
     end
   end
 

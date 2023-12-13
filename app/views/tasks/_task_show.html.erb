@@ -16,7 +16,7 @@
   <div class="pb-3 text-secondary">
     <%= render partial: 'tasks/state_icon', locals: { task: task } %>
     <%= task.state.capitalize %>
-    <% if !task.scheduled? && task.agent && current_user == task.agent.user %>
+    <% if !task.pending_fetch? && !task.pending_build? && task.agent && current_user == task.agent.user %>
       <span>on <%= link_to task.agent.name, agent_path(task.agent), class: 'link-secondary' %></span>
     <% end %>
     <%= time_ago_in_words(task.updated_at) %> ago
@@ -30,7 +30,7 @@
 
     <% if task.artefacts.any? %>
       <h6>Artefacts</h6>
-    <% elsif task.scheduled? || task.running? %>
+    <% elsif task.pending_fetch? || task.pending_build? || task.running? %>
       <h6>No artefacts yet<h6>
     <% else %>
       <h6>No artefacts<h6>

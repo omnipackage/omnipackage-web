@@ -3,6 +3,8 @@
 require 'test_helper'
 
 class TaskScheduleFlowTest < ::ActionDispatch::IntegrationTest
+  include ::ActiveJob::TestHelper
+
   self.use_transactional_tests = false
 
   setup do
@@ -18,11 +20,13 @@ class TaskScheduleFlowTest < ::ActionDispatch::IntegrationTest
   end
 
   test 'schedule and dequeue task' do
-    post project_tasks_path(@project)
+    perform_enqueued_jobs do
+      post project_tasks_path(@project)
+    end
     assert_equal 1, @project.tasks.count
     task = @project.tasks.first
     assert_redirected_to project_tasks_path(@project, highlight: task.id)
-    assert task.scheduled?
+    assert task.pending_build?
 
     post agent_api_path, headers: { 'Authorization' => "Bearer: #{@agent.apikey}" }, params: { payload: { state: 'idle' } }
     assert_response :success

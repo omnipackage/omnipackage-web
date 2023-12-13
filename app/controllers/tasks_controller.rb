@@ -15,7 +15,7 @@ class TasksController < ::ApplicationController
   end
 
   def create
-    task = ::Task.start(project)
+    task = ::Task.start(project, skip_fetch: true)
     redirect_to(project_tasks_path(project, highlight: task.id))
   end
 
