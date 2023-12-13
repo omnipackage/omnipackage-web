@@ -11,7 +11,7 @@
       <div class="col-11">
 
         <div class="card-group">
-          <% distros.each do |d| %>
+          <% distros.sort_by(&:name).each do |d| %>
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title"><%= d.name %> <small class="text-secondary"><%= d.arch %></small></h5>

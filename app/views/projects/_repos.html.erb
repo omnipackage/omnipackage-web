@@ -9,7 +9,7 @@
 
       <div class="col">
         <div class="card-group">
-          <% repos.each do |repo| %>
+          <% repos.sort_by { |i| i.distro.name }.each do |repo| %>
             <%= render partial: 'projects/repo', locals: { repository: repo } %>
           <% end %>
         </div>

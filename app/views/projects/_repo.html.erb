@@ -1,8 +1,7 @@
 <%# locals: (repository:) -%>
 
-<%= turbo_stream_from [repository.project, repository] %>
-
 <div class="card" id="<%= dom_id(repository) %>">
+  <%= turbo_stream_from [repository.project, repository] %>
   <div class="card-body">
 
     <h6 class="card-title">
