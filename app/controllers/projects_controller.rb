@@ -59,6 +59,6 @@ class ProjectsController < ::ApplicationController
   end
 
   def project_params
-    params.require(:project).permit(:name, :sources_location, :sources_kind, :sources_subdir)
+    params.require(:project).permit(:name, :sources_location, :sources_kind, :sources_subdir, :sources_branch)
   end
 end

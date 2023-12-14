@@ -16,13 +16,20 @@ class Project < ::ApplicationRecord
   validates :sources_location, presence: true, length: { maximum: 8000 }
   validates :sources_kind, presence: true
   validates :sources_subdir, length: { maximum: 500 }, format: { without: /\..|\A\// }, allow_blank: true
+  validates :sources_branch, length: { maximum: 200 }, format: { without: /\..|\A\// }, allow_blank: true
 
   broadcast_with ::Broadcasts::Project
 
   delegate :distros, :installable_package_name, to: :sources_tarball, allow_nil: true
 
   def sources
-    ::Project::Sources.new(kind: sources_kind, location: sources_location, subdir: sources_subdir, ssh_private_key: sources_private_ssh_key)
+    ::Project::Sources.new(
+      kind:             sources_kind, 
+      location:         sources_location,
+      subdir:           sources_subdir,
+      branch:           sources_branch,
+      ssh_private_key:  sources_private_ssh_key
+    )
   end
 
   def safe_name

@@ -7,6 +7,7 @@ class Project
         super
         ssh_private_key = kwargs.fetch(:ssh_private_key)
         @git = ::Git.new(ssh_private_key: ssh_private_key)
+        @branch = kwargs[:branch].presence
       end
 
       def probe
@@ -15,7 +16,7 @@ class Project
 
       def clone
         dir = ::Dir.mktmpdir
-        return unless git.clone(location, dir)
+        return unless git.clone(location, dir, branch: branch)
 
         if block_given?
           yield(::Pathname.new(dir).join(subdir).to_s)
@@ -28,7 +29,7 @@ class Project
 
       private
 
-      attr_reader :git
+      attr_reader :git, :branch
 
       def tarball_excludes
         %w[.git]

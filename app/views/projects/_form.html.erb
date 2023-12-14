@@ -42,7 +42,21 @@
       <%= project.errors.messages_for(:sources_location).to_sentence %>
     </div>
 
-    <div class="d-inline-flex gap-1">
+    <%= f.label :sources_branch, class: 'form-label' %>
+    <%= f.text_field :sources_branch,
+          value:  project.sources_branch,
+          class:  "form-control #{project.errors.include?(:sources_branch) ? 'is-invalid' : ''}",
+          aria:   { describedby:  'validation-error-sources_branch sources_branch-help' },
+          placeholder: 'master'
+    %>
+    <div id="sources_branch-help" class="form-text">
+      Optional - to override the default branch
+    </div>
+    <div id="validation-error-sources_branch" class="invalid-feedback d-block">
+      <%= project.errors.messages_for(:sources_branch).to_sentence %>
+    </div>
+
+    <div class="d-inline-flex gap-1 pt-3">
       <a class="link-offset-2 link-underline link-underline-opacity-0 form-label" data-bs-toggle="collapse" href="#collapseSubDir" role="button" aria-expanded="false" aria-controls="collapseSubDir">
         Sub-directory (optional)
       </a>

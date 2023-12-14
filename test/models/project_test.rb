@@ -24,6 +24,9 @@ class ProjectTest < ::ActiveSupport::TestCase
     assert build(:project, sources_subdir: '/etc').invalid?
     assert build(:project, sources_subdir: 'test/sample_project').valid?
     assert build(:project, sources_tarball: build(:project_sources_tarball)).sources_tarball.valid?
+    assert build(:project, sources_branch: 'master').valid?
+    assert build(:project, sources_branch: 'cat ../etc/passwd').invalid?
+    assert build(:project, sources_branch: 'ололо').valid?
   end
 
   test 'generate ssh keys' do

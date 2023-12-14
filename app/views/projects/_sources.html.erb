@@ -1,6 +1,9 @@
 <%# locals: (project:) -%>
 
 <span class="badge text-secondary"><%= project.sources_kind.upcase %></span> <span class="font-monospace bg-body-tertiary"><%= project.sources_location %></span>
+<% if project.sources_branch.present? %>
+  <span class="badge text-secondary">BRANCH</span><span class="font-monospace text-secondary bg-body-tertiary"><%= project.sources_branch %></span>
+<% end %>
 <% if project.sources_subdir.present? %>
   <span class="badge text-secondary">SUBDIR</span><span class="font-monospace text-secondary bg-body-tertiary"><%= project.sources_subdir %></span>
 <% end %>

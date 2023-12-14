@@ -19,9 +19,12 @@ class Git
     end
   end
 
-  def clone(repo, destination)
+  def clone(repo, destination, branch: nil)
     with_ssh_key do |env|
-      ::ShellUtil.execute(exe, 'clone', '--depth', '1', repo, destination, env: env, timeout_sec: 300).success!
+      cli = [exe, 'clone', '--depth', '1']
+      cli += ['--single-branch', '--branch', branch] if branch.present?
+      cli += [repo, destination]
+      ::ShellUtil.execute(*cli, env: env, timeout_sec: 300).success!
     end
   end
 
