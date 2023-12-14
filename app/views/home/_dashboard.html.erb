@@ -27,7 +27,10 @@
                         <div class="col">
                           <%= link_to proj.name, project_path(proj) %>
                           <div>
-                            <small class="text-secondary"><%= time_ago_in_words(proj.repositories.where(distro_id: d.id).order(published_at: :asc).last.published_at) %> ago</small>
+                            <%- last_pub = proj.repositories.where(distro_id: d.id).order(published_at: :asc).last.published_at %>
+                            <% if last_pub %>
+                              <small class="text-secondary"><%= time_ago_in_words(last_pub) %> ago</small>
+                            <% end %>
                           </div>
                         </div>
                       </div>

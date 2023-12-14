@@ -3,7 +3,7 @@
 class SourcesController < ::ApplicationController
   def index
     if project.sources_verified?
-      send_data(project.sources_tarball.decrypted_tarball, filename: project.sources_tarball.decrypted_tarball_filename)
+      redirect_to(project.sources_tarball.tarball.url(expires_in: 15.seconds), allow_other_host: true)
     else
       redirect_to(project_path(project.id), alert: 'No cached sources')
     end

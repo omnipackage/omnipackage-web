@@ -14,7 +14,7 @@ class Project
 
       tmpdir = ::Dir.mktmpdir
       begin
-        ::ShellUtil.decompress(o.decrypted_tarball, tmpdir)
+        ::ShellUtil.decompress(o.tarball.download, tmpdir)
 
         extracted = ::Dir.glob(tmpdir + '/**/*')
         assert_equal ::Dir.glob(sources_location.to_s + '/**/*').size, extracted.size

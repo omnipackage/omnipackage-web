@@ -35,8 +35,8 @@ class Project
 
     def sync
       clone do |dir|
-        tarball = ::ShellUtil.compress_and_encrypt(dir, passphrase: ::Rails.application.credentials.sources_tarball_passphrase, excludes: tarball_excludes)
-        # ::File.open('/home/oleg/Desktop/ololo.tar.xz.gpg', 'wb') { |file| file.write(out) }
+        tarball = ::Tempfile.new
+        ::ShellUtil.compress(dir, tarball.path, excludes: tarball_excludes)
         Envelop[read_config(dir), tarball]
       end
     end

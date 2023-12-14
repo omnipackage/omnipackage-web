@@ -74,4 +74,13 @@ module ShellUtil
     wait_threads.each(&:join)
     destination_path
   end
+
+  def compress(source_dir, destination_file, excludes: [], env: {})
+    last_stdout, wait_threads = ::Open3.pipeline_r(
+      [env, 'tar', '-C', source_dir, '-cJf', destination_file, *excludes.map { |e| "--exclude=#{e}" }, '.']
+    )
+    last_stdout.binmode
+    wait_threads.each(&:join)
+    destination_file
+  end
 end

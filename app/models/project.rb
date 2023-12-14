@@ -24,7 +24,7 @@ class Project < ::ApplicationRecord
 
   def sources
     ::Project::Sources.new(
-      kind:             sources_kind, 
+      kind:             sources_kind,
       location:         sources_location,
       subdir:           sources_subdir,
       branch:           sources_branch,

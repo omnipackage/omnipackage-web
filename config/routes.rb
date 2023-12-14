@@ -35,7 +35,7 @@ require 'sidekiq/web'
 
   namespace :agent_api do
     post '/', to: 'api#call'
-    get '/sources_tarball/:task_id', to: 'api#sources_tarball', as: 'download_sources_tarball'
+    # get '/sources_tarball/:task_id', to: 'api#sources_tarball', as: 'download_sources_tarball'
     post '/artefacts/:task_id', to: 'api#upload_artefact', as: 'upload_artefact'
   end
 

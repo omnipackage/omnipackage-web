@@ -5,12 +5,14 @@ class Project
     belongs_to :project, class_name: '::Project'
     has_many :tasks, class_name: '::Task', dependent: :destroy
 
-    def decrypted_tarball
-      ::ShellUtil.decrypt(tarball, passphrase: ::Rails.application.credentials.sources_tarball_passphrase)
-    end
+    has_one_attached :tarball
 
-    def decrypted_tarball_filename
-      "#{project.name}-sources-#{updated_at.strftime('%Y%m%d-%H%M%S')}.tar.xz".freeze
+    def upload_tarball(io)
+      self.tarball = ::ActiveStorage::Blob.create_and_upload!(
+        io:           io,
+        filename:     "project-#{project.id}-sources-#{::Time.now.utc.strftime('%Y%m%d-%H%M%S')}.tar.xz"
+      )
+      self
     end
 
     def distros

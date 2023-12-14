@@ -5,12 +5,12 @@ class Task
     attr_reader :agent
 
     Command = ::Data.define(:command, :task) do
-      def to_hash(view_context)
+      def to_hash(view_context) # rubocop: disable Metrics/AbcSize
         result = { command: command }
         if task
           result[:task] = {
             id:                   task.id,
-            sources_tarball_url:  view_context.agent_api_download_sources_tarball_url(task.id),
+            sources_tarball_url:  task.project.sources_tarball.tarball.url(expires_in: 3.days),
             upload_artefact_url:  view_context.agent_api_upload_artefact_url(task.id),
             distros:              task.distro_ids
           }

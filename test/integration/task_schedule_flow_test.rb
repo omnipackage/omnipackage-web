@@ -11,6 +11,7 @@ class TaskScheduleFlowTest < ::ActionDispatch::IntegrationTest
     @user = sign_in_as(create(:user))
     @project = create(:project_with_sources, user: @user)
     @agent = create(:agent)
+    ::AgentApi::ApiController.include(::ActiveStorage::SetCurrent)
   end
 
   teardown do
@@ -28,17 +29,17 @@ class TaskScheduleFlowTest < ::ActionDispatch::IntegrationTest
     assert_redirected_to project_tasks_path(@project, highlight: task.id)
     assert task.pending_build?
 
-    post agent_api_path, headers: { 'Authorization' => "Bearer: #{@agent.apikey}" }, params: { payload: { state: 'idle' } }
+    post agent_api_path, headers: { 'Authorization' => "Bearer #{@agent.apikey}" }, params: { payload: { state: 'idle' } }
     assert_response :success
     task.reload
     assert task.running?
 
-    post agent_api_path, headers: { 'Authorization' => "Bearer: #{@agent.apikey}" }, params: { payload: { state: 'busy', task: { id: task.id }, livelog: 'The quick brown fox jumps over the lazy dog\n' } }
+    post agent_api_path, headers: { 'Authorization' => "Bearer #{@agent.apikey}" }, params: { payload: { state: 'busy', task: { id: task.id }, livelog: 'The quick brown fox jumps over the lazy dog\n' } }
     assert_response :success
     task.reload
     assert task.running?
 
-    post agent_api_path, headers: { 'Authorization' => "Bearer: #{@agent.apikey}" }, params: { payload: { state: 'finished', task: { id: task.id }, livelog: 'The quick brown fox jumps over the lazy dog' } }
+    post agent_api_path, headers: { 'Authorization' => "Bearer #{@agent.apikey}" }, params: { payload: { state: 'finished', task: { id: task.id }, livelog: 'The quick brown fox jumps over the lazy dog' } }
     assert_response :success
     task.reload
     assert task.finished?

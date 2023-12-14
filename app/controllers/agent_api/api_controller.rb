@@ -34,10 +34,10 @@ module AgentApi
       end
     end
 
-    def sources_tarball
-      sources_tarball = current_agent.tasks.find(params[:task_id]).sources_tarball
-      send_data(sources_tarball.decrypted_tarball, filename: sources_tarball.decrypted_tarball_filename)
-    end
+    # def sources_tarball
+    #   sources_tarball = current_agent.tasks.find(params[:task_id]).sources_tarball
+    #   send_data(sources_tarball.decrypted_tarball, filename: sources_tarball.decrypted_tarball_filename)
+    # end
 
     def upload_artefact # rubocop:disable Metrics/AbcSize
       task = current_agent.tasks.find(params[:task_id])

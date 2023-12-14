@@ -32,7 +32,7 @@ class SourcesFetchJob < ::ApplicationJob
   def success!(project, source, task)
     project.transaction do
       tb = project.sources_tarball || project.build_sources_tarball
-      tb.tarball = source.tarball
+      tb.upload_tarball(source.tarball)
       tb.config = source.config
       tb.save!
       project.sources_fetch_error = nil
