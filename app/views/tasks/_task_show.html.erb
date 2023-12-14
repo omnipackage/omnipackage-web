@@ -19,6 +19,12 @@
     <% if !task.pending_fetch? && !task.pending_build? && task.agent && current_user == task.agent.user %>
       <span>on <%= link_to task.agent.name, agent_path(task.agent), class: 'link-secondary' %></span>
     <% end %>
+    <% if task.errors? %>
+      <span>with errors in </span>
+      <% task.artefacts.failed.each_with_index do |a, index| %>
+        <a class="link-secondary" href="#artefacts-<%= dom_friendly(a.distro) %>"><%= a.distro_object.name %></a> 
+      <% end %>
+    <% end %>
     <%= time_ago_in_words(task.updated_at) %> ago
   </div>
 
@@ -38,12 +44,12 @@
     <div class="vstack gap-3">
 
       <% task.artefacts.group_by(&:distro).sort_by { |i| d = ::Distro[i.first]; [d.family, d.name] }.each do |distro, afacts| %>
-        <div class="card">
+        <div class="card" id="artefacts-<%= dom_friendly(distro)%>">
           <div class="card-header">
             <%= render partial: 'layouts/distro_icon', locals: { family: ::Distro[distro].family, size: 24 } %>
             <%= ::Distro[distro].name %>
             <% if afacts.any?(&:error?) %>
-              <span class="badge text-bg-danger">ERRORS<span>
+              <span class="badge text-bg-danger">ERROR<span>
             <% end %>
           </div>
 

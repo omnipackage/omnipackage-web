@@ -9,7 +9,7 @@ class Task < ::ApplicationRecord
   has_many :repositories, ->(task) { where(distro_id: task.distro_ids) }, through: :project, class_name: '::Repository'
   has_one :log, class_name: '::Task::Log', dependent: :destroy
 
-  enum :state, %w[pending_fetch pending_build running finished error].index_with(&:itself), default: 'pending_fetch'
+  enum :state, %w[pending_fetch pending_build running finished].index_with(&:itself), default: 'pending_fetch'
 
   broadcast_with ::Broadcasts::Task
 

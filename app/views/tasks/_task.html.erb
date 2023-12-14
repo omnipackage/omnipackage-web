@@ -6,7 +6,7 @@
     <%= render partial: 'tasks/state_icon', locals: { task: task } %>
     <%= task.state.humanize %>
     <% if task.errors? %>
-      <small class="text-danger">with errors</small>
+      with errors
     <% end %>
   </span>
 
