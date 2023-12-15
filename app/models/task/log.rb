@@ -7,7 +7,7 @@ class Task
     def append(atext)
       return if atext.blank?
 
-      update!(text: text + atext)
+      self.class.where(id: id).update_all(["text = CONCAT(text, ?)", atext])
       ::Broadcasts::TaskLog.new(self).append(atext)
     end
   end
