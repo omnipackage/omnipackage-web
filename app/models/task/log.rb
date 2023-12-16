@@ -7,7 +7,7 @@ class Task
     def append(atext)
       return if atext.blank?
 
-      self.class.where(id: id).update_all(["text = CONCAT(text, ?)", atext])
+      self.class.where(id: id).update_all(["text = CONCAT(text, ?)", atext]) # rubocop: disable Rails/SkipsModelValidations
       ::Broadcasts::TaskLog.new(self).append(atext)
     end
   end

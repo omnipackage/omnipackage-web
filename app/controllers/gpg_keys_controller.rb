@@ -56,12 +56,12 @@ class GpgKeysController < ::ApplicationController
   private
 
   %i[generate upload index destroy].each do |met|
-    define_method("gpg_#{met}_polymorphic_path") do
+    define_method(:"gpg_#{met}_polymorphic_path") do
       case key_source
       when ::Repository
-        send("repository_#{met}_gpg_key_path", key_source.id)
+        send(:"repository_#{met}_gpg_key_path", key_source.id)
       else
-        send("#{met}_gpg_key_path")
+        send(:"#{met}_gpg_key_path")
       end
     end
     helper_method "gpg_#{met}_polymorphic_path"
