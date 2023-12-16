@@ -1,25 +1,49 @@
-<div class="p-3 bg-body-tertiary">
-  <div class="float-end">
-    <%= render partial: 'layouts/theme_selector' %>
-  </div>
-  <div class="container-fluid py-3 text-center">
-    <h1 class="text-center">Install <%= @project.name %></h1>
-  </div>
-</div>
+<!DOCTYPE html>
+<html data-bs-theme="auto" data-controller="theme-selector">
+  <head>
+    <title>Omni Package - Install <%= @project.name %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
 
-<div class="container p-3">
-  <div class="vstack gap-5 pt-3">
-    <% @project.repositories.group_by { |repo| repo.distro.family }.each do |family, repos| %>
-      <div class="row align-items-center">
-        <div class="col-md-auto">
-          <%= render partial: 'layouts/distro_icon', locals: { family: family, size: 64 } %>
-        </div>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
 
-        <div class="col-md-11">
-          <%= render partial: 'installs/repos', locals: { family: family, repos: repos } %>
+    <%= render partial: 'layouts/bootstrap' %>
+  </head>
+
+  <body>
+
+    <div class="p-3 bg-body-tertiary">
+      <div class="float-end">
+        <%= render partial: 'layouts/theme_selector' %>
+      </div>
+      <div class="container-fluid py-3 text-center">
+        <h1 class="text-center">Install <%= @project.name %></h1>
+      </div>
+    </div>
+
+    <div class="container p-3">
+      <div class="vstack gap-5 pt-3">
+        <% @project.repositories.group_by { |repo| repo.distro.family }.each do |family, repos| %>
+          <div class="row align-items-center">
+            <div class="col-md-auto">
+              <%= render partial: 'layouts/distro_icon', locals: { family: family, size: 64 } %>
+            </div>
+
+            <div class="col-md-11">
+              <%= render partial: 'installs/repos', locals: { family: family, repos: repos } %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+    </div>
+
+    <footer class="pt-5">
+      <div class="p-3 bg-body-tertiary">
+        <div class="container-fluid py-3 text-center">
+          Powered by <%= link_to 'OmniPackage', root_path %>
         </div>
       </div>
-    <% end %>
-  </div>
-
-</div>
+    </footer>
+  </body>
+</html>
