@@ -1,10 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html data-bs-theme="auto" data-controller="theme-selector">
   <head>
-    <title>Omni Package</title>
+    <title>Omni Package - Install <%= @project.name %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
@@ -13,18 +11,15 @@
   </head>
 
   <body>
-    <%= render partial: 'layouts/navbar' %>
 
-    <div class="container p-2">
-      <%= render partial: 'layouts/flash' %>
-    </div>
-
-    <div class="container pt-3">
-      <%= yield %>
-    </div>
+    <%= yield %>
 
     <footer class="pt-5">
-      <%= render partial: 'layouts/footer' %>
+      <div class="p-3 bg-body-tertiary">
+        <div class="container-fluid py-3 text-center">
+          Powered by <%= link_to 'OmniPackage', root_path %>
+        </div>
+      </div>
     </footer>
   </body>
 </html>

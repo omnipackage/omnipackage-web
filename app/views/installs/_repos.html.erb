@@ -12,15 +12,15 @@
       </h2>
 
       <div id="collapse-accordion-<%= dom_friendly(repo.distro.id) %>" class="accordion-collapse collapse <%= params[:active] == repo.distro.id ? 'show' : '' %>" data-bs-parent="#accordion-<%= dom_friendly(family) %>">
-        <div class="accordion-body">
+        <div class="accordion-body" data-controller="clipboard">
 
           <h6>Package installation steps for <%= repo.distro.name %></h6>
           <div class="bg-body-tertiary p-2 rounded-2">
-            <pre id="steps-pre-<%= dom_friendly(repo.distro.id) %>"><%= repo.installable_cli %></pre>
+            <pre id="steps-pre-<%= dom_friendly(repo.distro.id) %>" data-clipboard-target="source"><%= repo.installable_cli %></pre>
           </div>
 
           <div class="btn-group" role="group" aria-label="installation step manage">
-            <button onclick="copyTextToClipboard('#steps-pre-<%= dom_friendly(repo.distro.id) %>')" class="btn btn-link btn-sm">Copy to clipboard</button>
+            <button data-action="clipboard#copy" class="btn btn-link btn-sm">Copy to clipboard</button>
             <button class="btn btn-link btn-sm link-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-gpg-key-<%= dom_friendly(repo.distro.id) %>" aria-expanded="false" aria-controls="#collapse-gpg-key-<%= dom_friendly(repo.distro.id) %>">
               GPG key
             </button>
