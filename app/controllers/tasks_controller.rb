@@ -15,7 +15,8 @@ class TasksController < ::ApplicationController
   end
 
   def create
-    task = ::Task.start(project, skip_fetch: true)
+    distros = params[:distro_ids].presence || ::Distro.ids
+    task = ::Task.start(project, skip_fetch: true, distro_ids: distros)
     redirect_to(project_tasks_path(project, highlight: task.id))
   end
 
