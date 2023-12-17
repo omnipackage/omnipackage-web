@@ -15,6 +15,8 @@ class Task < ::ApplicationRecord
 
   attribute :distro_ids, :string, array: true, default: -> { ::Distro.ids }
 
+  scope :by_distro, ->(distro) { where('? = ANY(distro_ids)', distro) }
+
   validates :distro_ids, presence: true
   validates_with ::Distro::DistrosValidator
 

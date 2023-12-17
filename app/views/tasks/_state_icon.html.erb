@@ -10,11 +10,11 @@
     <i class="bi bi-cloud-arrow-down-fill"></i>
   <% when 'finished' %>
     <% if task.errors? %>
-      <i class="bi bi-exclamation-circle-fill text-danger"></i>
+      <i class="bi bi-exclamation-triangle-fill text-danger"></i>
     <% else %>
       <i class="bi bi-check-circle-fill text-success"></i>
     <% end %>
   <% when 'cancelled' %>
-    <i class="bi bi-exclamation-triangle-fill text-warning"></i>
+    <i class="bi bi-exclamation-diamond-fill text-warning"></i>
   <% end %>
 </span>

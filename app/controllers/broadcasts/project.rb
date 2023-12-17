@@ -6,8 +6,9 @@ module Broadcasts
       ::Turbo::StreamsChannel.broadcast_replace_later_to(
         [model, :show],
         target: dom_id(model),
-        partial: 'projects/project_show',
-        locals: { project: model },
+        template: 'projects/show',
+        assigns: { project: model },
+        layout: false
       )
       # ::Turbo::StreamsChannel.broadcast_render_later_to(
       #  model,

@@ -1,10 +1,33 @@
 <% if @project %>
   <%= turbo_stream_from [@project, :tasks] %>
-  <h5>Tasks for <%= link_to @project.name, project_path(@project) %> </h5>
 <% else %>
   <%= turbo_stream_from [current_user, :tasks] %>
-  <h5>Tasks</h5>
 <% end %>
+
+<div>
+  <div class="row">
+    <div class="col-md-auto">
+      <h5>Tasks</h5>
+    </div>
+    <div class="col">
+      <div>
+        <%= form_with url: tasks_path, method: :get do |f|%>
+          <div class="row">
+            <div class="col-md-auto">
+              <%= f.collection_select :state, ::Task.states.keys, :itself, :humanize, { include_blank: 'All states', selected: params[:state] }, { class: 'form-select form-select-sm', onchange: 'this.form.submit()' } %>
+            </div>
+            <div class="col-md-auto">
+              <%= f.collection_select :project_id, current_user.projects, :id, :name, { include_blank: 'All projects', selected: params[:project_id] }, { class: 'form-select form-select-sm', onchange: 'this.form.submit()' } %>
+            </div>
+            <div class="col-md-auto">
+              <%= f.collection_select :distro, ::Distro.all, :id, :name, { include_blank: 'All distros', selected: params[:distro] }, { class: 'form-select form-select-sm', onchange: 'this.form.submit()' } %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 <div class="container pt-3">
@@ -17,5 +40,5 @@
   <div class="pt-3">
     <%= render partial: 'layouts/pagination', locals: { pagination: @pagination } %>
   </div>
-  
+
 </div>

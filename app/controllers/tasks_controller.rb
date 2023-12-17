@@ -1,12 +1,17 @@
 # frozen_string_literal: true
 
 class TasksController < ::ApplicationController
-  def index
+  def index # rubocop: disable Metrics/AbcSize
+    # if params.key?(:project_id) && params[:project_id].blank?
+    # redirect_to(tasks_path)
+    # end
     tasks = if project
               project.tasks
             else
               current_user.tasks
             end
+    tasks = tasks.by_distro(params[:distro]) if params[:distro].present?
+    tasks = tasks.where(state: params[:state]) if params[:state].present?
     @pagination, @tasks = ::Pagination.new(tasks.order(created_at: :desc), self).call
   end
 
@@ -17,7 +22,7 @@ class TasksController < ::ApplicationController
   def create
     distros = params[:distro_ids].presence || ::Distro.ids
     task = ::Task.start(project, skip_fetch: true, distro_ids: distros)
-    redirect_to(project_tasks_path(project, highlight: task.id))
+    redirect_to(tasks_path(project_id: project.id, highlight: task.id))
   end
 
   def cancel

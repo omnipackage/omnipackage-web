@@ -22,11 +22,11 @@ class TaskScheduleFlowTest < ::ActionDispatch::IntegrationTest
 
   test 'schedule and dequeue task' do
     perform_enqueued_jobs do
-      post project_tasks_path(@project)
+      post tasks_path(project_id: @project.id)
     end
     assert_equal 1, @project.tasks.count
     task = @project.tasks.first
-    assert_redirected_to project_tasks_path(@project, highlight: task.id)
+    assert_redirected_to tasks_path(project_id: @project.id, highlight: task.id)
     assert task.pending_build?
 
     post agent_api_path, headers: { 'Authorization' => "Bearer #{@agent.apikey}" }, params: { payload: { state: 'idle' } }

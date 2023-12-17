@@ -42,7 +42,6 @@ require 'sidekiq/web'
   resources :projects do
     resources :ssh_keys, only: %i[create]
     resources :sources, only: %i[index create]
-    resources :tasks, only: %i[index create]
     resources :webhooks, only: %i[index create show new update destroy]
   end
 
