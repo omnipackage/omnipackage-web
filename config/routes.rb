@@ -47,8 +47,9 @@ require 'sidekiq/web'
   end
 
   resources :agents
-  resources :tasks, only: %i[index show destroy create] do
+  resources :tasks, only: %i[index show create] do
     get 'log', on: :member
+    post 'cancel', on: :member
   end
   resources :repositories, only: %i[show] do
     concerns :gpg_keys

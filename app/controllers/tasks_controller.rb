@@ -20,9 +20,9 @@ class TasksController < ::ApplicationController
     redirect_to(project_tasks_path(project, highlight: task.id))
   end
 
-  def destroy
-    task.destroy!
-    redirect_to(tasks_path, notice: 'Task has been successfully deleted')
+  def cancel
+    task.cancelled!
+    redirect_to(tasks_path, notice: 'Task has been successfully cancelled')
   end
 
   def log

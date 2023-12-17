@@ -28,7 +28,7 @@ class Task
       return schedule if state == 'idle'
 
       task = agent.tasks.find_by(id: payload.fetch(:task).fetch(:id))
-      return Command['stop', nil] unless task
+      return Command['stop', nil] if !task || task.cancelled?
 
       if state == 'busy'
         busy(task, payload[:livelog])
