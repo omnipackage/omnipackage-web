@@ -3,3 +3,6 @@
 
 production:
   :concurrency: 25
+
+:scheduler:
+  :enabled: false

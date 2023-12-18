@@ -3,3 +3,9 @@
 
 production:
   :concurrency: 25
+
+:scheduler:
+  :schedule:
+    CleanupOldTasksJob:
+      cron: '0 9 * * *'
+      class: CleanupOldTasksJob
