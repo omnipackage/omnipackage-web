@@ -9,12 +9,10 @@
   <% when 'pending_fetch' %>
     <i class="bi bi-cloud-arrow-down-fill"></i>
   <% when 'finished' %>
-    <% if task.errors? %>
-      <i class="bi bi-exclamation-triangle-fill text-danger"></i>
-    <% else %>
-      <i class="bi bi-check-circle-fill text-success"></i>
-    <% end %>
+    <i class="bi bi-check-circle-fill text-success"></i>
   <% when 'cancelled' %>
     <i class="bi bi-exclamation-diamond-fill text-warning"></i>
+  <% when 'failed' %>
+    <i class="bi bi-exclamation-triangle-fill text-danger"></i>
   <% end %>
 </span>

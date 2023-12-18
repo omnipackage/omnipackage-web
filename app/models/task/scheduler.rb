@@ -88,7 +88,11 @@ class Task
     def finish(task, log)
       ::ApplicationRecord.transaction do
         task.append_log(log)
-        task.finish!
+        if task.errors?
+          task.fail!
+        else
+          task.finish!
+        end
       end
       ::RepositoryPublishJob.start(task)
     end

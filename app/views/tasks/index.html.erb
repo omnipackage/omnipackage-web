@@ -31,6 +31,28 @@
 
 
 <div class="container pt-3">
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">
+      <div class="row fw-lighter fs-6">
+        <div class="col">
+          State
+        </div>
+        <div class="col">
+          Timestamp
+        </div>
+        <div class="col">
+          Duration
+        </div>
+        <div class="col">
+          Project
+        </div>
+        <div class="col">
+          Distros
+        </div>
+      </div>
+    </li>
+  </ul>
+
   <ul class="list-group list-group-flush" id="tasks">
     <% @tasks.each do |task| %>
       <%= render partial: 'tasks/task', locals: { task: task, highlight: params[:highlight].to_i == task.id } %>

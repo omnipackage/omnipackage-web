@@ -19,8 +19,8 @@
     <% if !task.pending_fetch? && !task.pending_build? && task.agent && current_user == task.agent.user %>
       <span>on <%= link_to task.agent.name, agent_path(task.agent), class: 'link-secondary' %></span>
     <% end %>
-    <% if task.finished? && task.errors? %>
-      <span>with errors in </span>
+    <% if task.failed? %>
+      <span> in </span>
       <% task.artefacts.failed.each_with_index do |a, index| %>
         <a class="link-secondary" href="#artefacts-<%= dom_friendly(a.distro) %>"><%= a.distro_object.name %></a>
       <% end %>
@@ -102,7 +102,7 @@
   <div class="pt-3">
     <div class="btn-group" role="group" aria-label="webhooks buttons">
       <%= link_to 'Back to tasks list', tasks_path, class: 'btn btn-link' %>
-      <% if !task.finished? && !task.cancelled? %>
+      <% if task.pending_fetch? || task.pending_build? || task.running? %>
         <%= button_to cancel_task_path(task), method: :post, class: 'btn btn-link link-danger', form: { data: { turbo_confirm: "Cancel this task?" } } do %>
           Cancel
         <% end %>

@@ -1,38 +1,43 @@
 <%# locals: (task:, highlight: false) -%>
 
 <li class="list-group-item <%= highlight ? 'highlight-animate-added-item' : '' %>" id="<%= dom_id(task) %>">
-  <span>
-    <%= link_to "##{task.id}", task_path(task.id) %>
-    <%= render partial: 'tasks/state_icon', locals: { task: task } %>
-    <%= task.state.humanize %>
-    <% if task.finished? && task.errors? %>
-      with errors
-    <% end %>
-  </span>
+  <div class="row">
 
-  <span class="text-secondary">
-    <% case task.state %>
-    <% when 'running' %>
-      last update <%= time_ago_in_words(task.started_at) %> ago
-    <% when 'pending_fetch', 'pending_build' %>
-      <%= time_ago_in_words(task.created_at) %> ago
-    <% when 'finished' %>
-      <%= time_ago_in_words(task.finished_at) %> ago
-      <span class="ms-3">
-        <i class="bi bi-stopwatch"></i>
-        <%= task.duration.humanized %>
-      </span>
-    <% when 'cancelled' %>
-      <%= time_ago_in_words(task.updated_at) %> ago
-    <% end %>
-  </span>
+    <div class="col">
+      <%= link_to "##{task.id}", task_path(task.id) %>
+      <%= render partial: 'tasks/state_icon', locals: { task: task } %>
+      <%= task.state.humanize %>
+      <% if task.failed? && task.artefacts.successful.exists? %>
+        partially
+      <% end %>
+    </div>
 
-  <span class="float-end">
-    <%= link_to task.project.name, project_path(task.project.id), class: 'link link-secondary pe-3' %>
+    <div class="col text-secondary">
+      <% case task.state %>
+      <% when 'running' %>
+        last update <%= time_ago_in_words(task.started_at) %> ago
+      <% when 'pending_fetch', 'pending_build' %>
+        <%= time_ago_in_words(task.created_at) %> ago
+      <% when 'finished', 'failed' %>
+        <%= time_ago_in_words(task.finished_at) %> ago
+      <% when 'cancelled' %>
+        <%= time_ago_in_words(task.updated_at) %> ago
+      <% end %>
+    </div>
 
-    <% task.distros.map(&:family).uniq.each do |df| %>
-      <%= render partial: 'layouts/distro_icon', locals: { family: df, size: 16 } %>
-    <% end %>
-  </span>
+    <div class="col text-secondary">
+      <%= task.duration&.humanized %>
+    </div>
 
+    <div class="col">
+      <%= link_to task.project.name, project_path(task.project.id), class: 'link link-secondary pe-3' %>
+    </div>
+
+    <div class="col">
+      <% task.distros.map(&:family).uniq.each do |df| %>
+        <%= render partial: 'layouts/distro_icon', locals: { family: df, size: 16 } %>
+      <% end %>
+    </div>
+
+  </div>
 </li>
