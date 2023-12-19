@@ -48,7 +48,7 @@ class Repository < ::ApplicationRecord
   end
 
   def with_own_gpg_key?
-    gpg_key_private && gpg_key_public
+    gpg_key_private.present? && gpg_key_public.present?
   end
 
   def installable_package_name

@@ -62,8 +62,7 @@ class Project < ::ApplicationRecord
   def create_default_repository(distro)
     return if repositories.exists?(distro_id: distro.id)
 
-    gpg = user.gpg_key
-    repositories.create!(distro_id: distro.id, bucket: default_bucket(distro), gpg_key_public: gpg.pub, gpg_key_private: gpg.priv)
+    repositories.create!(distro_id: distro.id, bucket: default_bucket(distro))
   end
 
   def create_default_repositories

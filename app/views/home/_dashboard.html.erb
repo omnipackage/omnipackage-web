@@ -17,6 +17,8 @@
 
                 <ul class="list-group list-group-flush">
                   <% @dashboard.projects_by_distro(d).each do |proj| %>
+                    <%- last_pub = proj.repositories.where(distro_id: d.id).order(published_at: :asc).last&.published_at %>
+                    <% next unless last_pub %>
                     <li class="list-group-item">
                       <div class="row align-items-center">
                         <div class="col-md-auto fs-4">
@@ -27,10 +29,7 @@
                         <div class="col">
                           <%= link_to proj.name, project_path(proj) %>
                           <div>
-                            <%- last_pub = proj.repositories.where(distro_id: d.id).order(published_at: :asc).last.published_at %>
-                            <% if last_pub %>
-                              <small class="text-secondary"><%= time_ago_in_words(last_pub) %> ago</small>
-                            <% end %>
+                            <small class="text-secondary"><%= time_ago_in_words(last_pub) %> ago</small>
                           </div>
                         </div>
                       </div>
