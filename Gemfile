@@ -22,6 +22,7 @@ group :development, :test do
   gem 'bundle-audit', require: false
   gem 'factory_bot_rails'
   gem 'faker'
+  gem 'readline-ext' # https://github.com/ruby/reline/issues/618
   gem 'rubocop', require: false
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false
