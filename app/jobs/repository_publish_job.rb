@@ -6,6 +6,8 @@ class RepositoryPublishJob < ::ApplicationJob
 
   class << self
     def start(task)
+      return if task.cancelled?
+
       jobs = []
       task.artefacts.successful.group_by(&:distro).each do |distro, afacts|
         task.repositories.where(distro_id: distro).find_each do |repo|
