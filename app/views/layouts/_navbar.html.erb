@@ -1,6 +1,9 @@
 <nav class="navbar navbar-expand-lg bg-body-secondary">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/">OmniPackage</a>
+    <a class="navbar-brand" href="/">
+      <img src="<%= asset_path("brand/logo_symbol.svg") %>" alt="logo" height="30px">
+      OmniPackage
+    </a>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -45,10 +48,10 @@
           </li>
         <% else %>
           <li class="nav-item">
-            <%= link_to "Sign in", sign_in_path, class: 'btn btn-link link-primary' %>
+            <%= link_to "Sign in", sign_in_path, class: 'btn btn-outline-success' %>
           </li>
-          <li class="nav-item">
-            <%= link_to "Sign up", sign_up_path, class: 'btn btn-outline-success' %>
+          <li class="nav-item ms-2">
+            <%= link_to "Sign up", sign_up_path, class: 'btn btn-success' %>
           </li>
       <% end %>
 
