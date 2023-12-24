@@ -47,9 +47,10 @@
     </div>
   <% end %>
 
-  <div class="pt-3">
-    <%= link_to new_project_path, class: 'btn btn-outline-primary' do %>
-      <i class="bi bi-plus-circle"></i> New project
-    <% end %>
-  </div>
+  <% if dashboard.projects.empty? %>
+    <div class="pt-3">
+      You have no projects yet,
+      <%= link_to 'create your first project', new_project_path %>
+    </div>
+  <% end %>
 </div>
