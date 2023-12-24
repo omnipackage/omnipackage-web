@@ -7,16 +7,16 @@
       <p>Signed as <strong><%= @user.email %></strong></p>
       <p>
         Name <strong><%= @user.name.presence || 'unspecified' %></strong>
-        <a href="#" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover m-1" data-bs-toggle="modal" data-bs-target="#changeAccountModal">
+        <a href="#" class="m-1" data-bs-toggle="modal" data-bs-target="#changeAccountModal">
           <i class="bi bi-pencil-square"></i> change
         </a>
       </p>
     </div>
 
     <div>
-      <%= link_to 'Change email address', edit_identity_email_path, class: 'link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover m-1' %>
-      <%= link_to 'Change password', edit_password_path, class: 'link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover m-1' %>
-      <%= link_to 'Devices & Sessions', sessions_path, class: 'link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover m-1' %>
+      <%= link_to 'Change email address', edit_identity_email_path, class: 'm-1' %>
+      <%= link_to 'Change password', edit_password_path, class: 'm-1' %>
+      <%= link_to 'Devices & Sessions', sessions_path, class: 'm-1' %>
     </div>
   </div>
 
@@ -26,7 +26,7 @@
     <div class="bg-body-tertiary p-2 rounded-2">
       <pre><%= @user.gpg_key.public_info.strip %></pre>
     </div>
-    <%= link_to 'Manage', index_gpg_key_path, class: 'link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover m-1' %>
+    <%= link_to 'Manage', index_gpg_key_path, class: 'link-secondary m-1' %>
   </div>
 
   <div class="mt-5">

@@ -31,11 +31,11 @@
         <pre><%= repository.gpg_key.public_info.strip %></pre>
       </div>
       <% if repository.with_own_gpg_key? %>
-        <%= link_to 'Manage', repository_index_gpg_key_path(repository), class: 'link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover m-1' %>
+        <%= link_to 'Manage', repository_index_gpg_key_path(repository), class: 'link-secondary m-1' %>
       <% else %>
         <div class="text-secondary">The respository doesn't have its own GPG key and uses key from your account</div>
-        <%= link_to "Create repository-specific key", repository_index_gpg_key_path(repository), class: 'link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover m-1' %>
-        <%= link_to "Manage account's GPG key", index_gpg_key_path, class: 'link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover m-1' %>
+        <%= link_to "Create repository-specific key", repository_index_gpg_key_path(repository), class: 'link-secondary  m-1' %>
+        <%= link_to "Manage account's GPG key", index_gpg_key_path, class: 'link-secondary m-1' %>
       <% end %>
     </div>
 
