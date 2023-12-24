@@ -1,6 +1,12 @@
 <%# locals: (dashboard:) -%>
 
 <div class="container" id="dashboard">
+  <% if !dashboard.projects.empty? %>
+    <div class="pb-3">
+      You have no projects yet, <%= link_to 'create your first project', new_project_path %>
+    </div>
+  <% end %>
+
   <% @dashboard.distros.group_by(&:family).each do |family, distros| %>
     <div class="row pt-3 pb-3 align-items-center">
       <div class="col-md-auto">
@@ -44,13 +50,6 @@
         </div>
 
       </div>
-    </div>
-  <% end %>
-
-  <% if dashboard.projects.empty? %>
-    <div class="pt-3">
-      You have no projects yet,
-      <%= link_to 'create your first project', new_project_path %>
     </div>
   <% end %>
 </div>
