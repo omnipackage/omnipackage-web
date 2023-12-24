@@ -1,7 +1,7 @@
 <%# locals: (dashboard:) -%>
 
 <div class="container" id="dashboard">
-  <% if !dashboard.projects.empty? %>
+  <% if dashboard.projects.empty? %>
     <div class="pb-3">
       You have no projects yet, <%= link_to 'create your first project', new_project_path %>
     </div>
