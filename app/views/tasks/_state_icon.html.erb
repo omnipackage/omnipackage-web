@@ -13,6 +13,10 @@
   <% when 'cancelled' %>
     <i class="bi bi-exclamation-diamond-fill text-warning"></i>
   <% when 'failed' %>
-    <i class="bi bi-exclamation-triangle-fill text-danger"></i>
+    <% if task.artefacts.successful.exists? %>
+      <i class="bi bi-exclamation-triangle-fill text-warning"></i>
+    <% else %>
+      <i class="bi bi-exclamation-triangle-fill text-danger"></i>
+    <% end %>
   <% end %>
 </span>
