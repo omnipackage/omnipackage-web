@@ -3,7 +3,7 @@
 
     <div class="row">
       <div class="col text-end">
-        <p><%= link_to 'About', '#', class: 'link-secondary' %></p>
+        <p><%= link_to 'About', pages_about_path, class: 'link-secondary' %></p>
         <p><%= link_to 'Documentation', '#', class: 'link-secondary' %></p>
       </div>
 
@@ -14,14 +14,9 @@
       </div>
 
       <div class="col text-start">
-        <p><%= link_to 'Transparency', '#', class: 'link-secondary' %></p>
-        <p><%= link_to 'Privacy policy', '#', class: 'link-secondary' %></p>
+        <p><%= link_to 'Transparency', pages_transparency_path, class: 'link-secondary' %></p>
+        <p><%= link_to 'Privacy policy', pages_privacy_path, class: 'link-secondary' %></p>
       </div>
     </div>
-
-    <% if ::Rails.env.development? %>
-      <pre><%= params.to_unsafe_h.pretty_inspect %></pre>
-      <pre><%= @pagination&.to_h %></pre>
-    <% end %>
   </div>
 </div>

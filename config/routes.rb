@@ -59,4 +59,8 @@ require 'sidekiq-scheduler/web'
   get ':project_id/install', to: 'installs#index', as: 'package_install'
 
   post 'inbound_webhooks/:key', to: 'inbound_webhooks#trigger', as: 'trigger_webhook'
+
+  %i[about transparency privacy].each do |page|
+    get page, to: "pages##{page}", as: "pages_#{page}"
+  end
 end
