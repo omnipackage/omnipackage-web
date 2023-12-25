@@ -1,5 +1,24 @@
 <div class="p-3 bg-body-tertiary">
   <div class="container-fluid py-3">
+
+    <div class="row">
+      <div class="col text-end">
+        <p><%= link_to 'About', '#', class: 'link-secondary' %></p>
+        <p><%= link_to 'Documentation', '#', class: 'link-secondary' %></p>
+      </div>
+
+      <div class="col text-center">
+        <%= link_to root_path do %>
+          <img src="<%= asset_path("brand/logo_with_slogan.svg") %>" alt="logo" height="65px">
+        <% end %>
+      </div>
+
+      <div class="col text-start">
+        <p><%= link_to 'Transparency', '#', class: 'link-secondary' %></p>
+        <p><%= link_to 'Privacy policy', '#', class: 'link-secondary' %></p>
+      </div>
+    </div>
+
     <% if ::Rails.env.development? %>
       <pre><%= params.to_unsafe_h.pretty_inspect %></pre>
       <pre><%= @pagination&.to_h %></pre>
