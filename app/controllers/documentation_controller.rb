@@ -6,7 +6,10 @@ class DocumentationController < ::ApplicationController
   # rescue_from ::Errno::ENOENT, with: :respond_not_found
 
   def index
-    render_md(current_page)
+    content = ::Rails.cache.fetch("documentation/#{current_page}", expires_in: 6.hours) do
+      render_md(current_page)
+    end
+    render(html: content, layout: 'documentation')
   end
 
   private
@@ -19,8 +22,8 @@ class DocumentationController < ::ApplicationController
 
   def sidebar_entries
     ::Dir[::Rails.root.join('documentation/*.md')].map do |entry|
-      page = entry.gsub(::Rails.root.join('documentation/').to_s, '')
-      title = entry.split('/').last.gsub('.md', '').humanize
+      page = entry.gsub(::Rails.root.join('documentation/').to_s, '').chomp('.md')
+      title = entry.split('/').last.chomp('.md').humanize
       [page, title]
     end
   end
@@ -32,7 +35,7 @@ class DocumentationController < ::ApplicationController
       raise ::ArgumentError, "path '#{path}' invalid"
     end
 
-    content = ::File.read(fpath)
-    render(html: ::Redcarpet::Markdown.new(::Redcarpet::Render::HTML).render(content).html_safe, layout: 'documentation') # rubocop: disable Rails/OutputSafety
+    md = ::File.read(fpath)
+    ::Redcarpet::Markdown.new(::Redcarpet::Render::HTML).render(md).html_safe # rubocop: disable Rails/OutputSafety
   end
 end
