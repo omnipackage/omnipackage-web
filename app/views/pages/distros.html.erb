@@ -1,0 +1,28 @@
+<h5>Supported distros</h5>
+
+<div class="container pt-3">
+
+  <% ::Distro.all.group_by(&:family).each do |family, distros| %>
+    <div class="row pt-3 pb-3 align-items-center">
+      <div class="col-md-auto">
+        <%= render partial: 'layouts/distro_icon', locals: { family: family, size: 64 } %>
+      </div>
+
+      <div class="col-11">
+
+        <div class="card-group">
+          <% distros.sort_by(&:name).each do |d| %>
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title"><%= d.name %> <small class="text-secondary"><%= d.arch %></small></h5>
+                <p class="card-text"><small><%= link_to d.image, d.image_info_url, target: '_blank', rel: 'noopener', class: 'text-secondary' %></small></p>
+              </div>
+            </div>
+          <% end %>
+        </div>
+
+      </div>
+    </div>
+  <% end %>
+
+</div>

@@ -54,13 +54,12 @@ require 'sidekiq-scheduler/web'
   resources :repositories, only: %i[show] do
     concerns :gpg_keys
   end
-  resources :distros, only: %i[index]
 
   get ':project_id/install', to: 'installs#index', as: 'package_install'
 
   post 'inbound_webhooks/:key', to: 'inbound_webhooks#trigger', as: 'trigger_webhook'
 
-  %i[about transparency privacy].each do |page|
+  %i[about transparency privacy distros].each do |page|
     get page, to: "pages##{page}", as: "pages_#{page}"
   end
   get 'documentation', to: "documentation#index", as: 'documentation'

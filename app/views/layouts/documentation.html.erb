@@ -1,6 +1,6 @@
 <% content_for :documentation do %>
   <div class="d-flex">
-    <div class="d-flex flex-column flex-shrink-0 p-3 flex-shrink-0 bg-body-tertiary" >
+    <div class="d-flex flex-column flex-shrink-0 p-3 flex-shrink-0 bg-body-tertiary shadow rounded" >
       <ul class="nav flex-column nav-pills mb-auto">
         <% sidebar_entries.each do |page, title| %>
           <% if page %>
@@ -16,7 +16,7 @@
       </ul>
     </div>
 
-    <div class="ms-3">
+    <div class="ms-4">
       <%= yield %>
     </div>
 
