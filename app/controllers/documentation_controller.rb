@@ -21,10 +21,12 @@ class DocumentationController < ::ApplicationController
   end
 
   def sidebar_entries
-    ::Dir[::Rails.root.join('documentation/*.md')].map do |entry|
-      page = entry.gsub(::Rails.root.join('documentation/').to_s, '').chomp('.md')
-      title = entry.split('/').last.chomp('.md').humanize
-      [page, title]
+    ::Rails.cache.fetch("documentation/sidebar", expires_in: 6.hours) do
+      ::Dir[::Rails.root.join('documentation/*.md')].map do |entry|
+        page = entry.gsub(::Rails.root.join('documentation/').to_s, '').chomp('.md')
+        title = entry.split('/').last.chomp('.md').humanize
+        [page, title]
+      end
     end
   end
 
