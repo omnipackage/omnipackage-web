@@ -21,7 +21,7 @@ class DocumentationController < ::ApplicationController
   end
 
   def sidebar_entries # rubocop: disable Metrics/AbcSize, Metrics/MethodLength
-    ::Rails.cache.fetch("documentation/sidebar-2", expires_in: 6.hours) do
+    ::Rails.cache.fetch("documentation/sidebar", expires_in: 6.hours) do
       doc_root = ::Rails.root.join('documentation/')
       enum_entries = ->(path) do
         ::Dir[doc_root.join(path, '*.md')].map do |entry|
