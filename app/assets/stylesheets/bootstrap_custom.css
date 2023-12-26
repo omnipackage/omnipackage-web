@@ -1,3 +1,8 @@
-.nav-pills > li > .nav-link.active {
+/*.nav-pills > li > .nav-link.active {
    background-color: #274e13;
+}*/
+
+.nav-pills > li > .nav-link {
+  padding-top: 3px;
+  padding-bottom: 3px;
 }

@@ -1,24 +1,25 @@
 <% content_for :documentation do %>
-  <div class="row">
-    <div class="col-md-auto">
+  <div class="d-flex">
+    <div class="d-flex flex-column flex-shrink-0 p-3 flex-shrink-0 bg-body-tertiary" >
       <ul class="nav flex-column nav-pills mb-auto">
         <% sidebar_entries.each do |page, title| %>
           <% if page %>
-            <li class="nav-item">
+            <li class="nav-item fw-light ps-2">
               <%= link_to title, documentation_page_path(page), class: "nav-link #{current_page == page ? 'active' : ''}" %>
             </li>
           <% else %>
-            <li class="nav-item">
-              <strong><%= title %></strong>
+            <li class="nav-item fw-bold">
+              <i class="bi bi-list-ul me-2"></i><%= title %>
             </li>
           <% end %>
         <% end %>
       </ul>
     </div>
 
-    <div class="col">
+    <div class="ms-3">
       <%= yield %>
     </div>
+
   </div>
 <% end %>
 
