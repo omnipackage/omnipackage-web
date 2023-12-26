@@ -1,0 +1,19 @@
+<% content_for :documentation do %>
+  <div class="row">
+    <div class="col-md-auto">
+      <ul class="nav flex-column  nav-underline">
+        <% sidebar_entries.each do |page, title| %>
+          <li class="nav-item">
+            <%= link_to title, documentation_page_path(page), class: "nav-link #{params[:page] == page ? 'active' : ''}" %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+
+    <div class="col">
+      <%= yield %>
+    </div>
+  </div>
+<% end %>
+
+<%= render template: 'layouts/application' %>

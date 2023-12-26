@@ -63,4 +63,6 @@ require 'sidekiq-scheduler/web'
   %i[about transparency privacy].each do |page|
     get page, to: "pages##{page}", as: "pages_#{page}"
   end
+  get 'documentation', to: "documentation#index", as: 'documentation'
+  get 'documentation/:page', to: "documentation#page", as: 'documentation_page'
 end
