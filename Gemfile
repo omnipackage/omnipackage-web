@@ -23,6 +23,7 @@ group :development, :test do
   gem 'bundle-audit', require: false
   gem 'factory_bot_rails'
   gem 'faker'
+  gem 'observer' if ::Gem::Version.new(::RUBY_VERSION) >= ::Gem::Version.new('3.3') # warning: observer was loaded from the standard library, but will no longer be part of the default gems since Ruby 3.4.0
   gem 'readline-ext' # https://github.com/ruby/reline/issues/618
   gem 'rubocop', require: false
   gem 'rubocop-performance', require: false

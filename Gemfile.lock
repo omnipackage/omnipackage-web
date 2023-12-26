@@ -125,7 +125,7 @@ GEM
     erubi (1.12.0)
     et-orbi (1.2.7)
       tzinfo
-    factory_bot (6.4.2)
+    factory_bot (6.4.3)
       activesupport (>= 5.0.0)
     factory_bot_rails (6.4.2)
       factory_bot (~> 6.4)
@@ -179,6 +179,7 @@ GEM
     nokogiri (1.15.5)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
+    observer (0.1.2)
     parallel (1.24.0)
     parser (3.2.2.4)
       ast (~> 2.4.1)
@@ -334,6 +335,7 @@ DEPENDENCIES
   faker
   foreman
   importmap-rails
+  observer
   pg
   pry-rails
   puma
