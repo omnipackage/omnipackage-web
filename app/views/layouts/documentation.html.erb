@@ -1,11 +1,17 @@
 <% content_for :documentation do %>
   <div class="row">
     <div class="col-md-auto">
-      <ul class="nav flex-column  nav-underline">
+      <ul class="nav flex-column nav-underline mb-auto">
         <% sidebar_entries.each do |page, title| %>
-          <li class="nav-item">
-            <%= link_to title, documentation_page_path(page), class: "nav-link #{current_page == page ? 'active' : ''}" %>
-          </li>
+          <% if page %>
+            <li class="nav-item">
+              <%= link_to title, documentation_page_path(page), class: "nav-link #{current_page == page ? 'active' : ''}" %>
+            </li>
+          <% else %>
+            <li class="nav-item">
+              <strong><%= title %></strong>
+            </li>
+          <% end %>
         <% end %>
       </ul>
     </div>

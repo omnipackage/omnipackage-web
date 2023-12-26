@@ -20,13 +20,24 @@ class DocumentationController < ::ApplicationController
     params[:page] || 'index'
   end
 
-  def sidebar_entries
-    ::Rails.cache.fetch("documentation/sidebar", expires_in: 6.hours) do
-      ::Dir[::Rails.root.join('documentation/*.md')].map do |entry|
-        page = entry.gsub(::Rails.root.join('documentation/').to_s, '').chomp('.md')
-        title = entry.split('/').last.chomp('.md').humanize
-        [page, title]
+  def sidebar_entries # rubocop: disable Metrics/AbcSize, Metrics/MethodLength
+    ::Rails.cache.fetch("documentation/sidebar-2", expires_in: 6.hours) do
+      doc_root = ::Rails.root.join('documentation/')
+      enum_entries = ->(path) do
+        ::Dir[doc_root.join(path, '*.md')].map do |entry|
+          page = entry.gsub(doc_root.to_s, '').chomp('.md')
+          title = entry.split('/').last.chomp('.md').humanize
+          [page, title]
+        end
       end
+      entries = enum_entries.call(doc_root)
+
+      doc_root.children.select(&:directory?).map do |dir|
+        entries << [nil, dir.basename.to_s.chomp('.md').humanize]
+        entries.concat(enum_entries.call(dir))
+      end
+
+      entries
     end
   end
 
