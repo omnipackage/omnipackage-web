@@ -6,16 +6,16 @@ class DocumentationController < ::ApplicationController
   # rescue_from ::Errno::ENOENT, with: :respond_not_found
 
   def index
-    render_md('index')
-  end
-
-  def page
-    render_md(params[:page])
+    render_md(current_page)
   end
 
   private
 
-  helper_method :sidebar_entries
+  helper_method :sidebar_entries, :current_page
+
+  def current_page
+    params[:page] || 'index'
+  end
 
   def sidebar_entries
     ::Dir[::Rails.root.join('documentation/*.md')].map do |entry|

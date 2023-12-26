@@ -2,16 +2,20 @@
   <div class="row">
     <div class="col-md-auto">
       <ul class="nav flex-column  nav-underline">
-        <% sidebar_entries.each do |page, title| %>
-          <li class="nav-item">
-            <%= link_to title, documentation_page_path(page), class: "nav-link #{params[:page] == page ? 'active' : ''}" %>
-          </li>
+        <% cache "documentation-sidebar-#{current_page}" do %>
+          <% sidebar_entries.each do |page, title| %>
+            <li class="nav-item">
+              <%= link_to title, documentation_page_path(page), class: "nav-link #{current_page == page.chomp('.md') ? 'active' : ''}" %>
+            </li>
+          <% end %>
         <% end %>
       </ul>
     </div>
 
     <div class="col">
-      <%= yield %>
+      <% cache "documentation-#{current_page}" do %>
+        <%= yield %>
+      <% end %>
     </div>
   </div>
 <% end %>
