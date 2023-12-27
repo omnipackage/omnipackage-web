@@ -20,11 +20,11 @@
     </div>
 
     <div class="container pt-3">
-      <% if content_for?(:documentation) %>
-        <%= yield(:documentation) %>
-      <% else %>
-        <%= yield %>
+      <% if content_for?(:sidebar) %>
+        <%= yield(:sidebar) %>
       <% end %>
+      
+      <%= yield %>
     </div>
 
     <footer class="pt-5">
