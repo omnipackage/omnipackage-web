@@ -41,3 +41,6 @@ Layout/ClosingHeredocIndentation:
 
 Layout/HeredocIndentation:
   Enabled: false
+
+Bundler/OrderedGems:
+  Enabled: false
