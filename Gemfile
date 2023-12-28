@@ -30,7 +30,6 @@ group :development, :test do
   gem 'super_awesome_print'
 
   if ::Gem::Version.new(::RUBY_VERSION) >= ::Gem::Version.new('3.3')
-    gem 'observer' # warning: observer was loaded from the standard library, but will no longer be part of the default gems since Ruby 3.4.0
     gem 'readline-ext' # https://github.com/ruby/reline/issues/618
   end
 end
