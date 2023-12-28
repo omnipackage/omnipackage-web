@@ -69,6 +69,15 @@ module RepoManage
       @container_name ||= image_cache.generate_container_name(image, setup_cli)
     end
 
+    def fix_permissions(commands)
+      if executable == 'docker'
+        commands.unshift('umask 000')
+        mounts.each do |_from, to|
+          commands << "chown -R #{::Process.uid}:#{::Process.gid} #{to}"
+        end
+      end
+    end
+
     def build_container_cli(commands)
 =begin
       script = <<~SCRIPT
@@ -78,6 +87,7 @@ module RepoManage
       SCRIPT
       ::File.open(::Pathname.new(homedir).join('script'), 'w') { |file| file.write(script) }
 =end
+      fix_permissions(commands)
       <<~CLI
         #{executable} run --name #{container_name} --entrypoint /bin/bash --workdir #{mounts[workdir]} #{mount_cli} #{envs_cli} #{limits.to_cli} #{image_cache.image(container_name, image)} -c "#{commands.join(' && ')}"
       CLI
