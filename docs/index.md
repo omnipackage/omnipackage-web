@@ -1,8 +1,8 @@
 # Documentation index 123 asfsdaf
 
-### [Getting started](/documentation/getting_started.md)
+### [Getting started](/docs/getting_started.md)
 
-### [Subsection](/documentation/subsection1/entry2.md)
+### [Subsection](/docs/subsection1/entry2.md)
 
 # Nivibus imago pontus est hanc vocant velamina
 

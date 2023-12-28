@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
-class DocumentationController < ::ApplicationController
+class DocsController < ::ApplicationController
   skip_before_action :require_authentication
 
   # rescue_from ::Errno::ENOENT, with: :respond_not_found
 
   def index
-    content = ::Rails.cache.fetch("documentation/#{current_page}", expires_in: 6.hours) do
+    content = ::Rails.cache.fetch("docs/#{current_page}", expires_in: 6.hours) do
       render_md(current_page)
     end
-    render(html: content, layout: 'documentation')
+    render(html: content, layout: 'docs')
   end
 
   private
@@ -21,8 +21,8 @@ class DocumentationController < ::ApplicationController
   end
 
   def sidebar_entries # rubocop: disable Metrics/AbcSize, Metrics/MethodLength
-    ::Rails.cache.fetch("documentation/sidebar", expires_in: 6.hours) do
-      doc_root = ::Rails.root.join('documentation/')
+    ::Rails.cache.fetch("docs/sidebar", expires_in: 6.hours) do
+      doc_root = ::Rails.root.join('docs/')
       enum_entries = ->(path) do
         ::Dir[doc_root.join(path, '*.md')].map do |entry|
           page = entry.gsub(doc_root.to_s, '').chomp('.md')
@@ -42,7 +42,7 @@ class DocumentationController < ::ApplicationController
   end
 
   def render_md(path)
-    doc_path = ::Rails.root.join('documentation')
+    doc_path = ::Rails.root.join('docs')
     fpath = doc_path.join(path + '.md')
     unless ::File.expand_path(fpath).start_with?(doc_path.to_s)
       raise ::ArgumentError, "path '#{path}' invalid"

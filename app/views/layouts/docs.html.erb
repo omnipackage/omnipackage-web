@@ -5,7 +5,7 @@
         <% sidebar_entries.each do |page, title| %>
           <% if page %>
             <li class="nav-item fw-light ps-2">
-              <%= link_to title, documentation_page_path(page), class: "nav-link #{current_page == page ? 'active' : ''}" %>
+              <%= link_to title, docs_page_path(page), class: "nav-link #{current_page == page ? 'active' : ''}" %>
             </li>
           <% else %>
             <li class="nav-item fw-bold">

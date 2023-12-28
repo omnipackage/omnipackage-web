@@ -16,7 +16,7 @@
           <%= render partial: 'layouts/navbar_link', locals: { path: tasks_path, text: 'CI', active: -> { params[:controller] == 'tasks' || params[:controller] == 'agents' } } %>
         <% end %>
 
-        <%= render partial: 'layouts/navbar_link', locals: { path: documentation_path, text: 'Documentation', active: -> { params[:controller] == 'documentation' } } %>
+        <%= render partial: 'layouts/navbar_link', locals: { path: docs_path, text: 'Docs', active: -> { params[:controller] == 'docs' } } %>
       </ul>
 
 
