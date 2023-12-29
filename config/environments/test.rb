@@ -60,8 +60,6 @@ require 'active_support/core_ext/integer/time'
   # Annotate rendered view with file names.
   # config.action_view.annotate_rendered_view_with_filenames = true
 
-  config.action_mailer.default_url_options = { host: 'localhost', port: 5000 }
-
   config.credentials.content_path = config.root.join('config/credentials/development.yml.enc')
   config.credentials.key_path = config.root.join('config/credentials/development.key')
 end
