@@ -1,5 +1,7 @@
-web: bundle exec rails server -p 5000
+web: bundle exec rails server -p `bundle exec rails runner 'puts ::Rails.application.config.action_mailer.default_url_options.fetch(:port, 3000)'`
+
 sidekiq_default: bundle exec sidekiq -C config/sidekiq/default.yml
+
 sidekiq_long: bundle exec sidekiq -C config/sidekiq/long.yml
 
 #mailhog: ~/.go/bin/MailHog #&>/dev/null
