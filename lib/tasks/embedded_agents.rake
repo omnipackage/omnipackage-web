@@ -5,21 +5,22 @@ require 'omnipackage_agent'
 namespace :embedded_agents do
   desc 'Run embedded egent (if any)'
   task run: :environment do
-    agents = ::Agent.where("name LIKE '%embedded%'")
-
-    a = agents.first
-    return unless a
-
     url_options = ::Rails.application.config.action_mailer.default_url_options
     host = url_options.fetch(:host, 'localhost')
     port = url_options.fetch(:port, 80)
+    apihost = "http://#{host}:#{port}"
 
-    ::OmnipackageAgent.config = ::OmnipackageAgent::Config.new(
-      apihost: "http://#{host}:#{port}",
-      apikey: a.apikey,
-      container_runtime: ::APP_SETTINGS[:container_runtime],
-      build_dir: ::Pathname.new(::Dir.tmpdir).join("omnipackage-agent-#{a.name}").to_s
-    )
-    ::OmnipackageAgent.run
+    ::Agent.where("name LIKE '%embedded%'").map do |a|
+      ::Thread.new do
+        config = ::OmnipackageAgent::Config.new(
+          apihost:            apihost,
+          apikey:             a.apikey,
+          container_runtime:  ::APP_SETTINGS[:container_runtime],
+          build_dir:          ::Pathname.new(::Dir.tmpdir).join("omnipackage-agent-#{a.name}").to_s
+        )
+        logger = ::OmnipackageAgent::Logging::Logger.new(formatter: ::OmnipackageAgent::Logging::Formatter.new([a.name]))
+        ::OmnipackageAgent.api(config, logger: logger)
+      end
+    end.each(&:join)
   end
 end
