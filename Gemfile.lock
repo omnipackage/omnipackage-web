@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/olegantonyan/omnipackage-agent-ruby.git
-  revision: 416c84e502c05d4062314a124ca41dadea517a0a
+  revision: 54cb6f02d2b964cc0245d9819ccbc19c8c4d2fe5
   specs:
     omnipackage-agent-ruby (0.1.0)
 

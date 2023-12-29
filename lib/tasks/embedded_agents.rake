@@ -18,7 +18,8 @@ namespace :embedded_agents do
           container_runtime:  ::APP_SETTINGS[:container_runtime],
           build_dir:          ::Pathname.new(::Dir.tmpdir).join("omnipackage-agent-#{a.name}").to_s
         )
-        logger = ::OmnipackageAgent::Logging::Logger.new(formatter: ::OmnipackageAgent::Logging::Formatter.new([a.name]))
+        log_formatter = ::OmnipackageAgent::Logging::Formatter.new(tags: [a.name])
+        logger = ::OmnipackageAgent::Logging::Logger.new(formatter: log_formatter)
         ::OmnipackageAgent.api(config, logger: logger)
       end
     end.each(&:join)
