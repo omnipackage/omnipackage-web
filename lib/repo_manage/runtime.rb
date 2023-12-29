@@ -20,7 +20,7 @@ module RepoManage
 
       raise 'execute can only be used once' if frozen?
 
-      mutex.with_lock(container_name, timeout_sec: limits.execute_timeout + 30, wait_sec: limits.execute_timeout) do
+      mutex.with_lock(image, timeout_sec: limits.execute_timeout + 30, wait_sec: limits.execute_timeout) do
         if image_cache.exists?(container_name)
           image_cache.rm(container_name)
         end
