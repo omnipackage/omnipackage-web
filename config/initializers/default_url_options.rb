@@ -9,4 +9,6 @@ url_options.default = { host: 'localhost', port: 5000 }
   config.action_mailer.default_url_options = url_options[::Rails.env.to_sym]
 end
 
-::Rails.application.routes.default_url_options = url_options[::Rails.env.to_sym]
+unless ::Rails.env.test? # system tests fail otherwise
+  ::Rails.application.routes.default_url_options = url_options[::Rails.env.to_sym]
+end
