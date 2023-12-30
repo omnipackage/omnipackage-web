@@ -2,43 +2,37 @@
 
 module RepoManage
   class Runtime
-    attr_reader :executable, :workdir, :image, :setup_cli, :homedir, :limits
+    attr_reader :executable, :workdir, :setup_cli, :homedir, :limits
 
-    def initialize(workdir:, image:, setup_cli:, executable:, limits: ::RepoManage::Runtime::Limits.new)
+    def initialize(workdir:, image:, setup_cli:, executable:, limits: ::RepoManage::Runtime::Limits.new) # rubocop: disable Metrics/MethodLength
       @executable = executable
       @workdir = workdir
-      @image = image
       @setup_cli = setup_cli
       @homedir = ::Dir.mktmpdir
-      @image_cache = ::RepoManage::Runtime::ImageCache.new(executable: executable)
+      @image_cache = ::RepoManage::Runtime::ImageCache.new(executable: executable, default_image: image, setup_cli: setup_cli)
       @limits = limits
-      @mutex = ::DistributedMutex.new
+
+      ::Rails.error.set_context(
+        default_image:  image_cache.default_image,
+        limits:         limits.inspect,
+        container_name: image_cache.container_name
+      )
     end
 
-    def execute(commands) # rubocop: disable Metrics/AbcSize, Metrics/MethodLength
-      ::Rails.error.set_context(image: image, limits: limits.inspect, container_name: container_name)
-
+    def execute(commands)
       raise 'execute can only be used once' if frozen?
 
-      mutex.with_lock(image, timeout_sec: limits.execute_timeout + 30, wait_sec: limits.execute_timeout) do
-        if image_cache.exists?(container_name)
-          image_cache.rm(container_name)
-        end
-
-        begin
-          ::ShellUtil.execute(build_container_cli(setup_cli + commands), timeout_sec: limits.execute_timeout).success!
-          image_cache.commit(container_name)
-        ensure
-          ::FileUtils.remove_entry_secure(homedir)
-          image_cache.rm(container_name)
-          freeze
-        end
+      begin
+        ::ShellUtil.execute(build_container_cli(setup_cli + commands), timeout_sec: limits.execute_timeout).success!
+      ensure
+        ::FileUtils.remove_entry_secure(homedir)
+        freeze
       end
     end
 
     private
 
-    attr_reader :image_cache, :mutex
+    attr_reader :image_cache
 
     def mounts
       {
@@ -65,8 +59,11 @@ module RepoManage
       end.join(' ')
     end
 
-    def container_name
-      @container_name ||= image_cache.generate_container_name(image, setup_cli)
+    def lockfile
+      lockfiles_dir = ::Pathname.new(::Dir.tmpdir).join('omnipackage-lock')
+      ::FileUtils.mkdir_p(lockfiles_dir.to_s)
+      lock_key = image_cache.container_name.gsub(/[^0-9a-z]/i, '_')
+      lockfiles_dir.join("#{lock_key}.lock")
     end
 
     def fix_permissions(commands)
@@ -78,7 +75,9 @@ module RepoManage
       end
     end
 
-    def build_container_cli(commands)
+    def build_container_cli(commands) # rubocop: disable Metrics/AbcSize
+      fix_permissions(commands)
+
 =begin
       script = <<~SCRIPT
       #!/bin/bash
@@ -87,9 +86,9 @@ module RepoManage
       SCRIPT
       ::File.open(::Pathname.new(homedir).join('script'), 'w') { |file| file.write(script) }
 =end
-      fix_permissions(commands)
+
       <<~CLI
-        #{executable} run --name #{container_name} --entrypoint /bin/bash --workdir #{mounts[workdir]} #{mount_cli} #{envs_cli} #{limits.to_cli} #{image_cache.image(container_name, image)} -c "#{commands.join(' && ')}"
+        flock --no-fork --timeout #{limits.execute_timeout + 30} #{lockfile} --command '#{image_cache.rm_cli} ; #{executable} run --name #{image_cache.container_name} --entrypoint /bin/bash --workdir #{mounts[workdir]} #{mount_cli} #{envs_cli} #{limits.to_cli} #{image_cache.image} -c "#{commands.join(' && ')}" && #{image_cache.commit_cli}'
       CLI
     end
   end

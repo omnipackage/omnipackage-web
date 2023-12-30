@@ -15,7 +15,7 @@
     <div class="col text-secondary">
       <% case task.state %>
       <% when 'running' %>
-        last update <%= time_ago_in_words(task.started_at) %> ago
+        started <%= time_ago_in_words(task.started_at) %> ago
       <% when 'pending_fetch', 'pending_build' %>
         <%= time_ago_in_words(task.created_at) %> ago
       <% when 'finished', 'failed' %>

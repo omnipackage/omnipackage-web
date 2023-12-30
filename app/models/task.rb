@@ -37,6 +37,7 @@ class Task < ::ApplicationRecord
   end
 
   def append_log(text)
+    touch
     log.append(text)
   end
 

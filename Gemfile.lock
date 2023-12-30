@@ -1,6 +1,5 @@
-GIT
-  remote: https://github.com/olegantonyan/omnipackage-agent-ruby.git
-  revision: 54cb6f02d2b964cc0245d9819ccbc19c8c4d2fe5
+PATH
+  remote: ../omnipackage-agent-ruby
   specs:
     omnipackage-agent-ruby (0.1.0)
 
@@ -247,8 +246,6 @@ GEM
       redis-client (>= 0.17.0)
     redis-client (0.19.1)
       connection_pool
-    redlock (2.0.6)
-      redis-client (>= 0.14.1, < 1.0.0)
     regexp_parser (2.8.3)
     reline (0.4.1)
       io-console (~> 0.5)
@@ -347,7 +344,6 @@ DEPENDENCIES
   readline-ext
   redcarpet
   redis
-  redlock
   rubocop
   rubocop-performance
   rubocop-rails
