@@ -5,6 +5,7 @@ source 'https://rubygems.org'
 gem 'aws-sdk-s3'
 gem 'bcrypt', '~> 3.1.7'
 gem 'importmap-rails'
+gem 'omnipackage-agent-ruby', require: false, github: 'olegantonyan/omnipackage-agent-ruby' # path: '~/projects/omnipackage/omnipackage-agent-ruby'
 gem 'pg'
 gem 'puma'
 gem 'rails'
@@ -36,7 +37,6 @@ end
 group :development do
   # gem 'authentication-zero'
   gem 'foreman', require: false
-  gem 'omnipackage-agent-ruby', require: false, github: 'olegantonyan/omnipackage-agent-ruby' # path: '~/projects/omnipackage/omnipackage-agent-ruby'
   gem 'pry-rails'
 end
 
