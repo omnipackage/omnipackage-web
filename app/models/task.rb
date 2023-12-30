@@ -37,7 +37,7 @@ class Task < ::ApplicationRecord
   end
 
   def append_log(text)
-    touch
+    touch # rubocop: disable Rails/SkipsModelValidations
     log.append(text)
   end
 

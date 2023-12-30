@@ -36,7 +36,7 @@ end
 group :development do
   # gem 'authentication-zero'
   gem 'foreman', require: false
-  gem 'omnipackage-agent-ruby', require: false, github: 'olegantonyan/omnipackage-agent-ruby' #path: '~/projects/omnipackage/omnipackage-agent-ruby'
+  gem 'omnipackage-agent-ruby', require: false, github: 'olegantonyan/omnipackage-agent-ruby' # path: '~/projects/omnipackage/omnipackage-agent-ruby'
   gem 'pry-rails'
 end
 
