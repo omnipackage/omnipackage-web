@@ -4,6 +4,12 @@ sidekiq_default: bundle exec sidekiq -C config/sidekiq/default.yml
 
 sidekiq_long: bundle exec sidekiq -C config/sidekiq/long.yml
 
-#mailhog: ~/.go/bin/MailHog #&>/dev/null
+#
+# go install github.com/mailhog/MailHog@latest
+mailhog: ~/.go/bin/MailHog >/dev/null
 
+#
+# go install github.com/minio/minio@latest
 minio: MINIO_ROOT_USER=`bundle exec rails runner 'puts ::Rails.application.credentials.s3.access_key_id'` MINIO_ROOT_PASSWORD=`bundle exec rails runner 'puts ::Rails.application.credentials.s3.secret_access_key'` ~/.go/bin/minio server ./storage/minio --console-address ":9001"
+
+#agents: bundle exec rails embedded_agents:run > /dev/null
