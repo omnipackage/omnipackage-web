@@ -2,7 +2,7 @@
 
 module RepoManage
   class Runtime
-    attr_reader :executable, :workdir, :setup_cli, :homedir, :limits
+    attr_reader :executable, :workdir, :setup_cli, :homedir, :limits, :lock
 
     def initialize(workdir:, image:, setup_cli:, executable:, limits: ::RepoManage::Runtime::Limits.new) # rubocop: disable Metrics/MethodLength
       @executable = executable
@@ -11,6 +11,7 @@ module RepoManage
       @homedir = ::Dir.mktmpdir
       @image_cache = ::RepoManage::Runtime::ImageCache.new(executable: executable, default_image: image, setup_cli: setup_cli)
       @limits = limits
+      @lock = ::RepoManage::Runtime::Lock.new(key: image_cache.container_name, limits: limits)
 
       ::Rails.error.set_context(
         default_image:  image_cache.default_image,
@@ -59,13 +60,6 @@ module RepoManage
       end.join(' ')
     end
 
-    def lockfile
-      lockfiles_dir = ::Pathname.new(::Dir.tmpdir).join('omnipackage-lock')
-      ::FileUtils.mkdir_p(lockfiles_dir.to_s)
-      lock_key = image_cache.container_name.gsub(/[^0-9a-z]/i, '_')
-      lockfiles_dir.join("#{lock_key}.lock")
-    end
-
     def fix_permissions(commands)
       if executable == 'docker'
         commands.unshift('umask 000')
@@ -88,7 +82,7 @@ module RepoManage
 =end
 
       <<~CLI
-        flock --no-fork --timeout #{limits.execute_timeout + 30} #{lockfile} --command '#{image_cache.rm_cli} ; #{executable} run --name #{image_cache.container_name} --entrypoint /bin/bash --workdir #{mounts[workdir]} #{mount_cli} #{envs_cli} #{limits.to_cli} #{image_cache.image} -c "#{commands.join(' && ')}" && #{image_cache.commit_cli}'
+        #{lock.to_cli} '#{image_cache.rm_cli} ; #{executable} run --name #{image_cache.container_name} --entrypoint /bin/bash --workdir #{mounts[workdir]} #{mount_cli} #{envs_cli} #{limits.to_cli} #{image_cache.image} -c "#{commands.join(' && ')}" && #{image_cache.commit_cli}'
       CLI
     end
   end
