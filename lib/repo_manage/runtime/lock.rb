@@ -9,7 +9,7 @@ module RepoManage
       end
 
       def to_cli
-        "flock --no-fork --timeout #{limits.execute_timeout + 30} #{lockfile} --command"
+        "flock --verbose --no-fork --timeout #{limits.execute_timeout + 30} #{lockfile} --command"
       end
 
       private
