@@ -2,7 +2,7 @@
 
 class RepositoryPublishJob < ::ApplicationJob
   queue_as :long
-  retry_on ::StandardError, wait: 10.seconds, attempts: 3
+  retry_on ::StandardError, wait: 10.seconds, attempts: 6
 
   class << self
     def start(task)
@@ -21,7 +21,8 @@ class RepositoryPublishJob < ::ApplicationJob
 
   def perform(repository_id, artefacts_ids)
     repo = ::Repository.find(repository_id)
-    afacts = ::Task::Artefact.find(artefacts_ids)
+    afacts = ::Task::Artefact.where(id: artefacts_ids)
+    return unless afacts.exists?
 
     ::Repository::Publish.new(repo).call(afacts)
   end

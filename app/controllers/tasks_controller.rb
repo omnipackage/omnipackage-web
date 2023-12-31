@@ -19,7 +19,7 @@ class TasksController < ::ApplicationController
     @task = task
   end
 
-  def create
+  def create # rubocop: disable Metrics/AbcSize
     distros = params[:distro_ids].presence || ::Distro.ids
     task = ::Task.start(project, skip_fetch: params[:skip_fetch] == 'y', distro_ids: distros)
     if task.valid?

@@ -25,6 +25,7 @@ class Repository
       rescue ::StandardError => e
         logger.info("error: #{e.message}")
         repository.update!(last_publish_error: e.message, publish_status: 'pending')
+        raise
       end
     end
 
