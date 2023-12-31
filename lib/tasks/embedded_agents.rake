@@ -24,15 +24,23 @@ namespace :embedded_agents do # rubocop: disable Metrics/BlockLength
     end.each(&:join)
   end
 
-  desc 'Create new embeded agent'
+  desc 'Create new embedded agent'
   task create: :environment do
     max = ::Agent.where("name LIKE '%embedded%' AND user_id IS NULL").pluck(:name).map { |i| i.gsub('embedded_', '').to_i }.max || 0
     pp ::Agent.create!(name: "embedded_#{max + 1}", arch: ::Distro.arches.first)
   end
 
   desc 'Load agent gem'
-  task :load_gem do # rubocop: disable Rails/RakeEnvironment
-    $LOAD_PATH.unshift('~/projects/omnipackage/omnipackage-agent-ruby/lib')
-    require 'omnipackage_agent'
+  task load_gem: :environment do
+    localpath = ::File.expand_path('~/projects/omnipackage/omnipackage-agent-ruby/lib')
+    if ::Rails.env.development? && ::File.exist?(localpath)
+      $LOAD_PATH.unshift(localpath)
+    end
+    begin
+      require 'omnipackage_agent'
+    rescue ::LoadError
+      warn 'you have to install omnipackage agent gem'
+      exit(1)
+    end
   end
 end
