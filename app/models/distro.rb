@@ -60,7 +60,7 @@ class Distro
   end
 
   def family
-    %w(opensuse ubuntu fedora debian mageia rocky alma).find { |i| id.include?(i) } || 'unknown'
+    %w(opensuse ubuntu fedora debian mageia rocky alma redhat).find { |i| id.include?(i) } || 'unknown'
   end
 
   private
