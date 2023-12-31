@@ -22,7 +22,11 @@ class TasksController < ::ApplicationController
   def create
     distros = params[:distro_ids].presence || ::Distro.ids
     task = ::Task.start(project, skip_fetch: params[:skip_fetch] == 'y', distro_ids: distros)
-    redirect_to(tasks_path(project_id: project.id, highlight: task.id))
+    if task.valid?
+      redirect_to(tasks_path(project_id: project.id, highlight: task.id))
+    else
+      redirect_back(fallback_location: tasks_path, alert: "Error creating CI task: #{task.errors.full_messages.to_sentence}")
+    end
   end
 
   def cancel
