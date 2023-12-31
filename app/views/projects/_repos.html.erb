@@ -1,7 +1,7 @@
 <%# locals: (repositories:) -%>
 
 <div class="vstack gap-2">
-  <% repositories.group_by { |repo| repo.distro.family }.each do |family, repos| %>
+  <% repositories.sort_by { |repo| ::Distro.ids.index(repo.distro.id) }.group_by { |repo| repo.distro.family }.each do |family, repos| %>
     <div class="row align-items-center">
       <div class="col-md-auto">
         <%= render partial: 'layouts/distro_icon', locals: { family: family, size: 48 } %>

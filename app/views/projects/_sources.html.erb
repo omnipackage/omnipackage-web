@@ -18,7 +18,9 @@
     </div>
   <% end %>
 <% when 'verified' %>
-  <span class="badge text-success">verified <%= time_ago_in_words(project.sources_verified_at) %> ago</span>
+  <% if project.sources_verified_at %>
+    <span class="badge text-success">verified <%= time_ago_in_words(project.sources_verified_at) %> ago</span>
+  <% end %>
 <% when 'fetching' %>
   <!--<span class="badge text-warning">fetching...</span>-->
 <% end %>
