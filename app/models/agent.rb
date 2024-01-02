@@ -52,7 +52,7 @@ class Agent < ::ApplicationRecord
   end
 
   def reschedule_all_tasks!
-    tasks.running.update_all(state: 'pending_build', agent_id: nil) # rubocop: disable Rails/SkipsModelValidations
+    tasks.running.update(state: 'pending_build', agent_id: nil)
   end
 
   private
