@@ -23,9 +23,15 @@ class Task
       @agent = agent
     end
 
-    def call(payload)
+    def call(payload) # rubocop: disable Metrics/AbcSize, Metrics/MethodLength
       state = payload.fetch(:state)
-      return schedule if state == 'idle'
+
+      if state == 'idle'
+        if agent.tasks.running.exists? # agent restarted or something else happened that it's no idle, but has running tasks
+          agent.reschedule_all_tasks!
+        end
+        return schedule
+      end
 
       task = agent.tasks.find_by(id: payload.fetch(:task).fetch(:id))
       return Command['stop', nil] if !task || task.cancelled?

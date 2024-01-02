@@ -7,6 +7,7 @@ class AgentStatusCheckJob < ::ApplicationJob
     agent = ::Agent.find(agent_id)
     if agent.offline?
       ::Broadcasts::Agent.new(agent).update
+      agent.reschedule_all_tasks!
     end
   end
 end
