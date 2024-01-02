@@ -27,9 +27,7 @@ class Task
       state = payload.fetch(:state)
 
       if state == 'idle'
-        if agent.tasks.running.exists? # agent restarted or something else happened that it's no idle, but has running tasks
-          agent.reschedule_all_tasks!
-        end
+        reschedule
         return schedule
       end
 
@@ -82,6 +80,13 @@ class Task
 
       fields = pgresult.fields
       ::Task.instantiate(fields.zip(pgresult.values.sole).to_h)
+    end
+
+    def reschedule
+      # agent restarted or something else happened that it's no idle, but has running tasks
+      if agent.tasks.running.exists?
+        agent.reschedule_all_tasks!
+      end
     end
 
     def busy(task, log)
