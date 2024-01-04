@@ -15,6 +15,10 @@
           <%= render partial: 'layouts/navbar_link', locals: { path: projects_path, text: 'Projects', active: -> { params[:controller] == 'projects' } } %>
           <%= render partial: 'layouts/navbar_link', locals: { path: tasks_path, text: 'CI', active: -> { params[:controller] == 'tasks' || params[:controller] == 'agents' } } %>
         <% end %>
+
+        <li class="nav-item">
+          <%= link_to 'Documentation', ::APP_SETTINGS.fetch(:docs_url, '#'), class: 'nav-link', target: '_blank' %>
+        </li>
       </ul>
 
 

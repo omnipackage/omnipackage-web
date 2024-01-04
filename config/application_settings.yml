@@ -1,8 +1,10 @@
 default: &default
   container_runtime: podman
+  docs_url: 'https://docs.omnipackage.org'
 
 development:
   <<: *default
+  docs_url: 'http://127.0.0.1:8000'
 
 test:
   <<: *default

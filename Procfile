@@ -13,3 +13,7 @@ mailhog: ~/.go/bin/MailHog >/dev/null
 minio: MINIO_ROOT_USER=`bundle exec rails runner 'puts ::Rails.application.credentials.s3.access_key_id'` MINIO_ROOT_PASSWORD=`bundle exec rails runner 'puts ::Rails.application.credentials.s3.secret_access_key'` ~/.go/bin/minio server ./storage/minio --console-address ":9001"
 
 #agents: bundle exec rails embedded_agents:run > /dev/null
+
+#
+# mkdocs documentation in sibling folder
+docs: test -f ../omnipackage-docs/Makefile && cd ../omnipackage-docs && make serve
