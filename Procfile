@@ -16,4 +16,4 @@ minio: MINIO_ROOT_USER=`bundle exec rails runner 'puts ::Rails.application.crede
 
 #
 # mkdocs documentation in sibling folder
-docs: test -f ../omnipackage-docs/Makefile && cd ../omnipackage-docs && make serve
+docs: test -f ../omnipackage-docs/Makefile && cd ../omnipackage-docs && make
