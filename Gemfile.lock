@@ -235,7 +235,6 @@ GEM
     rdoc (6.6.2)
       psych (>= 4.0.0)
     readline-ext (0.2.0)
-    redcarpet (3.6.0)
     redis (5.0.8)
       redis-client (>= 0.17.0)
     redis-client (0.19.1)
@@ -334,7 +333,6 @@ DEPENDENCIES
   rackup
   rails
   readline-ext
-  redcarpet
   redis
   rubocop
   rubocop-performance
