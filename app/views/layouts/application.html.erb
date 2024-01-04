@@ -20,11 +20,11 @@
     </div>
 
     <div class="container pt-3">
-      <% if content_for?(:sidebar) %>
-        <%= yield(:sidebar) %>
+      <% if content_for?(:nested_layout) %>
+        <%= yield(:nested_layout) %>
+      <% else %>
+        <%= yield %>
       <% end %>
-      
-      <%= yield %>
     </div>
 
     <footer class="pt-5">
