@@ -4,14 +4,28 @@ class WebhooksController < ::ApplicationController
   def index
     @project = find_project
     @webhooks = @project.webhooks.order(created_at: :desc)
+
+    breadcrumb.add('Projects', projects_path)
+    breadcrumb.add(@project.name, project_path(@project))
+    breadcrumb.add('Webhooks', request.fullpath)
   end
 
-  def show
+  def show # rubocop: disable Metrics/AbcSize
     @webhook = find_webhook
+
+    breadcrumb.add('Projects', projects_path)
+    breadcrumb.add(@webhook.project.name, project_path(@webhook.project))
+    breadcrumb.add('Webhooks', project_webhooks_path)
+    breadcrumb.add(@webhook.key, request.fullpath)
   end
 
-  def new
+  def new # rubocop: disable Metrics/AbcSize
     @webhook = find_project.webhooks.build
+
+    breadcrumb.add('Projects', projects_path)
+    breadcrumb.add(@webhook.project.name, project_path(@webhook.project))
+    breadcrumb.add('Webhooks', project_webhooks_path)
+    breadcrumb.add('New', request.fullpath)
   end
 
   def create

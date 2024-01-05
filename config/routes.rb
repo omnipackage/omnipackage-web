@@ -59,7 +59,7 @@ require 'sidekiq-scheduler/web'
 
   post 'inbound_webhooks/:key', to: 'inbound_webhooks#trigger', as: 'trigger_webhook'
 
-  %i[about transparency privacy distros].each do |page|
+  ::PagesController::ALL.each do |page|
     get page, to: "pages##{page}", as: "pages_#{page}"
   end
 end

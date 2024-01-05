@@ -1,11 +1,19 @@
 # frozen_string_literal: true
 
 class GpgKeysController < ::ApplicationController
-  def index
+  def index # rubocop: disable Metrics/AbcSize, Metrics/MethodLength
     @current_key = current_key
 
     respond_to do |format|
-      format.html do # rubocop: disable Lint/EmptyBlock
+      format.html do
+        if key_source.is_a?(::User)
+          breadcrumb.add('My account', identity_account_path)
+        else
+          breadcrumb.add('Projects', projects_path)
+          breadcrumb.add(key_source.project.name, project_path(key_source.project))
+          breadcrumb.add(key_source.distro.name, repository_path(key_source))
+        end
+        breadcrumb.add('GPG key', request.fullpath)
       end
 
       format.gzip do

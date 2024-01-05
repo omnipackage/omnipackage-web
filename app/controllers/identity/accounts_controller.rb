@@ -4,6 +4,8 @@ module Identity
   class AccountsController < ::ApplicationController
     def show
       @user = current_user
+
+      breadcrumb.add('My account', request.fullpath)
     end
 
     def update

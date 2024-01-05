@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Omni Package</title>
+    <title>OmniPackage<%= breadcrumb.count > 1 ? " - #{breadcrumb.active.name}" : '' %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -22,6 +22,12 @@
     <div class="container pt-3">
       <%= yield %>
     </div>
+
+    <% if breadcrumb.count > 1 %>
+      <div class="container pt-5">
+        <%= render partial: 'layouts/breadcrumbs' %>
+      </div>
+    <% end %>
 
     <footer class="pt-5">
       <%= render partial: 'layouts/footer' %>

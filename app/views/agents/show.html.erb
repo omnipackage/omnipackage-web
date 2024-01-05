@@ -23,7 +23,6 @@
 
   <div class="btn-group pt-3" role="group" aria-label="agent links">
     <%= link_to 'Edit agent', edit_agent_path(@agent.id), class: 'btn btn-link' %>
-    <%= link_to 'Back to agents list', agents_path, class: 'btn btn-link' %>
     <%= button_to 'Delete this agent', agent_path(@agent.id), method: :delete, class: 'btn btn-link link-danger', form: { data: { turbo_confirm: "Are you sure?" } } %>
   </div>
 

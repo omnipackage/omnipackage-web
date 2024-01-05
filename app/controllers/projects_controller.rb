@@ -3,18 +3,30 @@
 class ProjectsController < ::ApplicationController
   def index
     @pagination, @projects = ::Pagination.new(current_user.projects.order(:name), self).call
+
+    breadcrumb.add('Projects', request.fullpath)
   end
 
   def show
     @project = find_project
+
+    breadcrumb.add('Projects', projects_path)
+    breadcrumb.add(@project.name, request.fullpath)
   end
 
   def new
     @project = build_project
+
+    breadcrumb.add('Projects', projects_path)
+    breadcrumb.add('New', request.fullpath)
   end
 
   def edit
     @project = find_project
+
+    breadcrumb.add('Projects', projects_path)
+    breadcrumb.add(@project.name, project_path(@project))
+    breadcrumb.add('Edit', request.fullpath)
   end
 
   def create

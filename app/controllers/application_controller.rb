@@ -6,9 +6,13 @@ class ApplicationController < ::ActionController::Base
 
   attr_reader :current_user, :current_session
 
-  helper_method :current_user, :logged_in?, :current_session
+  helper_method :current_user, :logged_in?, :current_session, :breadcrumb
 
   private
+
+  def breadcrumb
+    @breadcrumb ||= ::Breadcrumb.new(view_context)
+  end
 
   def flash_errors(errors)
     error_message = '<ul>' + errors.map { |e| "<li>#{e.full_message}</li>" }.join + '</ul>'

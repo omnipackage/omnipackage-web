@@ -2,8 +2,4 @@
 
 <div class="container pt-3">
   <%= render partial: 'webhooks/form', locals: { webhook: @webhook } %>
-
-  <div class="pt-3">
-    <%= link_to 'Back to webhooks list', project_webhooks_path(@webhook.project), class: 'btn btn-link' %>
-  </div>
 </div>
