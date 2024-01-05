@@ -10,7 +10,7 @@ class WebhooksController < ::ApplicationController
     breadcrumb.add('Webhooks')
   end
 
-  def show # rubocop: disable Metrics/AbcSize
+  def show
     @webhook = find_webhook
 
     breadcrumb.add('Projects', projects_path)
