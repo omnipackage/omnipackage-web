@@ -1,13 +1,5 @@
 <% if logged_in? %>
   <%= render partial: 'home/dashboard', locals: { dashboard: ::Dashboard.new(current_user) } %>
 <% else %>
-  <div class="p-5 mb-4 bg-body-tertiary rounded-3">
-    <div class="container-fluid py-5">
-      <h1 class="display-5 fw-bold">Linux packaging made easy</h1>
-      <p class="col-md-8 fs-4">We had centralized software repositories long before AppStore. Why is it still so hard to build and distribute software for Linux?</p>
-      <p>OmniPackage combines CI with repositories and set of tools to simplify the process of creating and distributing your own RPM and DEB packages for many distros easily using native package managers. And it is open source.</p>
-
-      <%= link_to "Learn more", pages_about_path, class: "btn btn-primary" %>
-    </div>
-  </div>
+  <%= render partial: 'home/landing' %>
 <% end %>

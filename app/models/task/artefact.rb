@@ -6,9 +6,6 @@ class Task
 
     has_one_attached :attachment
 
-    attribute :distro, :string
-    attribute :error, :boolean, default: false
-
     scope :failed, -> { where(error: true) }
     scope :successful, -> { where.not(error: true) }
 
