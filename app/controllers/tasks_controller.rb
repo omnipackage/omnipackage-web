@@ -14,14 +14,14 @@ class TasksController < ::ApplicationController
     tasks = tasks.where(state: params[:state]) if params[:state].present?
     @pagination, @tasks = ::Pagination.new(tasks.order(created_at: :desc), self).call
 
-    breadcrumb.add('Tasks', request.fullpath)
+    breadcrumb.add('Tasks')
   end
 
   def show
     @task = task
 
     breadcrumb.add('Tasks', tasks_path)
-    breadcrumb.add(@task.id, request.fullpath)
+    breadcrumb.add(@task.id)
   end
 
   def create # rubocop: disable Metrics/AbcSize
@@ -49,7 +49,7 @@ class TasksController < ::ApplicationController
 
         breadcrumb.add('Tasks', tasks_path)
         breadcrumb.add(task.id, task_path(task))
-        breadcrumb.add('Log', request.fullpath)
+        breadcrumb.add('Log')
       end
     end
   end

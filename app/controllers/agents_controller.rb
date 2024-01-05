@@ -13,7 +13,7 @@ class AgentsController < ::ApplicationController
 
     breadcrumb.add('My account', identity_account_path)
     breadcrumb.add('Agents', agents_path)
-    breadcrumb.add(@agent.name, request.fullpath)
+    breadcrumb.add(@agent.name)
   end
 
   def new
@@ -21,7 +21,7 @@ class AgentsController < ::ApplicationController
 
     breadcrumb.add('My account', identity_account_path)
     breadcrumb.add('Agents', agents_path)
-    breadcrumb.add('New', request.fullpath)
+    breadcrumb.add('New')
   end
 
   def edit
@@ -30,7 +30,7 @@ class AgentsController < ::ApplicationController
     breadcrumb.add('My account', identity_account_path)
     breadcrumb.add('Agents', agents_path)
     breadcrumb.add(@agent.name, agent_path(@agent))
-    breadcrumb.add('Edit', request.fullpath)
+    breadcrumb.add('Edit')
   end
 
   def create

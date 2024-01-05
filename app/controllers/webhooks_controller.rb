@@ -7,7 +7,7 @@ class WebhooksController < ::ApplicationController
 
     breadcrumb.add('Projects', projects_path)
     breadcrumb.add(@project.name, project_path(@project))
-    breadcrumb.add('Webhooks', request.fullpath)
+    breadcrumb.add('Webhooks')
   end
 
   def show # rubocop: disable Metrics/AbcSize
@@ -16,7 +16,7 @@ class WebhooksController < ::ApplicationController
     breadcrumb.add('Projects', projects_path)
     breadcrumb.add(@webhook.project.name, project_path(@webhook.project))
     breadcrumb.add('Webhooks', project_webhooks_path)
-    breadcrumb.add(@webhook.key, request.fullpath)
+    breadcrumb.add(@webhook.key)
   end
 
   def new # rubocop: disable Metrics/AbcSize
@@ -25,7 +25,7 @@ class WebhooksController < ::ApplicationController
     breadcrumb.add('Projects', projects_path)
     breadcrumb.add(@webhook.project.name, project_path(@webhook.project))
     breadcrumb.add('Webhooks', project_webhooks_path)
-    breadcrumb.add('New', request.fullpath)
+    breadcrumb.add('New')
   end
 
   def create

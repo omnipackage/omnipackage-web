@@ -13,7 +13,7 @@ class GpgKeysController < ::ApplicationController
           breadcrumb.add(key_source.project.name, project_path(key_source.project))
           breadcrumb.add(key_source.distro.name, repository_path(key_source))
         end
-        breadcrumb.add('GPG key', request.fullpath)
+        breadcrumb.add('GPG key')
       end
 
       format.gzip do

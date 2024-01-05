@@ -5,7 +5,7 @@ module Identity
     def show
       @user = current_user
 
-      breadcrumb.add('My account', request.fullpath)
+      breadcrumb.add('My account')
     end
 
     def update

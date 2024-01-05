@@ -4,21 +4,21 @@ class ProjectsController < ::ApplicationController
   def index
     @pagination, @projects = ::Pagination.new(current_user.projects.order(:name), self).call
 
-    breadcrumb.add('Projects', request.fullpath)
+    breadcrumb.add('Projects')
   end
 
   def show
     @project = find_project
 
     breadcrumb.add('Projects', projects_path)
-    breadcrumb.add(@project.name, request.fullpath)
+    breadcrumb.add(@project.name)
   end
 
   def new
     @project = build_project
 
     breadcrumb.add('Projects', projects_path)
-    breadcrumb.add('New', request.fullpath)
+    breadcrumb.add('New')
   end
 
   def edit
@@ -26,7 +26,7 @@ class ProjectsController < ::ApplicationController
 
     breadcrumb.add('Projects', projects_path)
     breadcrumb.add(@project.name, project_path(@project))
-    breadcrumb.add('Edit', request.fullpath)
+    breadcrumb.add('Edit')
   end
 
   def create

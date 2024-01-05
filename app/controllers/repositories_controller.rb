@@ -6,7 +6,7 @@ class RepositoriesController < ::ApplicationController
 
     breadcrumb.add('Projects', projects_path)
     breadcrumb.add(@repository.project.name, project_path(@repository.project))
-    breadcrumb.add(@repository.distro.name, request.fullpath)
+    breadcrumb.add(@repository.distro.name)
   end
 
   private
