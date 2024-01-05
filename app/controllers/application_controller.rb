@@ -14,11 +14,6 @@ class ApplicationController < ::ActionController::Base
     @breadcrumb ||= ::Breadcrumb.new(view_context)
   end
 
-  def flash_errors(errors)
-    error_message = '<ul>' + errors.map { |e| "<li>#{e.full_message}</li>" }.join + '</ul>'
-    flash.now[:alert] = error_message.html_safe # rubocop: disable Rails/OutputSafety
-  end
-
   def sign_in(user)
     @current_session = user.sessions.create!(user_agent: request.user_agent, ip_address: request.ip)
     @current_user = user

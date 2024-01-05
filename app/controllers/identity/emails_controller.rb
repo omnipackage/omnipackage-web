@@ -11,7 +11,7 @@ module Identity
       if @user.update(user_params)
         redirect_to_root
       else
-        flash_errors(@user.errors)
+        flash.now[:alert] = @user.errors.full_messages.to_sentence
         render(:edit, status: :unprocessable_entity)
       end
     end

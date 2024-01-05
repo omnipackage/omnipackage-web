@@ -13,7 +13,7 @@ class PasswordsController < ::ApplicationController
       @user.sessions.where.not(id: current_session.id).destroy_all
       redirect_to(root_path, notice: 'Your password has been changed')
     else
-      flash_errors(@user.errors)
+      flash.now[:alert] = @user.errors.full_messages.to_sentence
       render(:edit, status: :unprocessable_entity)
     end
   end
