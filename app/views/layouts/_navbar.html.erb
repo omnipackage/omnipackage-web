@@ -13,7 +13,7 @@
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <% if logged_in? %>
           <%= render partial: 'layouts/navbar_link', locals: { path: projects_path, text: 'Projects', active: -> { params[:controller] == 'projects' } } %>
-          <%= render partial: 'layouts/navbar_link', locals: { path: tasks_path, text: 'Tasks', active: -> { params[:controller] == 'tasks' || params[:controller] == 'agents' } } %>
+          <%= render partial: 'layouts/navbar_link', locals: { path: tasks_path, text: 'Tasks', active: -> { params[:controller] == 'tasks' } } %>
         <% end %>
 
         <li class="nav-item">
