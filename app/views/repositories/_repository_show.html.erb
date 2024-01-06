@@ -44,15 +44,17 @@
       <% end %>
     </div>
 
-    <div class="pt-5" data-controller="clipboard">
-      <strong>Package installation steps</strong>
-      <div class="bg-body-tertiary p-2 rounded-2">
-        <pre data-clipboard-target="source"><%= repository.installable_cli %></pre>
-      </div>
+    <% if repository.published? %>
+      <div class="pt-5" data-controller="clipboard">
+        <strong>Package installation steps</strong>
+        <div class="bg-body-tertiary p-2 rounded-2">
+          <pre data-clipboard-target="source"><%= repository.installable_cli %></pre>
+        </div>
 
-      <div class="btn-group" role="group" aria-label="installation step manage">
-        <button data-action="clipboard#copy" class="btn btn-link btn-sm"><i class="bi bi-copy me-1"></i>Copy to clipboard</button>
+        <div class="btn-group" role="group" aria-label="installation step manage">
+          <button data-action="clipboard#copy" class="btn btn-link btn-sm"><i class="bi bi-copy me-1"></i>Copy to clipboard</button>
+        </div>
       </div>
-    </div>
+    <% end %>
   </div>
 </div>

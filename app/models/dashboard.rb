@@ -16,6 +16,6 @@ class Dashboard
   end
 
   def projects_by_distro(distro)
-    projects.select { |i| i.distros.map(&:id).include?(distro.id) }
+    projects.select { |i| i.distros&.map(&:id)&.include?(distro.id) }
   end
 end
