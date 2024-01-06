@@ -20,6 +20,9 @@ jobs:
           git config user.email "${GITHUB_ACTOR}@users.noreply.${GITHUB_DOMAIN:-"github.com"}"
 
       - run: |
-          cp public/coming_soon.html 
+          cp public/* .
+          mv coming_soon.html index.html
           git checkout gh-pages
-          cp
+          git add . --all
+          git commit -m 'updated'
+          git push origin gh-pages
