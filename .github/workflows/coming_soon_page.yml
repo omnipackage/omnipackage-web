@@ -25,4 +25,4 @@ jobs:
           git checkout gh-pages
           git add . --all
           git commit -m 'updated'
-          git push origin gh-pages
+          git push
