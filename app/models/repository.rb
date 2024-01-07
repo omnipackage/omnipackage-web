@@ -18,6 +18,10 @@ class Repository < ::ApplicationRecord
 
   scope :without_own_gpg_key, -> { where(gpg_key_private: nil, gpg_key_public: nil) }
   scope :with_own_gpg_key, -> { where('gpg_key_private IS NOT NULL AND gpg_key_public IS NOT NULL') }
+  scope :ordered, -> {
+    ids = ::Distro.ids
+    order(::Arel.sql("CASE #{ids.map { "WHEN distro_id = ? THEN ?" }.join(' ')} ELSE 10000 END", *ids.map.with_index.to_a.flatten))
+  }
 
   def distro
     ::Distro[distro_id]

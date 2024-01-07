@@ -2,7 +2,7 @@
 
 <div class="accordion" id="accordion-<%= dom_friendly(family) %>">
 
-  <% repos.sort_by { |i| i.distro.name }.each do |repo| %>
+  <% repos.each do |repo| %>
 
     <div class="accordion-item">
       <h2 class="accordion-header">
