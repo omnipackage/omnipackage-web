@@ -46,7 +46,7 @@ class Task < ::ApplicationRecord
   end
 
   def finish!
-    update!(state: artefacts.failed.exists? ? 'failed' : 'finished', finished_at: ::Time.now.utc)
+    update!(state: artefacts.successful.exists? ? 'finished' : 'failed', finished_at: ::Time.now.utc)
   end
 
   def duration
