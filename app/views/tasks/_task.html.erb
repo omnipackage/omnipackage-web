@@ -35,7 +35,7 @@
 
     <div class="col">
       <% task.distros.map(&:family).uniq.each do |df| %>
-        <%= render partial: 'layouts/distro_icon', locals: { family: df, size: 16 } %>
+        <%= render partial: 'distro_icon', locals: { family: df, size: 16 } %>
       <% end %>
     </div>
 

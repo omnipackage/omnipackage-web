@@ -53,7 +53,7 @@
           <div class="card-header">
             <div class="row">
               <div class="col-md-auto">
-                <%= render partial: 'layouts/distro_icon', locals: { family: ::Distro[distro].family, size: 24 } %>
+                <%= render partial: 'distro_icon', locals: { family: ::Distro[distro].family, size: 24 } %>
                 <%= ::Distro[distro].name %>
               </div>
               <div class="col">

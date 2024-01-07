@@ -2,7 +2,11 @@
   <div class="container-fluid">
     <a class="navbar-brand" href="/">
       <img src="<%= asset_path("brand/logo_symbol.svg") %>" alt="logo" height="30px">
-      OmniPackage
+      <% if logged_in? %>
+        Dashboard
+      <% else %>
+        OmniPackage
+      <% end %>
     </a>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -12,8 +16,8 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <% if logged_in? %>
-          <%= render partial: 'layouts/navbar_link', locals: { path: projects_path, text: 'Projects', active: -> { params[:controller] == 'projects' } } %>
-          <%= render partial: 'layouts/navbar_link', locals: { path: tasks_path, text: 'Tasks', active: -> { params[:controller] == 'tasks' } } %>
+          <%= render partial: 'navbar_link', locals: { path: projects_path, text: 'Projects', active: -> { params[:controller] == 'projects' } } %>
+          <%= render partial: 'navbar_link', locals: { path: tasks_path, text: 'Tasks', active: -> { params[:controller] == 'tasks' } } %>
         <% end %>
 
         <li class="nav-item">
@@ -24,7 +28,7 @@
 
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
         <li class="nav-item dropdown">
-          <%= render partial: 'layouts/theme_selector' %>
+          <%= render partial: 'theme_selector' %>
         </li>
 
         <% if logged_in? %>

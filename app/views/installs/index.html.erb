@@ -7,14 +7,14 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
 
-    <%= render partial: 'layouts/bootstrap' %>
+    <%= render partial: 'bootstrap' %>
   </head>
 
   <body>
 
     <div class="p-3 bg-body-tertiary">
       <div class="float-end">
-        <%= render partial: 'layouts/theme_selector' %>
+        <%= render partial: 'theme_selector' %>
       </div>
       <div class="container-fluid py-3 text-center">
         <h1 class="text-center">Install <%= @project.name %></h1>
@@ -26,7 +26,7 @@
         <% @project.repositories.published.ordered.group_by { |repo| repo.distro.family }.each do |family, repos| %>
           <div class="row align-items-center">
             <div class="col-md-auto">
-              <%= render partial: 'layouts/distro_icon', locals: { family: family, size: 64 } %>
+              <%= render partial: 'distro_icon', locals: { family: family, size: 64 } %>
             </div>
 
             <div class="col-md-11">

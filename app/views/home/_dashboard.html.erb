@@ -10,7 +10,7 @@
   <% @dashboard.distros.group_by(&:family).each do |family, distros| %>
     <div class="row pt-3 pb-3 align-items-center">
       <div class="col-md-auto">
-        <%= render partial: 'layouts/distro_icon', locals: { family: family, size: 64 } %>
+        <%= render partial: 'distro_icon', locals: { family: family, size: 64 } %>
       </div>
 
       <div class="col">

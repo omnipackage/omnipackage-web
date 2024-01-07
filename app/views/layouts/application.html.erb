@@ -9,14 +9,14 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
 
-    <%= render partial: 'layouts/bootstrap' %>
+    <%= render partial: 'bootstrap' %>
   </head>
 
   <body>
-    <%= render partial: 'layouts/navbar' %>
+    <%= render partial: 'navbar' %>
 
     <div class="container p-2">
-      <%= render partial: 'layouts/flash' %>
+      <%= render partial: 'flash' %>
     </div>
 
     <div class="container pt-3">
@@ -25,12 +25,12 @@
 
     <% if breadcrumb.count > 1 %>
       <div class="container pt-5">
-        <%= render partial: 'layouts/breadcrumbs' %>
+        <%= render partial: 'breadcrumbs' %>
       </div>
     <% end %>
 
     <footer class="pt-5">
-      <%= render partial: 'layouts/footer' %>
+      <%= render partial: 'footer' %>
     </footer>
   </body>
 </html>
