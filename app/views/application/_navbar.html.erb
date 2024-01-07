@@ -2,9 +2,7 @@
   <div class="container-fluid">
     <a class="navbar-brand" href="/">
       <img src="<%= asset_path("brand/logo_symbol.svg") %>" alt="logo" height="30px">
-      <% if logged_in? %>
-        Dashboard
-      <% else %>
+      <% unless logged_in? %>
         OmniPackage
       <% end %>
     </a>
@@ -16,6 +14,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <% if logged_in? %>
+          <%= render partial: 'navbar_link', locals: { path: root_path, text: 'Home', active: -> { params[:controller] == 'home' } } %>
           <%= render partial: 'navbar_link', locals: { path: projects_path, text: 'Projects', active: -> { params[:controller] == 'projects' } } %>
           <%= render partial: 'navbar_link', locals: { path: tasks_path, text: 'Tasks', active: -> { params[:controller] == 'tasks' } } %>
         <% end %>
