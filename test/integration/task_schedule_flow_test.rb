@@ -39,7 +39,7 @@ class TaskScheduleFlowTest < ::ActionDispatch::IntegrationTest
     task.reload
     assert task.running?
 
-    post agent_api_path, headers: { 'Authorization' => "Bearer #{@agent.apikey}" }, params: { payload: { state: 'finished', task: { id: task.id }, livelog: 'The quick brown fox jumps over the lazy dog' } }
+    post agent_api_path, headers: { 'Authorization' => "Bearer #{@agent.apikey}" }, params: { payload: { state: 'finished', task: { id: task.id }, livelog: 'The quick brown fox jumps over the lazy dog', stats: { total_time: 123, lockwait_time: 3 } } }
     assert_response :success
     task.reload
     assert task.failed?
