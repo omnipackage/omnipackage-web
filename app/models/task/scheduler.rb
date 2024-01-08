@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Task
-  class Scheduler
+  class Scheduler # rubocop: disable Metrics/ClassLength
     attr_reader :agent
 
     Command = ::Data.define(:command, :task) do
@@ -31,13 +31,22 @@ class Task
         return schedule
       end
 
-      task = agent.tasks.find_by(id: payload.fetch(:task).fetch(:id))
-      return Command['stop', nil] if !task || task.cancelled?
+      log = payload[:livelog]
+      stats = payload[:stats]
+      task_id = payload.fetch(:task).fetch(:id)
+
+      task = agent.tasks.find_by(id: task_id)
+      return Command['stop', nil] if !task
+
+      if task.cancelled?
+        save_log_stats(task, log, stats)
+        return Command['stop', nil]
+      end
 
       if state == 'busy'
-        busy(task, payload[:livelog])
+        busy(task, log)
       elsif state == 'finished'
-        finish(task, payload[:livelog], payload[:stats])
+        finish(task, log, stats)
       end
     end
 
@@ -103,6 +112,13 @@ class Task
         task.finish!
       end
       ::RepositoryPublishJob.start(task)
+    end
+
+    def save_log_stats(task, log, stats)
+      ::ApplicationRecord.transaction do
+        task.append_log(log) if log
+        task.save_stats(stats) if stats
+      end
     end
   end
 end
