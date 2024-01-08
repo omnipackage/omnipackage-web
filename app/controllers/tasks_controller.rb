@@ -21,7 +21,7 @@ class TasksController < ::ApplicationController
     @task = task
 
     breadcrumb.add('Tasks', tasks_path)
-    breadcrumb.add(@task.id)
+    breadcrumb.add("Task #{@task.id}")
   end
 
   def create # rubocop: disable Metrics/AbcSize

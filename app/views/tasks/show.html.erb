@@ -41,8 +41,16 @@
 
     <% if task.stat %>
       <div class="pt-1 pb-3">
-        <h6>Stats - TODO</h6>
-        <%= task.stat.attributes %>
+        <h6>Stats</h6>
+        <div class="fw-bold">
+          <span class="fw-lighter">Build time</span> <%= ::Duration.build(task.stat.build_time).humanized %>
+        </div>
+        <div class="fw-light">
+          <span class="fw-lighter">Total time</span> <%= ::Duration.build(task.stat.total_time).humanized %>
+        </div>
+        <div class="fw-light">
+          <span class="fw-lighter">Lock wait time</span> <%= ::Duration.build(task.stat.lockwait_time).humanized %>
+        </div>
       </div>
     <% end %>
 
