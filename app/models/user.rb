@@ -45,4 +45,8 @@ class User < ::ApplicationRecord
     self.gpg_key_private = gpg.priv
     self.gpg_key_public = gpg.pub
   end
+
+  def gravatar_url
+    "https://www.gravatar.com/avatar/#{::Digest::MD5.hexdigest(email)}"
+  end
 end
