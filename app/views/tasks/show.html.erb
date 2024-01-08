@@ -16,7 +16,7 @@
   <div class="pb-3 text-secondary">
     <%= render partial: 'tasks/state_icon', locals: { task: task } %>
     <%= task.state.humanize %>
-    <% if !task.pending_fetch? && !task.pending_build? && task.agent && current_user == task.agent.user %>
+    <% if !task.pending_fetch? && !task.pending_build? && task.agent && task.agent.user && current_user == task.agent.user %>
       <span>on <%= link_to task.agent.name, agent_path(task.agent), class: 'link-secondary' %></span>
     <% end %>
     <% if task.failed? %>
