@@ -8,6 +8,7 @@ class Task < ::ApplicationRecord
   has_many :artefacts, class_name: '::Task::Artefact', dependent: :destroy
   has_many :repositories, ->(task) { where(distro_id: task.distro_ids) }, through: :project, class_name: '::Repository'
   has_one :log, class_name: '::Task::Log', dependent: :destroy
+  has_one :stat, class_name: '::Task::Stat', dependent: :destroy
 
   enum :state, %w[pending_fetch pending_build running finished cancelled failed].index_with(&:itself), default: 'pending_fetch'
 
@@ -39,6 +40,13 @@ class Task < ::ApplicationRecord
   def append_log(text)
     touch # rubocop: disable Rails/SkipsModelValidations
     log.append(text)
+  end
+
+  def save_stats(stats)
+    touch # rubocop: disable Rails/SkipsModelValidations
+    stats = ::ActionController::Parameters.new(stats) unless stats.is_a?(::ActionController::Parameters)
+    stat = stat || build_stat
+    stat.update(stats.except(:task_id).permit!)
   end
 
   def distros

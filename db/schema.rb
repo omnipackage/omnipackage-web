@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_12_14_113940) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_08_112522) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -143,6 +143,16 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_14_113940) do
     t.index ["task_id"], name: "index_task_logs_on_task_id"
   end
 
+  create_table "task_stats", force: :cascade do |t|
+    t.bigint "task_id", null: false
+    t.float "total_time", default: 0.0, null: false
+    t.float "lockwait_time", default: 0.0, null: false
+    t.virtual "build_time", type: :float, as: "(total_time - lockwait_time)", stored: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["task_id"], name: "index_task_stats_on_task_id"
+  end
+
   create_table "tasks", force: :cascade do |t|
     t.bigint "sources_tarball_id", null: false
     t.string "state", default: "", null: false
@@ -191,6 +201,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_14_113940) do
   add_foreign_key "sessions", "users"
   add_foreign_key "task_artefacts", "tasks"
   add_foreign_key "task_logs", "tasks"
+  add_foreign_key "task_stats", "tasks"
   add_foreign_key "tasks", "agents"
   add_foreign_key "tasks", "project_sources_tarballs", column: "sources_tarball_id"
   add_foreign_key "webhooks", "projects"

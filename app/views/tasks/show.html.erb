@@ -39,6 +39,13 @@
       <%= link_to 'Log', log_task_path(task) %>
     </div>
 
+    <% if task.stat %>
+      <div class="pt-1 pb-3">
+        <h6>Stats - TODO</h6>
+        <%= task.stat.attributes %>
+      </div>
+    <% end %>
+
     <% if task.artefacts.any? %>
       <h6>Artefacts</h6>
     <% elsif task.pending_fetch? || task.pending_build? || task.running? %>

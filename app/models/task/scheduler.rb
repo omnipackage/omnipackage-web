@@ -37,7 +37,7 @@ class Task
       if state == 'busy'
         busy(task, payload[:livelog])
       elsif state == 'finished'
-        finish(task, payload[:livelog])
+        finish(task, payload[:livelog], payload[:stats])
       end
     end
 
@@ -96,9 +96,10 @@ class Task
       end
     end
 
-    def finish(task, log)
+    def finish(task, log, stats)
       ::ApplicationRecord.transaction do
         task.append_log(log)
+        task.save_stats(stats)
         task.finish!
       end
       ::RepositoryPublishJob.start(task)
