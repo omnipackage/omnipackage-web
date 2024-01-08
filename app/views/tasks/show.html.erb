@@ -45,11 +45,11 @@
         <div class="fw-bold">
           <span class="fw-lighter">Build time</span> <%= ::Duration.build(task.stat.build_time).humanized %>
         </div>
-        <div class="fw-light">
-          <span class="fw-lighter">Total time</span> <%= ::Duration.build(task.stat.total_time).humanized %>
+        <div class="fw-lighter">
+          <span>Total time</span> <%= ::Duration.build(task.stat.total_time).humanized %>
         </div>
-        <div class="fw-light">
-          <span class="fw-lighter">Lock wait time</span> <%= ::Duration.build(task.stat.lockwait_time).humanized %>
+        <div class="fw-lighter">
+          <span>Lock wait time</span> <%= ::Duration.build(task.stat.lockwait_time).humanized %>
         </div>
       </div>
     <% end %>

@@ -24,6 +24,10 @@ class Task
       ::Distro[distro]
     end
 
+    def success?
+      !error
+    end
+
     def download(to:, overwrite_existing: false) # rubocop: disable Metrics/MethodLength
       ::FileUtils.mkdir_p(to) unless ::File.exist?(to)
 

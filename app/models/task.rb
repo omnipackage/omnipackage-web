@@ -54,7 +54,8 @@ class Task < ::ApplicationRecord
   end
 
   def finish!
-    update!(state: !artefacts.exists? || artefacts.failed.exists? ? 'failed' : 'finished', finished_at: ::Time.now.utc)
+    success = artefacts.any? && distro_ids.intersect?(artefacts.map(&:distro).uniq) && artefacts.all?(&:success?)
+    update!(state: success ? 'finished' : 'failed', finished_at: ::Time.now.utc)
   end
 
   def duration
