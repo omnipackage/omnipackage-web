@@ -5,7 +5,7 @@ class Task
     attr_reader :agent
 
     Command = ::Data.define(:command, :task) do
-      def to_hash(view_context) # rubocop: disable Metrics/AbcSize
+      def to_hash(view_context) # rubocop: disable Metrics/AbcSize, Metrics/MethodLength
         result = { command: command }
         if task
           result[:task] = {
