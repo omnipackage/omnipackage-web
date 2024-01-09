@@ -36,6 +36,9 @@
       <div class="row fw-lighter fs-6">
         <div class="col">
           State
+          <% if params[:state].present? %>
+            <abbr title="filter applied">*</abbr>
+          <% end %>
         </div>
         <div class="col">
           Timestamp
@@ -45,9 +48,15 @@
         </div>
         <div class="col">
           Project
+          <% if params[:project_id].present? %>
+            <abbr title="filter applied">*</abbr>
+          <% end %>
         </div>
         <div class="col">
           Distros
+          <% if params[:distro].present? %>
+            <abbr title="filter applied">*</abbr>
+          <% end %>
         </div>
       </div>
     </li>
