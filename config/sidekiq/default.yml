@@ -9,3 +9,7 @@ production:
     CleanupOldTasksJob:
       cron: '0 9 * * *'
       class: CleanupOldTasksJob
+
+    PruneImagesJob:
+      cron: '0 2 * * *'
+      class: PruneImagesJob
