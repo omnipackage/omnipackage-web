@@ -63,4 +63,16 @@ class Task < ::ApplicationRecord
 
     ::Duration.build(finished_at - started_at)
   end
+
+  def agent_limits
+    return if agent&.user.present? # private agents have no limits
+
+    # if user.root?
+    {
+      memory: '4g',
+      cpus: '4',
+      pids: 25_000,
+      execute_timeout: 30_000
+    }
+  end
 end

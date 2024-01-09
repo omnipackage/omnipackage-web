@@ -12,7 +12,8 @@ class Task
             id:                   task.id,
             sources_tarball_url:  task.project.sources_tarball.tarball.url(expires_in: 3.days),
             upload_artefact_url:  view_context.agent_api_upload_artefact_url(task.id),
-            distros:              task.distro_ids
+            distros:              task.distro_ids,
+            limits:               task.agent_limits
           }
         end
         result.freeze
@@ -36,11 +37,11 @@ class Task
       task_id = payload.fetch(:task).fetch(:id)
 
       task = agent.tasks.find_by(id: task_id)
-      return Command['stop', nil] if !task
+      return stop_command if !task
 
       if task.cancelled?
         save_log_stats(task, log, stats)
-        return Command['stop', nil]
+        return stop_command
       end
 
       if state == 'busy'
@@ -51,6 +52,10 @@ class Task
     end
 
     private
+
+    def stop_command
+      Command['stop', nil]
+    end
 
     def schedule
       ::ApplicationRecord.transaction(isolation: :serializable) do
