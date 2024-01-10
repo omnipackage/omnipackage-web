@@ -32,14 +32,18 @@ namespace :embedded_agents do # rubocop: disable Metrics/BlockLength
 
   desc 'Load agent gem'
   task load_gem: :environment do
-    localpath = ::File.expand_path('~/projects/omnipackage/omnipackage-agent-ruby/lib')
-    if ::Rails.env.development? && ::File.exist?(localpath)
+    localpath = ::File.expand_path(::Rails.root.join('../omnipackage-agent-ruby/lib'))
+    instalpath = '/usr/lib/omnipackage-agent-ruby/lib'
+    if ::File.exist?(localpath)
       $LOAD_PATH.unshift(localpath)
+    elsif ::File.exist?(instalpath)
+      $LOAD_PATH.unshift(instalpath)
     end
+
     begin
       require 'omnipackage_agent'
     rescue ::LoadError
-      warn 'you have to install omnipackage agent gem'
+      warn 'you have to install omnipackage agent'
       exit(1)
     end
   end
