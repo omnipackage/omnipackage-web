@@ -10,13 +10,12 @@ namespace :embedded_agents do # rubocop: disable Metrics/BlockLength
 
     ::Agent.where("name LIKE '%embedded%' AND user_id IS NULL").map do |a|
       ::Thread.new do
-        config = ::OmnipackageAgent::Config.new(
+        config = ::OmnipackageAgent::Config.get(overrides: {
           apihost:            apihost,
           apikey:             a.apikey,
           container_runtime:  ::APP_SETTINGS[:container_runtime],
-          build_dir:          ::Pathname.new(::Dir.tmpdir).join("omnipackage-build-#{a.name}").to_s,
-          lockfiles_dir:      ::OmnipackageAgent::Config.get.lockfiles_dir,
-        )
+          build_dir:          ::Pathname.new(::Dir.tmpdir).join("omnipackage-build-#{a.name}").to_s
+        })
         log_formatter = ::OmnipackageAgent::Logging::Formatter.new(tags: [a.name])
         logger = ::OmnipackageAgent::Logging::Logger.new(formatter: log_formatter)
         ::OmnipackageAgent.run(config, logger: logger)
