@@ -15,7 +15,7 @@ namespace :embedded_agents do # rubocop: disable Metrics/BlockLength
           apikey:             a.apikey,
           container_runtime:  ::APP_SETTINGS[:container_runtime],
           build_dir:          ::Pathname.new(::Dir.tmpdir).join("omnipackage-build-#{a.name}").to_s,
-          lockfiles_dir:      ::Pathname.new(::Dir.tmpdir).join('omnipackage-lock').to_s,
+          lockfiles_dir:      ::OmnipackageAgent::Config.get.lockfiles_dir,
         )
         log_formatter = ::OmnipackageAgent::Logging::Formatter.new(tags: [a.name])
         logger = ::OmnipackageAgent::Logging::Logger.new(formatter: log_formatter)
@@ -27,7 +27,16 @@ namespace :embedded_agents do # rubocop: disable Metrics/BlockLength
   desc 'Create new embedded agent'
   task create: :environment do
     max = ::Agent.where("name LIKE '%embedded%' AND user_id IS NULL").pluck(:name).map { |i| i.gsub('embedded_', '').to_i }.max || 0
-    pp ::Agent.create!(name: "embedded_#{max + 1}", arch: ::Distro.arches.first)
+    puts "created: #{::Agent.create!(name: "embedded_#{max + 1}", arch: ::Distro.arches.first).name}"
+  end
+
+  desc 'Deleta embedded agent'
+  task delete: :environment do
+    deleted = ::Agent.where("name LIKE '%embedded%' AND user_id IS NULL").order(:name).last
+    if deleted
+      deleted.destroy
+      puts "deleted: #{deleted.name}"
+    end
   end
 
   desc 'Load agent gem'
