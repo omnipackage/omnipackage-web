@@ -19,7 +19,7 @@ namespace :embedded_agents do # rubocop: disable Metrics/BlockLength
         )
         log_formatter = ::OmnipackageAgent::Logging::Formatter.new(tags: [a.name])
         logger = ::OmnipackageAgent::Logging::Logger.new(formatter: log_formatter)
-        ::OmnipackageAgent.api(config, logger: logger)
+        ::OmnipackageAgent.run(config, logger: logger)
       end
     end.each(&:join)
   end
