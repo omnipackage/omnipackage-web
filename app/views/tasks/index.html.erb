@@ -1,8 +1,4 @@
-<% if @project %>
-  <%= turbo_stream_from [@project, :tasks] %>
-<% else %>
-  <%= turbo_stream_from [current_user, :tasks] %>
-<% end %>
+<%= turbo_stream_from [current_user, :tasks] %>
 
 <div>
   <div class="row">

@@ -1,11 +1,11 @@
-<%= turbo_stream_from @log %>
-<%= turbo_stream_from @log.task %>
+<%= turbo_stream_from [@log, :text] %>
+<%= turbo_stream_from [@log.task, :state_icon] %>
 
 <div>
   <h5>
     Log for task <%= link_to "##{@log.task.id}", task_path(@log.task) %>
     <small class="text-body-secondary">
-      <span id="task_state_icon_<%= @log.task.id %>">
+      <span id="<%= dom_id(@log.task, :state_icon) %>">
         <%= render partial: 'tasks/state_icon', locals: { task: @log.task } %>
       </span>
     </small>
@@ -17,7 +17,7 @@
     </div>
 
     <div>
-      <pre id="task_log_<%= @log.id %>_text"><%= @log.text %></pre>
+      <pre id="<%= dom_id(@log, :text) %>"><%= @log.text %></pre>
     </div>
   </div>
 
