@@ -31,7 +31,7 @@
                       Last task <%= link_to "##{last_task.id}", task_path(last_task) %> failed
                     </span>
                   <% elsif last_task&.finished? %>
-                    Last succesfull <%= link_to 'build', task_path(last_task), class: 'link-secondary' %> <%= time_ago_in_words(last_task.finished_at) %> ago
+                    Last successful <%= link_to 'build', task_path(last_task), class: 'link-secondary' %> <%= time_ago_in_words(last_task.finished_at) %> ago
                   <% end %>
                 </div>
               </div>

@@ -3,7 +3,7 @@
 <div id="<%= dom_id(@task, :show) %>">
 
   <h5>
-    CI task #<%= @task.id %>
+    Task #<%= @task.id %>
     <small class="text-body-secondary">
       created <%= time_ago_in_words(@task.created_at) %> ago for
       <%= link_to @task.project.name, project_path(@task.project), class: 'link-secondary' %>
