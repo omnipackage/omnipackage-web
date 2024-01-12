@@ -29,7 +29,10 @@
 
     <div class="pt-3">
       <h6>Download packages</h6>
-      <%= link_to 'Public page', package_install_path(project), class: 'btn btn-link', target: '_blank' %>
+      <p class="fw-light">Share link to this page with your users</p>
+      <%= link_to package_install_path(project), class: 'btn btn-link', target: '_blank' do %>
+        <i class="bi bi-download me-2"></i> Public download page
+      <% end %>
     </div>
 
     <div class="pt-3">

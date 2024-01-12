@@ -97,7 +97,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_08_112522) do
   end
 
   create_table "repositories", force: :cascade do |t|
-    t.bigint "project_id", null: false
     t.string "distro_id", null: false
     t.string "bucket", null: false
     t.string "endpoint"
@@ -111,6 +110,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_08_112522) do
     t.datetime "published_at"
     t.string "last_publish_error"
     t.string "publish_status", default: "", null: false
+    t.bigint "project_id", null: false
     t.index ["bucket"], name: "index_repositories_on_bucket"
     t.index ["distro_id"], name: "index_repositories_on_distro_id"
     t.index ["endpoint", "bucket"], name: "index_repositories_on_endpoint_and_bucket", unique: true

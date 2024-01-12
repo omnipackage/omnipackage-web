@@ -1,51 +1,36 @@
-<%- repository = @repository %>
+<%= turbo_stream_from [@repository, :show] %>
 
-<%= turbo_stream_from [repository, :show] %>
-
-<div id="<%= dom_id(repository) %>">
+<div id="<%= dom_id(@repository) %>">
 
   <h5>
-    Repository for <%= repository.distro.name %>
+    Repository for <%= @repository.distro.name %>
     <small class="text-body-secondary">
-      <%= link_to repository.project.name, project_path(repository.project) %> project
+      <%= link_to @repository.project.name, project_path(@repository.project) %> project
     </small>
   </h5>
 
   <div class="container pt-3">
     <div class="pb-3">
-      <%= render partial: 'repositories/publishing_status', locals: { repository: repository } %>
+      <%= render partial: 'repositories/publishing_status', locals: { repository: @repository } %>
     </div>
 
-    <% if repository.last_publish_error %>
+    <% if @repository.last_publish_error %>
       <div class="pb-3">
         <h6 class="text-danger">
           Last publish error
-          <small class="text-body-secondary">updated <%= time_ago_in_words(repository.updated_at) %> ago</small>
+          <small class="text-body-secondary">updated <%= time_ago_in_words(@repository.updated_at) %> ago</small>
         </h6>
-        <pre class="pre-line-wrap"><%= repository.last_publish_error %></pre>
+        <pre class="pre-line-wrap"><%= @repository.last_publish_error %></pre>
       </div>
     <% end %>
 
     <div class="pt-3">
-      <%= render partial: 'repositories/files', locals: { storage: repository.storage } %>
+      <%= render partial: 'repositories/files', locals: { storage: @repository.storage } %>
     </div>
 
     <div class="pt-3">
       <h6>GPG key</h6>
-      <%= render partial: 'repositories/gpg_key', locals: { repository: repository } %>
+      <%= render partial: 'repositories/gpg_key', locals: { repository: @repository } %>
     </div>
-
-    <% if repository.published? %>
-      <div class="pt-5" data-controller="clipboard">
-        <strong>Package installation steps</strong>
-        <div class="bg-body-tertiary p-2 rounded-2">
-          <pre data-clipboard-target="source"><%= repository.installable_cli %></pre>
-        </div>
-
-        <div class="btn-group" role="group" aria-label="installation step manage">
-          <button data-action="clipboard#copy" class="btn btn-link btn-sm"><i class="bi bi-copy me-1"></i>Copy to clipboard</button>
-        </div>
-      </div>
-    <% end %>
   </div>
 </div>
