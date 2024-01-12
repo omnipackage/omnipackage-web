@@ -1,6 +1,6 @@
 <%= turbo_stream_from [@repository, :show] %>
 
-<div id="<%= dom_id(@repository) %>">
+<div id="<%= dom_id(@repository, :show) %>">
 
   <h5>
     Repository for <%= @repository.distro.name %>
