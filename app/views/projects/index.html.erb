@@ -14,20 +14,26 @@
             <div class="row align-items-center">
               <div class="col text-body-secondary">
 
-                <%- last_task = project.tasks.order(:created_at).last %>
-                <% if last_task %>
-                  <div>
-                    <%= render partial: 'tasks/state_icon', locals: { task: last_task } %>
-                    <%= render partial: 'tasks/state_text', locals: { task: last_task } %>
-                  </div>
-                <% end %>
+                <div>
+                  <% if project.sources_fetch_error.present? %>
+                    <span class="text-danger">
+                      Sources fetch error
+                    </span>
+                  <% elsif project.sources_verified_at %>
+                    Last sources fetch <%= time_ago_in_words(project.sources_verified_at) %> ago
+                  <% end %>
+                </div>
 
-                <%- last_repo = project.repositories.order(:published_at).last %>
-                <% if last_repo %>
-                  <div>
-                    <%= render partial: 'repositories/publishing_status', locals: { repository: last_repo } %>
-                  </div>
-                <% end %>
+                <div>
+                  <%- last_task = project.tasks.order(:created_at).last %>
+                  <% if last_task&.failed? %>
+                    <span class="text-danger">
+                      Last task <%= link_to "##{last_task.id}", task_path(last_task) %> failed
+                    </span>
+                  <% elsif last_task&.finished? %>
+                    Last succesfull <%= link_to 'build', task_path(last_task), class: 'link-secondary' %> <%= time_ago_in_words(last_task.finished_at) %> ago
+                  <% end %>
+                </div>
               </div>
 
               <div class="col text-end">
