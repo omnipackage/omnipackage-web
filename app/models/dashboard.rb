@@ -15,6 +15,10 @@ class Dashboard
     @projects ||= user.projects.includes(:sources_tarball)
   end
 
+  def repositories
+    @repositories ||= user.repositories.includes(:project)
+  end
+
   def projects_by_distro(distro)
     projects.select { |i| i.distros&.map(&:id)&.include?(distro.id) }
   end

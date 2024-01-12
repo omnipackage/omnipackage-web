@@ -2,7 +2,7 @@
 
 class RepositoriesController < ::ApplicationController
   def index
-    @repositories = current_user.repositories
+    @repositories = current_user.repositories.includes(:project)
 
     breadcrumb.add('Repositories')
   end

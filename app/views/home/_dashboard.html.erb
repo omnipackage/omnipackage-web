@@ -7,33 +7,31 @@
     </div>
   <% end %>
 
-  <% @dashboard.distros.group_by(&:family).each do |family, distros| %>
+  <% dashboard.repositories.ordered.group_by { |repo| repo.distro.family }.each do |family, repos| %>
     <div class="row pt-3 pb-3 align-items-center">
       <div class="col-md-auto">
         <%= render partial: 'distro_icon', locals: { family: family, size: 64 } %>
       </div>
 
       <div class="col">
-
         <div class="card-group">
-          <% distros.each do |d| %>
+
+          <% repos.group_by { |repo| repo.distro }.each do |d, repos_for_distro| %>
             <div class="card">
               <div class="card-body">
                 <h6 class="card-title"><%= d.name %> <small class="text-secondary"><%= d.arch %></small></h6>
 
                 <ul class="list-group list-group-flush">
-                  <% @dashboard.projects_by_distro(d).each do |proj| %>
-                    <%- repo = proj.repositories.where(distro_id: d.id).order(published_at: :asc).last %>
-                    <% next unless repo&.published_at %>
+                  <% repos_for_distro.sort_by { |repo| repo.created_at }.each do |repo| %>
                     <li class="list-group-item">
                       <div class="row align-items-center">
                         <div class="col-md-auto fs-4">
-                          <%= link_to package_install_path(proj, active: d.id, anchor: "collapse-accordion-#{dom_friendly(d.id)}"), class: 'link-underline link-underline-opacity-0 link-opacity-50', target: '_blank' do %>
+                          <%= link_to package_install_path(repo.project, active: d.id, anchor: "collapse-accordion-#{dom_friendly(d.id)}"), class: 'link-underline link-underline-opacity-0 link-opacity-50', target: '_blank' do %>
                             <i class="bi bi-download"></i>
                           <% end %>
                         </div>
                         <div class="col">
-                          <%= link_to proj.name, project_path(proj) %>
+                          <%= link_to repo.project.name, project_path(repo.project) %>
                           <div>
                             <small class="text-body-secondary fw-light">
                               <%= render partial: 'repositories/publishing_status', locals: { repository: repo } %>
@@ -44,11 +42,11 @@
                     </li>
                   <% end %>
                 </ul>
+
               </div>
-
-
             </div>
           <% end %>
+
         </div>
 
       </div>
