@@ -45,3 +45,6 @@ Layout/ClosingHeredocIndentation:
 
 Layout/HeredocIndentation:
   Enabled: false
+
+Layout/FirstHashElementIndentation:
+  Enabled: false

@@ -16,6 +16,7 @@
         <% if logged_in? %>
           <%= render partial: 'navbar_link', locals: { path: root_path, text: 'Home', active: -> { params[:controller] == 'home' } } %>
           <%= render partial: 'navbar_link', locals: { path: projects_path, text: 'Projects', active: -> { params[:controller] == 'projects' } } %>
+          <%= render partial: 'navbar_link', locals: { path: repositories_path, text: 'Repositories', active: -> { params[:controller] == 'repositories' } } %>
           <%= render partial: 'navbar_link', locals: { path: tasks_path, text: 'Tasks', active: -> { params[:controller] == 'tasks' } } %>
         <% end %>
 

@@ -17,7 +17,7 @@
                   <%= link_to repo.distro.name, repository_path(repo), class: 'card-link' %>
                 </h6>
 
-                <div class="card-text">
+                <div class="card-text text-body-secondary fw-light">
                   <%= render partial: 'repositories/publishing_status', locals: { repository: repo } %>
                 </div>
               </div>

@@ -1,0 +1,38 @@
+<h5>Repositories</h5>
+
+<div class="container pt-2">
+  <% @repositories.ordered.group_by { |repo| repo.distro.family }.each do |family, repos| %>
+    <div class="row pt-3 pb-3 align-items-center">
+      <div class="col-md-auto">
+        <%= render partial: 'distro_icon', locals: { family: family, size: 64 } %>
+      </div>
+
+      <div class="col">
+        <div class="card-group">
+
+          <% repos.group_by { |repo| repo.distro }.each do |d, repos_for_distro| %>
+            <div class="card">
+              <div class="card-body">
+                <h6 class="card-title"><%= d.name %> <small class="text-secondary"><%= d.arch %></small></h6>
+
+                <ul class="list-group list-group-flush">
+                  <% repos_for_distro.sort_by { |repo| repo.created_at }.each do |repo| %>
+                    <li class="list-group-item">
+                      <%= link_to repo.project.name, repository_path(repo) %>
+                      <div class="text-body-secondary fw-light">
+                        <%= render partial: 'repositories/publishing_status', locals: { repository: repo } %>
+                      </div>
+                    </li>
+                  <% end %>
+                </ul>
+
+              </div>
+            </div>
+          <% end %>
+
+        </div>
+
+      </div>
+    </div>
+  <% end %>
+</div>

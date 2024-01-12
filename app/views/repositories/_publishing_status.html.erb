@@ -6,19 +6,19 @@
 
   <% case repository.publish_status %>
   <% when 'published' %>
-    <i class="bi bi-check-circle-fill text-success"></i>
-    <small class="text-body-secondary">Published <span><%= time_ago_in_words(repository.published_at) %> ago</span></small>
+    <i class="bi bi-check-circle-fill text-success m-1"></i>
+    <span>Published <span><%= time_ago_in_words(repository.published_at) %> ago</span></span>
   <% when 'pending' %>
     <% if repository.last_publish_error %>
-      <i class="bi bi-exclamation-circle-fill text-danger"></i>
-      <small class="text-body-secondary">Last publish error</small>
+      <i class="bi bi-exclamation-circle-fill text-danger m-1"></i>
+      <span>Last publish error</span>
     <% else %>
-      <i class="bi bi-alarm-fill"></i>
-      <small class="text-body-secondary">Pending publish</small>
+      <i class="bi bi-alarm-fill m-1"></i>
+      <span>Pending publish</span>
     <% end %>
   <% when 'publishing' %>
-    <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-    <small class="text-body-secondary">Publishing...</small>
+    <span class="spinner-border spinner-border-sm m-1" aria-hidden="true"></span>
+    <span>Publishing...</span>
   <% end %>
 
 </span>

@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 class RepositoriesController < ::ApplicationController
+  def index
+    @repositories = current_user.repositories
+
+    breadcrumb.add('Repositories')
+  end
+
   def show
     @repository = find_repository
 

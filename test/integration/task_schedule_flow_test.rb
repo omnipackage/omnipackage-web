@@ -10,6 +10,7 @@ class TaskScheduleFlowTest < ::ActionDispatch::IntegrationTest
   setup do
     @user = sign_in_as(create(:user))
     @project = create(:project_with_sources, user: @user)
+    @project.verified!
     @agent = create(:agent)
     ::AgentApi::ApiController.include(::ActiveStorage::SetCurrent)
   end

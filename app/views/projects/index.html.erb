@@ -11,19 +11,39 @@
 
           <div class="card-text">
 
-            <span class="badge bg-<%= project.sources_verified? ? 'success' : 'danger' %>"><%= project.sources_kind.upcase %></span>
-            <%= project.sources_location %>
-            <% if project.sources_subdir.present? %>
-              | <%= project.sources_subdir %>
-            <% end %>
+            <div class="row align-items-center">
+              <div class="col text-body-secondary">
 
-            <span class="float-end">
-              <% if project.sources_verified? %>
-                <% project.distros.map(&:family).uniq.each do |df| %>
-                  <%= render partial: 'distro_icon', locals: { family: df, size: 24 } %>
+                <%- last_task = project.tasks.order(:created_at).last %>
+                <% if last_task %>
+                  <div>
+                    <%= render partial: 'tasks/state_icon', locals: { task: last_task } %>
+                    <%= render partial: 'tasks/state_text', locals: { task: last_task } %>
+                  </div>
                 <% end %>
-              <% end %>
-            </span>
+
+                <%- last_repo = project.repositories.order(:published_at).last %>
+                <% if last_repo %>
+                  <div>
+                    <%= render partial: 'repositories/publishing_status', locals: { repository: last_repo } %>
+                  </div>
+                <% end %>
+              </div>
+
+              <div class="col text-end">
+                <span>
+                  <% if project.sources_verified? %>
+                    <%= link_to package_install_path(project), class: 'btn btn-link link-secondary', target: '_blank' do %>
+                      <i class="bi bi-download me-2"></i> Public download page
+                    <% end %>
+
+                    <% project.distros.map(&:family).uniq.each do |df| %>
+                      <%= render partial: 'distro_icon', locals: { family: df, size: 24 } %>
+                    <% end %>
+                  <% end %>
+                </span>
+              </div>
+            </div>
 
           </div>
         </div>
