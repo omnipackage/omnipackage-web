@@ -7,6 +7,7 @@ class Repository < ::ApplicationRecord
   validates :distro_id, inclusion: { in: ::Distro.ids }
   validates :gpg_key_private, :gpg_key_public, presence: true, allow_nil: true
   validates :bucket, format: /(?!(^xn--|.+-s3alias$))^[a-z0-9][a-z0-9-]{1,61}[a-z0-9]\z/, uniqueness: { scope: :endpoint }
+  validates_with ::Repository::RepositoryValidator
 
   encrypts :gpg_key_private
 
@@ -31,8 +32,12 @@ class Repository < ::ApplicationRecord
     self.distro_id = dist.id
   end
 
+  def custom_storage?
+    endpoint.present? && access_key_id.present? && secret_access_key.present?
+  end
+
   def storage_client
-    if access_key_id && secret_access_key
+    if custom_storage?
       ::StorageClient.new(endpoint: endpoint, access_key_id: access_key_id, secret_access_key: secret_access_key, region: region)
     else
       ::StorageClient.build_default

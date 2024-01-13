@@ -32,5 +32,33 @@
       <h6>GPG key</h6>
       <%= render partial: 'repositories/gpg_key', locals: { repository: @repository } %>
     </div>
+
+    <div class="pt-3">
+      <%= link_to 'Edit repository', edit_repository_path(@repository), class: 'btn btn-link' %>
+
+      <% if @repository.project.repositories.where(distro_id: @repository.distro_id).count > 1 %>
+        <a class="btn btn-link link-danger" href="#" data-bs-toggle="modal" data-bs-target="#delete_repository_modal">Delete repository</a>
+      <% end %>
+    </div>
+
+    <div class="modal fade" id="delete_repository_modal" tabindex="-1" aria-labelledby="delete_repository_modal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+          <p>
+            Deleting the respository will also delete all files in the bucket.
+          </p>
+
+          <p class="text-warning">
+            This operation cannot be undone.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <%= button_to 'Yes, delete this repository', repository_path(@repository), method: :delete, class: 'btn btn-danger' %>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>

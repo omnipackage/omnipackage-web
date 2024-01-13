@@ -27,6 +27,10 @@ class StorageClient
     @c = ::Aws::S3::Resource.new(client: ::Aws::S3::Client.new(**@config))
   end
 
+  def ls_buckets
+    c.buckets
+  end
+
   def ls(bucket:)
     c.bucket(bucket).objects
   end
