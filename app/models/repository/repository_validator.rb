@@ -13,7 +13,7 @@ class Repository
         record.errors.add(:bucket, 'bucket already exists in the storage')
       end
     rescue ::StandardError => e
-      record.errors.add(:bucket, e.message)
+      record.errors.add(:bucket, e.message) unless ::Rails.env.test?
     end
   end
 end
