@@ -5,7 +5,71 @@
   <div class="card p-3 shadow mb-3 bg-body-tertiary rounded mx-auto">
     <div class="card-body">
       <%= form_with(model: @repository) do |f| %>
-        <div class="mb-5">
+        <div class="mb-3">
+          <%= f.label :endpoint, class: 'form-label' %>
+          <div id="endpoint-help" class="form-text">
+            Leave blank to use built-in storage. Set to your custom storage provider (eg. https://s3.us-east-2.amazonaws.com) to use it instead of built-in. When doing so you must also provide secret and access keys.
+          </div>
+          <%= f.text_field :endpoint,
+                value:  @repository.endpoint,
+                class:  "form-control #{@repository.errors.include?(:endpoint) ? 'is-invalid' : ''}",
+                aria:   { describedby:  'validation-error-endpoint endpoint-help' },
+                placeholder: ''
+          %>
+          <div id="validation-error-endpoint" class="invalid-feedback d-block">
+            <%= @repository.errors.messages_for(:endpoint).to_sentence %>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <%= f.label :region, class: 'form-label' %>
+          <div id="region-help" class="form-text">
+            Secret acceess key
+          </div>
+          <%= f.text_field :region,
+                value:  @repository.region,
+                class:  "form-control #{@repository.errors.include?(:region) ? 'is-invalid' : ''}",
+                aria:   { describedby:  'validation-error-region region-help' },
+                placeholder: ''
+          %>
+          <div id="validation-error-region" class="invalid-feedback d-block">
+            <%= @repository.errors.messages_for(:region).to_sentence %>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <%= f.label :access_key_id, class: 'form-label' %>
+          <div id="access_key_id-help" class="form-text">
+            Access key id
+          </div>
+          <%= f.text_field :access_key_id,
+                value:  @repository.access_key_id,
+                class:  "form-control #{@repository.errors.include?(:access_key_id) ? 'is-invalid' : ''}",
+                aria:   { describedby:  'validation-error-access_key_id access_key_id-help' },
+                placeholder: ''
+          %>
+          <div id="validation-error-access_key_id" class="invalid-feedback d-block">
+            <%= @repository.errors.messages_for(:access_key_id).to_sentence %>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <%= f.label :secret_access_key, class: 'form-label' %>
+          <div id="secret_access_key-help" class="form-text">
+            Secret acceess key
+          </div>
+          <%= f.text_field :secret_access_key,
+                value:  @repository.secret_access_key,
+                class:  "form-control #{@repository.errors.include?(:secret_access_key) ? 'is-invalid' : ''}",
+                aria:   { describedby:  'validation-error-secret_access_key secret_access_key-help' },
+                placeholder: ''
+          %>
+          <div id="validation-error-secret_access_key" class="invalid-feedback d-block">
+            <%= @repository.errors.messages_for(:secret_access_key).to_sentence %>
+          </div>
+        </div>
+
+        <div class="mb-3">
           <%= f.label :bucket, class: 'form-label' %>
           <div id="bucket-help" class="form-text">
             Bucket name. Must be unique across all buckets when using built-in storage.
@@ -21,7 +85,7 @@
           </div>
         </div>
 
-        <%= f.submit 'Save', class: 'btn btn-primary' %>
+        <%= f.submit 'Save', class: 'btn btn-primary mt-2' %>
       </div>
     </div>
   <% end %>

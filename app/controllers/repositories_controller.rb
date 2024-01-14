@@ -11,8 +11,8 @@ class RepositoriesController < ::ApplicationController
     @repository = find_repository
 
     breadcrumb.add('Repositories', repositories_path)
-    breadcrumb.add(@repository.project.name, project_path(@repository.project))
     breadcrumb.add(@repository.distro.name)
+    breadcrumb.add(@repository.project.name, project_path(@repository.project))
     breadcrumb.add(@repository.id)
   end
 
@@ -20,8 +20,8 @@ class RepositoriesController < ::ApplicationController
     @repository = find_repository
 
     breadcrumb.add('Repositories', repositories_path)
-    breadcrumb.add(@repository.project.name, project_path(@repository.project))
     breadcrumb.add(@repository.distro.name)
+    breadcrumb.add(@repository.project.name, project_path(@repository.project))
     breadcrumb.add(@repository.id)
     breadcrumb.add('Edit')
   end
