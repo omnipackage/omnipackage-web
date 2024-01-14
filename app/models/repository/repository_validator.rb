@@ -8,7 +8,7 @@ class Repository
 
     private
 
-    def uniq_bucket(record)
+    def uniq_bucket(record) # rubocop: disable Metrics/AbcSize
       if record.changes.include?(:bucket) && !record.custom_storage? && record.storage_client.ls_buckets.any? { |b| b.name == record.bucket }
         record.errors.add(:bucket, 'bucket already exists in the storage')
       end
