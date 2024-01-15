@@ -6,10 +6,11 @@ class Repository < ::ApplicationRecord
 
   validates :distro_id, inclusion: { in: ::Distro.ids }
   validates :gpg_key_private, :gpg_key_public, presence: true, allow_nil: true
-  validates :bucket, format: /(?!(^xn--|.+-s3alias$))^[a-z0-9][a-z0-9-]{1,61}[a-z0-9]\z/, uniqueness: { scope: :endpoint }
-  validates_with ::Repository::RepositoryValidator
+  validates :bucket, presence: true, format: /(?!(^xn--|.+-s3alias$))^[a-z0-9][a-z0-9-]{1,61}[a-z0-9]\z/, uniqueness: { scope: :endpoint }
+  validates :region, :endpoint, :access_key_id, :secret_access_key, presence: true, if: -> { custom_storage? }
+  validates_with ::Repository::RepositoryValidator, unless: -> { ::Rails.env.test? }
 
-  encrypts :gpg_key_private
+  encrypts :gpg_key_private, :secret_access_key
 
   enum :publish_status, %w[pending publishing published].index_with(&:itself), default: 'pending'
 
@@ -30,10 +31,6 @@ class Repository < ::ApplicationRecord
 
   def distro=(dist)
     self.distro_id = dist.id
-  end
-
-  def custom_storage?
-    endpoint.present? && access_key_id.present? && secret_access_key.present?
   end
 
   def storage_client

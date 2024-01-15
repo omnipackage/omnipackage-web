@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_08_112522) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_14_123324) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -111,6 +111,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_08_112522) do
     t.string "last_publish_error"
     t.string "publish_status", default: "", null: false
     t.bigint "project_id", null: false
+    t.boolean "custom_storage", default: false, null: false
     t.index ["bucket"], name: "index_repositories_on_bucket"
     t.index ["distro_id"], name: "index_repositories_on_distro_id"
     t.index ["endpoint", "bucket"], name: "index_repositories_on_endpoint_and_bucket", unique: true

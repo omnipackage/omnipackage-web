@@ -22,7 +22,7 @@ class StorageClient
       access_key_id:      config.fetch(:access_key_id),
       secret_access_key:  config.fetch(:secret_access_key),
       region:             config.fetch(:region),
-      endpoint:           config.fetch(:endpoint, nil)
+      endpoint:           config.fetch(:endpoint)
     }
     @c = ::Aws::S3::Resource.new(client: ::Aws::S3::Client.new(**@config))
   end

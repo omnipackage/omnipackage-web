@@ -48,6 +48,6 @@ class RepositoriesController < ::ApplicationController
   end
 
   def repository_params
-    params.require(:repository).permit(:bucket, :endpoint, :access_key_id, :secret_access_key, :region)
+    params.require(:repository).permit(:bucket, :endpoint, :access_key_id, :secret_access_key, :region, :custom_storage)
   end
 end
