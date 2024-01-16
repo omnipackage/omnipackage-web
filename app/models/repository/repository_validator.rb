@@ -3,22 +3,22 @@
 class Repository
   class RepositoryValidator < ::ActiveModel::Validator
     def validate(record)
-      uniq_bucket(record)
+      return unless record.custom_storage?
+
+      bucket_only_custom_storate(record)
       reachable(record)
     end
 
     private
 
-    def uniq_bucket(record)
-      if record.changes.include?(:bucket) && !record.custom_storage? && record.storage_client.ls_buckets.any? { |b| b.name == record.bucket }
-        record.errors.add(:bucket, 'bucket already exists in the storage')
+    def bucket_only_custom_storate(record)
+      if record.changes.include?(:bucket)
+        record.errors.add(:bucket, 'cannot change bucket when using built-in storage')
       end
-    rescue ::StandardError => e
-      record.errors.add(:bucket, e.message)
     end
 
     def reachable(record)
-      record.storage_client.ls(bucket: record.bucket)
+      record.storage_client.ls_buckets.map(&:name)
     rescue ::StandardError => e
       record.errors.add(:bucket, e.message)
     end

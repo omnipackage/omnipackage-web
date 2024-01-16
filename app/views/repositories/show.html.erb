@@ -12,6 +12,9 @@
   <div class="container pt-3">
     <div class="pb-3">
       <%= render partial: 'repositories/publishing_status', locals: { repository: @repository } %>
+      <span class="ms-3 font-monospace">
+        <%= @repository.storage.url %>
+      </span>
     </div>
 
     <% if @repository.last_publish_error %>

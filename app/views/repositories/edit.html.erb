@@ -74,7 +74,7 @@
             <div id="secret_access_key-help" class="form-text">
               Secret acceess key
             </div>
-            <%= f.text_field :secret_access_key,
+            <%= f.password_field :secret_access_key,
                   value:  @repository.secret_access_key,
                   class:  "form-control #{@repository.errors.include?(:secret_access_key) ? 'is-invalid' : ''}",
                   aria:   { describedby:  'validation-error-secret_access_key secret_access_key-help' },

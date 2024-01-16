@@ -35,7 +35,7 @@ class Repository < ::ApplicationRecord
 
   def storage_client
     if custom_storage?
-      ::StorageClient.new(endpoint: endpoint, access_key_id: access_key_id, secret_access_key: secret_access_key, region: region)
+      ::StorageClient.new(endpoint: endpoint, access_key_id: access_key_id, secret_access_key: secret_access_key, region: region, force_path_style: true)
     else
       ::StorageClient.build_default
     end
