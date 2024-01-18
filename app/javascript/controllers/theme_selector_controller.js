@@ -1,11 +1,10 @@
 import { Controller } from "@hotwired/stimulus"
-import cookies from "lib/cookies"
 
 export default class extends Controller {
   static targets = [ "currentTheme", "preferedTheme", "themeButton" ]
 
   connect() {
-    this.set_theme(cookies.get("theme") || "auto")
+    this.set_theme(localStorage.getItem("theme") || "auto")
   }
 
   preferedThemeTargetConnected(element) {
@@ -16,7 +15,7 @@ export default class extends Controller {
     let new_theme = event.params.theme
 
     this.set_theme(new_theme)
-    cookies.set("theme", new_theme, 12345)
+    localStorage.setItem('theme', new_theme)
   }
 
   prefered_theme() {
