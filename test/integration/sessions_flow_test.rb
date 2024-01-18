@@ -46,6 +46,6 @@ class SessionsFlowTest < ::ActionDispatch::IntegrationTest
 
     follow_redirect!
 
-    assert_response :success
+    assert_redirected_to sign_in_url
   end
 end

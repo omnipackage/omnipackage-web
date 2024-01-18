@@ -18,7 +18,7 @@
 
       <div class="col text-center">
         <p><%= link_to 'Transparency', ::APP_SETTINGS.dig(:links, :transparency) || '#', class: 'link-secondary', target: '_blank' %></p>
-        <p><%= link_to 'Privacy policy', ::APP_SETTINGS.dig(:links, :privacy), class: 'link-secondary', target: '_blank' %></p>
+        <p><%= link_to 'Privacy policy', ::APP_SETTINGS.dig(:links, :privacy) || '#', class: 'link-secondary', target: '_blank' %></p>
       </div>
     </div>
   </div>
