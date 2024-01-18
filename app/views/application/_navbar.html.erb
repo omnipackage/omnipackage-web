@@ -21,7 +21,7 @@
         <% end %>
 
         <li class="nav-item">
-          <%= link_to 'Documentation', ::APP_SETTINGS.fetch(:docs_url, '#'), class: 'nav-link', target: '_blank' %>
+          <%= link_to 'Documentation', ::APP_SETTINGS.dig(:links, :docs) || '#', class: 'nav-link', target: '_blank' %>
         </li>
       </ul>
 

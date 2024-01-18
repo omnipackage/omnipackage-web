@@ -1,10 +1,18 @@
 default: &default
   container_runtime: podman
-  docs_url: 'https://docs.omnipackage.org'
+  links:
+    docs:         'https://docs.omnipackage.org'
+    about:        'https://omnipackage.org/about'
+    privacy:      'https://omnipackage.org/privacy'
+    transparency: 'https://omnipackage.org/transparency'
 
 development:
   <<: *default
-  docs_url: 'http://127.0.0.1:8000'
+  links:
+    docs:         'http://localhost:8000/'
+    about:        'http://localhost:4000/about'
+    privacy:      'http://localhost:4000/privacy'
+    transparency: 'http://localhost:4000/transparency'
 
 test:
   <<: *default
