@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-class HomeController < ::ApplicationController
-  def index
+class DashboardController < ::ApplicationController
+  def show
     @dashboard = ::Dashboard.new(current_user)
   end
 end

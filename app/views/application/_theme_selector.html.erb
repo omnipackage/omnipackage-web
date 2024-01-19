@@ -1,7 +1,7 @@
 <div data-controller="theme-selector">
   <button class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <i class="bi bi-sun opacity-70" data-theme-selector-target="currentTheme" data-theme="light"></i>
-    <i class="bi bi-moon opacity-70" data-theme-selector-target="currentTheme" data-theme="dark"></i>
+    <i class="bi bi-moon-stars-fill opacity-70" data-theme-selector-target="currentTheme" data-theme="dark"></i>
   </button>
   <ul class="dropdown-menu shadow">
     <li>
@@ -12,7 +12,7 @@
     </li>
     <li>
       <button data-action="theme-selector#setCurrentTheme" class="dropdown-item" data-theme-selector-target="themeButton" data-theme="dark" data-theme-selector-theme-param="dark">
-        <i class="bi bi-moon me-2 opacity-50 theme-icon"></i>
+        <i class="bi bi-moon-stars-fill me-2 opacity-50 theme-icon"></i>
         Dark
       </button>
     </li>
@@ -20,7 +20,7 @@
     <li>
       <button data-action="theme-selector#setCurrentTheme" class="dropdown-item" data-theme-selector-target="themeButton" data-theme="auto" data-theme-selector-theme-param="auto">
         <i class="bi bi-sun me-2 opacity-50" data-theme-selector-target="preferedTheme" data-theme="light"></i>
-        <i class="bi bi-moon me-2 opacity-50" data-theme-selector-target="preferedTheme" data-theme="dark"></i>
+        <i class="bi bi-moon-stars-fill me-2 opacity-50" data-theme-selector-target="preferedTheme" data-theme="dark"></i>
         Auto
       </button>
     </li>

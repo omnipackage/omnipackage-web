@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg bg-body-secondary">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/">
+    <a class="navbar-brand" href="<%= ::APP_SETTINGS.dig(:links, :home) || '/' %>">
       <img src="<%= asset_path("brand/logo_symbol.svg") %>" alt="logo" height="30px">
       <% unless logged_in? %>
         OmniPackage
@@ -14,7 +14,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <% if logged_in? %>
-          <%= render partial: 'navbar_link', locals: { path: root_path, text: 'Home', active: -> { params[:controller] == 'home' } } %>
+          <%= render partial: 'navbar_link', locals: { path: root_path, text: 'Dashboard', active: -> { params[:controller] == 'dashboard' } } %>
           <%= render partial: 'navbar_link', locals: { path: projects_path, text: 'Projects', active: -> { params[:controller] == 'projects' } } %>
           <%= render partial: 'navbar_link', locals: { path: repositories_path, text: 'Repositories', active: -> { params[:controller] == 'repositories' } } %>
           <%= render partial: 'navbar_link', locals: { path: tasks_path, text: 'Tasks', active: -> { params[:controller] == 'tasks' } } %>

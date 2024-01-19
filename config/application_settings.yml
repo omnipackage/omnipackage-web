@@ -2,6 +2,7 @@ default: &default
   container_runtime: podman
   links:
     docs:         'https://docs.omnipackage.org'
+    home:         'https://omnipackage.org/'
     about:        'https://omnipackage.org/about'
     privacy:      'https://omnipackage.org/privacy'
     transparency: 'https://omnipackage.org/transparency'
@@ -10,6 +11,7 @@ development:
   <<: *default
   links:
     docs:         'http://localhost:8000/'
+    home:         'http://localhost:4000'
     about:        'http://localhost:4000/about'
     privacy:      'http://localhost:4000/privacy'
     transparency: 'http://localhost:4000/transparency'

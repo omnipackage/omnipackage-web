@@ -1,13 +1,11 @@
-<%# locals: (dashboard:) -%>
-
 <div class="container" id="dashboard">
-  <% if dashboard.projects.empty? %>
+  <% if @dashboard.projects.empty? %>
     <div class="pb-3">
       You have no projects yet, <%= link_to 'create your first project', new_project_path %>
     </div>
   <% end %>
 
-  <% dashboard.repositories.ordered.group_by { |repo| repo.distro.family }.each do |family, repos| %>
+  <% @dashboard.repositories.ordered.group_by { |repo| repo.distro.family }.each do |family, repos| %>
     <div class="row pt-3 pb-3 align-items-center">
       <div class="col-md-auto">
         <%= render partial: 'distro_icon', locals: { family: family, size: 64 } %>
