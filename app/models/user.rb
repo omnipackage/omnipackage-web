@@ -20,9 +20,8 @@ class User < ::ApplicationRecord
 
   encrypts :gpg_key_private
 
-  before_validation if: -> { email.present? } do
-    self.email = email.downcase.strip
-  end
+  normalizes :email, with: ->(i) { i.strip.downcase }
+
   before_validation if: :email_changed?, unless: :new_record? do
     self.verified_at = nil
   end
