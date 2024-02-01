@@ -45,23 +45,25 @@
     </div>
 
     <div class="modal fade" id="delete_repository_modal" tabindex="-1" aria-labelledby="delete_repository_modal" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-body">
-          <p>
-            Deleting the respository will also delete all files in the bucket.
-          </p>
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body">
+            <p>
+              Deleting the respository will also delete all files in the bucket.
+            </p>
 
-          <p class="text-warning">
-            This operation cannot be undone.
-          </p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <%= button_to 'Yes, delete this repository', repository_path(@repository), method: :delete, class: 'btn btn-danger' %>
+            <p class="text-warning">
+              This operation cannot be undone.
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <%= button_to 'Yes, delete this repository', repository_path(@repository), method: :delete, class: 'btn btn-danger' %>
+          </div>
         </div>
       </div>
-    </div>
 
+    </div>
   </div>
+
 </div>
