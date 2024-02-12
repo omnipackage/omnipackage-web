@@ -28,7 +28,7 @@
                   <%- last_task = project.tasks.order(:created_at).last %>
                   <% if last_task&.failed? %>
                     <span class="text-danger">
-                      Last task <%= link_to "##{last_task.id}", task_path(last_task) %> failed
+                      Last build <%= link_to "##{last_task.id}", task_path(last_task) %> failed
                     </span>
                   <% elsif last_task&.finished? %>
                     Last successful <%= link_to 'build', task_path(last_task), class: 'link-secondary' %> <%= time_ago_in_words(last_task.finished_at) %> ago
