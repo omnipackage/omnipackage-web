@@ -8,6 +8,12 @@ require 'sidekiq-scheduler/web'
 
   mount ::Sidekiq::Web => '/sidekiq', constraints: ::Session::RouteConstraint.new(:root?)
 
+  %i[about docs home transparency privacy].each do |link|
+    direct "links_#{link}" do |options|
+      ::APP_SETTINGS.dig(:links, link) || options[:fallback] || '#'
+    end
+  end
+
   concern :gpg_keys do
     get 'gpg_key', to: 'gpg_keys#index', as: :index_gpg_key
     post 'gpg_key/generate', to: 'gpg_keys#generate', as: :generate_gpg_key
