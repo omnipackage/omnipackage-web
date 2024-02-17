@@ -51,7 +51,7 @@ namespace :embedded_agents do # rubocop: disable Metrics/BlockLength
     begin
       require 'omnipackage_agent'
     rescue ::LoadError
-      warn 'you have to install omnipackage agen'
+      warn 'you have to install omnipackage agent'
       exit(1)
     end
   end
