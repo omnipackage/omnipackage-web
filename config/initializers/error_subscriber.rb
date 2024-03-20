@@ -3,7 +3,10 @@
 require 'rollbar_nano/notifier'
 
 class ErrorSubscriber
-  def initialize(enabled = ::Rails.env.prodcution? || ENV['OMNIPACKAGE_ROLLBAR_API_KEY'].present?)
+  def initialize(
+    enabled:                ::Rails.env.prodcution? || ENV['OMNIPACKAGE_ROLLBAR_API_KEY'].present?,
+    skip_exception_classes: ['Sidekiq::JobRetry::Skip']
+  )
     if enabled
       @notifier = ::RollbarNano::Notifier.new(::RollbarNano::Config.new(
         endpoint:     'https://api.rollbar.com/api/1/item/',
@@ -15,13 +18,13 @@ class ErrorSubscriber
         framework:    'Rails'
       ))
     end
-    @skip_exception_classes = ['Sidekiq::JobRetry::Skip']
+    @skip_exception_classes = skip_exception_classes
   end
 
   def report(error, handled:, severity:, context:, source: nil)
     ::Rails.logger.error("#{self.class.name} #{error} (#{error.class}), handled: #{handled}, severity: #{severity}, context: #{context}, source: #{source}")
 
-    return if @skip_exception_classes.include?(error.class.name)
+    return if skip_exception_classes.include?(error.class.name)
 
     req = context.delete(:request)
     user = context.delete(:user)
@@ -36,6 +39,8 @@ class ErrorSubscriber
   end
 
   private
+
+  attr_reader :skip_exception_classes
 
   def person(user)
     return unless user
