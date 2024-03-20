@@ -5,9 +5,22 @@
   <span>on <%= link_to task.agent.name, agent_path(task.agent), class: 'link-secondary' %></span>
 <% end %>
 <% if task.failed? %>
-  <span> in </span>
-  <% task.artefacts.failed.each_with_index do |a, index| %>
-    <a class="link-secondary" href="#artefacts-<%= dom_friendly(a.distro) %>"><%= a.distro_object.name %></a>
+  <% failed_artefacts = task.artefacts.failed %>
+  <% unfinished_distros = task.unfinished_distros %>
+
+  <% if failed_artefacts.any? %>
+    <span> error build for </span>
+    <% failed_artefacts.each_with_index do |a, index| %>
+      <a class="link-secondary" href="#artefacts-<%= dom_friendly(a.distro) %>"><%= a.distro_object.name %></a>
+    <% end %>
   <% end %>
+
+  <% if unfinished_distros.any? %>
+    <span> no artefacts for distros </span>
+    <% task.unfinished_distros.each do |d| %>
+      <span class="fw-bolder text-decoration-underline"><%= d.name %></span>
+    <% end %>
+  <% end %>
+
 <% end %>
 <%= time_ago_in_words(task.updated_at) %> ago

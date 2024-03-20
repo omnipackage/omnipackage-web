@@ -20,7 +20,7 @@ class Project < ::ApplicationRecord
 
   broadcast_with ::Broadcasts::Project
 
-  delegate :distros, :installable_package_name, to: :sources_tarball, allow_nil: true
+  delegate :distros, :distro_ids, :installable_package_name, to: :sources_tarball, allow_nil: true
 
   def sources
     ::Project::Sources.new(

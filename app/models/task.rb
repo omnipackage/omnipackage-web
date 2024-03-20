@@ -26,7 +26,7 @@ class Task < ::ApplicationRecord
   end
 
   class << self
-    def start(project, skip_fetch: false, distro_ids: ::Distro.ids)
+    def start(project, skip_fetch: false, distro_ids: project.distro_ids.presence || ::Distro.ids)
       task = create(
         sources_tarball:  project.sources_tarball,
         state:            skip_fetch && project.sources_verified? ? 'pending_build' : 'pending_fetch',
@@ -54,8 +54,12 @@ class Task < ::ApplicationRecord
   end
 
   def finish!
-    success = distro_ids.to_set == artefacts.map(&:distro).to_set && artefacts.all?(&:success?)
+    success = unfinished_distros.empty? && artefacts.all?(&:success?)
     update!(state: success ? 'finished' : 'failed', finished_at: ::Time.now.utc)
+  end
+
+  def unfinished_distros
+    (distro_ids.to_set - artefacts.map(&:distro).to_set).map { |i| ::Distro[i] }
   end
 
   def duration

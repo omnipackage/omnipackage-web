@@ -13,7 +13,7 @@ class SourcesFetchJob < ::ApplicationJob
     end
   end
 
-  def perform(project_id, task_id = nil)
+  def perform(project_id, task_id = nil) # rubocop: disable Metrics/AbcSize
     project = ::Project.find(project_id)
     task = ::Task.find(task_id) if task_id
     source = project.sources.sync
@@ -21,6 +21,7 @@ class SourcesFetchJob < ::ApplicationJob
     return error!(project, 'no sources') if !source
     return error!(project, 'no build config') if !source.config
     return error!(project, 'no sources tarball') if !source.tarball
+    return error!(project, 'nos distros in config') if project.distro_ids.blank?
 
     success!(project, source, task)
   rescue ::StandardError => e
@@ -38,7 +39,7 @@ class SourcesFetchJob < ::ApplicationJob
       project.sources_fetch_error = nil
       project.verified!
       project.create_default_repositories
-      task&.pending_build!
+      task.update(state: 'pending_build', distro_ids: task.distro_ids & project.distro_ids) if task
     end
   end
 
