@@ -21,7 +21,6 @@ class SourcesFetchJob < ::ApplicationJob
     return error!(project, 'no sources') if !source
     return error!(project, 'no build config') if !source.config
     return error!(project, 'no sources tarball') if !source.tarball
-    return error!(project, 'nos distros in config') if project.distro_ids.blank?
 
     success!(project, source, task)
   rescue ::StandardError => e
