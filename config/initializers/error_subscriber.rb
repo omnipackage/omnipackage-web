@@ -22,7 +22,7 @@ class ErrorSubscriber
   end
 
   def report(error, handled:, severity:, context:, source: nil)
-    return if skip_exception_classes.include?(error.class.name)
+    return if @skip_exception_classes.include?(error.class.name)
 
     ::Rails.logger.error("#{self.class.name} #{error} (#{error.class}), handled: #{handled}, severity: #{severity}, context: #{context}, source: #{source}")
 
@@ -34,13 +34,11 @@ class ErrorSubscriber
       person:   person(user),
       request:  request(req),
       client:   client(req),
-      extra:    { context: context, source: source }
+      extra:    { context: context, source: source, handled: handled }
     )
   end
 
   private
-
-  attr_reader :skip_exception_classes
 
   def person(user)
     return unless user
@@ -56,7 +54,6 @@ class ErrorSubscriber
     return unless req
 
     {
-      # body:       req.body,
       headers:    filter_parameters(req.headers.to_h),
       url:        req.original_url,
       request_id: req.request_id,
