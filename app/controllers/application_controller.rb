@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class ApplicationController < ::ActionController::Base
+  before_action :set_error_context
   before_action :authenticate
   before_action :require_authentication
-  before_action :set_error_context
 
   attr_reader :current_user, :current_session
 
@@ -52,6 +52,6 @@ class ApplicationController < ::ActionController::Base
   end
 
   def set_error_context
-    ::Rails.error.set_context(user: current_user, request: request)
+    ::Rails.error.set_context(user: -> { current_user }, request: request)
   end
 end

@@ -27,8 +27,11 @@ class ErrorSubscriber
 
     ::Rails.logger.error("#{self.class.name} #{error} (#{error.class}), handled: #{handled}, severity: #{severity}, context: #{context}, source: #{source}")
 
+    context = defer_procs(context)
+
     req = context.delete(:request)
     user = context.delete(:user)
+
     @notifier&.log(
       severity,
       error,
@@ -78,6 +81,16 @@ class ErrorSubscriber
     h.map do |k, v|
       if ::Rails.application.config.filter_parameters.any? { |i| k.to_s.include?(i.to_s) }
         [k, '****']
+      else
+        [k, v]
+      end
+    end.to_h
+  end
+
+  def defer_procs(context)
+    context.map do |k, v|
+      if v.is_a?(::Proc)
+        [k, v.call]
       else
         [k, v]
       end

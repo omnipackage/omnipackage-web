@@ -2,9 +2,9 @@
 
 module AgentApi
   class ApiController < ::ActionController::Base # rubocop: disable Rails/ApplicationController
+    before_action :set_error_context
     before_action :authorize
     skip_before_action :verify_authenticity_token
-    before_action :set_error_context
     rescue_from ::StandardError, with: :respond_error
 
     @@once = []
@@ -69,7 +69,7 @@ module AgentApi
     end
 
     def set_error_context
-      ::Rails.error.set_context(agent_id: current_agent&.id)
+      ::Rails.error.set_context(agent_id: -> { current_agent&.id })
     end
   end
 end
