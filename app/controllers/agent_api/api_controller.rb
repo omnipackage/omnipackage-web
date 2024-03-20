@@ -69,7 +69,7 @@ module AgentApi
     end
 
     def set_error_context
-      ::Rails.error.set_context(agent_id: -> { current_agent&.id })
+      ::Rails.error.set_context(agent_id: -> { current_agent&.id }, request: request)
     end
   end
 end
