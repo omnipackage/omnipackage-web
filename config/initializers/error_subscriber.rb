@@ -15,10 +15,13 @@ class ErrorSubscriber
         framework:    'Rails'
       ))
     end
+    @skip_exception_classes = ['Sidekiq::JobRetry::Skip']
   end
 
   def report(error, handled:, severity:, context:, source: nil)
     ::Rails.logger.error("#{self.class.name} #{error} (#{error.class}), handled: #{handled}, severity: #{severity}, context: #{context}, source: #{source}")
+
+    return if @skip_exception_classes.include?(error.class.name)
 
     req = context.delete(:request)
     user = context.delete(:user)

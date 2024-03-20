@@ -52,7 +52,7 @@ module RollbarNano
         filename, lineno, method = i.split(':')
         {
           method:   method.delete('in `').chop,
-          lineno:   lineno,
+          lineno:   lineno.to_i,
           filename: filename
         }
       end
