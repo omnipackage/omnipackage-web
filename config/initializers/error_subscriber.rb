@@ -22,9 +22,9 @@ class ErrorSubscriber
   end
 
   def report(error, handled:, severity:, context:, source: nil)
-    ::Rails.logger.error("#{self.class.name} #{error} (#{error.class}), handled: #{handled}, severity: #{severity}, context: #{context}, source: #{source}")
-
     return if skip_exception_classes.include?(error.class.name)
+
+    ::Rails.logger.error("#{self.class.name} #{error} (#{error.class}), handled: #{handled}, severity: #{severity}, context: #{context}, source: #{source}")
 
     req = context.delete(:request)
     user = context.delete(:user)
@@ -33,7 +33,7 @@ class ErrorSubscriber
       error,
       person:   person(user),
       request:  request(req),
-      client:   req ? { javascript: { browser: req.user_agent } } : nil,
+      client:   client(req),
       extra:    { context: context, source: source }
     )
   end
@@ -66,12 +66,22 @@ class ErrorSubscriber
     }
   end
 
+  def client(req)
+    return unless req
+
+    {
+      javascript: {
+        browser: req.user_agent
+      }
+    }
+  end
+
   def filter_parameters(h)
     h.map do |k, v|
       if ::Rails.application.config.filter_parameters.any? { |i| k.to_s.include?(i.to_s) }
         [k, '****']
       else
-        [k, k]
+        [k, v]
       end
     end.to_h
   end

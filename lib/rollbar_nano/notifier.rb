@@ -9,18 +9,29 @@ module RollbarNano
 
     def initialize(config)
       @config = config
-      @apiclient = ::RollbarNano::Client.new(config.endpoint, config.key, logger: config.logger)
+      @queue = ::Queue.new
+      run_thread!
       freeze
     end
 
     def log(level, error, extra: {}, person: {}, request: {}, client: {}) # rubocop: disable Metrics/ParameterLists
       data = build_data(level, error, extra, person, request, client)
-      apiclient.call({ data: data })
+      queue.push(data)
     end
 
     private
 
-    attr_reader :apiclient
+    attr_reader :queue
+
+    def run_thread!
+      ::Thread.new do
+        apiclient = ::RollbarNano::Client.new(config.endpoint, config.key, logger: config.logger)
+        loop do
+          apiclient.call({ data: queue.pop })
+          sleep(0.5) # sort of rate-limit
+        end
+      end
+    end
 
     def build_data(level, error, extra, person, request, client) # rubocop: disable Metrics/MethodLength, Metrics/AbcSize, Metrics/ParameterLists, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
       result = {
@@ -51,7 +62,7 @@ module RollbarNano
       backtrace.map do |i|
         filename, lineno, method = i.split(':')
         {
-          method:   method.delete('in `').chop,
+          method:   method[4..-2],
           lineno:   lineno.to_i,
           filename: filename
         }
