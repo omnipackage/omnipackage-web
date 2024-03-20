@@ -4,7 +4,7 @@ require 'rollbar_nano/notifier'
 
 class ErrorSubscriber
   def initialize(
-    enabled:                ::Rails.env.prodcution? || ENV['OMNIPACKAGE_ROLLBAR_API_KEY'].present?,
+    enabled:                ::Rails.env.production? || ENV['OMNIPACKAGE_ROLLBAR_API_KEY'].present?,
     skip_exception_classes: ['Sidekiq::JobRetry::Skip']
   )
     if enabled
