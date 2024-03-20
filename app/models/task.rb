@@ -26,11 +26,11 @@ class Task < ::ApplicationRecord
   end
 
   class << self
-    def start(project, skip_fetch: false, distro_ids: project.distro_ids.presence || ::Distro.ids)
+    def start(project, skip_fetch: false, distro_ids: nil)
       task = create(
         sources_tarball:  project.sources_tarball,
         state:            skip_fetch && project.sources_verified? ? 'pending_build' : 'pending_fetch',
-        distro_ids:       distro_ids
+        distro_ids:       distro_ids || project.distro_ids.presence || ::Distro.ids
       )
       ::SourcesFetchJob.start(project, task) if task.valid? && !skip_fetch
       task
