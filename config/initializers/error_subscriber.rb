@@ -15,7 +15,8 @@ class ErrorSubscriber
         environment:  ::Rails.env,
         host:         ::Socket.gethostname,
         root:         ::Rails.root,
-        framework:    'Rails'
+        framework:    'Rails',
+        code_version: (`git rev-parse --short HEAD`.chomp rescue '0')
       ))
     end
     @skip_exception_classes = skip_exception_classes

@@ -11,6 +11,7 @@ module RollbarNano
         level:        level.to_s,
         language:     'ruby',
         framework:    config.framework,
+        code_version: config.code_version,
         server: {
           host:       config.host,
           pid:        ::Process.pid,
