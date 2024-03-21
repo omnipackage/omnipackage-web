@@ -29,7 +29,7 @@ module RollbarNano
         apiclient = ::RollbarNano::Client.new(config.endpoint, config.key, logger: config.logger)
         loop do
           apiclient.call({ data: queue.pop })
-          sleep(0.5) # sort of rate-limit
+          sleep(1) # sort of rate-limit
         end
       end
     end

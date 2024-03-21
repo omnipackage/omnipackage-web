@@ -22,6 +22,7 @@ module RollbarNano
           version:    '0.0.1'
         },
         body:         build_body(error),
+        uuid:         ::SecureRandom.uuid
       }
       result[:person] = person if person.is_a?(::Hash) && person.any?
       result[:request] = request if request.is_a?(::Hash) && request.any?
@@ -33,6 +34,8 @@ module RollbarNano
     private
 
     def build_frames(backtrace)
+      return [] unless backtrace
+
       backtrace.map do |i|
         filename, lineno, method = i.split(':')
         {
