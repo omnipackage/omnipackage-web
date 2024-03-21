@@ -13,7 +13,7 @@ class SourcesFetchJob < ::ApplicationJob
     end
   end
 
-  def perform(project_id, task_id = nil) # rubocop: disable Metrics/AbcSize
+  def perform(project_id, task_id = nil)
     project = ::Project.find(project_id)
     task = ::Task.find(task_id) if task_id
     source = project.sources.sync
