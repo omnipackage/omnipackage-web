@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class ApplicationController < ::ActionController::Base
+  before_action :set_error_context
   before_action :authenticate
   before_action :require_authentication
 
@@ -48,5 +49,9 @@ class ApplicationController < ::ActionController::Base
     response.headers["Cache-Control"] = "no-cache, no-store"
     response.headers["Pragma"] = "no-cache"
     response.headers["Expires"] = "Mon, 01 Jan 1990 00:00:00 GMT"
+  end
+
+  def set_error_context
+    ::Rails.error.set_context(user: -> { current_user }, request: request)
   end
 end

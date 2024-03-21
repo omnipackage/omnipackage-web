@@ -2,6 +2,7 @@
 
 module AgentApi
   class ApiController < ::ActionController::Base # rubocop: disable Rails/ApplicationController
+    before_action :set_error_context
     before_action :authorize
     skip_before_action :verify_authenticity_token
     rescue_from ::StandardError, with: :respond_error
@@ -65,6 +66,10 @@ module AgentApi
       ::Rails.error.report(exception)
       # payload[:backtrace] = exception.backtrace if ::Rails.env.local?
       render(json: payload, status: :unprocessable_entity)
+    end
+
+    def set_error_context
+      ::Rails.error.set_context(agent_id: -> { current_agent&.id }, request: request)
     end
   end
 end
