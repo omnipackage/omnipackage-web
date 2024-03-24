@@ -9,11 +9,9 @@ class ErrorSubscriber
   )
     if enabled
       @notifier = ::RollbarNano::Notifier.new(::RollbarNano::Config.new(
-        endpoint:     'https://api.rollbar.com/api/1/item/',
         key:          ::Rails.application.credentials.rollbar_api_key || ENV['OMNIPACKAGE_ROLLBAR_API_KEY'],
         logger:       ::Rails.logger,
         environment:  ::Rails.env,
-        host:         ::Socket.gethostname,
         root:         ::Rails.root,
         framework:    'Rails',
         code_version: (`git rev-parse --short HEAD`.chomp rescue '0')

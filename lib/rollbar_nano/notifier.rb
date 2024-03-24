@@ -24,13 +24,20 @@ module RollbarNano
 
     attr_reader :queue
 
-    def run_thread!
+    def run_thread! # rubocop: disable Metrics/MethodLength
       ::Thread.new do
         apiclient = ::RollbarNano::Client.new(config.endpoint, config.key, logger: config.logger)
         loop do
-          apiclient.call({ data: queue.pop })
+          data = queue.pop
+          break if data == 'quit!'
+
+          apiclient.call({ data: data })
           sleep(1) # sort of rate-limit
         end
+      end
+
+      at_exit do
+        queue.push('quit!')
       end
     end
   end
