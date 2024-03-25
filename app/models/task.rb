@@ -81,6 +81,6 @@ class Task < ::ApplicationRecord
   end
 
   def secrets
-    {} # TODO
+    project.secrets.to_h
   end
 end

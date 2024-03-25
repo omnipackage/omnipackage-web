@@ -9,6 +9,9 @@ class Project < ::ApplicationRecord
 
   encrypts :sources_private_ssh_key
 
+  serialize :secrets, coder: ::Project::Secrets
+  encrypts :secrets
+
   enum :sources_kind, ::Project::Sources.kinds.index_with(&:itself), default: ::Project::Sources.kinds.first
   enum :sources_status, %w[unverified fetching verified].index_with(&:itself), default: 'unverified'
 

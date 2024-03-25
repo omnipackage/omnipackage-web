@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_14_123324) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_25_175135) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -90,6 +90,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_14_123324) do
     t.string "sources_status", default: "", null: false
     t.string "sources_fetch_error", limit: 10000
     t.string "sources_branch", default: "", null: false
+    t.string "secrets"
     t.index ["name"], name: "index_projects_on_name"
     t.index ["sources_kind"], name: "index_projects_on_sources_kind"
     t.index ["sources_status"], name: "index_projects_on_sources_status"
