@@ -14,6 +14,38 @@
 
   <div class="btn-group" role="group" aria-label="ssh key manage">
     <button data-action="clipboard#copy" class="btn btn-link btn-sm"><i class="bi bi-copy me-1"></i>Copy to clipboard</button>
-    <%= button_to 'Generate new key', project_ssh_keys_path(project.id), method: :post, class: 'btn btn-link btn-sm link-warning', form: { data: { turbo_confirm: "You will have to add newly generated key to the sources repository. Continue?" } } %>
+
+    <button data-bs-toggle="modal" data-bs-target="#copy_ssh_key_modal" class="btn btn-link btn-sm link-warning">Copy key from another project</button>
+
+    <%= button_to 'Generate new key', project_ssh_keys_path(project.id), method: :post, class: 'btn btn-link btn-sm link-danger', form: { data: { turbo_confirm: "You will have to add newly generated key to the sources repository. Continue?" } } %>
+  </div>
+</div>
+
+<div class="modal fade" id="copy_ssh_key_modal" tabindex="-1" aria-labelledby="copyKeyModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <%= form_with(url: copy_project_ssh_keys_path(project), method: :post) do |f| %>
+        <div class="modal-header">
+          <h5 class="modal-title">Copy SSH key from another project</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <%= f.collection_select(
+            :from_project_id,
+            current_user.projects.where.not(id: project.id).where.not(sources_private_ssh_key: nil, sources_public_ssh_key: nil),
+            :id,
+            :name,
+            { include_blank: false },
+            { class: 'form-select form-select-sm' }
+          )%>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <%= f.submit 'Save', class: 'btn btn-primary' %>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>

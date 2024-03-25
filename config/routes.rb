@@ -47,7 +47,9 @@ require 'sidekiq-scheduler/web'
   end
 
   resources :projects do
-    resources :ssh_keys, only: %i[create]
+    resources :ssh_keys, only: %i[create] do
+      post :copy, on: :collection
+    end
     resources :sources, only: %i[index create]
     resources :webhooks, only: %i[index create show new update destroy]
   end

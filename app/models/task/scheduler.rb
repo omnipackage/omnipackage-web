@@ -13,7 +13,8 @@ class Task
             sources_tarball_url:  task.project.sources_tarball.tarball.url(expires_in: 3.days),
             upload_artefact_url:  view_context.agent_api_upload_artefact_url(task.id),
             distros:              task.distro_ids,
-            limits:               task.agent_limits
+            limits:               task.agent_limits,
+            secrets:              task.secrets
           }
         end
         result.freeze

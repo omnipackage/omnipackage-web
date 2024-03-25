@@ -79,4 +79,8 @@ class Task < ::ApplicationRecord
       execute_timeout: 30_000
     }
   end
+
+  def secrets
+    {} # TODO
+  end
 end
