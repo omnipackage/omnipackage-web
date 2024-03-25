@@ -5,6 +5,10 @@ class Project
     class << self
       def load(payload) = new(::JSON.load(payload))
       def dump(object) = ::JSON.dump(object.to_h)
+
+      def from_env(str)
+        new(str.lines.map { |line| line.chomp.split('=') }.to_h)
+      end
     end
 
     include ::Enumerable
@@ -16,6 +20,10 @@ class Project
     end
 
     def to_h = h
+
+    def to_env
+      map { |k, v| "#{k}=#{v}"}.join("\n")
+    end
 
     private
 

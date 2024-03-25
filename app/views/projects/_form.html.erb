@@ -56,12 +56,12 @@
       <%= project.errors.messages_for(:sources_branch).to_sentence %>
     </div>
 
-    <div class="d-inline-flex gap-1 pt-3">
+    <div class="gap-1 pt-3">
       <a class="link-offset-2 link-underline link-underline-opacity-0 form-label" data-bs-toggle="collapse" href="#collapseSubDir" role="button" aria-expanded="false" aria-controls="collapseSubDir">
-        Sub-directory (optional)
+        Sub-directory
       </a>
     </div>
-    <div class="collapse <%= project.sources_subdir.present? ? 'show' : '' %>" id="collapseSubDir">
+    <div class="collapse <%= project.sources_subdir.present? ? 'show' : '' %> ps-3 pe-3" id="collapseSubDir">
       <div class="form-text">
         If the source code is located in subfolder, not in the root.
       </div>
@@ -72,6 +72,27 @@
       %>
       <div id="validation-error-sources_subdir" class="invalid-feedback d-block">
         <%= project.errors.messages_for(:sources_subdir).to_sentence %>
+      </div>
+    </div>
+
+    <div class="gap-1 pt-3">
+      <a class="link-offset-2 link-underline link-underline-opacity-0 form-label" data-bs-toggle="collapse" href="#collapseSecrets" role="button" aria-expanded="false" aria-controls="collapseSecrets">
+        Secrets
+      </a>
+    </div>
+    <div class="collapse ps-3 pe-3" id="collapseSecrets">
+      <div class="form-text">
+<pre>KEY1=VALUE1
+KEY2=VALUE2</pre>
+        Secrets will be passed to the build process via environment variables and hidden from logs. <a href="#" target="_blank">Learn more</a>
+      </div>
+      <%= f.text_area :secrets,
+            value:  project.secrets.to_env,
+            class:  "form-control #{project.errors.include?(:secrets) ? 'is-invalid' : ''}",
+            aria:   { describedby: 'validation-error-secrets' }
+      %>
+      <div id="validation-error-secrets" class="invalid-feedback d-block">
+        <%= project.errors.messages_for(:secrets).to_sentence %>
       </div>
     </div>
   </div>

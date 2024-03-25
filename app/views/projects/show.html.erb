@@ -16,6 +16,22 @@
     </div>
 
     <div class="pt-3">
+      <h6>Secrets</h6>
+      <span>
+        <a href="#collapseSecrets" class="link-underline link-underline-opacity-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSecrets" aria-expanded="false" aria-controls="collapseSecrets">
+          show
+        </a>
+      </span>
+
+      <div class="collapse" id="collapseSecrets">
+        <small class="fw-light">Secrets will be passed to the build process via environment variables and hidden from logs. <a href="#" target="_blank">Learn more</a></small>
+        <div class="bg-body-tertiary p-2 rounded-2">
+          <pre><%= @project.secrets.to_env %></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="pt-3">
       <h6>Triggers</h6>
       <%= render partial: 'projects/triggers', locals: { project: @project } %>
     </div>

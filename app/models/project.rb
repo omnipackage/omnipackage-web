@@ -73,4 +73,9 @@ class Project < ::ApplicationRecord
       create_default_repository(distro)
     end
   end
+
+  def secrets=(arg)
+    arg = ::Project::Secrets.from_env(arg) if arg.is_a?(::String)
+    super(arg)
+  end
 end
