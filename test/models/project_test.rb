@@ -46,4 +46,13 @@ class ProjectTest < ::ActiveSupport::TestCase
     project.create_default_repositories
     assert_equal 7, project.repositories.count
   end
+
+  test 'secrets' do
+    project = build(:project, secrets: "OLOLO=123\nHELLO=WORLD")
+    assert project.valid?
+    assert_equal({'OLOLO' => '123', 'HELLO' => 'WORLD'}, project.secrets.to_h)
+
+    project = build(:project, secrets: "kasjdgfjslag")
+    assert project.invalid?
+  end
 end

@@ -80,7 +80,7 @@
         Secrets
       </a>
     </div>
-    <div class="collapse ps-3 pe-3" id="collapseSecrets">
+    <div class="collapse <%= project.errors.include?(:secrets) ? 'show' : '' %> ps-3 pe-3" id="collapseSecrets">
       <div class="form-text">
 <pre>KEY1=VALUE1
 KEY2=VALUE2</pre>

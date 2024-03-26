@@ -2,7 +2,7 @@
 
 class ProjectsController < ::ApplicationController
   def index
-    @pagination, @projects = ::Pagination.new(current_user.projects.order(:name), self).call
+    @pagination, @projects = ::Pagination.new(current_user.projects.order(created_at: :desc), self).call
 
     breadcrumb.add('Projects')
   end

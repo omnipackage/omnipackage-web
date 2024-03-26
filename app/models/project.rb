@@ -11,6 +11,8 @@ class Project < ::ApplicationRecord
 
   serialize :secrets, coder: ::Project::Secrets
   encrypts :secrets
+  validate { |i| i.errors.add(:secrets, 'invalid secrets') if i.secrets && !i.secrets.valid? }
+  normalizes :secrets, with: -> { _1.empty? ? nil : _1 }
 
   enum :sources_kind, ::Project::Sources.kinds.index_with(&:itself), default: ::Project::Sources.kinds.first
   enum :sources_status, %w[unverified fetching verified].index_with(&:itself), default: 'unverified'
@@ -74,8 +76,7 @@ class Project < ::ApplicationRecord
     end
   end
 
-  def secrets=(arg)
-    arg = ::Project::Secrets.from_env(arg) if arg.is_a?(::String)
-    super(arg)
+  def sibling_projects_with_ssh_keys
+    user.projects.where.not(id: id).where.not(sources_private_ssh_key: nil, sources_public_ssh_key: nil)
   end
 end

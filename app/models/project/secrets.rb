@@ -4,16 +4,26 @@ class Project
   class Secrets
     class << self
       def load(payload) = new(::JSON.load(payload))
-      def dump(object) = ::JSON.dump(object.to_h)
+
+      def dump(object)
+        return if object.blank?
+
+        object = from_env(object) if object.is_a?(::String)
+        ::JSON.dump(object.to_h)
+      end
 
       def from_env(str)
-        new(str.lines.map { |line| line.chomp.split('=') }.to_h)
+        hash = str.lines.map do |line|
+          k, v = line.chomp.split('=', 2)
+          [k, v]
+        end.to_h
+        new(hash)
       end
     end
 
     include ::Enumerable
 
-    delegate :each, to: :h
+    delegate :each, :empty?, to: :h
 
     def initialize(hash = {})
       @h = hash.to_h { |k, v| [k.to_s, v.to_s] }
@@ -23,6 +33,10 @@ class Project
 
     def to_env
       map { |k, v| "#{k}=#{v}"}.join("\n")
+    end
+
+    def valid?
+      all? { |k, v| k.present? && v.present? }
     end
 
     private
