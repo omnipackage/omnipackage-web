@@ -8,7 +8,7 @@ namespace :embedded_agents do # rubocop: disable Metrics/BlockLength
     port = url_options.fetch(:port, 80)
     apihost = "http://#{host}:#{port}"
 
-    external_build_dir = '/run/media/oleg/c3996ce0-a379-4403-9d64-7d4c0536463f/dev/omnipackage-build/'
+    external_build_dir = '/home/oleg/Desktop/omnipackage-build/'
     build_dir = if ::Rails.env.development? && ::File.exist?(external_build_dir)
                   external_build_dir
                 else
