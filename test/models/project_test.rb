@@ -50,7 +50,7 @@ class ProjectTest < ::ActiveSupport::TestCase
   test 'secrets' do
     project = build(:project, secrets: "OLOLO=123\nHELLO=WORLD")
     assert project.valid?
-    assert_equal({'OLOLO' => '123', 'HELLO' => 'WORLD'}, project.secrets.to_h)
+    assert_equal({ 'OLOLO' => '123', 'HELLO' => 'WORLD' }, project.secrets.to_h)
 
     project = build(:project, secrets: "kasjdgfjslag")
     assert project.invalid?

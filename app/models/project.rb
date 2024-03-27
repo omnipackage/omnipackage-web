@@ -77,6 +77,6 @@ class Project < ::ApplicationRecord
   end
 
   def sibling_projects_with_ssh_keys
-    user.projects.where.not(id: id).where.not(sources_private_ssh_key: nil, sources_public_ssh_key: nil)
+    user.projects.where('id != ? AND NOT (sources_private_ssh_key IS NULL AND sources_public_ssh_key IS NULL)', id)
   end
 end

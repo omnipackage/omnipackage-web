@@ -8,13 +8,20 @@ namespace :embedded_agents do # rubocop: disable Metrics/BlockLength
     port = url_options.fetch(:port, 80)
     apihost = "http://#{host}:#{port}"
 
+    external_build_dir = '/run/media/oleg/c3996ce0-a379-4403-9d64-7d4c0536463f/dev/omnipackage-build/'
+    build_dir = if ::Rails.env.development? && ::File.exist?(external_build_dir)
+                  external_build_dir
+                else
+                  ::Pathname.new(::Dir.tmpdir).join("omnipackage-build-#{a.name}").to_s
+                end
+
     ::Agent.where("name LIKE '%embedded%' AND user_id IS NULL").map do |a|
       ::Thread.new do
         config = ::OmnipackageAgent::Config.get(overrides: {
           apihost:            apihost,
           apikey:             a.apikey,
           container_runtime:  ::APP_SETTINGS[:container_runtime],
-          build_dir:          ::Pathname.new(::Dir.tmpdir).join("omnipackage-build-#{a.name}").to_s
+          build_dir:          build_dir
         })
         log_formatter = ::OmnipackageAgent::Logging::Formatter.new(tags: [a.name])
         logger = ::OmnipackageAgent::Logging::Logger.new(formatter: log_formatter)

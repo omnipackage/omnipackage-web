@@ -3,7 +3,7 @@
 class Project
   class Secrets
     class << self
-      def load(payload) = new(::JSON.load(payload))
+      def load(payload) = new(::JSON.parse(payload.presence || '{}'))
 
       def dump(object)
         return if object.blank?
@@ -32,7 +32,7 @@ class Project
     def to_h = h
 
     def to_env
-      map { |k, v| "#{k}=#{v}"}.join("\n")
+      map { |k, v| "#{k}=#{v}" }.join("\n")
     end
 
     def valid?
