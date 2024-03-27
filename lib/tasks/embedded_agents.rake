@@ -9,13 +9,14 @@ namespace :embedded_agents do # rubocop: disable Metrics/BlockLength
     apihost = "http://#{host}:#{port}"
 
     external_build_dir = '/home/oleg/Desktop/omnipackage-build/'
-    build_dir = if ::Rails.env.development? && ::File.exist?(external_build_dir)
-                  external_build_dir
-                else
-                  ::Pathname.new(::Dir.tmpdir).join("omnipackage-build-#{a.name}").to_s
-                end
 
     ::Agent.where("name LIKE '%embedded%' AND user_id IS NULL").map do |a|
+      build_dir = if ::Rails.env.development? && ::File.exist?(external_build_dir)
+                    ::Pathname.new(external_build_dir).join(a.name)
+                  else
+                    ::Pathname.new(::Dir.tmpdir).join("omnipackage-build-#{a.name}")
+                  end.to_s
+                  
       ::Thread.new do
         config = ::OmnipackageAgent::Config.get(overrides: {
           apihost:            apihost,
