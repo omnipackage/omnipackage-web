@@ -4,7 +4,7 @@ opensuse: &opensuse
   - 'zypper --non-interactive install -y -t pattern devel_basis devel_rpm_build'
   - 'zypper --non-interactive install -y rpmdevtools %{build_dependencies}'
   setup_repo:
-  - 'zypper --non-interactive install -y createrepo_c'
+  - 'zypper --non-interactive install -y createrepo'
   install_steps:
   - 'zypper addrepo %{url}/%{project_safe_name}.repo'
   - 'zypper refresh'
