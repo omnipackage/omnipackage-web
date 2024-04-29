@@ -4,7 +4,7 @@ require 'sidekiq/web'
 require 'sidekiq-scheduler/web'
 
 ::Rails.application.routes.draw do
-  root 'dashboard#show'
+  root 'projects#index'
 
   mount ::Sidekiq::Web => '/sidekiq', constraints: ::Session::RouteConstraint.new(:root?)
 

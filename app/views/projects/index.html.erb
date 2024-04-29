@@ -28,10 +28,12 @@
                   <%- last_task = project.tasks.order(:created_at).last %>
                   <% if last_task&.failed? %>
                     <span class="text-danger">
-                      Last build <%= link_to "##{last_task.id}", task_path(last_task) %> failed
+                      Last build <%= link_to "##{last_task.id}", task_path(last_task), class: 'link-secondary' %> failed
                     </span>
                   <% elsif last_task&.finished? %>
                     Last successful <%= link_to 'build', task_path(last_task), class: 'link-secondary' %> <%= time_ago_in_words(last_task.finished_at) %> ago
+                  <% elsif last_task&.pending_fetch? || last_task&.pending_build? || last_task&.running? %>
+                    Task <%= link_to "##{last_task.id}", task_path(last_task), class: 'link-secondary' %> in progress <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
                   <% end %>
                 </div>
               </div>
