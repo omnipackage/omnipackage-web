@@ -21,7 +21,7 @@ module Broadcasts
         locals: { task: model }
       )
 
-      ::Turbo::StreamsChannel.broadcast_replace_later_to(
+      ::Turbo::StreamsChannel.broadcast_update_later_to(
         model,
         target: dom_id(model, :show),
         partial: 'tasks/task_show',

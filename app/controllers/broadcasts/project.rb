@@ -3,14 +3,14 @@
 module Broadcasts
   class Project < ::Broadcasts::BaseBroadcast
     def update # rubocop: disable Metrics/MethodLength
-      ::Turbo::StreamsChannel.broadcast_replace_later_to(
+      ::Turbo::StreamsChannel.broadcast_update_later_to(
         model,
         target: dom_id(model, :show),
         partial: 'projects/project_show',
         locals: { project: model }
       )
 
-      ::Turbo::StreamsChannel.broadcast_replace_later_to(
+      ::Turbo::StreamsChannel.broadcast_update_later_to(
         [model.user, :projects],
         target: dom_id(model),
         partial: 'projects/project',

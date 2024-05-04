@@ -5,7 +5,9 @@
 <div class="container pt-2">
   <div class="vstack gap-3">
     <% @projects.each do |project| %>
-      <%= render partial: 'project', locals: { project: project } %>
+      <div id="<%= dom_id(project) %>">
+        <%= render partial: 'project', locals: { project: project } %>
+      </div>
     <% end %>
   </div>
 

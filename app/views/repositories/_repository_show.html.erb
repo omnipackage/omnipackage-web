@@ -1,68 +1,65 @@
 <%# locals: (repository:) -%>
 
-<div id="<%= dom_id(repository, :show) %>">
+<h5>
+  Repository for <%= repository.distro.name %>
+  <small class="text-body-secondary">
+    <%= link_to repository.project.name, project_path(repository.project) %> project
+  </small>
+</h5>
 
-  <h5>
-    Repository for <%= repository.distro.name %>
-    <small class="text-body-secondary">
-      <%= link_to repository.project.name, project_path(repository.project) %> project
-    </small>
-  </h5>
+<div class="container pt-3">
+  <div class="pb-3">
+    <%= render partial: 'repositories/publishing_status', locals: { repository: repository } %>
+    <span class="ms-3 font-monospace">
+      <%= repository.storage.url %>
+    </span>
+  </div>
 
-  <div class="container pt-3">
+  <% if repository.last_publish_error %>
     <div class="pb-3">
-      <%= render partial: 'repositories/publishing_status', locals: { repository: repository } %>
-      <span class="ms-3 font-monospace">
-        <%= repository.storage.url %>
-      </span>
+      <h6 class="text-danger">
+        Last publish error
+        <small class="text-body-secondary">updated <%= time_ago_in_words(repository.updated_at) %> ago</small>
+      </h6>
+      <pre class="pre-line-wrap"><%= repository.last_publish_error %></pre>
     </div>
+  <% end %>
 
-    <% if repository.last_publish_error %>
-      <div class="pb-3">
-        <h6 class="text-danger">
-          Last publish error
-          <small class="text-body-secondary">updated <%= time_ago_in_words(repository.updated_at) %> ago</small>
-        </h6>
-        <pre class="pre-line-wrap"><%= repository.last_publish_error %></pre>
-      </div>
+  <div class="pt-3">
+    <%= render partial: 'repositories/files', locals: { storage: repository.storage } %>
+  </div>
+
+  <div class="pt-3">
+    <h6>GPG key</h6>
+    <%= render partial: 'repositories/gpg_key', locals: { repository: repository } %>
+  </div>
+
+  <div class="pt-3">
+    <%= link_to 'Edit repository', edit_repository_path(repository), class: 'btn btn-link' %>
+
+    <% if repository.project.repositories.where(distro_id: repository.distro_id).count > 1 %>
+      <a class="btn btn-link link-danger" href="#" data-bs-toggle="modal" data-bs-target="#delete_repository_modal">Delete repository</a>
     <% end %>
+  </div>
 
-    <div class="pt-3">
-      <%= render partial: 'repositories/files', locals: { storage: repository.storage } %>
-    </div>
+  <div class="modal fade" id="delete_repository_modal" tabindex="-1" aria-labelledby="delete_repository_modal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+          <p>
+            Deleting the respository will also delete all files in the bucket.
+          </p>
 
-    <div class="pt-3">
-      <h6>GPG key</h6>
-      <%= render partial: 'repositories/gpg_key', locals: { repository: repository } %>
-    </div>
-
-    <div class="pt-3">
-      <%= link_to 'Edit repository', edit_repository_path(repository), class: 'btn btn-link' %>
-
-      <% if repository.project.repositories.where(distro_id: repository.distro_id).count > 1 %>
-        <a class="btn btn-link link-danger" href="#" data-bs-toggle="modal" data-bs-target="#delete_repository_modal">Delete repository</a>
-      <% end %>
-    </div>
-
-    <div class="modal fade" id="delete_repository_modal" tabindex="-1" aria-labelledby="delete_repository_modal" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-body">
-            <p>
-              Deleting the respository will also delete all files in the bucket.
-            </p>
-
-            <p class="text-warning">
-              This operation cannot be undone.
-            </p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <%= button_to 'Yes, delete this repository', repository_path(repository), method: :delete, class: 'btn btn-danger' %>
-          </div>
+          <p class="text-warning">
+            This operation cannot be undone.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <%= button_to 'Yes, delete this repository', repository_path(repository), method: :delete, class: 'btn btn-danger' %>
         </div>
       </div>
-
     </div>
+
   </div>
 </div>
