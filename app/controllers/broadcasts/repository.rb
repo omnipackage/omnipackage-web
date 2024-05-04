@@ -13,7 +13,7 @@ module Broadcasts
       ::Turbo::StreamsChannel.broadcast_replace_later_to(
         model,
         target: dom_id(model, :show),
-        partial: 'repositories/show',
+        partial: 'repositories/repository_show',
         locals: { repository: model }
       )
     end

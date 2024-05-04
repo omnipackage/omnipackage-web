@@ -10,12 +10,7 @@ module Broadcasts
         locals: { task: model, highlight: true }
       )
 
-      ::Turbo::StreamsChannel.broadcast_replace_later_to(
-        [model.project, :task_state],
-        target: dom_id(model.project, :task_state),
-        partial: 'projects/task_state',
-        locals: { project: model.project }
-      )
+      ::Broadcasts::Project.new(model.project).update
     end
 
     def update # rubocop: disable Metrics/MethodLength, Metrics/AbcSize
@@ -40,12 +35,7 @@ module Broadcasts
         locals: { task: model }
       )
 
-      ::Turbo::StreamsChannel.broadcast_replace_later_to(
-        model.project,
-        target: dom_id(model.project, :task_state),
-        partial: 'projects/task_state',
-        locals: { project: model.project }
-      )
+      ::Broadcasts::Project.new(model.project).update
     end
 
     def destroy

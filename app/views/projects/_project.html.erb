@@ -1,46 +1,48 @@
 <%# locals: (project:) -%>
 
-<div class="card" id="<%= dom_id(project) %>">
-  <div class="card-body">
-    <h5 class="card-title">
-      <%= link_to project.name, project_path(project.id), class: 'card-link' %>
-    </h5>
+<div id="<%= dom_id(project) %>">
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">
+        <%= link_to project.name, project_path(project.id), class: 'card-link' %>
+      </h5>
 
-    <div class="card-text">
+      <div class="card-text">
 
-      <div class="row align-items-center">
-        <div class="col text-body-secondary">
+        <div class="row align-items-center">
+          <div class="col text-body-secondary">
 
-          <div class="fw-light">
-            <% if project.sources_fetch_error.present? %>
-              <span class="text-danger">
-                Sources fetch error
-              </span>
-            <% elsif project.sources_verified_at %>
-              Last sources fetch <%= time_ago_in_words(project.sources_verified_at) %> ago
-            <% end %>
+            <div class="fw-light">
+              <% if project.sources_fetch_error.present? %>
+                <span class="text-danger">
+                  Sources fetch error
+                </span>
+              <% elsif project.sources_verified_at %>
+                Last sources fetch <%= time_ago_in_words(project.sources_verified_at) %> ago
+              <% end %>
+            </div>
+
+            <div>
+              <%= render partial: 'projects/task_state', locals: { project: project } %>
+            </div>
           </div>
 
-          <div>
-            <%= render partial: 'task_state', locals: { project: project } %>
+          <div class="col text-end">
+            <span>
+              <% if project.sources_verified? %>
+                <%= link_to package_install_path(project), class: 'btn btn-link link-secondary', target: '_blank' do %>
+                  <i class="bi bi-download me-2"></i> Public download page
+                <% end %>
+
+                <% project.distros.map(&:family).uniq.each do |df| %>
+                  <%= render partial: 'distro_icon', locals: { family: df, size: 24 } %>
+                <% end %>
+              <% end %>
+            </span>
           </div>
         </div>
 
-        <div class="col text-end">
-          <span>
-            <% if project.sources_verified? %>
-              <%= link_to package_install_path(project), class: 'btn btn-link link-secondary', target: '_blank' do %>
-                <i class="bi bi-download me-2"></i> Public download page
-              <% end %>
-
-              <% project.distros.map(&:family).uniq.each do |df| %>
-                <%= render partial: 'distro_icon', locals: { family: df, size: 24 } %>
-              <% end %>
-            <% end %>
-          </span>
-        </div>
       </div>
-
     </div>
   </div>
 </div>
