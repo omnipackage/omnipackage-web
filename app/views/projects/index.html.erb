@@ -3,59 +3,7 @@
 <div class="container pt-2">
   <div class="vstack gap-3">
     <% @projects.each do |project| %>
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">
-            <%= link_to project.name, project_path(project.id), class: 'card-link' %>
-          </h5>
-
-          <div class="card-text">
-
-            <div class="row align-items-center">
-              <div class="col text-body-secondary">
-
-                <div>
-                  <% if project.sources_fetch_error.present? %>
-                    <span class="text-danger">
-                      Sources fetch error
-                    </span>
-                  <% elsif project.sources_verified_at %>
-                    Last sources fetch <%= time_ago_in_words(project.sources_verified_at) %> ago
-                  <% end %>
-                </div>
-
-                <div>
-                  <%- last_task = project.tasks.order(:created_at).last %>
-                  <% if last_task&.failed? %>
-                    <span class="text-danger">
-                      Last build <%= link_to "##{last_task.id}", task_path(last_task), class: 'link-secondary' %> failed
-                    </span>
-                  <% elsif last_task&.finished? %>
-                    Last successful <%= link_to 'build', task_path(last_task), class: 'link-secondary' %> <%= time_ago_in_words(last_task.finished_at) %> ago
-                  <% elsif last_task&.pending_fetch? || last_task&.pending_build? || last_task&.running? %>
-                    Task <%= link_to "##{last_task.id}", task_path(last_task), class: 'link-secondary' %> in progress <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                  <% end %>
-                </div>
-              </div>
-
-              <div class="col text-end">
-                <span>
-                  <% if project.sources_verified? %>
-                    <%= link_to package_install_path(project), class: 'btn btn-link link-secondary', target: '_blank' do %>
-                      <i class="bi bi-download me-2"></i> Public download page
-                    <% end %>
-
-                    <% project.distros.map(&:family).uniq.each do |df| %>
-                      <%= render partial: 'distro_icon', locals: { family: df, size: 24 } %>
-                    <% end %>
-                  <% end %>
-                </span>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </div>
+      <%= render partial: 'project', locals: { project: project } %>
     <% end %>
   </div>
 
