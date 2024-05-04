@@ -1,5 +1,5 @@
 <%= turbo_stream_from @task %>
 
-<div id="<%= dom_id(@task, :show) %>">
+<div id="<%= dom_id(@task) %>">
   <%= render partial: 'tasks/task_show', locals: { task: @task } %>
 </div>

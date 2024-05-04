@@ -5,7 +5,7 @@ module Broadcasts
     def update # rubocop: disable Metrics/MethodLength
       ::Turbo::StreamsChannel.broadcast_update_later_to(
         model,
-        target: dom_id(model, :show),
+        target: dom_id(model),
         partial: 'repositories/repository_show',
         locals: { repository: model }
       )

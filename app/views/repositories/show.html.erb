@@ -1,5 +1,5 @@
 <%= turbo_stream_from @repository %>
 
-<div id="<%= dom_id(@repository, :show) %>">
+<div id="<%= dom_id(@repository) %>">
   <%= render partial: 'repositories/repository_show', locals: { repository: @repository } %>
 </div>
