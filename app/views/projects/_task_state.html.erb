@@ -1,0 +1,13 @@
+<%# locals: (project:) -%>
+
+<%= turbo_stream_from [project, :task_state] %>
+
+<span id="<%= dom_id(project, :task_state) %>">
+  <%- last_task = project.tasks.order(:created_at).last %>
+  <% if last_task %>
+    <%= render partial: 'tasks/state_icon', locals: { task: last_task } %>
+    <%= link_to task_path(last_task), class: 'link fw-light' do %>
+      <%= time_ago_in_words(last_task.updated_at) %> ago
+    <% end %>
+  <% end %>
+</span>

@@ -2,16 +2,23 @@
 
 module Broadcasts
   class Task < ::Broadcasts::BaseBroadcast
-    def create
+    def create # rubocop: disable Metrics/MethodLength
       ::Turbo::StreamsChannel.broadcast_prepend_later_to(
         [model.user, :tasks],
         target: 'tasks',
         partial: 'tasks/task',
         locals: { task: model, highlight: true }
       )
+
+      ::Turbo::StreamsChannel.broadcast_replace_later_to(
+        [model.project, :task_state],
+        target: dom_id(model.project, :task_state),
+        partial: 'projects/task_state',
+        locals: { project: model.project }
+      )
     end
 
-    def update # rubocop: disable Metrics/MethodLength
+    def update # rubocop: disable Metrics/MethodLength, Metrics/AbcSize
       ::Turbo::StreamsChannel.broadcast_replace_later_to(
         [model.user, :tasks],
         target: dom_id(model),
@@ -32,6 +39,13 @@ module Broadcasts
         target: dom_id(model, :state_icon),
         partial: 'tasks/state_icon',
         locals: { task: model }
+      )
+
+      ::Turbo::StreamsChannel.broadcast_replace_later_to(
+        [model.project, :task_state],
+        target: dom_id(model.project, :task_state),
+        partial: 'projects/task_state',
+        locals: { project: model.project }
       )
     end
 
