@@ -1,7 +1,5 @@
 <%# locals: (project:) -%>
 
-<%= turbo_stream_from [project, :task_state] %>
-
 <span id="<%= dom_id(project, :task_state) %>">
   <%- last_task = project.tasks.order(:created_at).last %>
   <% if last_task %>

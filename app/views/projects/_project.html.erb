@@ -1,5 +1,7 @@
 <%# locals: (project:) -%>
 
+<%= turbo_stream_from [project, :task_state] %>
+
 <div class="card" id="<%= dom_id(project) %>">
   <div class="card-body">
     <h5 class="card-title">
