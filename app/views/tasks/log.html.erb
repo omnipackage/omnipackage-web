@@ -1,5 +1,5 @@
-<%= turbo_stream_from [@log, :text] %>
-<%= turbo_stream_from [@log.task, :state_icon] %>
+<%= turbo_stream_from @log %>
+<%= turbo_stream_from @log.task %>
 
 <div>
   <h5>

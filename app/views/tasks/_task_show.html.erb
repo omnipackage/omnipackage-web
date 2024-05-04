@@ -1,0 +1,66 @@
+<%# locals: (task:) -%>
+
+<div id="<%= dom_id(task, :show) %>">
+  <h5>
+    Task #<%= task.id %>
+    <small class="text-body-secondary">
+      created <%= time_ago_in_words(task.created_at) %> ago for
+      <%= link_to task.project.name, project_path(task.project), class: 'link-secondary' %>
+      project
+    </small>
+  </h5>
+
+  <div class="pb-3 text-secondary">
+    <%= render partial: 'tasks/state_icon', locals: { task: task } %>
+    <%= render partial: 'tasks/state_text', locals: { task: task } %>
+  </div>
+
+  <div class="container pt-1">
+
+    <div class="pt-1 pb-3">
+      <h6>Distros</h6>
+      <%= task.distros.map(&:name).join(', ') %>
+    </div>
+
+    <div class="pb-3">
+      <%= link_to 'Log', log_task_path(task) %>
+    </div>
+
+    <% if task.stat %>
+      <div class="pt-1 pb-3">
+        <h6>Stats</h6>
+        <div class="fw-bold">
+          <span class="fw-lighter">Build time</span> <%= ::Duration.build(task.stat.build_time).humanized %>
+        </div>
+        <div class="fw-lighter">
+          <span>Total time</span> <%= ::Duration.build(task.stat.total_time).humanized %>
+        </div>
+        <div class="fw-lighter">
+          <span>Lock wait time</span> <%= ::Duration.build(task.stat.lockwait_time).humanized %>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="pt-1 pb-3">
+      <% if task.artefacts.exists? %>
+        <h6>Artefacts</h6>
+        <%= render partial: 'tasks/artefacts', locals: { task: task } %>
+      <% elsif task.pending_fetch? || task.pending_build? || task.running? %>
+        <h6>No artefacts yet<h6>
+      <% else %>
+        <h6>No artefacts<h6>
+      <% end %>
+    </div>
+
+  </div>
+
+  <div class="pt-3">
+    <div class="btn-group" role="group" aria-label="webhooks buttons">
+      <% if task.pending_fetch? || task.pending_build? || task.running? %>
+        <%= button_to cancel_task_path(task), method: :post, class: 'btn btn-link link-danger', form: { data: { turbo_confirm: "Cancel this task?" } } do %>
+          Cancel
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

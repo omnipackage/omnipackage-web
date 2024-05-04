@@ -27,22 +27,21 @@ module Broadcasts
       )
 
       ::Turbo::StreamsChannel.broadcast_replace_later_to(
-        [model, :show],
+        model,
         target: dom_id(model, :show),
-        template: 'tasks/show',
-        assigns: { task: model },
-        layout: false
+        partial: 'tasks/task_show',
+        locals: { task: model }
       )
 
       ::Turbo::StreamsChannel.broadcast_update_later_to(
-        [model, :state_icon],
+        model,
         target: dom_id(model, :state_icon),
         partial: 'tasks/state_icon',
         locals: { task: model }
       )
 
       ::Turbo::StreamsChannel.broadcast_replace_later_to(
-        [model.project, :task_state],
+        model.project,
         target: dom_id(model.project, :task_state),
         partial: 'projects/task_state',
         locals: { project: model.project }

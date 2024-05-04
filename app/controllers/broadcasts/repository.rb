@@ -4,18 +4,17 @@ module Broadcasts
   class Repository < ::Broadcasts::BaseBroadcast
     def update # rubocop: disable Metrics/MethodLength
       ::Turbo::StreamsChannel.broadcast_replace_later_to(
-        [model, :publishing_status],
+        model,
         target: dom_id(model, :publishing_status),
         partial: 'repositories/publishing_status',
         locals: { repository: model }
       )
 
       ::Turbo::StreamsChannel.broadcast_replace_later_to(
-        [model, :show],
+        model,
         target: dom_id(model, :show),
-        template: 'repositories/show',
-        assigns: { repository: model },
-        layout: false
+        partial: 'repositories/show',
+        locals: { repository: model }
       )
     end
 

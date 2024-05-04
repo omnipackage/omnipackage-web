@@ -1,7 +1,5 @@
 <%# locals: (repository:) -%>
 
-<%= turbo_stream_from [repository, :publishing_status] %>
-
 <span id="<%= dom_id(repository, :publishing_status) %>">
 
   <% case repository.publish_status %>
