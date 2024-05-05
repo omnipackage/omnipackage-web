@@ -10,7 +10,19 @@ module Broadcasts
         locals: { repository: model }
       )
 
-      ::Broadcasts::Project.new(model.project).update
+      ::Turbo::StreamsChannel.broadcast_replace_later_to(
+        [model.user, :repositories],
+        target: dom_id(model, :publishing_status),
+        partial: 'repositories/publishing_status',
+        locals: { repository: model }
+      )
+
+      ::Turbo::StreamsChannel.broadcast_replace_later_to(
+        model.project,
+        target: dom_id(model, :publishing_status),
+        partial: 'repositories/publishing_status',
+        locals: { repository: model }
+      )
     end
 
     def destroy
