@@ -1,11 +1,11 @@
 <nav class="navbar navbar-expand-lg bg-body-secondary">
   <div class="container-fluid">
-    <a class="navbar-brand" href="<%= ::APP_SETTINGS.dig(:links, :home) || '/' %>">
+    <%= link_to root_path, class: 'navbar-brand' do %>
       <img src="<%= asset_path("brand/logo_symbol.svg") %>" alt="logo" height="30px">
       <% unless logged_in? %>
         OmniPackage
       <% end %>
-    </a>
+    <% end %>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>

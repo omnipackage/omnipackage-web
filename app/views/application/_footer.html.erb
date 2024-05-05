@@ -3,7 +3,7 @@
 
     <div class="row">
       <div class="col text-center">
-        <%= link_to root_path do %>
+        <%= link_to ::APP_SETTINGS.dig(:links, :home) || root_path, target: '_blank' do %>
           <div class="mb-3">
             <img src="<%= asset_path("brand/logo_with_slogan.svg") %>" alt="logo" height="86px">
           </div>
