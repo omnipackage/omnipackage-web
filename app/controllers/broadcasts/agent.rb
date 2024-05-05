@@ -4,7 +4,7 @@ module Broadcasts
   class Agent < ::Broadcasts::BaseBroadcast
     def update
       ::Turbo::StreamsChannel.broadcast_replace_later_to(
-        [model.user, :agents],
+        model.user,
         target: dom_id(model),
         partial: 'agents/agent',
         locals: { agent: model }

@@ -11,7 +11,7 @@ module Broadcasts
       )
 
       ::Turbo::StreamsChannel.broadcast_update_later_to(
-        [model.user, :projects],
+        model.user,
         target: dom_id(model),
         partial: 'projects/project',
         locals: { project: model }

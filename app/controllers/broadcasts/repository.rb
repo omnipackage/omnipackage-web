@@ -11,7 +11,7 @@ module Broadcasts
       )
 
       ::Turbo::StreamsChannel.broadcast_replace_later_to(
-        [model.user, :repositories],
+        model.user,
         target: dom_id(model, :publishing_status),
         partial: 'repositories/publishing_status',
         locals: { repository: model }
