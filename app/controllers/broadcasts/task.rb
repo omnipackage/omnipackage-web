@@ -2,7 +2,7 @@
 
 module Broadcasts
   class Task < ::Broadcasts::BaseBroadcast
-    def create # rubocop: disable Metrics/MethodLength
+    def create
       ::Turbo::StreamsChannel.broadcast_prepend_later_to(
         model.user,
         target: 'tasks',
