@@ -20,3 +20,4 @@ production:
   <<: *default
   pool: 35
   database: omnipackage-web-production
+  username: omnipackage
