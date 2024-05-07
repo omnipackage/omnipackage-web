@@ -11,6 +11,6 @@ https://web.omnipackage.org {
 
 	log {
 		output stdout
-		format single_field common_log
+		format transform "{common_log}"
 	}
 }
