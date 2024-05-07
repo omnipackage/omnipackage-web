@@ -5,6 +5,7 @@ After=network.target
 [Service]
 Type=simple
 WorkingDirectory=/home/rocky/omnipackage-web
+Environment=HOME=/root
 ExecStart=caddy run --config deploy/web.omnipackage.org/Caddyfile
 
 RestartSec=1
