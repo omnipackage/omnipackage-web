@@ -6,7 +6,7 @@ After=network.target
 Type=simple
 Environment=RAILS_ENV=production
 WorkingDirectory=/home/rocky/omnipackage-web
-ExecStart=bundle exec puma -b tcp://127.0.0.1:30000 -t 8:32
+ExecStart=/home/rocky/.rbenv/bin/rbenv exec bundle exec puma -b tcp://127.0.0.1:30000 -t 8:32
 
 User=rocky
 Group=rocky

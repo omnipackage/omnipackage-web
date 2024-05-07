@@ -6,7 +6,7 @@ After=network.target
 Type=simple
 Environment=RAILS_ENV=production
 WorkingDirectory=/home/rocky/omnipackage-web
-ExecStart=bundle exec sidekiq -C config/sidekiq/%n.yml -t 120
+ExecStart=/home/rocky/.rbenv/bin/rbenv exec bundle exec sidekiq -C config/sidekiq/%n.yml -t 120
 
 User=rocky
 Group=rocky
