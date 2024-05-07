@@ -94,4 +94,5 @@ require 'active_support/core_ext/integer/time'
   config.active_record.dump_schema_after_migration = false
 
   config.hosts << 'web.omnipackage.org'
+  config.hosts << 'localhost'
 end
