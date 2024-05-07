@@ -92,4 +92,6 @@ require 'active_support/core_ext/integer/time'
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  config.hosts << 'web.omnipackage.org'
 end
