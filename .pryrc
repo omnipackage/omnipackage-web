@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
-include ::FactoryBot::Syntax::Methods
+if ::Rails.env.development?
+  include ::FactoryBot::Syntax::Methods
+end
 
-# Pry.config.prompt = Pry::Prompt[:rails]
+if ::Rails.env.production?
+  ::Pry.config.prompt = ::Pry::Prompt[:rails]
+end
 
 def me
   ::User.find_by(email: 'oleg.b.antonyan@gmail.com')
