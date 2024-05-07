@@ -17,4 +17,8 @@ ssh -T $USER@$HOST <<EOL
   bin/rails assets:clean
   bin/rails assets:precompile
   bin/rails db:migrate
+  sudo systemctl daemon-reload
+  sudo systemctl restart sidekiq@default
+  sudo systemctl restart sidekiq@long
+  sudo systemctl restart puma
 EOL
