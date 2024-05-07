@@ -3,10 +3,14 @@
 namespace :embedded_agents do # rubocop: disable Metrics/BlockLength
   desc 'Run embedded agents (if any)'
   task run: [:environment, :load_gem] do
-    url_options = ::Rails.application.config.action_mailer.default_url_options
-    host = url_options.fetch(:host, 'localhost')
-    port = url_options.fetch(:port, 80)
-    apihost = "http://#{host}:#{port}"
+    apihost = if ::ENV['EMBEDDED_AGENTS_APIHOST']
+                ::ENV['EMBEDDED_AGENTS_APIHOST']
+              else
+                url_options = ::Rails.application.config.action_mailer.default_url_options
+                host = url_options.fetch(:host, 'localhost')
+                port = url_options.fetch(:port, 80)
+                "http://#{host}:#{port}"
+              end
 
     external_build_dir = '/home/oleg/Desktop/omnipackage-build/'
 
