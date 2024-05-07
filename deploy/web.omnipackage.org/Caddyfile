@@ -10,6 +10,7 @@ https://web.omnipackage.org {
 	encode zstd gzip
 
 	log {
+    output stdout
 		format console
 	}
 }
