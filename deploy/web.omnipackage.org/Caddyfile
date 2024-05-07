@@ -8,9 +8,4 @@ https://web.omnipackage.org {
 	reverse_proxy @notStatic 127.0.0.1:30000
 
 	encode zstd gzip
-
-	log {
-		output stdout
-		format transform "{common_log}"
-	}
 }
