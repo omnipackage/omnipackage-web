@@ -7,7 +7,5 @@ https://web.omnipackage.org {
   }
   reverse_proxy @notStatic 127.0.0.1:30000
 
-  health_uri /up
-
   encode zstd gzip
 }
