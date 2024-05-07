@@ -1,5 +1,5 @@
 [Unit]
-Description=OmniPackage web Sidekiq %n
+Description=OmniPackage web Sidekiq %i
 After=network.target
 
 [Service]
