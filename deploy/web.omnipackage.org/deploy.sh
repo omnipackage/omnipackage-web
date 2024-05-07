@@ -26,4 +26,5 @@ ssh -T $USER@$HOST <<EOL
   sudo systemctl restart sidekiq@default
   sudo systemctl restart sidekiq@long
   sudo systemctl restart puma
+  sudo systemctl restart caddy
 EOL
