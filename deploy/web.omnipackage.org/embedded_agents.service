@@ -1,0 +1,18 @@
+[Unit]
+Description=OmniPackage embedded agents
+After=network.target
+
+[Service]
+Type=simple
+Environment=RAILS_ENV=production
+WorkingDirectory=/home/rocky/omnipackage-web
+ExecStart=/home/rocky/.rbenv/bin/rbenv exec bin/rails embedded_agents:run
+
+User=rocky
+Group=rocky
+UMask=0002
+RestartSec=1
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
