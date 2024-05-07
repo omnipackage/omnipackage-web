@@ -6,7 +6,7 @@ After=network.target
 Type=simple
 Environment=RAILS_ENV=production
 WorkingDirectory=/home/rocky/omnipackage-web
-ExecStart=/home/rocky/.rbenv/bin/rbenv exec bin/rails embedded_agents:run
+ExecStart=/home/rocky/.rbenv/bin/rbenv exec bundle exec rails embedded_agents:run
 
 User=rocky
 Group=rocky
