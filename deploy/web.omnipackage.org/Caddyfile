@@ -12,6 +12,4 @@ https://web.omnipackage.org {
   log {
 		format console
 	}
-
-  https_port 443
 }
