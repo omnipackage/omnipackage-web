@@ -1,0 +1,14 @@
+[Unit]
+Description=OmniPackage web Caddy
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/rocky/omnipackage-web
+ExecStart=caddy run -c deploy/web.omnipackage.org/Caddyfile
+
+RestartSec=1
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
