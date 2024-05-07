@@ -21,3 +21,4 @@ test:
 
 production:
   <<: *default
+  disable_registration: true

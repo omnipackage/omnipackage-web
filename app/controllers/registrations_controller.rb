@@ -33,6 +33,6 @@ class RegistrationsController < ::ApplicationController
   end
 
   def check_registration_open
-    redirect_to(root_path, alert: 'Registration is not open yet')
+    redirect_to(root_path, alert: 'Registration is not open yet') if ::APP_SETTINGS[:disable_registration]
   end
 end
