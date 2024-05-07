@@ -4,9 +4,9 @@ HOST="web.omnipackage.org"
 USER="rocky"
 DIR="/home/$USER/omnipackage-web"
 
-if [ "$1" == "console" ]; then
+if [ "$1" == "console" ] || [ "$1" == "c" ]; then
   ssh -t $USER@$HOST "bash -lic 'cd $DIR && bin/rails c -e production'"
-  exit 0
+  exit $?
 fi
 
 ssh -T $USER@$HOST <<EOL

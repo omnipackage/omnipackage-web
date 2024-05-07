@@ -4,6 +4,8 @@ require 'sidekiq/web'
 require 'sidekiq-scheduler/web'
 
 ::Rails.application.routes.draw do
+  get 'up' => 'rails/health#show', as: :rails_health_check
+
   root 'projects#index'
 
   mount ::Sidekiq::Web => '/sidekiq', constraints: ::Session::RouteConstraint.new(:root?)
