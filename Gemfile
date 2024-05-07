@@ -6,8 +6,10 @@ gem 'aws-sdk-s3'
 gem 'bcrypt', '~> 3.1.7'
 gem 'importmap-rails'
 gem 'pg'
+gem 'pry-rails'
 gem 'puma'
 gem 'rails'
+gem 'readline-ext' # https://github.com/ruby/reline/issues/618
 gem 'redis'
 gem 'sidekiq'
 gem 'sidekiq-scheduler'
@@ -26,15 +28,7 @@ group :development, :test do
   gem 'rubocop-rails', require: false
   gem 'rubocop-rake', require: false
   gem 'super_awesome_print'
-
-  if ::Gem::Version.new(::RUBY_VERSION) >= ::Gem::Version.new('3.3')
-    gem 'readline-ext' # https://github.com/ruby/reline/issues/618
-  end
-end
-
-group :development do
   # gem 'authentication-zero'
-  gem 'pry-rails'
 end
 
 group :test do
