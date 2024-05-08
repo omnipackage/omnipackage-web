@@ -37,7 +37,7 @@ module ShellUtil
 
     ShellResult[wait_thr.value, stdout.read, stderr.read, cli]
   ensure
-    stdin.close
+    stdin&.close
     stdout.close
     stderr.close
   end
