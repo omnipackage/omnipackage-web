@@ -2,7 +2,7 @@
 
 namespace :embedded_agents do # rubocop: disable Metrics/BlockLength
   desc 'Run embedded agents (if any)'
-  task run: [:environment, :load_gem] do
+  task run: [:environment, :load_gem] do # rubocop: disable Metrics/BlockLength
     apihost = if ::ENV['EMBEDDED_AGENTS_APIHOST']
                 ::ENV['EMBEDDED_AGENTS_APIHOST']
               else
