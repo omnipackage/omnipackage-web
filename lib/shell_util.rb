@@ -38,8 +38,8 @@ module ShellUtil
     ShellResult[wait_thr.value, stdout.read, stderr.read, cli]
   ensure
     stdin&.close
-    stdout.close
-    stderr.close
+    stdout&.close
+    stderr&.close
   end
 
   def compress_and_encrypt(source_dir, passphrase:, excludes: [], env: {})
