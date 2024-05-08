@@ -44,6 +44,7 @@ class Task < ::ApplicationRecord
 
   def save_stats(stats)
     touch # rubocop: disable Rails/SkipsModelValidations
+    stats ||= {}
     stats = ::ActionController::Parameters.new(stats) unless stats.is_a?(::ActionController::Parameters)
     stat = stat || build_stat
     stat.update(stats.except(:task_id).permit!)
