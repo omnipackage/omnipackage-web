@@ -5,7 +5,7 @@ module RepoManage
     class Limits
       attr_reader :memory, :cpus, :execute_timeout, :pids
 
-      def initialize(memory: '500m', cpus: '0.5', pids: 500, execute_timeout: 30.minutes.to_i)
+      def initialize(memory: '1000m', cpus: '1', pids: 1000, execute_timeout: 30.minutes.to_i)
         @memory = memory
         @cpus = cpus
         @execute_timeout = execute_timeout
