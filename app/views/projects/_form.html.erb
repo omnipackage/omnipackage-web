@@ -87,7 +87,7 @@ KEY2=VALUE2</pre>
         Secrets will be passed to the build process via environment variables and hidden from logs. <a href="#" target="_blank">Learn more</a>
       </div>
       <%= f.text_area :secrets,
-            value:  project.secrets.to_env,
+            value:  project.secrets&.to_env,
             class:  "form-control #{project.errors.include?(:secrets) ? 'is-invalid' : ''}",
             aria:   { describedby: 'validation-error-secrets' }
       %>
