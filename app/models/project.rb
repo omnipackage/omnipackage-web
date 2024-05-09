@@ -17,7 +17,7 @@ class Project < ::ApplicationRecord
   enum :sources_kind, ::Project::Sources.kinds.index_with(&:itself), default: ::Project::Sources.kinds.first
   enum :sources_status, %w[unverified fetching verified].index_with(&:itself), default: 'unverified'
 
-  validates :name, presence: true, length: { maximum: 150 }, format: { with: /\A[A-Za-z0-9 ]+\z/ }
+  validates :name, presence: true, length: { maximum: 30 }, format: { with: /\A[A-Za-z0-9 ]+\z/ }
   validates :sources_location, presence: true, length: { maximum: 8000 }
   validates :sources_kind, presence: true
   validates :sources_subdir, length: { maximum: 500 }, format: { without: /\..|\A\// }, allow_blank: true
