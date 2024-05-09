@@ -7,10 +7,10 @@ end
 def me
   ::User.find_by(email: 'oleg.b.antonyan@gmail.com')
 end
-
+=begin
 def formatted_env
   if ::Rails.env.production?
-    bold_env = ::Pry::Helpers::Text.bold(::Rails.env.upcase)
+    bold_env = ::Pry::Helpers::Text.bold(::Rails.env.upcase[0, 3])
     ::Pry::Helpers::Text.red(bold_env)
   elsif ::Rails.env.development?
     ::Pry::Helpers::Text.green(::Rails.env.upcase[0, 3])
@@ -22,3 +22,4 @@ end
   "[#{formatted_env}] (#{::Pry.view_clip(target_self)}) #{'>' * nest_level}#{sep} "
 end
 ::Pry.config.prompt = ::Pry::Prompt.all["project_custom"]
+=end
