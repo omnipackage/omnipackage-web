@@ -17,11 +17,15 @@ class Project < ::ApplicationRecord
   enum :sources_kind, ::Project::Sources.kinds.index_with(&:itself), default: ::Project::Sources.kinds.first
   enum :sources_status, %w[unverified fetching verified].index_with(&:itself), default: 'unverified'
 
-  validates :name, presence: true, length: { maximum: 30 }, format: { with: /\A[A-Za-z0-9 ]+\z/ }
+  validates :name, presence: true, length: { maximum: 30 }, format: { with: /\A[A-Za-z0-9 _\-]+\z/ }
+  validates :slug, presence: true, length: { maximum: 30 }, uniqueness: true
   validates :sources_location, presence: true, length: { maximum: 8000 }
   validates :sources_kind, presence: true
   validates :sources_subdir, length: { maximum: 500 }, format: { without: /\..|\A\// }, allow_blank: true
   validates :sources_branch, length: { maximum: 200 }, format: { without: /\..|\A\// }, allow_blank: true
+
+  before_validation :set_slug
+  alias_attribute :safe_name, :slug
 
   broadcast_with ::Broadcasts::Project
 
@@ -35,10 +39,6 @@ class Project < ::ApplicationRecord
       branch:           sources_branch,
       ssh_private_key:  sources_private_ssh_key
     )
-  end
-
-  def safe_name
-    name.downcase.gsub(/[^0-9a-z]/i, '_')
   end
 
   def generate_ssh_keys
@@ -78,5 +78,11 @@ class Project < ::ApplicationRecord
 
   def sibling_projects_with_ssh_keys
     user.projects.where('id != ? AND NOT (sources_private_ssh_key IS NULL AND sources_public_ssh_key IS NULL)', id)
+  end
+
+  private
+
+  def set_slug
+    self.slug = name.to_s.parameterize
   end
 end

@@ -34,7 +34,13 @@ class Repository
       return if bucket_exists?
 
       client.create_bucket(bucket: bucket)
-      client.set_allow_public_read(bucket: bucket)
+      1.upto(100) do # wtf minio?
+        sleep(0.1)
+        if bucket_exists?
+          client.set_allow_public_read(bucket: bucket)
+          break
+        end
+      end
     end
 
     def delete_bucket!
