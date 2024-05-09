@@ -70,6 +70,7 @@ class StorageClient
   end
 
   def set_policy(bucket:, policy:)
+    c.client.delete_public_access_block(bucket: bucket)
     c.client.put_bucket_policy(bucket: bucket, policy: ::JSON.dump(policy))
   end
 

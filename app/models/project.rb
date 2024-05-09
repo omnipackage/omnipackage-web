@@ -61,7 +61,7 @@ class Project < ::ApplicationRecord
   end
 
   def default_bucket(distro)
-    "#{user.id}-#{safe_name}-#{distro.id}".gsub(/[^0-9a-z]/i, '-')
+    "#{::APP_SETTINGS[:default_repository_bucket_prefix]}#{user.id}-#{safe_name}-#{distro.id}".gsub(/[^0-9a-z]/i, '-')
   end
 
   def create_default_repository(distro)

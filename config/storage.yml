@@ -5,8 +5,8 @@ test:
 local:
   service: S3
   endpoint: 'http://zenbook:9000'
-  access_key_id: <%= ::Rails.application.credentials.s3.access_key_id %>
-  secret_access_key: <%= ::Rails.application.credentials.s3.secret_access_key %>
+  access_key_id: <%= ::Rails.application.credentials.minio.access_key_id %>
+  secret_access_key: <%= ::Rails.application.credentials.minio.secret_access_key %>
   region: us-east-1
   bucket: activestorage
   force_path_style: true
@@ -14,19 +14,21 @@ local:
 cloudflare:
   service: S3
   endpoint: 'https://3f7292a50c87b7d08441e63354e2c433.eu.r2.cloudflarestorage.com'
-  access_key_id: <%= ::Rails.application.credentials.s3.access_key_id %>
-  secret_access_key: <%= ::Rails.application.credentials.s3.secret_access_key %>
+  access_key_id: <%= ::Rails.application.credentials.cloudflare.access_key_id %>
+  secret_access_key: <%= ::Rails.application.credentials.cloudflare.secret_access_key %>
   bucket: activestorage
   region: auto
   force_path_style: true
 
 # Use bin/rails credentials:edit to set the AWS secrets (as aws:access_key_id|secret_access_key)
-# amazon:
-#   service: S3
-#   access_key_id: <%= Rails.application.credentials.dig(:aws, :access_key_id) %>
-#   secret_access_key: <%= Rails.application.credentials.dig(:aws, :secret_access_key) %>
-#   region: us-east-1
-#   bucket: your_own_bucket-<%= Rails.env %>
+amazon:
+   service: S3
+   endpoint: https://s3.eu-central-1.amazonaws.com
+   access_key_id: <%= ::Rails.application.credentials.aws.access_key_id %>
+   secret_access_key: <%= ::Rails.application.credentials.aws.secret_access_key %>
+   region: eu-central-1
+   bucket: omnipackage-activestorage
+   force_path_style: true
 
 # Remember not to checkin your GCS keyfile to a repository
 # google:
