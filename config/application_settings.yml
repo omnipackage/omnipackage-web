@@ -1,5 +1,5 @@
 default: &default
-  container_runtime: podman
+  container_runtime: sudo podman
   links:
     docs:         'https://docs.omnipackage.org'
     home:         'https://omnipackage.org/'
