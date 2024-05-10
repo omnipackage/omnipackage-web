@@ -11,6 +11,7 @@ fi
 
 ssh -T $USER@$HOST <<EOL
   set -xEeuo pipefail
+  cd ~/.rbenv/ && git pull && cd ~/.rbenv/plugins/ruby-build/ && git pull
 	cd $DIR
   git pull
   export RAILS_ENV=production
