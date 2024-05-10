@@ -1,5 +1,5 @@
 default: &default
-  container_runtime: sudo podman
+  container_runtime: podman
   links:
     docs:         'https://docs.omnipackage.org'
     home:         'https://omnipackage.org/'
@@ -23,3 +23,4 @@ production:
   <<: *default
   disable_registration: true
   default_repository_bucket_prefix: 'womp-'
+  container_runtime: sudo podman
