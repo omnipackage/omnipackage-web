@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 HOST="web.omnipackage.org"
-USER="rocky"
+USER="debian"
 DIR="/home/$USER/omnipackage-web"
 
 if [ "$1" == "console" ] || [ "$1" == "c" ]; then
@@ -17,7 +17,7 @@ ssh -T $USER@$HOST <<EOL
   rbenv install --skip-existing
   bundle config --local without development test
   bundle config set deployment true
-  bundle config build.pg --with-pg-include=/usr/pgsql-16/include/ --with-pg-lib=/usr/pgsql-16/lib/
+  # bundle config build.pg --with-pg-include=/usr/pgsql-16/include/ --with-pg-lib=/usr/pgsql-16/lib/
   bundle install
   bin/rails assets:clean
   bin/rails assets:precompile

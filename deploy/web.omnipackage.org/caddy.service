@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=simple
-WorkingDirectory=/home/rocky/omnipackage-web
+WorkingDirectory=/home/debian/omnipackage-web
 Environment=HOME=/root
 ExecStart=caddy run --config deploy/web.omnipackage.org/Caddyfile
 
