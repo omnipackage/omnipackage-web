@@ -6,11 +6,11 @@ After=network.target
 Type=simple
 Environment=RAILS_ENV=production
 Environment=RAILS_LOG_TO_STDOUT=1
-WorkingDirectory=/home/rocky/omnipackage-web
+WorkingDirectory=/home/debian/omnipackage-web
 ExecStart=/bin/bash -lci 'bundle exec puma -C config/puma/production.rb'
 
-User=rocky
-Group=rocky
+User=debian
+Group=debian
 UMask=0002
 RestartSec=1
 Restart=on-failure
