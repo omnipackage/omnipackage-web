@@ -7,11 +7,8 @@ Type=simple
 Environment=RAILS_ENV=production
 Environment=RAILS_LOG_TO_STDOUT=1
 WorkingDirectory=/home/rocky/omnipackage-web
-ExecStart=/bin/bash -lci 'bundle exec sidekiq -C config/sidekiq/%i.yml -t 120'
+ExecStart=/home/rocky/.rbenv/bin/rbenv exec bundle exec sidekiq -C config/sidekiq/%i.yml -t 120
 
-User=rocky
-Group=rocky
-UMask=0002
 RestartSec=1
 Restart=on-failure
 TimeoutStopSec=121
