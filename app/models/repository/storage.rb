@@ -34,12 +34,13 @@ class Repository
       return if bucket_exists?
 
       client.create_bucket(bucket: bucket)
-      1.upto(100) do # wtf minio?
-        sleep(0.1)
+
+      1.upto(10) do # wtf minio?
         if bucket_exists?
           client.set_allow_public_read(bucket: bucket)
           break
         end
+        sleep(1)
       end
     end
 
