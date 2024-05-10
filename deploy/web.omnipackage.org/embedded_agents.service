@@ -8,7 +8,7 @@ Environment=RAILS_ENV=production
 Environment=RAILS_LOG_TO_STDOUT=1
 Environment=EMBEDDED_AGENTS_APIHOST=http://localhost:30000
 WorkingDirectory=/home/rocky/omnipackage-web
-ExecStart=/bin/bash -lci 'bundle exec rails embedded_agents:run'
+ExecStart=/root/.rbenv/bin/rbenv exec bundle exec rails embedded_agents:run
 
 RestartSec=1
 Restart=on-failure
