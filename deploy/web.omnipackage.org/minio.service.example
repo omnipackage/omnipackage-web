@@ -9,7 +9,7 @@ AssertFileIsExecutable=/usr/local/bin/minio
 WorkingDirectory=/home/debian/storage
 Environment=MINIO_ROOT_USER=
 Environment=MINIO_ROOT_PASSWORD=
-ExecStart=/usr/local/bin/minio server /home/debian/storage --console-address :9001
+ExecStart=/usr/local/bin/minio server /home/debian/storage --console-address :9001 --address "localhost:9000"
 
 User=debian
 Group=debian
