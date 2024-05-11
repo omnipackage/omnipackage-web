@@ -22,4 +22,3 @@ test:
 production:
   <<: *default
   disable_registration: true
-  default_repository_bucket_prefix: 'womp-'
