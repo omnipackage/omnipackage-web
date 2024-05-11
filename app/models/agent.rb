@@ -22,7 +22,7 @@ class Agent < ::ApplicationRecord
 
   def touch_last_seen(next_poll_after)
     tm = ::Time.now.utc
-    update(last_seen_at: tm, considered_offline_at: tm + next_poll_after * 2)
+    update(last_seen_at: tm, considered_offline_at: tm + next_poll_after * 4)
   end
 
   def offline?
