@@ -32,7 +32,7 @@ amazon:
 
 minio_production:
   service: S3
-  endpoint: 'http://web.omnipackage.org:9000'
+  endpoint: 'https://storage.omnipackage.org'
   access_key_id: <%= ::Rails.application.credentials.minio_production.access_key_id %>
   secret_access_key: <%= ::Rails.application.credentials.minio_production.secret_access_key %>
   region: us-east-1
