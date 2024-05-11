@@ -76,8 +76,8 @@ class Task < ::ApplicationRecord
     {
       memory: '4g',
       cpus: '4',
-      pids: 25_000,
-      execute_timeout: 30_000
+      pids: 50_000,
+      execute_timeout: 86_400
     }
   end
 
