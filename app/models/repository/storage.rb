@@ -36,11 +36,11 @@ class Repository
       create_bucket!
 
       1.upto(15) do # wtf minio?
-        sleep(1)
         if bucket_exists?
           allow_public_read!
           break
         end
+        sleep(1)
       end
     end
 
