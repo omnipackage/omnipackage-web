@@ -30,6 +30,15 @@ amazon:
    bucket: omnipackage-activestorage
    force_path_style: true
 
+minio_production:
+  service: S3
+  endpoint: 'http://web.omnipackage.org:9000'
+  access_key_id: <%= ::Rails.application.credentials.minio_production.access_key_id %>
+  secret_access_key: <%= ::Rails.application.credentials.minio_production.secret_access_key %>
+  region: us-east-1
+  bucket: activestorage
+  force_path_style: true
+
 # Remember not to checkin your GCS keyfile to a repository
 # google:
 #   service: GCS

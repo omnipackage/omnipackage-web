@@ -1,0 +1,23 @@
+[Unit]
+Description=MinIO
+Documentation=https://docs.min.io
+Wants=network-online.target
+After=network-online.target
+AssertFileIsExecutable=/usr/local/bin/minio
+
+[Service]
+WorkingDirectory=/home/debian/storage
+Environment=MINIO_ROOT_USER=
+Environment=MINIO_ROOT_PASSWORD=
+ExecStart=/usr/local/bin/minio server /home/debian/storage --console-address :9001
+
+User=debian
+Group=debian
+RestartSec=1
+Restart=on-failure
+Restart=always
+LimitNOFILE=65536
+TimeoutStopSec=600
+
+[Install]
+WantedBy=multi-user.target
