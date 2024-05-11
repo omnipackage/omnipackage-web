@@ -35,12 +35,12 @@ class Repository
 
       client.create_bucket(bucket: bucket)
 
-      1.upto(10) do # wtf minio?
+      1.upto(15) do # wtf minio?
+        sleep(1)
         if bucket_exists?
           client.set_allow_public_read(bucket: bucket)
           break
         end
-        sleep(1)
       end
     end
 
