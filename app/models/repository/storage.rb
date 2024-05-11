@@ -33,15 +33,23 @@ class Repository
     def create_bucket_if_not_exists!
       return if bucket_exists?
 
-      client.create_bucket(bucket: bucket)
+      create_bucket!
 
       1.upto(15) do # wtf minio?
         sleep(1)
         if bucket_exists?
-          client.set_allow_public_read(bucket: bucket)
+          allow_public_read!
           break
         end
       end
+    end
+
+    def create_bucket!
+      client.create_bucket(bucket: bucket)
+    end
+
+    def allow_public_read!
+      client.set_allow_public_read(bucket: bucket)
     end
 
     def delete_bucket!
