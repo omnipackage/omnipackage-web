@@ -35,6 +35,12 @@
   </div>
 
   <div class="pt-3">
+    <%= link_to package_install_path(repository.project, active: repository.distro.id, anchor: "collapse-accordion-#{dom_friendly(repository.distro.id)}"), class: 'btn btn-link', target: '_blank' do %>
+      <i class="bi bi-download me-2"></i> Public download page
+    <% end %>
+  </div>
+
+  <div class="pt-3">
     <%= link_to 'Edit repository', edit_repository_path(repository), class: 'btn btn-link' %>
 
     <% if repository.project.repositories.where(distro_id: repository.distro_id).count > 1 %>
