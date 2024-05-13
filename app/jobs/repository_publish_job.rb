@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class RepositoryPublishJob < ::ApplicationJob
-  queue_as :long
+  queue_as :publish
   retry_on ::StandardError, wait: 10.seconds, attempts: 6
 
   class << self

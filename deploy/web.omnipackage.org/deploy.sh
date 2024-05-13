@@ -26,6 +26,7 @@ ssh -T $USER@$HOST <<EOL
   sudo systemctl daemon-reload
   sudo systemctl restart sidekiq@default
   sudo systemctl restart sidekiq@long
+  sudo systemctl restart sidekiq@publish
   sudo systemctl restart puma
   sudo systemctl restart caddy
 EOL

@@ -1,0 +1,8 @@
+:queues:
+  - publish
+
+production:
+  :concurrency: 8
+
+:scheduler:
+  :enabled: false
