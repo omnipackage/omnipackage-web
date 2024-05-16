@@ -19,7 +19,7 @@ class PruneImagesJob < ::ApplicationJob
   end
 
   def containers
-    ::ShellUtil.execute("#{excecutable} container prune -f --filter 'until=#{max_age}'", timeout_sec: 4.hour.to_i).success!
+    ::ShellUtil.execute("#{excecutable} container prune -f --filter 'until=#{max_age}'", timeout_sec: 4.hours.to_i).success!
   end
 
   def images

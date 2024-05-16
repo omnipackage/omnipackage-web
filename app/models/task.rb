@@ -26,11 +26,18 @@ class Task < ::ApplicationRecord
   end
 
   class << self
-    def start(project, skip_fetch: false, distro_ids: nil)
+    def start(project, skip_fetch: false, distro_ids: nil) # rubocop: disable Metrics/CyclomaticComplexity, Metrics/MethodLength
+      distro_ids = distro_ids || project.distro_ids.presence || ::Distro.ids
+      return if exists?(
+        sources_tarball_id: project.sources_tarball.id,
+        state:              %w[pending_build pending_fetch running],
+        distro_ids:         distro_ids
+      )
+
       task = create(
         sources_tarball:  project.sources_tarball,
         state:            skip_fetch && project.sources_verified? ? 'pending_build' : 'pending_fetch',
-        distro_ids:       distro_ids || project.distro_ids.presence || ::Distro.ids
+        distro_ids:       distro_ids
       )
       ::SourcesFetchJob.start(project, task) if task.valid? && !skip_fetch
       task
