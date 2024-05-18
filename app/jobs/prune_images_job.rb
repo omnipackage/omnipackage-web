@@ -11,7 +11,7 @@ class PruneImagesJob < ::ApplicationJob
   private
 
   def max_age
-    '120h'
+    '48h'
   end
 
   def excecutable
