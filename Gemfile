@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 
 gem 'aws-sdk-s3'
 gem 'bcrypt', '~> 3.1.7'
+gem 'bootsnap', require: false
 gem 'importmap-rails'
 gem 'pg'
 gem 'pry-rails'
