@@ -24,7 +24,7 @@ class Project < ::ApplicationRecord
   validates :sources_subdir, length: { maximum: 500 }, format: { without: /\..|\A\// }, allow_blank: true
   validates :sources_branch, length: { maximum: 200 }, format: { without: /\..|\A\// }, allow_blank: true
 
-  before_validation :set_slug
+  before_validation :set_slug, if: -> { slug.blank? }, on: :create
   alias_attribute :safe_name, :slug
 
   broadcast_with ::Broadcasts::Project
