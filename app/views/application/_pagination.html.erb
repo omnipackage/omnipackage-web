@@ -9,10 +9,26 @@
         </a>
       </li>
 
-      <% 1.upto(pagination.pages) do |i| %>
-        <li class="page-item <%= pagination.page == i ? 'active' : '' %>">
-          <a class="page-link" href="<%= pagination.page_link(i) %>"><%= i %></a>
-        </li>
+      <% if pagination.pages > 30 %>
+        <% 1.upto(10) do |i| %>
+          <li class="page-item <%= pagination.page == i ? 'active' : '' %>">
+            <a class="page-link" href="<%= pagination.page_link(i) %>"><%= i %></a>
+          </li>
+        <% end %>
+
+        <li class="page-item">...</li>
+
+        <% (pagination.pages - 10).upto(pagination.pages) do |i| %>
+          <li class="page-item <%= pagination.page == i ? 'active' : '' %>">
+            <a class="page-link" href="<%= pagination.page_link(i) %>"><%= i %></a>
+          </li>
+        <% end %>
+      <% else %>
+        <% 1.upto(pagination.pages) do |i| %>
+          <li class="page-item <%= pagination.page == i ? 'active' : '' %>">
+            <a class="page-link" href="<%= pagination.page_link(i) %>"><%= i %></a>
+          </li>
+        <% end %>
       <% end %>
 
       <li class="page-item">
