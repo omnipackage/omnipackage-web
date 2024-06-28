@@ -9,7 +9,7 @@ module RepoManage
       @workdir = workdir
       @setup_cli = setup_cli
       @homedir = ::Dir.mktmpdir
-      @image_cache = ::RepoManage::Runtime::ImageCache.new(executable: executable, default_image: image, setup_cli: setup_cli)
+      @image_cache = ::RepoManage::Runtime::ImageCache.new(executable: executable, default_image: image, setup_cli: setup_cli, enabled: APP_SETTINGS[:image_cache_enable])
       @limits = limits
       @lock = ::RepoManage::Runtime::Lock.new(key: image_cache.container_name, limits: limits)
 
@@ -80,10 +80,15 @@ module RepoManage
       SCRIPT
       ::File.open(::Pathname.new(homedir).join('script'), 'w') { |file| file.write(script) }
 =end
-
-      <<~CLI
-        #{lock.to_cli} '#{image_cache.rm_cli} ; #{executable} run --name #{image_cache.container_name} --entrypoint /bin/bash --workdir #{mounts[workdir]} #{mount_cli} #{envs_cli} #{limits.to_cli} #{image_cache.image} -c "#{commands.join(' && ')}" && #{image_cache.commit_cli}'
-      CLI
+      if image_cache.enabled
+        <<~CLI
+          #{lock.to_cli} '#{image_cache.rm_cli} ; #{executable} run --name #{image_cache.container_name} --entrypoint /bin/bash --workdir #{mounts[workdir]} #{mount_cli} #{envs_cli} #{limits.to_cli} #{image_cache.image} -c "#{commands.join(' && ')}" && #{image_cache.commit_cli}'
+        CLI
+      else
+        <<~CLI
+          #{executable} run --rm --entrypoint /bin/bash --workdir #{mounts[workdir]} #{mount_cli} #{envs_cli} #{limits.to_cli} #{image_cache.image} -c "#{commands.join(' && ')}"
+        CLI
+      end
     end
   end
 end

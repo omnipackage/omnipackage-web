@@ -4,6 +4,8 @@ sidekiq_default: bundle exec sidekiq -C config/sidekiq/default.yml
 
 sidekiq_long: bundle exec sidekiq -C config/sidekiq/long.yml
 
+sidekiq_publish: bundle exec sidekiq -C config/sidekiq/publish.yml
+
 #
 # go install github.com/mailhog/MailHog@latest
 mailhog: ~/.go/bin/MailHog >/dev/null

@@ -3,15 +3,18 @@
 module RepoManage
   class Runtime
     class ImageCache
-      attr_reader :executable, :container_name, :default_image
+      attr_reader :executable, :container_name, :default_image, :enabled
 
-      def initialize(executable:, default_image:, setup_cli:)
+      def initialize(executable:, default_image:, setup_cli:, enabled:)
         @executable = executable
         @default_image = default_image
         @container_name = generate_container_name(default_image, setup_cli)
+        @enabled = enabled
       end
 
       def image
+        return default_image unless enabled
+
         if ::ShellUtil.execute("#{executable} image inspect #{container_name}").success?
           container_name
         else
