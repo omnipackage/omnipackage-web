@@ -9,14 +9,14 @@
         </a>
       </li>
 
-      <% if pagination.pages > 30 %>
-        <% 1.upto(10) do |i| %>
+      <% if pagination.extended? %>
+        <% 1.upto(pagination.extended_split) do |i| %>
           <li class="page-item <%= pagination.page == i ? 'active' : '' %>">
             <a class="page-link" href="<%= pagination.page_link(i) %>"><%= i %></a>
           </li>
         <% end %>
 
-        <% if (11..(pagination.pages - 11)).cover?(pagination.page) %>
+        <% if pagination.omisson? %>
           <li class="page-item"><a class="page-link">...</a></li>
 
           <li class="page-item active">
@@ -28,7 +28,7 @@
           <li class="page-item"><a class="page-link">...</a></li>
         <% end %>
 
-        <% (pagination.pages - 10).upto(pagination.pages) do |i| %>
+        <% (pagination.pages - pagination.extended_split).upto(pagination.pages) do |i| %>
           <li class="page-item <%= pagination.page == i ? 'active' : '' %>">
             <a class="page-link" href="<%= pagination.page_link(i) %>"><%= i %></a>
           </li>

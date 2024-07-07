@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
 class Pagination
-  attr_reader :page, :per_page
+  attr_reader :page, :per_page, :extend_upto
 
-  def initialize(collection, controller, default_per_page: 15)
+  def initialize(collection, controller, default_per_page: 15, extend_upto: 30)
     @page =         controller.params[:page]&.to_i || 1
     @per_page =     controller.params[:per_page]&.to_i || default_per_page
     @collection =   collection
     @request_path = ::URI.parse(controller.request.original_fullpath)
+    @extend_upto =  extend_upto
   end
 
   def pages
@@ -50,6 +51,19 @@ class Pagination
       per_page: per_page,
       pages: pages
     }
+  end
+
+  def extended?
+    pages > extend_upto
+  end
+
+  def extended_split
+    extend_upto / 3
+  end
+
+  def omisson?
+    pages_shown = extended_split + 1
+    (pages_shown..(pages - pages_shown)).cover?(page)
   end
 
   private
