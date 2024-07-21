@@ -69,7 +69,7 @@ module RepoManage
       end
     end
 
-    def build_container_cli(commands) # rubocop: disable Metrics/AbcSize
+    def build_container_cli(commands) # rubocop: disable Metrics/AbcSize, Metrics/MethodLength
       fix_permissions(commands)
 
 =begin
