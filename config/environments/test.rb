@@ -62,4 +62,6 @@ require 'active_support/core_ext/integer/time'
 
   config.credentials.content_path = config.root.join('config/credentials/development.yml.enc')
   config.credentials.key_path = config.root.join('config/credentials/development.key')
+
+  config.active_job.queue_adapter = :test # ArgumentError: assert_enqueued_with requires the Active Job test adapter, you're using ActiveJob::QueueAdapters::SidekiqAdapter.
 end
