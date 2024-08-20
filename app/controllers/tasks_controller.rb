@@ -25,8 +25,10 @@ class TasksController < ::ApplicationController
   end
 
   def create # rubocop: disable Metrics/AbcSize
-    task = ::Task.start(project, skip_fetch: params[:skip_fetch] == 'y', distro_ids: params[:distro_ids].presence)
-    if task.valid?
+    task = ::Task.start(project, skip_fetch: params[:skip_fetch] == 'true', distro_ids: params[:distro_ids].presence)
+    if task.nil?
+      redirect_back(fallback_location: tasks_path, alert: 'Pending task already exists, skipping')
+    elsif task.valid?
       redirect_to(tasks_path(project_id: project.id, highlight: task.id))
     else
       redirect_back(fallback_location: tasks_path, alert: "Error creating CI task: #{task.errors.full_messages.to_sentence}")
