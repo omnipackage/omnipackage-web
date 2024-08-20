@@ -2,9 +2,9 @@ require:
 - rubocop-performance
 - rubocop-rake
 - rubocop-rails
+- rubocop-thread_safety
 
 AllCops:
-  TargetRubyVersion: 3.3
   NewCops: enable
   SuggestExtensions: false
   Exclude:

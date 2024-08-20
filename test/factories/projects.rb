@@ -2,9 +2,9 @@
 
 ::FactoryBot.define do
   factory :project do
-    name { ::Faker::Artist.name }
+    name { ::Faker::Artist.unique.name }
     sources_kind { ::Project.sources_kinds.keys.sample }
-    sources_location { ::Faker::Internet.url }
+    sources_location { ::Faker::Internet.unique.url }
     user
 
     factory :project_with_sources do

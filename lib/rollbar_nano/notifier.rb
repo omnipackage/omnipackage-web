@@ -25,7 +25,7 @@ module RollbarNano
     attr_reader :queue
 
     def run_thread! # rubocop: disable Metrics/MethodLength
-      ::Thread.new do
+      ::Thread.new do # rubocop: disable ThreadSafety/NewThread
         apiclient = ::RollbarNano::Client.new(config.endpoint, config.key, logger: config.logger)
         loop do
           data = queue.pop

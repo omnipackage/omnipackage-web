@@ -21,7 +21,7 @@ namespace :embedded_agents do # rubocop: disable Metrics/BlockLength
                     ::Pathname.new(::Dir.tmpdir).join("omnipackage-build-#{a.name}")
                   end.to_s
 
-      ::Thread.new do
+      ::Thread.new do # rubocop: disable ThreadSafety/NewThread
         config = ::OmnipackageAgent::Config.get(overrides: {
           apihost:            apihost,
           apikey:             a.apikey,

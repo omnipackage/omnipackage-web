@@ -7,7 +7,7 @@ class Distro
     delegate :each, to: :all
 
     def all
-      @all ||= load_from_file.fetch('distros').map do |h|
+      @all ||= load_from_file.fetch('distros').map do |h| # rubocop: disable ThreadSafety/InstanceVariableInClassMethod
         new(h)
       end
     end

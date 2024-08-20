@@ -23,7 +23,7 @@ class TaskScheduleFlowTest < ::ActionDispatch::IntegrationTest
 
   test 'schedule and dequeue task' do
     perform_enqueued_jobs do
-      post tasks_path(project_id: @project.id, skip_fetch: 'y')
+      post tasks_path(project_id: @project.id, skip_fetch: 'true')
     end
     assert_equal 1, @project.tasks.count
     task = @project.tasks.first

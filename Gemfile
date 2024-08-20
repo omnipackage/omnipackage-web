@@ -10,7 +10,6 @@ gem 'pg'
 gem 'pry-rails'
 gem 'puma'
 gem 'rails'
-gem 'readline-ext' # https://github.com/ruby/reline/issues/618
 gem 'redis'
 gem 'sidekiq'
 gem 'sidekiq-scheduler'
@@ -28,6 +27,7 @@ group :development, :test do
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false
   gem 'rubocop-rake', require: false
+  gem 'rubocop-thread_safety', require: false
   gem 'super_awesome_print'
   # gem 'authentication-zero'
 end
