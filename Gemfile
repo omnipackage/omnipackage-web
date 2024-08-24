@@ -31,10 +31,13 @@ group :development, :test do
   gem 'rubocop-rake', require: false
   gem 'rubocop-thread_safety', require: false
   gem 'super_awesome_print'
-  # gem 'authentication-zero'
 end
 
 group :test do
   gem 'capybara'
   gem 'selenium-webdriver'
+end
+
+group :development do
+  gem 'authentication-zero'
 end
