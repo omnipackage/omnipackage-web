@@ -3,6 +3,7 @@ require:
 - rubocop-rake
 - rubocop-rails
 - rubocop-thread_safety
+- rubocop-factory_bot
 
 AllCops:
   NewCops: enable
