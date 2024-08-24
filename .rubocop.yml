@@ -4,6 +4,7 @@ require:
 - rubocop-rails
 - rubocop-thread_safety
 - rubocop-factory_bot
+- rubocop-capybara
 
 AllCops:
   NewCops: enable
