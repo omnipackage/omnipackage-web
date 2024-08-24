@@ -6,7 +6,7 @@ class Repository < ::ApplicationRecord
 
   validates :distro_id, inclusion: { in: ::Distro.ids }
   validates :gpg_key_private, :gpg_key_public, presence: true, allow_nil: true
-  validates :bucket, presence: true, format: /(?!(^xn--|.+-s3alias$))^[a-z0-9][a-z0-9-]{1,61}[a-z0-9]\z/, uniqueness: { scope: :endpoint }
+  validates :bucket, presence: true, format: /\A(?!(^xn--|.+-s3alias$))^[a-z0-9][a-z0-9-]{1,61}[a-z0-9]\z/, uniqueness: { scope: :endpoint }
   validates :region, :endpoint, :access_key_id, :secret_access_key, presence: true, if: -> { custom_storage? }
   validates_with ::Repository::RepositoryValidator, unless: -> { ::Rails.env.test? }
 
