@@ -71,7 +71,7 @@ jobs:
         run: bundle exec rubocop -DP
 
       - name: Brakeman
-        run: bundle exec brakeman -i brakeman.ignore
+        run: bundle exec brakeman
 
       - name: Bundle audit
         run: bundle exec bundle-audit check --update
