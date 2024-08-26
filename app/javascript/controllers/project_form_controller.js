@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+import slugify from "slugify"
 
 export default class extends Controller {
   static targets = [ "name", "slug", "exampleUrl" ]
@@ -21,9 +22,9 @@ export default class extends Controller {
   }
 
   _updateSlug() {
-    let slug = this.nameTarget.value + "_slug"
+    let slug = slugify(this.nameTarget.value, { lower: true, strict: true });
     this.slugTarget.value = slug
-    this._updateExampleUrl(slug)
+    this._updateExampleUrl()
   }
 
   _updateExampleUrl() {
