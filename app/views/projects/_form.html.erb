@@ -1,6 +1,6 @@
 <%# locals: (project:) -%>
 
-<%= form_with(model: project, data: { controller: 'project-form' }) do |f| %>
+<%= form_with(model: project, data: { controller: 'slugify-form' }) do |f| %>
 
   <div class="mb-2">
     <%= f.label :name, class: 'form-label' %>
@@ -8,8 +8,8 @@
           value:  project.name,
           class:  "form-control #{project.errors.include?(:name) ? 'is-invalid' : ''}",
           aria:   { describedby:  'validation-error-name name-help' },
-          placeholder: 'Awesome project',
-          data: { 'project-form-target' => 'name', 'action' => 'input->project-form#onNameChange' }
+          placeholder: '',
+          data: { 'slugify-form-target' => 'name', 'action' => 'input->slugify-form#onNameChange' }
     %>
     <div id="validation-error-name" class="invalid-feedback d-block">
       <%= project.errors.messages_for(:name).to_sentence %>
@@ -27,13 +27,13 @@
             class:  "form-control #{project.errors.include?(:slug) ? 'is-invalid' : ''}",
             aria:   { describedby:  'validation-error-slug slug-help' },
             placeholder: '',
-            data: { 'project-form-target' => 'slug', 'action' => 'input->project-form#onSlugChange' }
+            data: { 'slugify-form-target' => 'slug', 'action' => 'input->slugify-form#onSlugChange' }
       %>
       <div id="validation-error-slug" class="invalid-feedback d-block">
         <%= project.errors.messages_for(:slug).to_sentence %>
       </div>
       <div class="form-text">
-        Bucket's URL: <span data-project-form-target='exampleUrl'></span>
+        Bucket's URL: <span data-slugify-form-target='exampleUrl'></span>
       </div>
     </div>
   <% end %>

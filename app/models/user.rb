@@ -48,4 +48,8 @@ class User < ::ApplicationRecord
   def gravatar_url
     "https://www.gravatar.com/avatar/#{::Digest::MD5.hexdigest(email)}"
   end
+
+  def default_bucket_prefix
+    "#{::APP_SETTINGS[:default_repository_bucket_prefix]}#{id}"
+  end
 end
