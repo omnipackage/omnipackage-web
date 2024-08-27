@@ -18,13 +18,16 @@ class Project < ::ApplicationRecord
   enum :sources_status, %w[unverified fetching verified].index_with(&:itself), default: 'unverified'
 
   validates :name, presence: true, length: { maximum: 60 }
-  validates :slug, presence: true, length: { maximum: 30 }, format: { with: /\A(?!(^xn--|.+-s3alias$))^[a-z0-9][a-z0-9-]{1,30}[a-z0-9]\z/ }, uniqueness: true
+  validates :slug, presence: true, length: { maximum: 30 }, format: { with: ::Slug.regex }, uniqueness: true
   validates :sources_location, presence: true, length: { maximum: 8000 }
   validates :sources_kind, presence: true
   validates :sources_subdir, length: { maximum: 500 }, format: { without: /\..|\A\// }, allow_blank: true
   validates :sources_branch, length: { maximum: 200 }, format: { without: /\..|\A\// }, allow_blank: true
 
-  before_validation :set_slug, if: -> { slug.blank? }, on: :create
+  before_validation if: -> { slug.blank? }, on: :create do
+    max_len = self.class.validators_on(:slug).find { _1.is_a?(::ActiveRecord::Validations::LengthValidator) }.options.fetch(:maximum)
+    self.slug = ::Slug.generate(name, max_len:)
+  end
   alias_attribute :safe_name, :slug
 
   broadcast_with ::Broadcasts::Project
@@ -78,11 +81,5 @@ class Project < ::ApplicationRecord
 
   def sibling_projects_with_ssh_keys
     user.projects.where('id != ? AND NOT (sources_private_ssh_key IS NULL AND sources_public_ssh_key IS NULL)', id)
-  end
-
-  private
-
-  def set_slug
-    self.slug = name.to_s.parameterize
   end
 end

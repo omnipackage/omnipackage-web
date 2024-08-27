@@ -3,6 +3,10 @@
 class StorageClient
   class << self
     def build_default # rubocop: disable Metrics/AbcSize
+      if ::Rails.env.test?
+        return new(endpoint: 'https://te.st', access_key_id: '1', secret_access_key: '2', region: 'rs')
+      end
+
       as_client = ::ActiveStorage::Blob.service.client.client
       raise "must be S3 service client (#{as_client.class})" unless as_client.is_a?(::Aws::S3::Client)
 
@@ -25,6 +29,10 @@ class StorageClient
       endpoint:           config.fetch(:endpoint)
     }
     @c = ::Aws::S3::Resource.new(client: ::Aws::S3::Client.new(**@config))
+  end
+
+  def build_url(*slugs)
+    ::URI.join(config[:endpoint], slugs.join('-'))
   end
 
   def ls_buckets

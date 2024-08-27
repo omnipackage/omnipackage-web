@@ -17,6 +17,7 @@ class User < ::ApplicationRecord
   validates :email, presence: true, uniqueness: true, format: { with: ::URI::MailTo::EMAIL_REGEXP }, length: { maximum: 300 }
   validates :password, allow_nil: true, length: { minimum: PASSWORD_MIN_LENGTH, maximum: 30 }
   validates :gpg_key_private, :gpg_key_public, presence: true
+  validates :slug, presence: true, length: { maximum: 30 }, format: { with: ::Slug.regex }, uniqueness: true
 
   encrypts :gpg_key_private
 
@@ -26,6 +27,10 @@ class User < ::ApplicationRecord
     self.verified_at = nil
   end
   before_validation :generate_gpg_keys, on: :create
+  before_validation if: -> { slug.blank? }, on: :create do
+    max_len = self.class.validators_on(:slug).find { _1.is_a?(::ActiveRecord::Validations::LengthValidator) }.options.fetch(:maximum)
+    self.slug = ::Slug.generate(displayed_name, max_len:)
+  end
 
   def verified?
     verified_at.present?
@@ -50,6 +55,6 @@ class User < ::ApplicationRecord
   end
 
   def default_bucket_prefix
-    "#{::APP_SETTINGS[:default_repository_bucket_prefix]}#{id}"
+    "#{::APP_SETTINGS[:default_repository_bucket_prefix]}#{slug}"
   end
 end

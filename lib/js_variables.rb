@@ -13,8 +13,8 @@ class JsVariables
     h[name] = value
   end
 
-  def to_json
-    ::JSON.dump(h)
+  def to_json(*args)
+    ::JSON.generate(h, *args)
   end
 
   private

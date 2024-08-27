@@ -7,8 +7,6 @@ class ProjectTest < ::ActiveSupport::TestCase
     assert build(:project).valid?
     assert build(:project, name: '').invalid?
     assert build(:project, name: nil).invalid?
-    assert build(:project, name: 'превед').invalid?
-    assert build(:project, name: ';№"5куыцфмыjhg').invalid?
     assert build(:project, name: 'olo 123 sdf   sdaf').valid?
     assert build(:project, sources_location: nil).invalid?
     assert build(:project, sources_kind: nil).invalid?
