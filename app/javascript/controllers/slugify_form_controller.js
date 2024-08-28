@@ -28,6 +28,6 @@ export default class extends Controller {
   }
 
   _updateExampleUrl() {
-    this.exampleUrlTarget.innerHTML = `${window.js_variables.storage_base_url}${this.slugTarget.value}`
+    this.exampleUrlTarget.innerHTML = `${window.js_variables.storage_base_url}/${this.slugTarget.value}`
   }
 }

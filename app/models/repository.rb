@@ -41,8 +41,12 @@ class Repository < ::ApplicationRecord
     end
   end
 
+  def path_in_storage
+    "#{project.slug}/#{distro_id.gsub(/[^0-9a-z]/i, '-')}"
+  end
+
   def storage
-    ::Repository::Storage.new(storage_client, bucket, "#{project.slug}/#{distro_id.gsub(/[^0-9a-z]/i, '-')}")
+    ::Repository::Storage.new(storage_client, bucket, path_in_storage)
   end
 
   def gpg_key
