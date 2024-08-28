@@ -124,6 +124,10 @@ class StorageClient # rubocop: disable Metrics/ClassLength
     c.bucket(bucket).url
   end
 
+  def delete_files!(bucket:, prefix:)
+    c.bucket(bucket).objects(prefix:).batch_delete!
+  end
+
   private
 
   attr_reader :c

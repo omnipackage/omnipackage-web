@@ -66,7 +66,7 @@ class Project < ::ApplicationRecord
   def create_default_repository(distro)
     return if repositories.exists?(distro_id: distro.id)
 
-    repositories.create!(distro_id: distro.id, bucket: user.default_bucket_prefix)
+    repositories.create!(distro_id: distro.id, bucket: user.default_bucket)
   end
 
   def create_default_repositories

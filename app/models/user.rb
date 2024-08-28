@@ -32,6 +32,8 @@ class User < ::ApplicationRecord
     self.slug = ::Slug.generate(displayed_name, max_len:)
   end
 
+  after_destroy_commit { ::DeleteBucketJob.perform_later(::StorageClient.build_default.config, bucket) }
+
   def verified?
     verified_at.present?
   end
@@ -54,7 +56,7 @@ class User < ::ApplicationRecord
     "https://www.gravatar.com/avatar/#{::Digest::MD5.hexdigest(email)}"
   end
 
-  def default_bucket_prefix
+  def default_bucket
     "#{::APP_SETTINGS[:default_repository_bucket_prefix]}#{slug}"
   end
 end
