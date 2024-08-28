@@ -63,14 +63,10 @@ class Project < ::ApplicationRecord
     sources_tarball&.updated_at
   end
 
-  def default_bucket(distro)
-    "#{user.default_bucket_prefix}-#{slug}-#{distro.id}".gsub(/[^0-9a-z]/i, '-')
-  end
-
   def create_default_repository(distro)
     return if repositories.exists?(distro_id: distro.id)
 
-    repositories.create!(distro_id: distro.id, bucket: default_bucket(distro))
+    repositories.create!(distro_id: distro.id, bucket: user.default_bucket_prefix)
   end
 
   def create_default_repositories
