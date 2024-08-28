@@ -53,15 +53,11 @@ class Repository
       client.set_allow_public_read(bucket: bucket)
     end
 
-    def delete_bucket!
-      client.delete_bucket!(bucket: bucket)
-    end
-
     def url
       client.url(bucket: bucket) + '/' + path
     end
 
-    def ls # rubocop: disable path
+    def ls # rubocop: disable Metrics/AbcSize
       return [] unless bucket_exists?
 
       fn = path.end_with?('/') ? path : path + '/'

@@ -42,7 +42,7 @@ class Repository < ::ApplicationRecord
   end
 
   def path_in_storage
-    "#{project.slug}/#{distro_id.gsub(/[^0-9a-z]/i, '-')}"
+    "#{project.slug}/#{distro.slug}"
   end
 
   def storage

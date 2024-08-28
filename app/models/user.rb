@@ -32,7 +32,7 @@ class User < ::ApplicationRecord
     self.slug = ::Slug.generate(displayed_name, max_len:)
   end
 
-  after_destroy_commit { ::DeleteBucketJob.perform_later(::StorageClient.build_default.config, bucket) }
+  after_destroy_commit { ::DeleteBucketJob.perform_later(::StorageClient.build_default.config, default_bucket) }
 
   def verified?
     verified_at.present?
