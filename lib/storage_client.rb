@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class StorageClient
+class StorageClient # rubocop: disable Metrics/ClassLength
   class << self
     def build_default # rubocop: disable Metrics/AbcSize
       if ::Rails.env.test?
@@ -39,28 +39,31 @@ class StorageClient
     c.buckets
   end
 
-  def ls(bucket:)
-    c.bucket(bucket).objects
+  def ls(bucket:, prefix: '')
+    c.bucket(bucket).objects(prefix: normalize_remote_path(prefix))
   end
 
-  def download_dir(bucket:, to:)
-    ls(bucket: bucket).each do |object|
-      dirs = object.key.split('/')[0..-2]
+  def download_dir(bucket:, to:, from: '') # rubocop: disable Metrics/AbcSize, Metrics/MethodLength
+    from = normalize_remote_path(from)
+    ls(bucket: bucket, prefix: from).each do |object|
+      key = object.key
+      key = key.sub(from, '') if from.present?
+      dirs = key.split('/')[0..-2]
 
       if dirs.any?
         fdir = ::Pathname.new(to).join(*dirs)
         ::FileUtils.mkdir_p(fdir) unless ::File.exist?(fdir)
       end
 
-      object.get(response_target: ::Pathname.new(to).join(object.key))
+      object.get(response_target: ::Pathname.new(to).join(key))
     end
   end
 
-  def upload_dir(bucket:, from:)
+  def upload_dir(bucket:, from:, to: '')
     ::Dir.glob(::Pathname.new(from).join('**/*')).each do |fpath|
       next if ::File.directory?(fpath)
 
-      key = fpath.gsub(from, '')
+      key = fpath.gsub(from, to)
       key = key[1..-1] if key.start_with?('/')
 
       upload(bucket: bucket, from: fpath, key: key)
@@ -124,4 +127,10 @@ class StorageClient
   private
 
   attr_reader :c
+
+  def normalize_remote_path(rpath)
+    rpath += '/' if rpath.present? && !rpath.end_with?('/')
+    rpath = '' if rpath == '/'
+    rpath
+  end
 end
