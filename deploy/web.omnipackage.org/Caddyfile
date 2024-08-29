@@ -11,8 +11,11 @@ https://web.omnipackage.org {
 }
 
 https://storage.omnipackage.org {
-  route {
-    reverse_proxy /minio/* 127.0.0.1:9001
+  handle /minio* {
+    reverse_proxy 127.0.0.1:9001
+  }
+
+  handle * {
     reverse_proxy * 127.0.0.1:9000
   }
 }
