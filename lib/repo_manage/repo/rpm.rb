@@ -22,15 +22,15 @@ module RepoManage
 
       def write_repo_file
         repo = <<~FILE
-        [#{project_safe_name}]
-        name=#{project_safe_name} (#{distro_name})
+        [#{project_slug}]
+        name=#{project_slug} (#{distro_name})
         type=rpm-md
         baseurl=#{distro_url}
         gpgcheck=1
         gpgkey=#{distro_url}/repodata/repomd.xml.key
         enabled=1
         FILE
-        write_file(::Pathname.new(workdir).join("#{project_safe_name}.repo"), repo)
+        write_file(::Pathname.new(workdir).join("#{project_slug}.repo"), repo)
       end
 
       def write_rpmmacros

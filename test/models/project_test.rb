@@ -36,7 +36,7 @@ class ProjectTest < ::ActiveSupport::TestCase
   end
 
   test 'safe name' do
-    assert_equal 'proj-12-gfd', build(:project, name: 'ProJ  12 gfd').tap(&:validate).safe_name
+    assert_equal 'proj-12-gfd', build(:project, name: 'ProJ  12 gfd').tap(&:validate).slug
   end
 
   test 'default repositories' do

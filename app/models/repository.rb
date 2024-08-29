@@ -67,7 +67,11 @@ class Repository < ::ApplicationRecord
 
   def installable_cli
     distro.install_steps.map do |command|
-      format(command, project_safe_name: project.safe_name, installable_package_name: installable_package_name, url: storage.url)
+      format(command, project_slug: project.slug, installable_package_name: installable_package_name, url: storage.url)
     end.join("\n")
+  end
+
+  def humanized_name
+    "#{project.name} / #{distro.name}"
   end
 end

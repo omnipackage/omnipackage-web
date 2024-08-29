@@ -25,10 +25,8 @@ class Project < ::ApplicationRecord
   validates :sources_branch, length: { maximum: 200 }, format: { without: /\..|\A\// }, allow_blank: true
 
   before_validation if: -> { slug.blank? }, on: :create do
-    max_len = self.class.validators_on(:slug).find { _1.is_a?(::ActiveRecord::Validations::LengthValidator) }.options.fetch(:maximum)
-    self.slug = ::Slug.generate(name, max_len:)
+    self.slug = ::Slug.generate(name, max_len: max_len_validator_on(:slug))
   end
-  alias_attribute :safe_name, :slug
 
   broadcast_with ::Broadcasts::Project
 

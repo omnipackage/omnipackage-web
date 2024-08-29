@@ -2,15 +2,19 @@
 
 class StorageClient # rubocop: disable Metrics/ClassLength
   class << self
-    def build_default # rubocop: disable Metrics/AbcSize
+    def build_default
+      as_config = activestorage_config
+      raise "must be S3 service (#{as_config[:service]})" if as_config[:service] != 'S3'
+
+      new(as_config)
+    end
+
+    def activestorage_config # rubocop: disable Metrics/AbcSize
       as_client = ::ActiveStorage::Blob.service.client.client
       raise "must be S3 service client (#{as_client.class})" unless as_client.is_a?(::Aws::S3::Client)
 
       as_service = ::Rails.application.config.active_storage.service.to_s
-      as_config = ::Rails.application.config.active_storage.service_configurations[as_service].symbolize_keys
-      raise "must be S3 service (#{as_config[:service]})" if as_config[:service] != 'S3'
-
-      new(as_config)
+      ::Rails.application.config.active_storage.service_configurations[as_service].symbolize_keys
     end
   end
 
