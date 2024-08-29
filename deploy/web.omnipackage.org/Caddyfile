@@ -14,6 +14,8 @@ https://storage.omnipackage.org {
   reverse_proxy 127.0.0.1:9000
 }
 
-storage.omnipackage.org:9002 {
-  reverse_proxy 127.0.0.1:9001
+https://storage.omnipackage.org:9001 {
+  proxy / 127.0.0.1:9001 {
+    transparent
+  }
 }
