@@ -11,9 +11,15 @@ require 'sidekiq/testing'
 end
 
 class StorageClient
-  class << self
-    def build_default
-      new(endpoint: 'https://te.st', access_key_id: '1', secret_access_key: '2', region: 'rs')
+  class Config
+    class << self
+      def default
+        new(endpoint: 'https://te.st', access_key_id: '1', secret_access_key: '2', region: 'rs')
+      end
+
+      def reserved_buckets
+        ['activestorage']
+      end
     end
   end
 end

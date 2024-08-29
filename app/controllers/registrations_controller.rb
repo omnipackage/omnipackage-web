@@ -7,7 +7,7 @@ class RegistrationsController < ::ApplicationController
 
   def new
     @user = ::User.new
-    js_variables.set(:storage_base_url, ::StorageClient.build_default.build_url)
+    js_variables.set(:storage_base_url, ::StorageClient::Config.default.build_url)
   end
 
   def create

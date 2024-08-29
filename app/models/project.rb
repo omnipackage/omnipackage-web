@@ -61,19 +61,25 @@ class Project < ::ApplicationRecord
     sources_tarball&.updated_at
   end
 
-  def create_default_repository(distro)
-    return if repositories.exists?(distro_id: distro.id)
-
-    repositories.create!(distro_id: distro.id, bucket: user.default_bucket)
-  end
-
   def create_default_repositories
-    distros.each do |distro|
-      create_default_repository(distro)
+    distros.map do |distro|
+      repositories.find_or_create_by!(distro_id: distro.id)
     end
   end
 
   def sibling_projects_with_ssh_keys
     user.projects.where('id != ? AND NOT (sources_private_ssh_key IS NULL AND sources_public_ssh_key IS NULL)', id)
+  end
+
+  def storage_config
+    ::StorageClient::Config.default
+  end
+
+  def storage_bucket
+    user.default_bucket
+  end
+
+  def storage_path
+    slug
   end
 end

@@ -1,38 +1,56 @@
 # frozen_string_literal: true
 
-class StorageClient # rubocop: disable Metrics/ClassLength
-  class << self
-    def build_default
-      as_config = activestorage_config
-      raise "must be S3 service (#{as_config[:service]})" if as_config[:service] != 'S3'
+class StorageClient
+  class Config < ::Hash
+    class << self
+      def default
+        as_config = activestorage
+        raise "must be S3 service (#{as_config[:service]})" if as_config[:service] != 'S3'
 
-      new(as_config)
+        new(as_config)
+      end
+
+      def activestorage # rubocop: disable Metrics/AbcSize
+        as_client = ::ActiveStorage::Blob.service.client.client
+        raise "must be S3 service client (#{as_client.class})" unless as_client.is_a?(::Aws::S3::Client)
+
+        as_service = ::Rails.application.config.active_storage.service.to_s
+        ::Rails.application.config.active_storage.service_configurations[as_service].symbolize_keys
+      end
+
+      def reserved_buckets
+        [activestorage.fetch(:bucket)].freeze
+      end
     end
 
-    def activestorage_config # rubocop: disable Metrics/AbcSize
-      as_client = ::ActiveStorage::Blob.service.client.client
-      raise "must be S3 service client (#{as_client.class})" unless as_client.is_a?(::Aws::S3::Client)
+    def initialize(hash)
+      super()
+      hash = hash.symbolize_keys
+      self[:force_path_style] = hash.fetch(:force_path_style, true)
+      self[:access_key_id] = hash.fetch(:access_key_id)
+      self[:secret_access_key] = hash.fetch(:secret_access_key)
+      self[:region] = hash.fetch(:region)
+      self[:endpoint] = hash.fetch(:endpoint)
+    end
 
-      as_service = ::Rails.application.config.active_storage.service.to_s
-      ::Rails.application.config.active_storage.service_configurations[as_service].symbolize_keys
+    def method_missing(method_name, *arguments, &)
+      self[method_name.to_sym] || super
+    end
+
+    def respond_to_missing?(method_name, include_private = false)
+      kay?(method_name.to_sym) || super
+    end
+
+    def build_url(*slugs)
+      ::URI.join(endpoint, *slugs)
     end
   end
 
   attr_reader :config
 
-  def initialize(config = {})
-    @config = {
-      force_path_style:   config.fetch(:force_path_style, true),
-      access_key_id:      config.fetch(:access_key_id),
-      secret_access_key:  config.fetch(:secret_access_key),
-      region:             config.fetch(:region),
-      endpoint:           config.fetch(:endpoint)
-    }
+  def initialize(config)
+    @config = ::StorageClient::Config.new(config)
     @c = ::Aws::S3::Resource.new(client: ::Aws::S3::Client.new(**@config))
-  end
-
-  def build_url(*slugs)
-    ::URI.join(config[:endpoint], *slugs)
   end
 
   def ls_buckets

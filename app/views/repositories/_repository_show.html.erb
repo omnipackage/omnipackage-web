@@ -41,8 +41,6 @@
   </div>
 
   <div class="pt-3">
-    <%= link_to 'Edit repository', edit_repository_path(repository), class: 'btn btn-link' %>
-
     <% if repository.project.repositories.where(distro_id: repository.distro_id).count > 1 %>
       <a class="btn btn-link link-danger" href="#" data-bs-toggle="modal" data-bs-target="#delete_repository_modal">Delete repository</a>
     <% end %>

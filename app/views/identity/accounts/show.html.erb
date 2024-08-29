@@ -56,7 +56,7 @@
       <%= @user.slug %>
     </div>
     <div class="text-secondary">
-      Default bucket URL: <%= ::StorageClient.build_default.build_url(@user.default_bucket) %>
+      Default bucket URL: <%= ::StorageClient::Config.default.build_url(@user.default_bucket) %>
     </div>
   </div>
 

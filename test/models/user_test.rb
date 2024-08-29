@@ -10,4 +10,8 @@ class UserTest < ::ActiveSupport::TestCase
     assert_match(/-----BEGIN PGP PRIVATE KEY BLOCK-----/, o.gpg_key.priv)
     assert_match(/-----BEGIN PGP PUBLIC KEY BLOCK-----/, o.gpg_key.pub)
   end
+
+  test 'reserved slug' do
+    assert build(:user, slug: 'activestorage').invalid?
+  end
 end
