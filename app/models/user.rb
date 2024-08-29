@@ -17,15 +17,25 @@ class User < ::ApplicationRecord
   validates :email, presence: true, uniqueness: true, format: { with: ::URI::MailTo::EMAIL_REGEXP }, length: { maximum: 300 }
   validates :password, allow_nil: true, length: { minimum: PASSWORD_MIN_LENGTH, maximum: 30 }
   validates :gpg_key_private, :gpg_key_public, presence: true
+  validates :slug, presence: true, length: { maximum: 30 }, format: { with: ::Slug.regex }, uniqueness: true
+  validate do
+    errors.add(:slug) if ::StorageClient::Config.reserved_buckets.include?(slug) # cannot use exclusion validator b/c it evaludates in tests before loading stubs
+  end
 
   encrypts :gpg_key_private
 
   normalizes :email, with: ->(i) { i.strip.downcase }
+  normalizes :slug, with: ->(i) { i.strip }
 
   before_validation if: :email_changed?, unless: :new_record? do
     self.verified_at = nil
   end
   before_validation :generate_gpg_keys, on: :create
+  before_validation if: -> { slug.blank? }, on: :create do
+    self.slug = ::Slug.generate(displayed_name, max_len: max_len_validator_on(:slug))
+  end
+
+  after_destroy_commit { ::DeleteBucketJob.perform_later(::StorageClient::Config.default, default_bucket) }
 
   def verified?
     verified_at.present?
@@ -47,5 +57,9 @@ class User < ::ApplicationRecord
 
   def gravatar_url
     "https://www.gravatar.com/avatar/#{::Digest::MD5.hexdigest(email)}"
+  end
+
+  def default_bucket
+    "#{::APP_SETTINGS[:default_repository_bucket_prefix]}#{slug}"
   end
 end

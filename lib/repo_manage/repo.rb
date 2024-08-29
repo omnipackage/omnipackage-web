@@ -15,14 +15,14 @@ module RepoManage
       end
     end
 
-    attr_reader :runtime, :type, :gpg_key, :project_safe_name, :distro_name, :distro_url
+    attr_reader :runtime, :type, :gpg_key, :project_slug, :distro_name, :distro_url
 
     delegate :workdir, :homedir, to: :runtime
 
-    def initialize(runtime:, gpg_key:, project_safe_name:, distro_name:, distro_url:)
+    def initialize(runtime:, gpg_key:, project_slug:, distro_name:, distro_url:)
       @runtime = runtime
       @gpg_key = gpg_key
-      @project_safe_name = project_safe_name
+      @project_slug = project_slug
       @distro_name = distro_name
       @distro_url = distro_url
     end

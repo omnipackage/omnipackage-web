@@ -1,22 +1,42 @@
 <%# locals: (project:) -%>
 
-<%= form_with(model: project) do |f| %>
+<%= form_with(model: project, data: { controller: 'slugify-form' }) do |f| %>
 
-  <div class="mb-5">
+  <div class="mb-2">
     <%= f.label :name, class: 'form-label' %>
-    <div id="name-help" class="form-text">
-      Project name must contain only alphanumerical symbols
-    </div>
     <%= f.text_field :name,
           value:  project.name,
           class:  "form-control #{project.errors.include?(:name) ? 'is-invalid' : ''}",
           aria:   { describedby:  'validation-error-name name-help' },
-          placeholder: 'Awesome project'
+          placeholder: '',
+          data: { 'slugify-form-target' => 'name', 'action' => 'input->slugify-form#onNameChange' }
     %>
     <div id="validation-error-name" class="invalid-feedback d-block">
       <%= project.errors.messages_for(:name).to_sentence %>
     </div>
   </div>
+
+  <% if project.new_record? %>
+    <div class="mb-5">
+      <%= f.label :slug, class: 'form-label' %>
+      <div id="slug-help" class="form-text">
+        Slug will be used in bucket's name and thus must contain only alphanumeric url-safe characters. It cannot be changed later.
+      </div>
+      <%= f.text_field :slug,
+            value:  project.slug,
+            class:  "form-control #{project.errors.include?(:slug) ? 'is-invalid' : ''}",
+            aria:   { describedby:  'validation-error-slug slug-help' },
+            placeholder: '',
+            data: { 'slugify-form-target' => 'slug', 'action' => 'input->slugify-form#onSlugChange' }
+      %>
+      <div id="validation-error-slug" class="invalid-feedback d-block">
+        <%= project.errors.messages_for(:slug).to_sentence %>
+      </div>
+      <div class="form-text">
+        Storage URL: <span data-slugify-form-target='exampleUrl'></span>
+      </div>
+    </div>
+  <% end %>
 
   <div class="mb-1">
     <%= f.label :sources_kind, class: 'form-label' %>

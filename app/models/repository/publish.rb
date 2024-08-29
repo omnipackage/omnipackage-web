@@ -48,12 +48,12 @@ class Repository
 
     def build_repo_manage(dir)
       ::RepoManage::Repo.new(
-        runtime:            build_runtime(dir),
-        type:               repository.distro.package_type,
-        gpg_key:            repository.gpg_key,
-        project_safe_name:  repository.project.safe_name,
-        distro_name:        repository.distro.name,
-        distro_url:         storage.url
+        runtime:      build_runtime(dir),
+        type:         repository.distro.package_type,
+        gpg_key:      repository.gpg_key,
+        project_slug: repository.project.slug,
+        distro_name:  repository.distro.name,
+        distro_url:   storage.url
       )
     end
 

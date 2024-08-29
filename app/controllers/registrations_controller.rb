@@ -7,6 +7,7 @@ class RegistrationsController < ::ApplicationController
 
   def new
     @user = ::User.new
+    js_variables.set(:storage_base_url, ::StorageClient::Config.default.build_url)
   end
 
   def create
@@ -25,7 +26,7 @@ class RegistrationsController < ::ApplicationController
   private
 
   def user_params
-    params.permit(:email, :password, :password_confirmation)
+    params.permit(:email, :name, :slug, :password, :password_confirmation)
   end
 
   def send_email_verification(user)

@@ -10,6 +10,20 @@ require 'sidekiq/testing'
   config.logger.level = ::Logger::WARN
 end
 
+class StorageClient
+  class Config
+    class << self
+      def default
+        new(endpoint: 'https://te.st', access_key_id: '1', secret_access_key: '2', region: 'rs')
+      end
+
+      def reserved_buckets
+        ['activestorage']
+      end
+    end
+  end
+end
+
 module ActiveSupport
   class TestCase
     include ::FactoryBot::Syntax::Methods

@@ -6,8 +6,6 @@ class Repository < ::ApplicationRecord
 
   validates :distro_id, inclusion: { in: ::Distro.ids }
   validates :gpg_key_private, :gpg_key_public, presence: true, allow_nil: true
-  validates :bucket, presence: true, format: /\A(?!(^xn--|.+-s3alias$))^[a-z0-9][a-z0-9-]{1,61}[a-z0-9]\z/, uniqueness: { scope: :endpoint }
-  validates :region, :endpoint, :access_key_id, :secret_access_key, presence: true, if: -> { custom_storage? }
   validates_with ::Repository::RepositoryValidator, unless: -> { ::Rails.env.test? }
 
   encrypts :gpg_key_private, :secret_access_key
@@ -16,7 +14,7 @@ class Repository < ::ApplicationRecord
 
   broadcast_with ::Broadcasts::Repository
 
-  after_destroy_commit { ::DeleteBucketJob.perform_later(storage_client.config, bucket) }
+  after_destroy_commit { ::DeleteFilesJob.perform_later(::StorageClient::Config.default, bucket, path_in_bucket) }
 
   scope :without_own_gpg_key, -> { where(gpg_key_private: nil, gpg_key_public: nil) }
   scope :with_own_gpg_key, -> { where('gpg_key_private IS NOT NULL AND gpg_key_public IS NOT NULL') }
@@ -33,16 +31,16 @@ class Repository < ::ApplicationRecord
     self.distro_id = dist.id
   end
 
-  def storage_client
-    if custom_storage?
-      ::StorageClient.new(endpoint: endpoint, access_key_id: access_key_id, secret_access_key: secret_access_key, region: region, force_path_style: true)
-    else
-      ::StorageClient.build_default
-    end
+  def storage
+    ::Repository::Storage.new(::StorageClient.new(project.storage_config), bucket, path_in_bucket)
   end
 
-  def storage
-    ::Repository::Storage.new(storage_client, bucket)
+  def bucket
+    project.storage_bucket
+  end
+
+  def path_in_bucket
+    ::Pathname.new(project.storage_path).join(distro.slug).to_s
   end
 
   def gpg_key
@@ -63,7 +61,11 @@ class Repository < ::ApplicationRecord
 
   def installable_cli
     distro.install_steps.map do |command|
-      format(command, project_safe_name: project.safe_name, installable_package_name: installable_package_name, url: storage.url)
+      format(command, project_slug: project.slug, installable_package_name: installable_package_name, url: storage.url)
     end.join("\n")
+  end
+
+  def humanized_name
+    "#{project.name} / #{distro.name}"
   end
 end

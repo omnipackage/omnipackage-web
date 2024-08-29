@@ -19,6 +19,8 @@ class ProjectsController < ::ApplicationController
 
     breadcrumb.add('Projects', projects_path)
     breadcrumb.add('New')
+
+    js_variables.set(:storage_base_url, ::StorageClient::Config.default.build_url(@project.user.default_bucket))
   end
 
   def edit
@@ -71,6 +73,6 @@ class ProjectsController < ::ApplicationController
   end
 
   def project_params
-    params.require(:project).permit(:name, :sources_location, :sources_kind, :sources_subdir, :sources_branch, :secrets)
+    params.require(:project).permit(:name, :slug, :sources_location, :sources_kind, :sources_subdir, :sources_branch, :secrets)
   end
 end

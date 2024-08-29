@@ -6,7 +6,6 @@ class RepositoryTest < ::ActiveSupport::TestCase
   test 'valid factory' do
     assert build(:repository).valid?
     assert build(:repository, distro_id: 'ololo').invalid?
-    assert build(:repository, bucket: '87362LKJGLUTo87tgol982(*Y^*&^').invalid?
   end
 
   test 'gpg keys' do

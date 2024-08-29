@@ -17,15 +17,16 @@ class Project < ::ApplicationRecord
   enum :sources_kind, ::Project::Sources.kinds.index_with(&:itself), default: ::Project::Sources.kinds.first
   enum :sources_status, %w[unverified fetching verified].index_with(&:itself), default: 'unverified'
 
-  validates :name, presence: true, length: { maximum: 30 }, format: { with: /\A[A-Za-z0-9 _\-]+\z/ }
-  validates :slug, presence: true, length: { maximum: 30 }, uniqueness: true
+  validates :name, presence: true, length: { maximum: 60 }
+  validates :slug, presence: true, length: { maximum: 30 }, format: { with: ::Slug.regex }, uniqueness: true
   validates :sources_location, presence: true, length: { maximum: 8000 }
   validates :sources_kind, presence: true
   validates :sources_subdir, length: { maximum: 500 }, format: { without: /\..|\A\// }, allow_blank: true
   validates :sources_branch, length: { maximum: 200 }, format: { without: /\..|\A\// }, allow_blank: true
 
-  before_validation :set_slug, if: -> { slug.blank? }, on: :create
-  alias_attribute :safe_name, :slug
+  before_validation if: -> { slug.blank? }, on: :create do
+    self.slug = ::Slug.generate(name, max_len: max_len_validator_on(:slug))
+  end
 
   broadcast_with ::Broadcasts::Project
 
@@ -60,19 +61,9 @@ class Project < ::ApplicationRecord
     sources_tarball&.updated_at
   end
 
-  def default_bucket(distro)
-    "#{::APP_SETTINGS[:default_repository_bucket_prefix]}#{user.id}-#{safe_name}-#{distro.id}".gsub(/[^0-9a-z]/i, '-')
-  end
-
-  def create_default_repository(distro)
-    return if repositories.exists?(distro_id: distro.id)
-
-    repositories.create!(distro_id: distro.id, bucket: default_bucket(distro))
-  end
-
   def create_default_repositories
-    distros.each do |distro|
-      create_default_repository(distro)
+    distros.map do |distro|
+      repositories.find_or_create_by!(distro_id: distro.id)
     end
   end
 
@@ -80,9 +71,15 @@ class Project < ::ApplicationRecord
     user.projects.where('id != ? AND NOT (sources_private_ssh_key IS NULL AND sources_public_ssh_key IS NULL)', id)
   end
 
-  private
+  def storage_config
+    ::StorageClient::Config.default
+  end
 
-  def set_slug
-    self.slug = name.to_s.parameterize
+  def storage_bucket
+    user.default_bucket
+  end
+
+  def storage_path
+    slug
   end
 end

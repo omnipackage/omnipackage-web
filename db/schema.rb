@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_09_193402) do
+ActiveRecord::Schema[7.2].define(version: 2024_08_29_091018) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -69,6 +69,22 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_09_193402) do
     t.index ["user_id"], name: "index_password_reset_tokens_on_user_id"
   end
 
+  create_table "project_repository_storages", force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.string "bucket", null: false
+    t.string "path", default: "", null: false
+    t.string "endpoint", null: false
+    t.string "access_key_id", null: false
+    t.string "secret_access_key", null: false
+    t.string "region", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["bucket"], name: "index_project_repository_storages_on_bucket"
+    t.index ["endpoint", "bucket"], name: "index_project_repository_storages_on_endpoint_and_bucket", unique: true
+    t.index ["endpoint"], name: "index_project_repository_storages_on_endpoint"
+    t.index ["project_id"], name: "index_project_repository_storages_on_project_id"
+  end
+
   create_table "project_sources_tarballs", force: :cascade do |t|
     t.json "config"
     t.bigint "project_id", null: false
@@ -101,11 +117,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_09_193402) do
 
   create_table "repositories", force: :cascade do |t|
     t.string "distro_id", null: false
-    t.string "bucket", null: false
-    t.string "endpoint"
-    t.string "access_key_id"
-    t.string "secret_access_key"
-    t.string "region"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "gpg_key_private"
@@ -114,10 +125,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_09_193402) do
     t.string "last_publish_error"
     t.string "publish_status", default: "", null: false
     t.bigint "project_id", null: false
-    t.boolean "custom_storage", default: false, null: false
-    t.index ["bucket"], name: "index_repositories_on_bucket"
     t.index ["distro_id"], name: "index_repositories_on_distro_id"
-    t.index ["endpoint", "bucket"], name: "index_repositories_on_endpoint_and_bucket", unique: true
     t.index ["project_id"], name: "index_repositories_on_project_id"
   end
 
@@ -181,7 +189,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_09_193402) do
     t.string "gpg_key_private"
     t.string "gpg_key_public"
     t.string "name", limit: 2000, default: "", null: false
+    t.string "slug", limit: 120, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["slug"], name: "index_users_on_slug", unique: true
   end
 
   create_table "webhooks", force: :cascade do |t|
@@ -199,6 +209,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_09_193402) do
   add_foreign_key "agents", "users"
   add_foreign_key "email_verification_tokens", "users"
   add_foreign_key "password_reset_tokens", "users"
+  add_foreign_key "project_repository_storages", "projects"
   add_foreign_key "project_sources_tarballs", "projects"
   add_foreign_key "projects", "users"
   add_foreign_key "repositories", "projects"

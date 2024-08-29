@@ -59,7 +59,7 @@ require 'sidekiq-scheduler/web'
     get 'log', on: :member
     post 'cancel', on: :member
   end
-  resources :repositories, only: %i[index show edit update destroy] do
+  resources :repositories, only: %i[index show destroy] do
     concerns :gpg_keys
   end
 

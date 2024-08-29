@@ -7,7 +7,7 @@ class ApplicationController < ::ActionController::Base
 
   attr_reader :current_user, :current_session
 
-  helper_method :current_user, :logged_in?, :current_session, :breadcrumb
+  helper_method :current_user, :logged_in?, :current_session, :breadcrumb, :js_variables
 
   private
 
@@ -53,5 +53,9 @@ class ApplicationController < ::ActionController::Base
 
   def set_error_context
     ::Rails.error.set_context(user: -> { current_user }, request: request)
+  end
+
+  def js_variables
+    @js_variables ||= ::JsVariables.new
   end
 end

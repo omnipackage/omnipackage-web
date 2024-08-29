@@ -1,10 +1,10 @@
 <div class="container pt-3 text-center">
   <h5 class="text-center">Sign up</h5>
 
-  <div class="card p-3 shadow mb-3 bg-body-tertiary rounded mx-auto" style="width: 500px">
+  <div class="card p-3 shadow mb-3 bg-body-tertiary rounded mx-auto" style="width: 600px">
     <div class="card-body">
 
-      <%= form_with(url: sign_up_path) do |form| %>
+      <%= form_with(url: sign_up_path, data: { controller: 'slugify-form' }) do |form| %>
         <div class="mb-3 text-start">
           <%= form.label :email, class: "form-label" %>
           <%= form.email_field :email,
@@ -54,12 +54,31 @@
             required:     false,
             value:        @user.name,
             class:        "form-control #{@user.errors.include?(:name) ? 'is-invalid' : ''}",
-            aria:         { describedby: 'validation-error-name' }
+            aria:         { describedby: 'validation-error-name' },
+            data:         { 'slugify-form-target' => 'name', 'action' => 'input->slugify-form#onNameChange' }
           %>
           <div id="validation-error-name" class="invalid-feedback d-block">
             <%= @user.errors.messages_for(:name).to_sentence %>
           </div>
-          <div class="form-text">Optional user name will be used in places like GPG keys. Set this to your name, or name of your company, or leave it blank and then email will be used for these purposes instead</div>
+          <div class="form-text">User name will be used in places like GPG keys. Set this to your name, or name of your company, or leave it blank and then email will be used for these purposes instead.</div>
+        </div>
+
+        <div class="mb-3 text-start">
+          <%= form.label :slug, class: "form-label" %>
+          <%= form.text_field :slug,
+            required:     false,
+            value:        @user.slug,
+            class:        "form-control #{@user.errors.include?(:slug) ? 'is-invalid' : ''}",
+            aria:         { describedby: 'validation-error-slug' },
+            data:         { 'slugify-form-target' => 'slug', 'action' => 'input->slugify-form#onSlugChange' }
+          %>
+          <div id="validation-error-slug" class="invalid-feedback d-block">
+            <%= @user.errors.messages_for(:slug).to_sentence %>
+          </div>
+          <div class="form-text">Slug is a unique permanent string that will be used in all of your repositories' URLs. If you leave it blank it will be generated from your name or email. <span class="text-warning">Slug cannot be changed in future</span></div>
+          <div class="form-text">
+            Bucket's URL: <span data-slugify-form-target='exampleUrl'></span>
+          </div>
         </div>
 
         <div>

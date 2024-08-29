@@ -63,6 +63,10 @@ class Distro
     %w(opensuse ubuntu fedora debian mageia rocky alma redhat).find { |i| id.include?(i) } || 'unknown'
   end
 
+  def slug
+    id.gsub(/[^0-9a-z]/i, '-')
+  end
+
   private
 
   attr_reader :config
