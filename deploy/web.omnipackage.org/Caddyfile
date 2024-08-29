@@ -10,10 +10,10 @@ https://web.omnipackage.org {
 	encode zstd gzip
 }
 
-https://storage.omnipackage.org {
-  reverse_proxy 127.0.0.1:9000
+https://storage.omnipackage.org/minio* {
+  reverse_proxy 127.0.0.1:9001
 }
 
-https://storage.omnipackage.org/minio {
-  reverse_proxy 127.0.0.1:9001
+https://storage.omnipackage.org {
+  reverse_proxy 127.0.0.1:9000
 }
