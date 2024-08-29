@@ -13,7 +13,3 @@ https://web.omnipackage.org {
 https://storage.omnipackage.org {
 	reverse_proxy 127.0.0.1:9000
 }
-
-https://minio.omnipackage.org {
-	reverse_proxy 127.0.0.1:9001
-}
