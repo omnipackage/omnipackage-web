@@ -6,6 +6,7 @@ class Project < ::ApplicationRecord
   has_many :tasks, class_name: '::Task', through: :sources_tarball
   has_many :repositories, class_name: '::Repository', dependent: :destroy
   has_many :webhooks, class_name: '::Webhook', dependent: :destroy
+  has_one :custom_respository_storage, class_name: '::Project::RepositoryStorage', inverse_of: :project, dependent: :destroy
 
   encrypts :sources_private_ssh_key
 
@@ -18,14 +19,14 @@ class Project < ::ApplicationRecord
   enum :sources_status, %w[unverified fetching verified].index_with(&:itself), default: 'unverified'
 
   validates :name, presence: true, length: { maximum: 60 }
-  validates :slug, presence: true, length: { maximum: 30 }, format: { with: ::Slug.regex }, uniqueness: true
+  validates :slug, presence: true, length: { maximum: 30 }, format: { with: ::Slug.new(max_len: ::User::SLUG_MAX_LEN).regex }, uniqueness: true
   validates :sources_location, presence: true, length: { maximum: 8000 }
   validates :sources_kind, presence: true
   validates :sources_subdir, length: { maximum: 500 }, format: { without: /\..|\A\// }, allow_blank: true
   validates :sources_branch, length: { maximum: 200 }, format: { without: /\..|\A\// }, allow_blank: true
 
   before_validation if: -> { slug.blank? }, on: :create do
-    self.slug = ::Slug.generate(name, max_len: max_len_validator_on(:slug))
+    self.slug = ::Slug.new(max_len: ::User::SLUG_MAX_LEN).generate(name)
   end
 
   broadcast_with ::Broadcasts::Project
@@ -71,15 +72,12 @@ class Project < ::ApplicationRecord
     user.projects.where('id != ? AND NOT (sources_private_ssh_key IS NULL AND sources_public_ssh_key IS NULL)', id)
   end
 
-  def storage_config
-    ::StorageClient::Config.default
-  end
-
-  def storage_bucket
-    user.default_bucket
-  end
-
-  def storage_path
-    slug
+  def repository_storage_config
+    # TODO support custom_respository_storage
+    ::Repository::Storage::Config.new(
+      client_config: ::StorageClient::Config.default,
+      bucket: user.default_bucket,
+      path: slug
+    )
   end
 end

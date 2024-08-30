@@ -4,6 +4,7 @@ class User < ::ApplicationRecord
   has_secure_password
 
   PASSWORD_MIN_LENGTH = 8
+  SLUG_MAX_LEN = 30
 
   has_many :email_verification_tokens, class_name: '::EmailVerificationToken', dependent: :destroy
   has_many :password_reset_tokens, class_name: '::PasswordResetToken', dependent: :destroy
@@ -17,7 +18,7 @@ class User < ::ApplicationRecord
   validates :email, presence: true, uniqueness: true, format: { with: ::URI::MailTo::EMAIL_REGEXP }, length: { maximum: 300 }
   validates :password, allow_nil: true, length: { minimum: PASSWORD_MIN_LENGTH, maximum: 30 }
   validates :gpg_key_private, :gpg_key_public, presence: true
-  validates :slug, presence: true, length: { maximum: 30 }, format: { with: ::Slug.regex }, uniqueness: true
+  validates :slug, presence: true, length: { maximum: SLUG_MAX_LEN }, format: { with: ::Slug.new(max_len: SLUG_MAX_LEN).regex }, uniqueness: true
   validate do
     errors.add(:slug) if ::StorageClient::Config.reserved_buckets.include?(slug) # cannot use exclusion validator b/c it evaludates in tests before loading stubs
   end
@@ -32,7 +33,7 @@ class User < ::ApplicationRecord
   end
   before_validation :generate_gpg_keys, on: :create
   before_validation if: -> { slug.blank? }, on: :create do
-    self.slug = ::Slug.generate(displayed_name, max_len: max_len_validator_on(:slug))
+    self.slug = ::Slug.new(max_len: SLUG_MAX_LEN).generate(displayed_name)
   end
 
   after_destroy_commit { ::DeleteBucketJob.perform_later(::StorageClient::Config.default, default_bucket) }

@@ -14,7 +14,7 @@ class Repository < ::ApplicationRecord
 
   broadcast_with ::Broadcasts::Repository
 
-  after_destroy_commit { ::DeleteFilesJob.perform_later(::StorageClient::Config.default, bucket, path_in_bucket) }
+  after_destroy_commit { ::DeleteFilesJob.perform_later(storage_config.client_config, storage_config.bucket, storage_config.path) }
 
   scope :without_own_gpg_key, -> { where(gpg_key_private: nil, gpg_key_public: nil) }
   scope :with_own_gpg_key, -> { where('gpg_key_private IS NOT NULL AND gpg_key_public IS NOT NULL') }
@@ -32,15 +32,11 @@ class Repository < ::ApplicationRecord
   end
 
   def storage
-    ::Repository::Storage.new(::StorageClient.new(project.storage_config), bucket, path_in_bucket)
+    ::Repository::Storage.new(storage_config)
   end
 
-  def bucket
-    project.storage_bucket
-  end
-
-  def path_in_bucket
-    ::Pathname.new(project.storage_path).join(distro.slug).to_s
+  def storage_config
+    project.repository_storage_config.append_path(distro.slug)
   end
 
   def gpg_key

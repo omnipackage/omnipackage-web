@@ -6,10 +6,16 @@ class Repository
 
     FileItem = ::Data.define(:key, :size, :last_modified_at, :url)
 
-    def initialize(client, bucket, path)
-      @client = client
-      @bucket = bucket
-      @path = path
+    Config = ::Data.define(:client_config, :bucket, :path) do
+      def append_path(*arg)
+        self.class.new(client_config:, bucket:, path: ::Pathname.new(path).join(*arg).to_s)
+      end
+    end
+
+    def initialize(config)
+      @client = ::StorageClient.new(config.client_config)
+      @bucket = config.bucket
+      @path = config.path
     end
 
     def download_all(to:)
