@@ -6,7 +6,7 @@ class Project < ::ApplicationRecord
   has_many :tasks, class_name: '::Task', through: :sources_tarball
   has_many :repositories, class_name: '::Repository', dependent: :destroy
   has_many :webhooks, class_name: '::Webhook', dependent: :destroy
-  has_one :custom_respository_storage, class_name: '::Project::RepositoryStorage', inverse_of: :project, dependent: :destroy
+  has_one :custom_respository_storage, class_name: '::Project::CustomRepositoryStorage', inverse_of: :project, dependent: :destroy
 
   encrypts :sources_private_ssh_key
 
@@ -73,7 +73,8 @@ class Project < ::ApplicationRecord
   end
 
   def repository_storage_config
-    # TODO support custom_respository_storage
+    return custom_respository_storage.repository_storage_config if custom_respository_storage
+
     ::Repository::Storage::Config.new(
       client_config: ::StorageClient::Config.default,
       bucket: user.default_bucket,

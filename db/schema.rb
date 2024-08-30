@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_08_29_091018) do
+ActiveRecord::Schema[7.2].define(version: 2024_08_30_170243) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -69,7 +69,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_29_091018) do
     t.index ["user_id"], name: "index_password_reset_tokens_on_user_id"
   end
 
-  create_table "project_repository_storages", force: :cascade do |t|
+  create_table "project_custom_repository_storages", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.string "bucket", null: false
     t.string "path", default: "", null: false
@@ -79,10 +79,11 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_29_091018) do
     t.string "region", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["bucket"], name: "index_project_repository_storages_on_bucket"
-    t.index ["endpoint", "bucket"], name: "index_project_repository_storages_on_endpoint_and_bucket", unique: true
-    t.index ["endpoint"], name: "index_project_repository_storages_on_endpoint"
-    t.index ["project_id"], name: "index_project_repository_storages_on_project_id"
+    t.index ["bucket"], name: "index_project_custom_repository_storages_on_bucket"
+    t.index ["endpoint", "bucket", "path"], name: "idx_on_endpoint_bucket_path_cf092aac4f", unique: true
+    t.index ["endpoint", "bucket"], name: "idx_on_endpoint_bucket_f0ad7994a3", unique: true
+    t.index ["endpoint"], name: "index_project_custom_repository_storages_on_endpoint"
+    t.index ["project_id"], name: "index_project_custom_repository_storages_on_project_id"
   end
 
   create_table "project_sources_tarballs", force: :cascade do |t|
@@ -209,7 +210,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_29_091018) do
   add_foreign_key "agents", "users"
   add_foreign_key "email_verification_tokens", "users"
   add_foreign_key "password_reset_tokens", "users"
-  add_foreign_key "project_repository_storages", "projects"
+  add_foreign_key "project_custom_repository_storages", "projects"
   add_foreign_key "project_sources_tarballs", "projects"
   add_foreign_key "projects", "users"
   add_foreign_key "repositories", "projects"

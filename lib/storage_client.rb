@@ -31,6 +31,7 @@ class StorageClient
       self[:secret_access_key] = hash.fetch(:secret_access_key)
       self[:region] = hash.fetch(:region)
       self[:endpoint] = hash.fetch(:endpoint)
+      freeze
     end
 
     def method_missing(method_name, *arguments, &)
@@ -51,6 +52,7 @@ class StorageClient
   def initialize(config)
     @config = ::StorageClient::Config.new(config)
     @c = ::Aws::S3::Resource.new(client: ::Aws::S3::Client.new(**@config))
+    freeze
   end
 
   def ls_buckets

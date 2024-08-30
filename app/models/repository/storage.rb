@@ -2,8 +2,6 @@
 
 class Repository
   class Storage
-    attr_reader :client, :bucket, :path
-
     FileItem = ::Data.define(:key, :size, :last_modified_at, :url)
 
     Config = ::Data.define(:client_config, :bucket, :path) do
@@ -12,10 +10,14 @@ class Repository
       end
     end
 
+    attr_reader :client, :config
+
+    delegate :bucket, :path, to: :config
+
     def initialize(config)
+      @config = config
       @client = ::StorageClient.new(config.client_config)
-      @bucket = config.bucket
-      @path = config.path
+      freeze
     end
 
     def download_all(to:)
