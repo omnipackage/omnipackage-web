@@ -5,6 +5,6 @@ class InstallsController < ::ApplicationController
   layout false
 
   def index
-    @project = ::User.find_by!(slug: params[:user_slug]).projects.find_by!(slug: params[:project_slug])
+    @project = ::Project.joins(:user).where(slug: params[:project_slug], users: { slug: params[:user_slug] }).sole
   end
 end
