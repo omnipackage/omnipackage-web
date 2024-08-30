@@ -5,6 +5,6 @@ class InstallsController < ::ApplicationController
   layout false
 
   def index
-    @project = ::Project.find(params[:project_id])
+    @project = ::User.find_by!(slug: params[:user_slug]).projects.find_by!(slug: params[:project_slug])
   end
 end

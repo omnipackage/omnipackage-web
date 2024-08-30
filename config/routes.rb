@@ -63,7 +63,7 @@ require 'sidekiq-scheduler/web'
     concerns :gpg_keys
   end
 
-  get ':project_id/install', to: 'installs#index', as: 'package_install'
+  get ':user_slug/:project_slug/install', to: 'installs#index', as: 'package_install'
 
   post 'inbound_webhooks/:key', to: 'inbound_webhooks#trigger', as: 'trigger_webhook'
 
