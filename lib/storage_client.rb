@@ -65,7 +65,7 @@ class StorageClient
 
   def download_dir(bucket:, to:, from: '') # rubocop: disable Metrics/AbcSize, Metrics/MethodLength
     from = normalize_remote_path(from)
-    ls(bucket: bucket, prefix: from).each do |object|
+    ls(bucket:, prefix: from).each do |object|
       key = object.key
       key = key.sub(from, '') if from.present?
       dirs = key.split('/')[0..-2]
@@ -86,7 +86,7 @@ class StorageClient
       key = fpath.gsub(from, to)
       key = key[1..-1] if key.start_with?('/')
 
-      upload(bucket: bucket, from: fpath, key: key)
+      upload(bucket:, from: fpath, key: key)
     end
   end
 
@@ -101,8 +101,8 @@ class StorageClient
   end
 
   def set_policy(bucket:, policy:)
-    c.client.delete_public_access_block(bucket: bucket) if config[:endpoint].end_with?('amazonaws.com') # hack for aws
-    c.client.put_bucket_policy(bucket: bucket, policy: ::JSON.dump(policy))
+    c.client.delete_public_access_block(bucket:) if config[:endpoint].end_with?('amazonaws.com') # hack for aws
+    c.client.put_bucket_policy(bucket:, policy: ::JSON.dump(policy))
   end
 
   def set_allow_public_read(bucket:) # rubocop: disable Metrics/MethodLength
@@ -123,7 +123,7 @@ class StorageClient
         }
       ]
     }
-    set_policy(bucket: bucket, policy: policy)
+    set_policy(bucket:, policy:)
   end
 
   def create_bucket(bucket:)
@@ -135,7 +135,7 @@ class StorageClient
   end
 
   def delete_bucket!(bucket:)
-    if bucket_exists?(bucket: bucket)
+    if bucket_exists?(bucket:)
       c.bucket(bucket).delete!
     end
   end

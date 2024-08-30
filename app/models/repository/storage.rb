@@ -25,22 +25,22 @@ class Repository
     end
 
     def download_all(to:)
-      client.download_dir(bucket: bucket, to:, from: path)
+      client.download_dir(bucket:, to:, from: path)
     end
 
     def upload_all(from:)
-      client.upload_dir(bucket: bucket, from:, to: path)
+      client.upload_dir(bucket:, from:, to: path)
     end
 
     def delete_deleted_files(from:)
-      client.ls(bucket: bucket, prefix: path).each do |fo|
+      client.ls(bucket:, prefix: path).each do |fo|
         local_path = ::Pathname.new(from).join(fo.key).to_s.sub(path, '')
         fo.delete unless ::File.exist?(local_path)
       end
     end
 
     def bucket_exists?
-      client.bucket_exists?(bucket: bucket)
+      client.bucket_exists?(bucket:)
     end
 
     def create_bucket_if_not_exists!
@@ -58,18 +58,18 @@ class Repository
     end
 
     def create_bucket!
-      client.create_bucket(bucket: bucket)
+      client.create_bucket(bucket:)
     end
 
     def allow_public_read!
-      client.set_allow_public_read(bucket: bucket)
+      client.set_allow_public_read(bucket:)
     end
 
     def ls # rubocop: disable Metrics/AbcSize
       return [] unless bucket_exists?
 
       fn = path.end_with?('/') ? path : path + '/'
-      client.ls(bucket: bucket, prefix: path).map { |i| FileItem[i.key.sub(fn, ''), i.size, i.last_modified, i.public_url] }
+      client.ls(bucket:, prefix: path).map { |i| FileItem[i.key.sub(fn, ''), i.size, i.last_modified, i.public_url] }
     end
   end
 end
