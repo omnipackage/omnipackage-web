@@ -42,8 +42,8 @@ class StorageClient
       kay?(method_name.to_sym) || super
     end
 
-    def build_url(*slugs)
-      ::URI.join(endpoint, *slugs)
+    def build_url(*parts)
+      ::PathUtil.join(endpoint, *parts)
     end
   end
 

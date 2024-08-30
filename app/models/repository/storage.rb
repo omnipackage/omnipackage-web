@@ -6,13 +6,17 @@ class Repository
 
     Config = ::Data.define(:client_config, :bucket, :path) do
       def append_path(*arg)
-        self.class.new(client_config:, bucket:, path: ::Pathname.new(path).join(*arg).to_s)
+        self.class.new(client_config:, bucket:, path: ::PathUtil.join(path, *arg))
+      end
+
+      def url
+        client_config.build_url(bucket, path)
       end
     end
 
     attr_reader :client, :config
 
-    delegate :bucket, :path, to: :config
+    delegate :bucket, :path, :url, to: :config
 
     def initialize(config)
       @config = config
@@ -59,10 +63,6 @@ class Repository
 
     def allow_public_read!
       client.set_allow_public_read(bucket: bucket)
-    end
-
-    def url
-      client.url(bucket: bucket) + '/' + path
     end
 
     def ls # rubocop: disable Metrics/AbcSize
