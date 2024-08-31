@@ -26,9 +26,9 @@ class Task < ::ApplicationRecord
   end
 
   class << self
-    def start(project, skip_fetch: false, distro_ids: nil) # rubocop: disable Metrics/CyclomaticComplexity, Metrics/MethodLength
+    def start(project, skip_fetch: false, distro_ids: nil) # rubocop: todo Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
       distro_ids = distro_ids || project.distro_ids.presence || ::Distro.ids
-      return if exists?(
+      return if project.sources_tarball && exists?(
         sources_tarball_id: project.sources_tarball.id,
         state:              %w[pending_build pending_fetch running],
         distro_ids:         distro_ids
