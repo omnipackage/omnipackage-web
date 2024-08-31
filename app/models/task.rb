@@ -45,7 +45,7 @@ class Task < ::ApplicationRecord
         state:            skip_fetch && project.sources_verified? ? 'pending_build' : 'pending_fetch',
         distro_ids:       distro_ids
       )
-      ::SourcesFetchJob.start(project, task) if task.valid? && !skip_fetch
+      ::SourcesFetchJob.start(project, task) if task.valid? && task.pending_fetch?
       task
     end
   end
