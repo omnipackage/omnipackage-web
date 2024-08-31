@@ -69,4 +69,12 @@
   # setup for Heroku. See:
   # https://devcenter.heroku.com/articles/deploying-to-a-custom-rails-environment
   config.environment = ::ENV['ROLLBAR_ENV'].presence || ::Rails.env
+
+  # config.write_to_file = true
+  config.code_version = (`git rev-parse --short HEAD`.chomp rescue '0')
+  config.use_exception_level_filters_default = true
+  config.exception_level_filters.merge!({
+    'Sidekiq::JobRetry::Handled' => 'ignore',
+    'Sidekiq::JobRetry::Skip' => 'ignore'
+  })
 end
