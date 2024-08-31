@@ -3,6 +3,7 @@
 HOST="web.omnipackage.org"
 USER="debian"
 DIR="/home/$USER/omnipackage-web"
+BRANCH=`git branch --show-current`
 
 if [ "$1" == "console" ] || [ "$1" == "c" ]; then
   ssh -t $USER@$HOST "bash -lic 'cd $DIR && bin/rails c -e production'"
@@ -13,6 +14,7 @@ ssh -T $USER@$HOST <<EOL
   set -xEeuo pipefail
   cd ~/.rbenv/ && git pull && cd ~/.rbenv/plugins/ruby-build/ && git pull
 	cd $DIR
+  git checkout $BRANCH
   git pull
   export RAILS_ENV=production
   rbenv install --skip-existing
