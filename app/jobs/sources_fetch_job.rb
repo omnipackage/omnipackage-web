@@ -38,7 +38,7 @@ class SourcesFetchJob < ::ApplicationJob
       project.sources_fetch_error = nil
       project.verified!
       project.create_default_repositories
-      task.update(state: 'pending_build', distro_ids: task.distro_ids & project.distro_ids) if task
+      task.update!(state: 'pending_build', distro_ids: task.distro_ids & project.distro_ids) if task
     end
   end
 
