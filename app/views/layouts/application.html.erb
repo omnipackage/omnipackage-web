@@ -3,8 +3,12 @@
   <head>
     <title>OmniPackage<%= breadcrumb.count > 1 ? " - #{breadcrumb.active.name}" : '' %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="/android-chrome-512x512.png" type="image/png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="512x512">
 
     <%= render partial: 'js_variables' %>
 
