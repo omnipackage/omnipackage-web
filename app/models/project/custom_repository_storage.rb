@@ -7,6 +7,7 @@ class Project
     validates :bucket, presence: true, format: /\A(?!(^xn--|.+-s3alias$))^[a-z0-9][a-z0-9-]{1,61}[a-z0-9]\z/, uniqueness: { scope: :endpoint }
     validates :path, uniqueness: { scope: [:endpoint, :bucket] }
     validates :region, :endpoint, :access_key_id, :secret_access_key, presence: true
+    validate :reachable
 
     encrypts :secret_access_key
 
@@ -16,6 +17,14 @@ class Project
         bucket:,
         path:
       )
+    end
+
+    private
+
+    def reachable
+      repository_storage_config.client.ls_buckets.map(&:name)
+    rescue ::StandardError => e
+      record.errors.add(:bucket, e.message)
     end
   end
 end
