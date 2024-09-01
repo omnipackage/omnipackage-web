@@ -22,9 +22,13 @@ class Project
     private
 
     def reachable
-      repository_storage_config.client.ls_buckets.map(&:name)
+      storage = ::Repository::Storage.new(repository_storage_config)
+      storage.ping!
+      unless storage.bucket_exists?
+        record.errors.add(:bucket, 'does not exist')
+      end
     rescue ::StandardError => e
-      record.errors.add(:bucket, e.message)
+      record.errors.add(:endpoint, e.message)
     end
   end
 end
