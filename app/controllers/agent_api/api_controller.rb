@@ -2,7 +2,6 @@
 
 module AgentApi
   class ApiController < ::ActionController::Base # rubocop: disable Rails/ApplicationController
-    before_action :set_error_context
     before_action :authorize
     skip_before_action :verify_authenticity_token
     rescue_from ::StandardError, with: :respond_error
