@@ -6,7 +6,6 @@ class Repository < ::ApplicationRecord
 
   validates :distro_id, inclusion: { in: ::Distro.ids }
   validates :gpg_key_private, :gpg_key_public, presence: true, allow_nil: true
-  validates_with ::Repository::RepositoryValidator, unless: -> { ::Rails.env.test? }
 
   encrypts :gpg_key_private, :secret_access_key
 
