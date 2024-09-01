@@ -3,10 +3,12 @@
 module PathUtil
   module_function
 
-  def join(*parts)
+  def join(*parts, no_dots: true)
     parts.map do |part|
-      part = part[1..-1] if part.start_with?('/')
-      part = part[0..-2] if part.end_with?('/')
+      part = part[1..-1] while part.start_with?('/')
+      part = part[0..-2] while part.end_with?('/')
+      raise "cannot have '#{part}' in path" if no_dots && (part == '.' || part == '..')
+
       part
     end.join('/')
   end
