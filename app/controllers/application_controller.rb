@@ -63,6 +63,6 @@ class ApplicationController < ::ActionController::Base
   end
 
   def page_title
-    "OmniPackage#{breadcrumb.count > 1 ? ' - ' + breadcrumb.active.name : ''}"
+    "OmniPackage#{breadcrumb.to_page_title_part}"
   end
 end
