@@ -9,7 +9,7 @@ class ApplicationController < ::ActionController::Base
 
   attr_reader :current_user, :current_session
 
-  helper_method :current_user, :logged_in?, :current_session, :breadcrumb, :js_variables
+  helper_method :current_user, :logged_in?, :current_session, :breadcrumb, :js_variables, :page_title
 
   private
 
@@ -55,5 +55,9 @@ class ApplicationController < ::ActionController::Base
 
   def js_variables
     @js_variables ||= ::JsVariables.new
+  end
+
+  def page_title
+    "OmniPackage#{breadcrumb.count > 1 ? ' - ' + breadcrumb.active.name : ''}"
   end
 end

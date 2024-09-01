@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html data-controller="theme-selector">
+  <head>
+    <title><%= page_title %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+
+    <%= render partial: 'bootstrap' %>
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-expand-lg bg-body-secondary py-0">
+      <div class="container-fluid">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item dropdown me-3">
+            <%= render partial: 'theme_selector' %>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container p-3">
+      <%= yield %>
+    </div>
+
+    <footer class="pt-5">
+      <div class="p-3 bg-body-tertiary">
+        <div class="container-fluid py-3 text-center">
+          <h6 class="fw-light">Powered by</h6>
+          <%= link_to ::APP_SETTINGS.dig(:links, :home) || root_path, target: '_blank' do %>
+            <img src="<%= asset_path("brand/logo_with_slogan.svg") %>" alt="logo" height="100px">
+          <% end %>
+        </div>
+      </div>
+    </footer>
+
+  </body>
+</html>
