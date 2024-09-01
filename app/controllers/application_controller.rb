@@ -54,10 +54,6 @@ class ApplicationController < ::ActionController::Base
     response.headers["Expires"] = "Mon, 01 Jan 1990 00:00:00 GMT"
   end
 
-  def set_error_context
-    ::Rails.error.set_context(user: -> { current_user }, request: request)
-  end
-
   def js_variables
     @js_variables ||= ::JsVariables.new
   end

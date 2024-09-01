@@ -71,10 +71,12 @@
   config.environment = ::ENV['ROLLBAR_ENV'].presence || ::Rails.env
 
   # config.write_to_file = true
-  config.code_version = (`git rev-parse --short HEAD`.chomp rescue '0')
+  config.code_version = (`git rev-parse --short HEAD`.chomp rescue nil)
+  config.branch = (`git branch --show-current`.chomp rescue nil)
   config.use_exception_level_filters_default = true
   config.exception_level_filters.merge!({
     'Sidekiq::JobRetry::Handled' => 'ignore',
     'Sidekiq::JobRetry::Skip' => 'ignore'
   })
+  config.populate_empty_backtraces = true
 end

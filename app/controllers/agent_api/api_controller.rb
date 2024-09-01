@@ -67,9 +67,5 @@ module AgentApi
       # payload[:backtrace] = exception.backtrace if ::Rails.env.local?
       render(json: payload, status: :unprocessable_entity)
     end
-
-    def set_error_context
-      ::Rails.error.set_context(agent_id: -> { current_agent&.id }, request: request)
-    end
   end
 end
