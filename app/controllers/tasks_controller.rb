@@ -25,7 +25,7 @@ class TasksController < ::ApplicationController
   end
 
   def create # rubocop: disable Metrics/AbcSize
-    task = ::Task.start(project, skip_fetch: params[:skip_fetch] == 'true', distro_ids: params[:distro_ids].presence)
+    task = ::Task::Starter.new(project, skip_fetch: params[:skip_fetch] == 'true', distro_ids: params[:distro_ids].presence).call
     if task.nil?
       redirect_back(fallback_location: tasks_path, alert: 'Pending task already exists, skipping')
     elsif task.valid?

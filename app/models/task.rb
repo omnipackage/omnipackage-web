@@ -25,31 +25,6 @@ class Task < ::ApplicationRecord
     build_log
   end
 
-  class << self
-    def start(project, skip_fetch: false, distro_ids: nil) # rubocop: todo Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity, Metrics/AbcSize
-      distro_ids = distro_ids || project.distro_ids.presence || ::Distro.ids
-
-      return if project.sources_verified? && exists?(
-        sources_tarball_id: project.sources_tarball.id,
-        state:              %w[pending_build pending_fetch running],
-        distro_ids:         distro_ids
-      )
-
-      if project.sources_tarball.blank?
-        project.create_sources_tarball!
-        project.unverified!
-      end
-
-      task = create(
-        sources_tarball:  project.sources_tarball,
-        state:            skip_fetch && project.sources_verified? ? 'pending_build' : 'pending_fetch',
-        distro_ids:       distro_ids
-      )
-      ::SourcesFetchJob.start(project, task) if task.valid? && task.pending_fetch?
-      task
-    end
-  end
-
   def append_log(text)
     touch # rubocop: disable Rails/SkipsModelValidations
     log.append(text)

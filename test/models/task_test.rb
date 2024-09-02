@@ -18,7 +18,7 @@ class TaskTest < ::ActiveSupport::TestCase
 
   test 'create' do
     project = create(:project_with_sources)
-    ::Task.start(project)
+    ::Task::Starter.new(project).call
 
     assert_equal 1, project.tasks.count
   end
