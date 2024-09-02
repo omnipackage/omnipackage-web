@@ -85,7 +85,13 @@
     accessToken: ::Rails.application.credentials.rollbar_js_api_key,
     captureUncaught: true,
     payload: {
-      environment: config.environment
+      environment: config.environment,
+      client: {
+        javascript: {
+          code_version: config.code_version,
+          source_map_enabled: true
+        }
+      }
     }
   }
 end
