@@ -1,20 +1,12 @@
 # frozen_string_literal: true
 
 class CustomRepositoryStoragesController < ::ApplicationController
-  def new
-    @custom_repository_storage = project.build_custom_repository_storage
+  def show
+    @custom_repository_storage = project.custom_repository_storage || project.build_custom_repository_storage
 
     breadcrumb.add('Projects', projects_path)
+    breadcrumb.add(project.name, project_path(project))
     breadcrumb.add('Custom repository storage')
-    breadcrumb.add('New')
-  end
-
-  def edit
-    @custom_repository_storage = project.custom_repository_storage
-
-    breadcrumb.add('Projects', projects_path)
-    breadcrumb.add('Custom repository storage')
-    breadcrumb.add('Edit')
   end
 
   def create
@@ -24,7 +16,7 @@ class CustomRepositoryStoragesController < ::ApplicationController
       @custom_repository_storage.save!
       redirect_to(project_path(project), notice: "Project's #{project.name} custom repository storage has been successfully created")
     else
-      render(:new, status: :unprocessable_entity)
+      render(:show, status: :unprocessable_entity)
     end
   end
 
@@ -35,7 +27,7 @@ class CustomRepositoryStoragesController < ::ApplicationController
       @custom_repository_storage.save!
       redirect_to(project_path(project), notice: "Project's #{project.name} custom repository storage has been successfully updated")
     else
-      render(:new, status: :unprocessable_entity)
+      render(:show, status: :unprocessable_entity)
     end
   end
 
@@ -51,6 +43,6 @@ class CustomRepositoryStoragesController < ::ApplicationController
   end
 
   def custom_repository_storage_params
-    params.require(:project_custom_repository_storage).permit(:bucket, :path, :endpoint, :access_key_id, :secret_access_key, :region)
+    params.require(:project_custom_repository_storage).permit(:bucket, :path, :endpoint, :access_key_id, :secret_access_key, :region, :path)
   end
 end

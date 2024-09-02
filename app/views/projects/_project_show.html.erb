@@ -36,6 +36,19 @@
 
   <div class="pt-3">
     <h6>Repositories</h6>
+    <div class="fw-light">
+      <% if project.custom_repository_storage %>
+        <span>Using custom storage</span>
+      <% else %>
+        <span>Using default storage</span>
+      <% end %>
+      <span class="font-monospace bg-body-tertiary"><%= project.repository_storage_config.url %></span>
+      <br />
+      <div class="btn-group pb-2" role="group" aria-label="custo repo storage config link">
+        <%= link_to 'Configure custom storage', project_custom_repository_storage_path(project), class: 'btn btn-link btn-sm' %>
+      </div>
+    </div>
+
     <%= render partial: 'projects/repos', locals: { repositories: project.repositories } %>
   </div>
 

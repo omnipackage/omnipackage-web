@@ -63,7 +63,7 @@
   <div class="mb-3">
     <%= f.label :bucket, class: 'form-label' %>
     <div id="bucket-help" class="form-text">
-      Bucket must exists and be writeable. Repositories will be created in subfolders
+      Bucket must exists and be writeable with the key provided. Repositories will be created in subfolders. OmniPackage won't make the bucket publicly readable - instead it's up to you to configure access permissions when using custom storage
     </div>
     <%= f.text_field :bucket,
           value:  custom_repository_storage.bucket,
@@ -73,6 +73,22 @@
     %>
     <div id="validation-error-bucket" class="invalid-feedback d-block">
       <%= custom_repository_storage.errors.messages_for(:bucket).to_sentence %>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :path, class: 'form-label' %>
+    <div id="bucket-help" class="form-text">
+      Subfolder inside bucket. Leave blank to use root of the bucket
+    </div>
+    <%= f.text_field :path,
+          value:  custom_repository_storage.path,
+          class:  "form-control #{custom_repository_storage.errors.include?(:path) ? 'is-invalid' : ''}",
+          aria:   { describedby:  'validation-error-path path-help' },
+          placeholder: ''
+    %>
+    <div id="validation-error-path" class="invalid-feedback d-block">
+      <%= custom_repository_storage.errors.messages_for(:path).to_sentence %>
     </div>
   </div>
 
