@@ -26,11 +26,11 @@ class ApplicationController < ::ActionController::Base
   end
 
   def authenticate
-    session = ::Session.authenticate(cookies)
-    return unless session
+    @current_session = ::Session.authenticate(cookies)
+    return unless @current_session
 
-    @current_session = session
-    @current_user = session.user
+    @current_session.update(user_agent: request.user_agent, ip_address: request.ip)
+    @current_user = @current_session.user
   end
 
   def require_authentication
