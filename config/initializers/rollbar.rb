@@ -79,4 +79,13 @@
     'Sidekiq::JobRetry::Skip' => 'ignore'
   })
   config.populate_empty_backtraces = true
+
+  config.js_enabled = config.enabled && ::Rails.application.credentials.rollbar_js_api_key.present?
+  config.js_options = {
+    accessToken: ::Rails.application.credentials.rollbar_js_api_key,
+    captureUncaught: true,
+    payload: {
+      environment: config.environment
+    }
+  }
 end
