@@ -25,8 +25,8 @@ class Repository
     end
 
     def ping!
-     client.ls_buckets.map(&:name)
-   end
+      client.ls_buckets.map(&:name)
+    end
 
     def download_all(to:)
       client.download_dir(bucket:, to:, from: path)
