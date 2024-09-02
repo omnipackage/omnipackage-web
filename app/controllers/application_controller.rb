@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 class ApplicationController < ::ActionController::Base
-  # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
-  allow_browser versions: :modern
-
   before_action :authenticate
   before_action :require_authentication
 
@@ -28,11 +25,11 @@ class ApplicationController < ::ActionController::Base
   end
 
   def authenticate
-    session = ::Session.authenticate(cookies)
-    return unless session
+    @current_session = ::Session.authenticate(cookies)
+    return unless @current_session
 
-    @current_session = session
-    @current_user = session.user
+    @current_session.update(user_agent: request.user_agent, ip_address: request.ip)
+    @current_user = @current_session.user
   end
 
   def require_authentication

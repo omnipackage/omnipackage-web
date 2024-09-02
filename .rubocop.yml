@@ -8,7 +8,6 @@ require:
 
 AllCops:
   NewCops: enable
-  SuggestExtensions: false
   Exclude:
   - 'db/**/*'
   - 'config/**/*'
@@ -34,7 +33,7 @@ Style:
   Enabled: false
 
 Layout/LineLength:
-  Max: 580
+  Max: 280
 
 Layout/HashAlignment:
   Enabled: false
