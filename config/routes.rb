@@ -60,6 +60,7 @@ require 'sidekiq-scheduler/web'
     end
     resources :sources, only: %i[index create]
     resources :webhooks, only: %i[index create show new update destroy]
+    resource :custom_repository_storage, only: %i[create update show destroy]
   end
 
   resources :agents

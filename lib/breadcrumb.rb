@@ -24,6 +24,12 @@ class Breadcrumb
     last
   end
 
+  def to_page_title_part
+    return '' if count <= 1
+
+    " - #{active.name}"
+  end
+
   private
 
   attr_reader :pages

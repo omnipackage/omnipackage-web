@@ -1,0 +1,96 @@
+<%# locals: (custom_repository_storage:) -%>
+
+<%= form_with(model: custom_repository_storage, url: project_custom_repository_storage_path(custom_repository_storage.project)) do |f| %>
+  <div class="mb-3">
+    <%= f.label :endpoint, class: 'form-label' %>
+    <div id="endpoint-help" class="form-text">
+      Eg. https://s3.us-east-2.amazonaws.com
+    </div>
+    <%= f.text_field :endpoint,
+          value:  custom_repository_storage.endpoint,
+          class:  "form-control #{custom_repository_storage.errors.include?(:endpoint) ? 'is-invalid' : ''}",
+          aria:   { describedby:  'validation-error-endpoint endpoint-help' },
+          placeholder: ''
+    %>
+    <div id="validation-error-endpoint" class="invalid-feedback d-block">
+      <%= custom_repository_storage.errors.messages_for(:endpoint).to_sentence %>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :region, class: 'form-label' %>
+    <div id="region-help" class="form-text">
+      Eg. us-east-1
+    </div>
+    <%= f.text_field :region,
+          value:  custom_repository_storage.region,
+          class:  "form-control #{custom_repository_storage.errors.include?(:region) ? 'is-invalid' : ''}",
+          aria:   { describedby:  'validation-error-region region-help' },
+          placeholder: ''
+    %>
+    <div id="validation-error-region" class="invalid-feedback d-block">
+      <%= custom_repository_storage.errors.messages_for(:region).to_sentence %>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label 'Access key ID', class: 'form-label' %>
+    <%= f.text_field :access_key_id,
+          value:  custom_repository_storage.access_key_id,
+          class:  "form-control #{custom_repository_storage.errors.include?(:access_key_id) ? 'is-invalid' : ''}",
+          aria:   { describedby:  'validation-error-access_key_id access_key_id-help' },
+          placeholder: ''
+    %>
+    <div id="validation-error-access_key_id" class="invalid-feedback d-block">
+      <%= custom_repository_storage.errors.messages_for(:access_key_id).to_sentence %>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :secret_access_key, class: 'form-label' %>
+    <%= f.password_field :secret_access_key,
+          value:  custom_repository_storage.secret_access_key,
+          class:  "form-control #{custom_repository_storage.errors.include?(:secret_access_key) ? 'is-invalid' : ''}",
+          aria:   { describedby:  'validation-error-secret_access_key secret_access_key-help' },
+          placeholder: '',
+          autocomplete: 'new-password'
+    %>
+    <div id="validation-error-secret_access_key" class="invalid-feedback d-block">
+      <%= custom_repository_storage.errors.messages_for(:secret_access_key).to_sentence %>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :bucket, class: 'form-label' %>
+    <div id="bucket-help" class="form-text">
+      Bucket must exists and be writeable with the key provided. Repositories will be created in subfolders. OmniPackage won't make the bucket publicly readable - instead it's up to you to configure access permissions when using custom storage
+    </div>
+    <%= f.text_field :bucket,
+          value:  custom_repository_storage.bucket,
+          class:  "form-control #{custom_repository_storage.errors.include?(:bucket) ? 'is-invalid' : ''}",
+          aria:   { describedby:  'validation-error-bucket bucket-help' },
+          placeholder: ''
+    %>
+    <div id="validation-error-bucket" class="invalid-feedback d-block">
+      <%= custom_repository_storage.errors.messages_for(:bucket).to_sentence %>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :path, class: 'form-label' %>
+    <div id="bucket-help" class="form-text">
+      Subfolder inside bucket. Leave blank to use root of the bucket
+    </div>
+    <%= f.text_field :path,
+          value:  custom_repository_storage.path,
+          class:  "form-control #{custom_repository_storage.errors.include?(:path) ? 'is-invalid' : ''}",
+          aria:   { describedby:  'validation-error-path path-help' },
+          placeholder: ''
+    %>
+    <div id="validation-error-path" class="invalid-feedback d-block">
+      <%= custom_repository_storage.errors.messages_for(:path).to_sentence %>
+    </div>
+  </div>
+
+  <%= f.submit 'Save', class: 'btn btn-primary mt-2' %>
+<% end %>

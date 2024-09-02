@@ -2,7 +2,7 @@
 
 class Project
   class CustomRepositoryStorage < ::ApplicationRecord
-    belongs_to :project, class_name: '::Project', inverse_of: :custom_respository_storage
+    belongs_to :project, class_name: '::Project', inverse_of: :custom_repository_storage
 
     validates :bucket, presence: true, format: /\A(?!(^xn--|.+-s3alias$))^[a-z0-9][a-z0-9-]{1,61}[a-z0-9]\z/, uniqueness: { scope: :endpoint }
     validates :path, uniqueness: { scope: [:endpoint, :bucket] }
@@ -25,10 +25,10 @@ class Project
       storage = ::Repository::Storage.new(repository_storage_config)
       storage.ping!
       unless storage.bucket_exists?
-        record.errors.add(:bucket, 'does not exist')
+        errors.add(:bucket, 'does not exist')
       end
     rescue ::StandardError => e
-      record.errors.add(:endpoint, e.message)
+      errors.add(:endpoint, e.message)
     end
   end
 end
