@@ -24,6 +24,10 @@ class Repository
       freeze
     end
 
+    def ping!
+     client.ls_buckets.map(&:name)
+   end
+
     def download_all(to:)
       client.download_dir(bucket:, to:, from: path)
     end
