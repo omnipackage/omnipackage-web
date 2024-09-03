@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class InboundWebhooksController < ::ActionController::Base # rubocop: disable Rails/ApplicationController
-  before_action :set_error_context
   skip_before_action :verify_authenticity_token
   before_action :verify!
 
@@ -20,9 +19,5 @@ class InboundWebhooksController < ::ActionController::Base # rubocop: disable Ra
 
   def webhook
     @webhook ||= ::Webhook.find_by!(key: params[:key])
-  end
-
-  def set_error_context
-    ::Rails.error.set_context(request: request)
   end
 end
