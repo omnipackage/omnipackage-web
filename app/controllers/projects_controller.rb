@@ -9,6 +9,7 @@ class ProjectsController < ::ApplicationController
 
   def show
     @project = find_project
+    raise 'test exception'
 
     breadcrumb.add('Projects', projects_path)
     breadcrumb.add(@project.name)
