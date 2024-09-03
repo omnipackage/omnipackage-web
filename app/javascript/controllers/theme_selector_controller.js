@@ -25,7 +25,7 @@ export default class extends Controller {
 
   set_theme(theme) {
     this.set_active(theme)
-    throw new Error('test ex in js');
+
     if (theme == "auto") {
       theme = this.prefered_theme()
     }
