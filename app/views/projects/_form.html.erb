@@ -46,6 +46,26 @@
     </div>
   </div>
 
+  <div class="mb-3">
+    <%= f.label :logo, class: 'form-label' %>
+    <div class="d-flex">
+      <%= f.file_field :logo,
+            value:  project.logo,
+            class:  "form-control #{project.errors.include?(:logo) ? 'is-invalid' : ''}",
+            aria:   { describedby:  'validation-error-logo logo-help' }
+      %>
+      <% if project.logo.present? %>
+        <%= image_tag(url_for(project.logo), height: '32', width: '32', class: 'img ms-2', alt: 'logo') %>
+      <% end %>
+    </div>
+    <div id="validation-error-logo" class="invalid-feedback d-block">
+      <%= project.errors.messages_for(:logo).to_sentence %>
+    </div>
+    <div id="logo-help" class="form-text">
+      Similar to description, logo will be visible to everyone.
+    </div>
+  </div>
+
   <% if project.new_record? %>
     <div class="mb-5">
       <%= f.label :slug, class: 'form-label' %>

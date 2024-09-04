@@ -1,14 +1,26 @@
 <div class="p-3">
-  <div class="container-fluid py-3 text-center">
-    <h1 class="text-center">Install <%= @project.name %></h1>
-    <blockquote class="blockquote">
-      <p>
-        <%= @project.description %>
-        <%= link_to @project.upstream_url, @project.upstream_url, target: '_blank' %>
-      </p>
-    </blockquote>
+  <div class="container-fluid py-3">
 
-    <small class="text-body-secondary">Provided by <%= @project.user.displayed_name %></small>
+    <div class="row align-items-center">
+      <div class="col-md-auto">
+        <% if @project.logo.present? %>
+          <%= image_tag(url_for(@project.logo), height: '128', width: '128', class: 'img', alt: 'logo') %>
+        <% end %>
+      </div>
+
+      <div class="col-md-10">
+        <h1>Install <%= @project.name %></h1>
+        <blockquote class="blockquote">
+          <p>
+            <%= @project.description %>
+            <%= link_to @project.upstream_url, @project.upstream_url, target: '_blank' %>
+          </p>
+        </blockquote>
+
+        <small class="text-body-secondary">Provided by <%= @project.user.displayed_name %></small>
+      </div>
+    </div>
+
   </div>
 </div>
 

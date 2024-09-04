@@ -4,13 +4,16 @@
   <div class="card-body">
     <h5 class="card-title">
       <%= link_to project.name, project_path(project.id), class: 'card-link' %>
+
+      <% if project.logo.present? %>
+        <%= image_tag(url_for(project.logo), height: '32', width: '32', class: 'img', alt: 'logo') %>
+      <% end %>
     </h5>
 
     <div class="card-text">
 
       <div class="row align-items-center">
         <div class="col text-body-secondary">
-
           <div class="fw-light">
             <% if project.sources_fetch_error.present? %>
               <span class="text-danger">
