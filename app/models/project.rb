@@ -24,6 +24,7 @@ class Project < ::ApplicationRecord
   validates :sources_kind, presence: true
   validates :sources_subdir, length: { maximum: 500 }, format: { without: /\..|\A\// }, allow_blank: true
   validates :sources_branch, length: { maximum: 200 }, format: { without: /\..|\A\// }, allow_blank: true
+  validates :description, length: { maximum: 500 }, allow_blank: true
 
   before_validation if: -> { slug.blank? }, on: :create do
     self.slug = ::Slug.new(max_len: ::User::SLUG_MAX_LEN).generate(name)

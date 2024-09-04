@@ -16,6 +16,21 @@
     </div>
   </div>
 
+  <div class="mb-3">
+    <%= f.label :description, class: 'form-label' %>
+    <%= f.text_field :description,
+          value:  project.description,
+          class:  "form-control #{project.errors.include?(:description) ? 'is-invalid' : ''}",
+          aria:   { describedby:  'validation-error-description description-help' }
+    %>
+    <div id="validation-error-description" class="invalid-feedback d-block">
+      <%= project.errors.messages_for(:description).to_sentence %>
+    </div>
+    <div id="description-help" class="form-text">
+      Description will be visible to all users on public installation page.
+    </div>
+  </div>
+
   <% if project.new_record? %>
     <div class="mb-5">
       <%= f.label :slug, class: 'form-label' %>

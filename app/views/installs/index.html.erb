@@ -1,6 +1,10 @@
 <div class="p-3">
   <div class="container-fluid py-3 text-center">
     <h1 class="text-center">Install <%= @project.name %></h1>
+    <blockquote class="blockquote">
+      <p><%= @project.description %></p>
+    </blockquote>
+
     <small class="text-body-secondary">Provided by <%= @project.user.displayed_name %></small>
   </div>
 </div>
