@@ -2,7 +2,10 @@
   <div class="container-fluid py-3 text-center">
     <h1 class="text-center">Install <%= @project.name %></h1>
     <blockquote class="blockquote">
-      <p><%= @project.description %></p>
+      <p>
+        <%= @project.description %>
+        <%= link_to @project.upstream_url, @project.upstream_url, target: '_blank' %>
+      </p>
     </blockquote>
 
     <small class="text-body-secondary">Provided by <%= @project.user.displayed_name %></small>

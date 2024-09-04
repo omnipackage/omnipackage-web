@@ -31,6 +31,21 @@
     </div>
   </div>
 
+  <div class="mb-3">
+    <%= f.label :upstream_url, class: 'form-label' %>
+    <%= f.text_field :upstream_url,
+          value:  project.upstream_url,
+          class:  "form-control #{project.errors.include?(:upstream_url) ? 'is-invalid' : ''}",
+          aria:   { describedby:  'validation-error-upstream_url upstream_url-help' }
+    %>
+    <div id="validation-error-upstream_url" class="invalid-feedback d-block">
+      <%= project.errors.messages_for(:upstream_url).to_sentence %>
+    </div>
+    <div id="upstream_url-help" class="form-text">
+      In addition to publicly visible description, provide a link to the project's site, GitHub, etc.
+    </div>
+  </div>
+
   <% if project.new_record? %>
     <div class="mb-5">
       <%= f.label :slug, class: 'form-label' %>

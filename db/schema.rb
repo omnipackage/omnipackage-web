@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_04_050120) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_04_051519) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -110,6 +110,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_04_050120) do
     t.string "secrets"
     t.string "slug", limit: 120, null: false
     t.string "description", limit: 1000
+    t.string "upstream_url", limit: 1000
     t.index ["name"], name: "index_projects_on_name"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
     t.index ["sources_kind"], name: "index_projects_on_sources_kind"
