@@ -4,9 +4,26 @@
   <div class="card-body">
     <h5 class="card-title">Provided by <%= user.displayed_name %></h5>
     <div class="card-text">
-      <div class="d-flex flex-row">
-        <%= image_tag(user.gravatar_url, height: '64', width: '64', class: 'img-thumbnail rounded', alt: 'gravatar') %>
-        <p class="ms-2">TODO: links and description</p>
+      <div class="row">
+        <div class="col-auto">
+          <%= image_tag(user.gravatar_url, height: '64', width: '64', class: 'img-thumbnail rounded', alt: 'avatar') %>
+        </div>
+        <div class="col">
+          <% user.profile_links.reject(&:blank?).each do |link| %>
+            <% case link %>
+            <% when /github/ %>
+              <i class="bi bi-github"></i>
+            <% when /gitlab/ %>
+              <i class="bi bi-gitlab"></i>
+            <% when /linkedin/ %>
+              <i class="bi bi-linkedin"></i>
+            <% else %>
+              <i class="bi bi-link"></i>
+            <% end %>
+            <%= link_to link, link, target: '_blank' %>
+            <br />
+          <% end %>
+        </div>
       </div>
     </div>
   </div>

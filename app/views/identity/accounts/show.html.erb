@@ -37,7 +37,7 @@
       <%= link_to 'Change email address', edit_identity_email_path, class: 'm-1' %>
       <%= link_to 'Change password', edit_password_path, class: 'm-1' %>
       <a href="#" class="m-1" data-bs-toggle="modal" data-bs-target="#changeAccountModal">
-        Change name
+        Change profile info
       </a>
     </div>
   </div>
@@ -80,8 +80,17 @@
     <div class="modal-content">
       <%= form_with(model: @user, url: identity_account_path, method: :patch) do |form| %>
         <div class="modal-body">
-          <%= form.label :name, class: "form-label" %>
-          <%= form.text_field :name, class: "form-control", autocomplete: 'off' %>
+          <div class="mb-3">
+            <%= form.label :name, class: "form-label" %>
+            <%= form.text_field :name, class: "form-control", autocomplete: 'off' %>
+          </div>
+
+          <% ::User::MAX_PROFILE_LINKS.times do |i| %>
+            <div class="mb-3">
+              <%= form.label "Profile link ##{i + 1}", class: "form-label" %>
+              <%= form.url_field "profile_link_#{i + 1}", class: "form-control" %>
+            </div>
+          <% end %>
         </div>
 
         <div class="modal-footer">

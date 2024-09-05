@@ -5,6 +5,7 @@ class User < ::ApplicationRecord
 
   PASSWORD_MIN_LENGTH = 8
   SLUG_MAX_LEN = 30
+  MAX_PROFILE_LINKS = 3
 
   has_many :email_verification_tokens, class_name: '::EmailVerificationToken', dependent: :destroy
   has_many :password_reset_tokens, class_name: '::PasswordResetToken', dependent: :destroy
@@ -62,5 +63,10 @@ class User < ::ApplicationRecord
 
   def default_bucket
     "#{::APP_SETTINGS[:default_repository_bucket_prefix]}#{slug}"
+  end
+
+  MAX_PROFILE_LINKS.times do |i|
+    define_method("profile_link_#{i + 1}") { profile_links[i] }
+    define_method("profile_link_#{i + 1}=") { |arg| profile_links[i] = arg }
   end
 end
