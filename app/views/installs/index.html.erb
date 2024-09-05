@@ -8,7 +8,7 @@
         <% end %>
       </div>
 
-      <div class="col-md-10">
+      <div class="col-md-5">
         <h1>Install <%= @project.name %></h1>
         <blockquote class="blockquote">
           <p>
@@ -18,9 +18,12 @@
             <% end %>
           </p>
         </blockquote>
-
-        <small class="text-body-secondary">Provided by <%= @project.user.displayed_name %></small>
       </div>
+
+      <div class="col-md-5">
+        <%= render partial: 'identity/accounts/public_profile', locals: { user: @project.user } %>
+      </div>
+
     </div>
 
   </div>

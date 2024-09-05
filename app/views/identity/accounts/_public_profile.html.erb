@@ -1,0 +1,13 @@
+<%# locals: (user:) -%>
+
+<div class="card shadow rounded">
+  <div class="card-body">
+    <h5 class="card-title">Provided by <%= user.displayed_name %></h5>
+    <div class="card-text">
+      <div class="d-flex flex-row">
+        <%= image_tag(user.gravatar_url, height: '64', width: '64', class: 'img-thumbnail rounded', alt: 'gravatar') %>
+        <p class="ms-2">TODO: links and description</p>
+      </div>
+    </div>
+  </div>
+</div>

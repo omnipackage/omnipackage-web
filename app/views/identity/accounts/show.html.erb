@@ -23,6 +23,14 @@
           <span class="fw-lighter"> - displayed name</span>
         </p>
       </div>
+
+      <div class="col">
+        <small class="fw-lighter">Preview of publicly visible profile on packages install page</small>
+
+        <div class="mt-2">
+          <%= render partial: 'identity/accounts/public_profile', locals: { user: @user } %>
+        </div>
+      </div>
     </div>
 
     <div class="pt-3">
