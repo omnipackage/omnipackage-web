@@ -13,7 +13,9 @@
         <blockquote class="blockquote">
           <p>
             <%= @project.description %>
-            <%= link_to @project.upstream_url, @project.upstream_url, target: '_blank' %>
+            <% if @project.upstream_url %>
+              <%= link_to @project.upstream_url, @project.upstream_url, target: '_blank' %>
+            <% end %>
           </p>
         </blockquote>
 
