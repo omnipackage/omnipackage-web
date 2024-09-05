@@ -11,12 +11,10 @@
       <div class="col-md-5">
         <h1>Install <%= @project.name %></h1>
         <blockquote class="blockquote">
-          <p>
-            <%= @project.description %>
-            <% if @project.upstream_url %>
-              <%= link_to @project.upstream_url, @project.upstream_url, target: '_blank' %>
-            <% end %>
-          </p>
+          <p><%= @project.description %></p>
+          <% if @project.upstream_url %>
+            <p><%= link_to @project.upstream_url, @project.upstream_url, target: '_blank' %></p>
+          <% end %>
         </blockquote>
       </div>
 
