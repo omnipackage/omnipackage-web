@@ -64,7 +64,7 @@
       <%= @user.slug %>
     </div>
     <div class="text-secondary">
-      Default bucket URL: <%= ::StorageClient::Config.default.build_url(@user.default_bucket) %>
+      Default bucket URL: <%= @user.repository_default_storage_config.url %>
     </div>
   </div>
 

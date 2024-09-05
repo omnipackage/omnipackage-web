@@ -37,8 +37,6 @@ class User < ::ApplicationRecord
     self.slug = ::Slug.new(max_len: SLUG_MAX_LEN).generate(displayed_name)
   end
 
-  after_destroy_commit { ::DeleteBucketJob.perform_later(::StorageClient::Config.default, default_bucket) }
-
   def verified?
     verified_at.present?
   end
@@ -61,8 +59,12 @@ class User < ::ApplicationRecord
     "https://www.gravatar.com/avatar/#{::Digest::MD5.hexdigest(email)}"
   end
 
-  def default_bucket
-    "#{::APP_SETTINGS[:default_repository_bucket_prefix]}#{slug}"
+  def repository_default_storage_config
+    ::Repository::Storage::Config.new(
+      client_config: ::StorageClient::Config.default,
+      bucket: APP_SETTINGS.fetch(:repositories_bucket),
+      path: slug
+    )
   end
 
   MAX_PROFILE_LINKS.times do |i|

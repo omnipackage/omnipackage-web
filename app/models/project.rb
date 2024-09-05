@@ -32,6 +32,8 @@ class Project < ::ApplicationRecord
     self.slug = ::Slug.new(max_len: ::User::SLUG_MAX_LEN).generate(name)
   end
 
+  after_destroy_commit { ::DeleteFilesJob.perform_later(repository_storage_config.client_config, repository_storage_config.bucket, repository_storage_config.path) }
+
   broadcast_with ::Broadcasts::Project
 
   delegate :distros, :distro_ids, :installable_package_name, to: :sources_tarball, allow_nil: true
@@ -78,10 +80,6 @@ class Project < ::ApplicationRecord
   def repository_storage_config
     return custom_repository_storage.repository_storage_config if custom_repository_storage
 
-    ::Repository::Storage::Config.new(
-      client_config: ::StorageClient::Config.default,
-      bucket: user.default_bucket,
-      path: slug
-    )
+    user.repository_default_storage_config.append_path(slug)
   end
 end

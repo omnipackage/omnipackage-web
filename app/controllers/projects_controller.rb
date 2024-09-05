@@ -20,7 +20,7 @@ class ProjectsController < ::ApplicationController
     breadcrumb.add('Projects', projects_path)
     breadcrumb.add('New')
 
-    js_variables.set(:storage_base_url, ::StorageClient::Config.default.build_url(@project.user.default_bucket))
+    js_variables.set(:storage_base_url, @project.user.repository_default_storage_config.url)
   end
 
   def edit
