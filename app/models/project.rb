@@ -21,7 +21,7 @@ class Project < ::ApplicationRecord
   enum :sources_status, %w[unverified fetching verified].index_with(&:itself), default: 'unverified'
 
   validates :name, presence: true, length: { maximum: 60 }
-  validates :slug, presence: true, length: { maximum: 30 }, format: { with: ::Slug.new(max_len: ::User::SLUG_MAX_LEN).regex }, uniqueness: true
+  validates :slug, presence: true, length: { maximum: 30 }, format: { with: ::Slug.new(max_len: ::User::SLUG_MAX_LEN).regex }, uniqueness: { scope: :user_id }
   validates :sources_location, presence: true, length: { maximum: 8000 }
   validates :sources_kind, presence: true
   validates :sources_subdir, length: { maximum: 500 }, format: { without: /\..|\A\// }, allow_blank: true
