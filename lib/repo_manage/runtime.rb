@@ -9,7 +9,7 @@ module RepoManage
       @workdir = workdir
       @setup_cli = setup_cli
       @homedir = ::Dir.mktmpdir
-      @image_cache = ::RepoManage::Runtime::ImageCache.new(executable: executable, default_image: image, setup_cli: setup_cli, enabled: APP_SETTINGS[:image_cache_enable])
+      @image_cache = ::RepoManage::Runtime::ImageCache.new(executable: executable, default_image: image, setup_cli: setup_cli, enabled: ::APP_SETTINGS[:image_cache_enable])
       @limits = limits
       @lock = ::RepoManage::Runtime::Lock.new(key: image_cache.container_name, limits: limits)
 

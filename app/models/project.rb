@@ -32,8 +32,6 @@ class Project < ::ApplicationRecord
     self.slug = ::Slug.new(max_len: ::User::SLUG_MAX_LEN).generate(name)
   end
 
-  after_destroy_commit { ::DeleteFilesJob.perform_later(repository_storage_config.client_config, repository_storage_config.bucket, repository_storage_config.path) }
-
   broadcast_with ::Broadcasts::Project
 
   delegate :distros, :distro_ids, :installable_package_name, to: :sources_tarball, allow_nil: true

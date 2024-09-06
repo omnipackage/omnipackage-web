@@ -5,6 +5,10 @@ class Repository
     FileItem = ::Data.define(:key, :size, :last_modified_at, :url)
 
     Config = ::Data.define(:client_config, :bucket, :path) do
+      def self.default
+        new(client_config: ::StorageClient::Config.default, bucket: ::APP_SETTINGS.fetch(:repositories_bucket), path: '')
+      end
+
       def append_path(*arg)
         self.class.new(client_config:, bucket:, path: ::PathUtil.join(path, *arg))
       end

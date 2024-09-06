@@ -60,11 +60,7 @@ class User < ::ApplicationRecord
   end
 
   def repository_default_storage_config
-    ::Repository::Storage::Config.new(
-      client_config: ::StorageClient::Config.default,
-      bucket: APP_SETTINGS.fetch(:repositories_bucket),
-      path: slug
-    )
+    ::Repository::Storage::Config.default.append_path(slug)
   end
 
   MAX_PROFILE_LINKS.times do |i|
