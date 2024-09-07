@@ -123,7 +123,7 @@ GEM
     erubi (1.13.0)
     et-orbi (1.2.11)
       tzinfo
-    factory_bot (6.4.6)
+    factory_bot (6.5.0)
       activesupport (>= 5.0.0)
     factory_bot_rails (6.4.3)
       factory_bot (~> 6.4)
@@ -179,7 +179,7 @@ GEM
     parser (3.3.5.0)
       ast (~> 2.4.1)
       racc
-    pg (1.5.7)
+    pg (1.5.8)
     pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -238,7 +238,7 @@ GEM
     redis-client (0.22.2)
       connection_pool
     regexp_parser (2.9.2)
-    reline (0.5.9)
+    reline (0.5.10)
       io-console (~> 0.5)
     rexml (3.3.7)
     rollbar (3.6.0)
