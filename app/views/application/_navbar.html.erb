@@ -18,14 +18,14 @@
           <%= render partial: 'navbar_link', locals: { path: repositories_path, text: 'Repositories', active: -> { params[:controller] == 'repositories' } } %>
           <%= render partial: 'navbar_link', locals: { path: tasks_path, text: 'Tasks', active: -> { params[:controller] == 'tasks' } } %>
         <% end %>
-
-        <li class="nav-item">
-          <%= link_to 'Documentation', links_docs_url, class: 'nav-link', target: '_blank' %>
-        </li>
       </ul>
 
 
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item me-3">
+          <%= link_to 'Documentation', links_docs_url, class: 'nav-link', target: '_blank' %>
+        </li>
+
         <li class="nav-item dropdown me-3">
           <%= render partial: 'theme_selector' %>
         </li>
