@@ -15,7 +15,8 @@ class Project
       ::Repository::Storage::Config.new(
         client_config: ::StorageClient::Config.new(endpoint:, region:, access_key_id:, secret_access_key:),
         bucket:,
-        path:
+        path:,
+        bucket_public_url: nil # TODO
       )
     end
 

@@ -15,7 +15,7 @@ class Repository
       end
 
       def append_path(*arg)
-        self.class.new(client_config:, bucket:, path: ::PathUtil.join(path, *arg))
+        self.class.new(client_config:, bucket:, bucket_public_url:, path: ::PathUtil.join(path, *arg))
       end
 
       def url
