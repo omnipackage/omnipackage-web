@@ -1,6 +1,6 @@
 <%# locals: (project:) -%>
 
-<%= form_with(model: project, data: { controller: 'slugify-form' }) do |f| %>
+<%= form_with(model: project, data: (project.new_record? ? { controller: 'slugify-form' } : {})) do |f| %>
 
   <div class="mb-2">
     <%= f.label :name, class: 'form-label' %>
