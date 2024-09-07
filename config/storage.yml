@@ -13,7 +13,7 @@ local:
 
 cloudflare:
   service: S3
-  endpoint: 'https://3f7292a50c87b7d08441e63354e2c433.eu.r2.cloudflarestorage.com'
+  endpoint: 'https://3f7292a50c87b7d08441e63354e2c433.r2.cloudflarestorage.com'
   access_key_id: <%= ::Rails.application.credentials.cloudflare.access_key_id %>
   secret_access_key: <%= ::Rails.application.credentials.cloudflare.secret_access_key %>
   bucket: activestorage
