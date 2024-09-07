@@ -89,7 +89,7 @@
       client: {
         javascript: {
           code_version: config.code_version,
-          source_map_enabled: true
+          source_map_enabled: false
         }
       }
     }
