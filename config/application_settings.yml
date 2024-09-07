@@ -3,7 +3,6 @@ default: &default
   image_cache_enable: false
   repositories:
     bucket: 'repositories'
-    bucket_public_url: 'https://repositories.omnipackage.org'
   links:
     docs:         'https://docs.omnipackage.org'
     home:         'https://omnipackage.org/'
@@ -26,3 +25,6 @@ test:
 production:
   <<: *default
   disable_registration: true
+  repositories:
+    bucket: 'repositories'
+    bucket_public_url: 'https://repositories.omnipackage.org'

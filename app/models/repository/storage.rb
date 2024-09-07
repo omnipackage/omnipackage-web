@@ -19,12 +19,14 @@ class Repository
       end
 
       def url
-        result = client_config.build_url(bucket, path)
-        if bucket_public_url.present?
-          private_url = client_config.build_url(bucket)
-          result.gsub!(private_url, bucket_public_url)
-        end
-        result
+        url_to_public(client_config.build_url(bucket, path))
+      end
+
+      def url_to_public(arg)
+        return arg if bucket_public_url.blank?
+
+        private_url = client_config.build_url(bucket)
+        arg.gsub(private_url, bucket_public_url)
       end
     end
 
@@ -87,7 +89,15 @@ class Repository
       return [] unless bucket_exists?
 
       fn = path.end_with?('/') ? path : path + '/'
-      client.ls(bucket:, prefix: path).map { |i| FileItem[i.key.sub(fn, ''), i.size, i.last_modified, i.public_url] }
+
+      client.ls(bucket:, prefix: path).map do |i|
+        FileItem.new(
+          key: i.key.sub(fn, ''),
+          size: i.size,
+          last_modified_at: i.last_modified,
+          url: config.url_to_public(i.public_url)
+        )
+      end
     end
   end
 end
