@@ -77,6 +77,21 @@
   </div>
 
   <div class="mb-3">
+    <%= f.label :bucket_public_url, class: 'form-label' %>
+    <div id="bucket_public_url-help" class="form-text">
+      If public access to the bucket requires custom domain, like CloudFlare, you can put the public part of it here. For example, CloudFlare R2 bucket named "repos" on domain "example.com" will have public url "https://repos.example.com"
+    </div>
+    <%= f.text_field :bucket_public_url,
+          value:  custom_repository_storage.bucket_public_url,
+          class:  "form-control #{custom_repository_storage.errors.include?(:bucket_public_url) ? 'is-invalid' : ''}",
+          aria:   { describedby:  'validation-error-bucket_public_url bucket_public_url-help' }
+    %>
+    <div id="validation-error-endpoint" class="invalid-feedback d-block">
+      <%= custom_repository_storage.errors.messages_for(:bucket_public_url).to_sentence %>
+    </div>
+  </div>
+
+  <div class="mb-3">
     <%= f.label :path, class: 'form-label' %>
     <div id="bucket-help" class="form-text">
       Subfolder inside bucket. Leave blank to use root of the bucket

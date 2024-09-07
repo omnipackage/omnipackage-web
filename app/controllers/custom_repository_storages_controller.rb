@@ -43,6 +43,6 @@ class CustomRepositoryStoragesController < ::ApplicationController
   end
 
   def custom_repository_storage_params
-    params.require(:project_custom_repository_storage).permit(:bucket, :path, :endpoint, :access_key_id, :secret_access_key, :region, :path)
+    params.require(:project_custom_repository_storage).permit(:bucket, :path, :endpoint, :access_key_id, :secret_access_key, :region, :path, :bucket_public_url)
   end
 end

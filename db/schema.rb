@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_06_131905) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_07_075445) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -79,6 +79,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_06_131905) do
     t.string "region", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "bucket_public_url", limit: 2000
     t.index ["bucket"], name: "index_project_custom_repository_storages_on_bucket"
     t.index ["endpoint", "bucket", "path"], name: "idx_on_endpoint_bucket_path_cf092aac4f", unique: true
     t.index ["endpoint", "bucket"], name: "idx_on_endpoint_bucket_f0ad7994a3", unique: true
