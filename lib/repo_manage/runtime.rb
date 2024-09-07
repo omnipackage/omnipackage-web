@@ -82,7 +82,7 @@ module RepoManage
 =end
       if image_cache.enabled
         <<~CLI
-          #{lock.to_cli} '#{image_cache.rm_cli} ; #{executable} run --name #{image_cache.container_name} --entrypoint /bin/bash --workdir #{mounts[workdir]} #{mount_cli} #{envs_cli} #{limits.to_cli} #{image_cache.image} -c "#{commands.join(' && ')}" && #{image_cache.commit_cli}'
+          #{lock.to_cli} '#{image_cache.rm_cli} ; #{executable} run --name #{image_cache.container_name} --entrypoint /bin/bash --workdir #{mounts[workdir]} #{mount_cli} #{envs_cli} #{limits.to_cli} #{image_cache.image} -c "#{commands.join(' && ')}" && #{image_cache.commit_cli} && #{image_cache.rm_cli}'
         CLI
       else
         <<~CLI
