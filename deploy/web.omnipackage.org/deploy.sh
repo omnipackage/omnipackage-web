@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-HOST="web.omnipackage.org"
+HOST="51.75.147.84"
 USER="debian"
 DIR="/home/$USER/omnipackage-web"
 BRANCH=`git branch --show-current`

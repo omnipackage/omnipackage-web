@@ -1,13 +1,21 @@
+http://web.omnipackage.org {
+  file_server
+  root public/
+  @notStatic {
+    not file
+  }
+  reverse_proxy @notStatic 127.0.0.1:30000
+  encode zstd gzip
+}
+
 https://web.omnipackage.org {
-	file_server
-	root public/
-
-	@notStatic {
-		not file
-	}
-	reverse_proxy @notStatic 127.0.0.1:30000
-
-	encode zstd gzip
+  file_server
+  root public/
+  @notStatic {
+    not file
+  }
+  reverse_proxy @notStatic 127.0.0.1:30000
+  encode zstd gzip
 }
 
 https://storage.omnipackage.org:9002 {

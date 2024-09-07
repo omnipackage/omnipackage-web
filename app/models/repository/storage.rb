@@ -4,9 +4,14 @@ class Repository
   class Storage
     FileItem = ::Data.define(:key, :size, :last_modified_at, :url)
 
-    Config = ::Data.define(:client_config, :bucket, :path) do
+    Config = ::Data.define(:client_config, :bucket, :bucket_public_url, :path) do
       def self.default
-        new(client_config: ::StorageClient::Config.default, bucket: ::APP_SETTINGS.fetch(:repositories_bucket), path: '')
+        new(
+          client_config: ::StorageClient::Config.default,
+          bucket: ::APP_SETTINGS.fetch(:repositories).fetch(:bucket),
+          bucket_public_url: ::APP_SETTINGS.fetch(:repositories).fetch(:bucket_public_url, nil),
+          path: ''
+        )
       end
 
       def append_path(*arg)
@@ -14,7 +19,12 @@ class Repository
       end
 
       def url
-        client_config.build_url(bucket, path)
+        result = client_config.build_url(bucket, path)
+        if bucket_public_url.present?
+          private_url = client_config.build_url(bucket)
+          result.gsub!(private_url, bucket_public_url)
+        end
+        result
       end
     end
 

@@ -6,7 +6,6 @@ class Repository
 
     def initialize(repository)
       @repository = repository
-      @storage = repository.storage
       @logger = ::ActiveSupport::TaggedLogging.new(::Rails.logger)
     end
 
@@ -31,7 +30,9 @@ class Repository
 
     private
 
-    attr_reader :logger, :storage
+    attr_reader :logger
+
+    delegate :storage, to: :repository
 
     def sync_repo_files(artefacts, dir)
       suitable_artefacts = artefacts.select { |i| i.filetype == repository.distro.package_type }

@@ -1,7 +1,9 @@
 default: &default
   container_runtime: podman
   image_cache_enable: false
-  repositories_bucket: 'repositories'
+  repositories:
+    bucket: 'repositories'
+    bucket_public_url: 'https://repositories.omnipackage.org'
   links:
     docs:         'https://docs.omnipackage.org'
     home:         'https://omnipackage.org/'
