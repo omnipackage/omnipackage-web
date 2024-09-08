@@ -36,4 +36,25 @@ ssh -T $USER@$HOST <<EOL
   sudo systemctl restart sidekiq@publish
   sudo systemctl restart puma
   sudo systemctl restart caddy
+
+  function notify_rollbar() {
+    local token=`bundle exec rails runner 'puts ::Rails.application.credentials.rollbar_api_key'`
+    local revision=`git rev-parse --short HEAD`
+    local rollbar_name=`git log -1 --pretty=format:'%an'`
+    local local_username=`whoami`
+    local comment=`git log -1 --pretty=%B`
+
+    local payload=`cat <<EOF
+{
+  "environment": "$RAILS_ENV",
+  "revision": "$revision",
+  "rollbar_name": "$rollbar_name",
+  "local_username": "$local_username",
+  "comment": "$comment",
+  "status": "succeeded"
+}
+EOF`
+    curl -H "X-Rollbar-Access-Token: $token" -H "Content-Type: application/json" -X POST 'https://api.rollbar.com/api/1/deploy' -d "$payload"
+  }
+  notify_rollbar
 EOL
