@@ -10,6 +10,11 @@ if [ "$1" == "console" ] || [ "$1" == "c" ]; then
   exit $?
 fi
 
+if [ "$1" == "shell" ] || [ "$1" == "s" ]; then
+  ssh -t $USER@$HOST "cd $DIR && RAILS_ENV=production bash -li"
+  exit $?
+fi
+
 ssh -T $USER@$HOST <<EOL
   set -xEeuo pipefail
   cd ~/.rbenv/ && git pull && cd ~/.rbenv/plugins/ruby-build/ && git pull
