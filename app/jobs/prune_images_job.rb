@@ -4,8 +4,8 @@ class PruneImagesJob < ::ApplicationJob
   queue_as :long
 
   def perform
-    containers
     images
+    containers
   end
 
   private
