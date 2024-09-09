@@ -52,7 +52,8 @@
       <%= f.file_field :logo,
             value:  project.logo,
             class:  "form-control #{project.errors.include?(:logo) ? 'is-invalid' : ''}",
-            aria:   { describedby:  'validation-error-logo logo-help' }
+            aria:   { describedby:  'validation-error-logo logo-help' },
+            accept: 'image/*'
       %>
       <% if project.logo.present? %>
         <%= image_tag(url_for(project.logo), height: '32', width: '32', class: 'img ms-2', alt: 'logo') %>

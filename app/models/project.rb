@@ -27,6 +27,7 @@ class Project < ::ApplicationRecord
   validates :sources_subdir, length: { maximum: 500 }, format: { without: /\..|\A\// }, allow_blank: true
   validates :sources_branch, length: { maximum: 200 }, format: { without: /\..|\A\// }, allow_blank: true
   validates :description, :upstream_url, length: { maximum: 500 }, allow_blank: true
+  validates_with ::FileAttachValidator, attributes: { logo: { max_size_bytes: 512_000, mime_type_regex: /image\// } }
 
   before_validation if: -> { slug.blank? }, on: :create do
     self.slug = ::Slug.new(max_len: ::User::SLUG_MAX_LEN).generate(name)
