@@ -25,6 +25,10 @@ class Task < ::ApplicationRecord
     build_log
   end
 
+  Progress = ::Data.define(:current, :total) do
+    def to_s = "#{current}/#{total}"
+  end
+
   def append_log(text)
     touch # rubocop: disable Rails/SkipsModelValidations
     log.append(text)
@@ -71,5 +75,13 @@ class Task < ::ApplicationRecord
 
   def secrets
     project.secrets.to_h
+  end
+
+  def progress
+    if !running? || !log
+      Progress[0, 0]
+    else
+      Progress[log.successfull_distro_ids.size, distro_ids.size]
+    end
   end
 end

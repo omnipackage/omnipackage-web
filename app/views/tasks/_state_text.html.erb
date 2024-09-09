@@ -1,6 +1,9 @@
 <%# locals: (task:) -%>
 
 <%= task.state.humanize %>
+<% if task.running? %>
+  <%= task.progress.to_s %>
+<% end %>
 <% if !task.pending_fetch? && !task.pending_build? && task.agent && task.agent.user && current_user == task.agent.user %>
   <span>on <%= link_to task.agent.name, agent_path(task.agent), class: 'link-secondary' %></span>
 <% end %>

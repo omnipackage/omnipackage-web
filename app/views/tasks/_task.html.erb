@@ -7,6 +7,9 @@
       <%= link_to "##{task.id}", task_path(task.id) %>
       <%= render partial: 'tasks/state_icon', locals: { task: task } %>
       <%= task.state.humanize %>
+      <% if task.running? %>
+        <%= task.progress.to_s %>
+      <% end %>
       <% if task.failed? && task.artefacts.successful.exists? %>
         partially
       <% end %>
