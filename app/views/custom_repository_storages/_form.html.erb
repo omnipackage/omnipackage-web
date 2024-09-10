@@ -20,10 +20,10 @@
   <div class="mb-3">
     <%= f.label :region, class: 'form-label' %>
     <div id="region-help" class="form-text">
-      Eg. us-east-1
+      Eg. auto, us-east-1
     </div>
     <%= f.text_field :region,
-          value:  custom_repository_storage.region,
+          value:  custom_repository_storage.region.presence || 'auto',
           class:  "form-control #{custom_repository_storage.errors.include?(:region) ? 'is-invalid' : ''}",
           aria:   { describedby:  'validation-error-region region-help' },
           placeholder: ''
