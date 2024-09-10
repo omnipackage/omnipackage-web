@@ -3,11 +3,9 @@
 class PurgeOrphanedActivestorageBlobsJob < ::ApplicationJob
   queue_as :long
 
-  def perform # rubocop: disable Metrics/MethodLength
-    config = ::StorageClient::Config.activestorage
-    client = ::StorageClient.new(config)
+  def perform
     removed_files = 0
-    client.ls(bucket: config.fetch(:bucket)).each do |fo|
+    files_in_storage.each do |fo|
       next if ::ActiveStorage::Blob.exists?(key: fo.key)
 
       ::Rails.error.handle do
@@ -16,5 +14,13 @@ class PurgeOrphanedActivestorageBlobsJob < ::ApplicationJob
       end
     end
     ::Rails.logger.info("pruned #{removed_files} from activestorage")
+  end
+
+  private
+
+  def files_in_storage
+    config = ::StorageClient::Config.activestorage
+    client = ::StorageClient.new(config)
+    client.ls(bucket: config.fetch(:bucket))
   end
 end
