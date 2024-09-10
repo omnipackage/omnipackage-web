@@ -21,12 +21,10 @@ class Task < ::ApplicationRecord
   validates :distro_ids, presence: true
   validates_with ::Distro::DistrosValidator
 
-  before_create do
-    build_log
-  end
+  before_create { build_log }
 
-  Progress = ::Data.define(:current, :total) do
-    def to_s = "#{current}/#{total}"
+  Progress = ::Data.define(:done, :total) do
+    def to_s = "#{done.size}/#{total.size}"
   end
 
   def append_log(text)
@@ -78,10 +76,6 @@ class Task < ::ApplicationRecord
   end
 
   def progress
-    if !running? || !log
-      Progress[0, 0]
-    else
-      Progress[log.successfull_distro_ids.size, distro_ids.size]
-    end
+    Progress.new(log.successfull_distro_ids.sort, distro_ids.sort)
   end
 end
