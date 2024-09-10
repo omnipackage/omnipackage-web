@@ -13,3 +13,7 @@ production:
     PruneImagesJob:
       cron: '0 2 * * *'
       class: PruneImagesJob
+
+    PurgeOrphanedActivestorageBlobsJob:
+      cron: '0 11 * * *'
+      class: PurgeOrphanedActivestorageBlobsJob
