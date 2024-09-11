@@ -17,3 +17,7 @@ production:
     PurgeOrphanedActivestorageBlobsJob:
       cron: '0 11 * * *'
       class: PurgeOrphanedActivestorageBlobsJob
+
+    AgentStatusCheckJob:
+      cron: '* * * * *'
+      class: AgentStatusCheckJob

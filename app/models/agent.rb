@@ -13,8 +13,6 @@ class Agent < ::ApplicationRecord
 
   broadcast_with ::Broadcasts::Agent
 
-  after_update_commit :schedule_status_check
-
   scope :offline, -> { where('? > considered_offline_at', ::Time.now.utc) }
   scope :online, -> { where('? <= considered_offline_at', ::Time.now.utc) }
   scope :public_shared, -> { where(user_id: nil) }
@@ -53,11 +51,6 @@ class Agent < ::ApplicationRecord
 
   def reschedule_all_tasks!
     tasks.running.update(state: 'pending_build', agent_id: nil)
-  end
-
-  private
-
-  def schedule_status_check
-    ::AgentStatusCheckJob.set(wait_until: considered_offline_at + rand(1..5).seconds).perform_later(id) if considered_offline_at
+    ::Broadcasts::Agent.new(self).update
   end
 end
