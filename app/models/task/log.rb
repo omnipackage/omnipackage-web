@@ -6,22 +6,16 @@ class Task
 
     before_save :set_progress_distro_ids, if: :text_changed?
 
-    class DistroIds
-      attr_reader :successfull, :failed
-
-      def initialize(string)
-        @successfull = extract(string, /successfully finished build for (.+) in/)
-        @failed = extract(string, /failed build for (.+) in/)
+    DistroIds = ::Data.define(:successfull, :failed) do
+      def self.build(string)
+        new(
+          successfull: extract(string, /successfully finished build for (.+) in/),
+          failed: extract(string, /failed build for (.+) in/)
+        )
       end
 
-      def deconstruct
-        [successfull, failed]
-      end
-
-      private
-
-      def extract(string, regex)
-        string.scan(regex).flatten.compact & ::Distro.ids
+      def self.extract(string, regex)
+        (string.scan(regex).flatten.compact & ::Distro.ids).freeze
       end
     end
 
@@ -31,24 +25,28 @@ class Task
       query = "text = CONCAT(text, ?)"
       args = [atext]
 
-      distro_ids = DistroIds.new(atext)
-      if distro_ids.successfull.any?
+      d = DistroIds.build(atext)
+      if d.successfull.any?
         query += ", successfull_distro_ids = ARRAY_CAT(successfull_distro_ids, ARRAY[?])"
-        args << distro_ids.successfull
+        args << d.successfull
       end
-      if distro_ids.failed.any?
+      if d.failed.any?
         query += ", failed_distro_ids = ARRAY_CAT(failed_distro_ids, ARRAY[?])"
-        args << distro_ids.failed
+        args << d.failed
       end
 
       self.class.where(id: id).update_all([query, *args]) # rubocop: disable Rails/SkipsModelValidations
       ::Broadcasts::TaskLog.new(self).append(atext)
     end
 
+    def distro_ids
+      DistroIds.new(successfull_distro_ids, failed_distro_ids)
+    end
+
     private
 
     def set_progress_distro_ids
-      self.successfull_distro_ids, self.failed_distro_ids = DistroIds.new(text).deconstruct
+      self.successfull_distro_ids, self.failed_distro_ids = DistroIds.build(text).deconstruct
     end
   end
 end
