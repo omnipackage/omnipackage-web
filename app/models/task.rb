@@ -23,7 +23,7 @@ class Task < ::ApplicationRecord
 
   before_create { build_log }
 
-  Progress = ::Data.define(:done, :total) do
+  Progress = ::Data.define(:done, :failed, :total) do
     def to_s = "#{done.size}/#{total.size}"
   end
 
@@ -76,6 +76,6 @@ class Task < ::ApplicationRecord
   end
 
   def progress
-    Progress.new(log.successfull_distro_ids.sort, distro_ids.sort)
+    Progress.new(done: log.successfull_distro_ids.sort, failed: log.failed_distro_ids.sort, total: distro_ids.sort)
   end
 end

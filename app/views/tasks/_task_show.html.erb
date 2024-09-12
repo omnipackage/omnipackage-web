@@ -21,6 +21,8 @@
     <% task.distros.each do |d| %>
       <% if task.progress.done.include?(d.id) %>
         <i class="bi bi-check-circle-fill text-success"></i>
+      <% elsif task.progress.failed.include?(d.id) %>
+        <i class="bi bi-exclamation-triangle-fill text-danger"></i>
       <% end %>
       <%= d.name %>
       |
