@@ -24,7 +24,7 @@ class Task < ::ApplicationRecord
   before_create { build_log }
 
   Progress = ::Data.define(:done, :failed, :total) do
-    def to_s = "#{done.size}/#{total.size}"
+    def to_s = "#{done.size + failed.size}/#{total.size}"
   end
 
   def append_log(text)
