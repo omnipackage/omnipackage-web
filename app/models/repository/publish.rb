@@ -38,7 +38,7 @@ class Repository
       suitable_artefacts = artefacts.select { |i| i.filetype == repository.distro.package_type }
       return if suitable_artefacts.empty?
 
-      storage.download_all(to: dir)
+      # storage.download_all(to: dir)
       suitable_artefacts.each { |i| i.download(to: dir, overwrite_existing: true) }
 
       build_repo_manage(dir).sync
