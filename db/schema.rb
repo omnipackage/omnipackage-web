@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_07_075445) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_12_073119) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -156,6 +156,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_07_075445) do
     t.text "text", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "successfull_distro_ids", default: [], null: false, array: true
     t.index ["task_id"], name: "index_task_logs_on_task_id"
   end
 
