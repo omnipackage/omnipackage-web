@@ -18,7 +18,13 @@
 
   <div class="pt-1 pb-3">
     <h6>Distros</h6>
-    <%= task.distros.map(&:name).join(', ') %>
+    <% task.distros.each do |d| %>
+      <% if task.progress.done.include?(d.id) %>
+        <i class="bi bi-check-circle-fill text-success"></i>
+      <% end %>
+      <%= d.name %>
+      |
+    <% end %>
   </div>
 
   <div class="pb-3">
