@@ -6,19 +6,39 @@ class Task
 
     before_save :set_progress_distro_ids, if: :text_changed?
 
-    def append(atext) # rubocop: disable Metrics/MethodLength
+    class DistroIds
+      attr_reader :successfull, :failed
+
+      def initialize(string)
+        @successfull = extract(string, /successfully finished build for (.+) in/)
+        @failed = extract(string, /failed build for (.+) in/)
+      end
+
+      def deconstruct
+        [successfull, failed]
+      end
+
+      private
+
+      def extract(string, regex)
+        string.scan(regex).flatten.compact & ::Distro.ids
+      end
+    end
+
+    def append(atext) # rubocop: disable Metrics/MethodLength, Metrics/AbcSize
       return if atext.blank?
 
-      query = +"text = CONCAT(text, ?)"
+      query = "text = CONCAT(text, ?)"
       args = [atext]
 
-      if (distros = extract_successfull_distro_ids(atext)).any?
-        query << ", successfull_distro_ids = ARRAY_CAT(successfull_distro_ids, ARRAY[?])"
-        args << distros
+      distro_ids = DistroIds.new(atext)
+      if distro_ids.successfull.any?
+        query += ", successfull_distro_ids = ARRAY_CAT(successfull_distro_ids, ARRAY[?])"
+        args << distro_ids.successfull
       end
-      if (distros = extract_failed_distro_ids(atext)).any?
-        query << ", failed_distro_ids = ARRAY_CAT(failed_distro_ids, ARRAY[?])"
-        args << distros
+      if distro_ids.failed.any?
+        query += ", failed_distro_ids = ARRAY_CAT(failed_distro_ids, ARRAY[?])"
+        args << distro_ids.failed
       end
 
       self.class.where(id: id).update_all([query, *args]) # rubocop: disable Rails/SkipsModelValidations
@@ -28,16 +48,7 @@ class Task
     private
 
     def set_progress_distro_ids
-      self.successfull_distro_ids = extract_successfull_distro_ids(text)
-      self.failed_distro_ids = extract_failed_distro_ids(text)
-    end
-
-    def extract_successfull_distro_ids(string)
-      string.scan(/successfully finished build for (.+) in/).flatten.compact
-    end
-
-    def extract_failed_distro_ids(string)
-      string.scan(/failed build for (.+) in/).flatten.compact
+      self.successfull_distro_ids, self.failed_distro_ids = DistroIds.new(text).deconstruct
     end
   end
 end
