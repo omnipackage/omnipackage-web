@@ -6,18 +6,22 @@ class Task
 
     before_save :set_successfull_distro_ids, if: :text_changed?
 
-    # rubocop: disable Rails/SkipsModelValidations, Layout/FirstArrayElementIndentation
-    def append(atext)
+    def append(atext) # rubocop: disable Metrics/MethodLength
       return if atext.blank?
 
-      self.class.where(id: id).update_all([
-        "text = CONCAT(text, ?), successfull_distro_ids = ARRAY_CAT(successfull_distro_ids, ARRAY[?])",
-        atext,
-        extract_successfull_distro_ids(atext)
-      ])
+      distros = extract_successfull_distro_ids(atext)
+      query_arr = if distros.any?
+                    [
+                      "text = CONCAT(text, ?), successfull_distro_ids = ARRAY_CAT(successfull_distro_ids, ARRAY[?])",
+                      atext,
+                      distros
+                    ]
+                  else
+                    ["text = CONCAT(text, ?)", atext]
+                  end
+      self.class.where(id: id).update_all(query_arr) # rubocop: disable Rails/SkipsModelValidations
       ::Broadcasts::TaskLog.new(self).append(atext)
     end
-    # rubocop: enable Rails/SkipsModelValidations, Layout/FirstArrayElementIndentation
 
     private
 
