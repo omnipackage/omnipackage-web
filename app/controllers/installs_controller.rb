@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class InstallsController < ::PublicApplicationController
+class InstallsController < ::ApplicationPublicController
   def index
     @project = ::Project
                .includes(:user, :sources_tarball, :custom_repository_storage)
