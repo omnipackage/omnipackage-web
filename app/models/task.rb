@@ -76,6 +76,7 @@ class Task < ::ApplicationRecord
   end
 
   def progress
-    Progress.new(done: log.distro_ids.successfull.sort, failed: log.distro_ids.failed.sort, total: distro_ids.sort)
+    d = log.distro_ids
+    Progress.new(done: d.successfull.sort, failed: d.failed.sort, total: distro_ids.sort)
   end
 end
