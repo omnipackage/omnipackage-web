@@ -54,7 +54,7 @@ class Repository
 
     def delete_deleted_files(from:)
       client.ls(bucket:, prefix: path).each do |fo|
-        local_path = ::Pathname.new(from).join(fo.key).to_s.sub(path, '')
+        local_path = ::Pathname.new(from).join(fo.key).to_s.sub(path, '').sub('//', '/')
         fo.delete unless ::File.exist?(local_path)
       end
     end
