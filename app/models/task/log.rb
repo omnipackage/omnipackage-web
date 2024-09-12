@@ -26,7 +26,7 @@ class Task
     end
 
     def extract_successfull_distro_ids(string)
-      string.scan(/successfully finished build for (.+) in/).flatten
+      string.scan(/successfully finished build for (.+) in/).flatten.compact
     end
   end
 end
