@@ -1,0 +1,19 @@
+<%# locals: (project:) -%>
+
+<div class="row">
+  <div class="col-md-auto">
+    <% if project.logo.present? %>
+      <%= image_tag(url_for(project.logo), height: '128', width: '128', class: 'img', alt: 'logo') %>
+    <% end %>
+  </div>
+
+  <div class="col-md-auto">
+    <h1>Install <%= project.name %></h1>
+    <blockquote class="blockquote">
+      <p><%= project.description %></p>
+      <% if project.upstream_url.present? %>
+        <p><%= link_to project.upstream_url, project.upstream_url, target: '_blank' %></p>
+      <% end %>
+    </blockquote>
+  </div>
+</div>
