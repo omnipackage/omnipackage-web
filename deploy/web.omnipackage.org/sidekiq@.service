@@ -7,14 +7,14 @@ Type=simple
 Environment=RAILS_ENV=production
 Environment=RAILS_LOG_TO_STDOUT=1
 WorkingDirectory=/home/debian/omnipackage-web
-ExecStart=/bin/bash -lci 'bundle exec sidekiq -C config/sidekiq/%i.yml -t 120'
+ExecStart=/bin/bash -lci 'bundle exec sidekiq -C config/sidekiq/%i.yml -t 30'
 
 User=debian
 Group=debian
 UMask=0002
 RestartSec=1
 Restart=on-failure
-TimeoutStopSec=121
+TimeoutStopSec=31
 
 [Install]
 WantedBy=multi-user.target
