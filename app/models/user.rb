@@ -16,6 +16,8 @@ class User < ::ApplicationRecord
   has_many :private_agents, class_name: '::Agent', dependent: :destroy
   has_many :tasks, class_name: '::Task', through: :projects
 
+  has_one_attached :avatar
+
   validates :email, presence: true, uniqueness: true, format: { with: ::URI::MailTo::EMAIL_REGEXP }, length: { maximum: 300 }
   validates :password, allow_nil: true, length: { minimum: PASSWORD_MIN_LENGTH, maximum: 30 }
   validates :gpg_key_private, :gpg_key_public, presence: true
@@ -23,6 +25,7 @@ class User < ::ApplicationRecord
   validate do
     errors.add(:slug) if ::StorageClient::Config.reserved_buckets.include?(slug) # cannot use exclusion validator b/c it evaludates in tests before loading stubs
   end
+  validates_with ::FileAttachValidator, attributes: { avatar: { max_size_bytes: 128_000, mime_type_regex: /image\// } }
 
   encrypts :gpg_key_private
 
@@ -36,6 +39,9 @@ class User < ::ApplicationRecord
   before_validation if: -> { slug.blank? }, on: :create do
     self.slug = ::Slug.new(max_len: SLUG_MAX_LEN).generate(displayed_name)
   end
+  after_save -> { avatar.purge_later }, if: :_remove_avatar
+
+  attr_accessor :_remove_avatar
 
   def verified?
     verified_at.present?
@@ -53,10 +59,6 @@ class User < ::ApplicationRecord
     gpg = ::Gpg.new.generate_keys(displayed_name, email)
     self.gpg_key_private = gpg.priv
     self.gpg_key_public = gpg.pub
-  end
-
-  def gravatar_url
-    "https://www.gravatar.com/avatar/#{::Digest::MD5.hexdigest(email)}"
   end
 
   def repository_default_storage_config

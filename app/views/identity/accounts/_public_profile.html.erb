@@ -6,7 +6,7 @@
     <div class="card-text">
       <div class="row">
         <div class="col-auto">
-          <%= image_tag(user.gravatar_url, height: '64', width: '64', class: 'img-thumbnail rounded', alt: 'avatar') %>
+          <%= image_tag(user_avatar_url(user), height: '64', width: '64', class: 'img-thumbnail rounded', alt: 'avatar') %>
         </div>
         <div class="col">
           <% user.profile_links.reject(&:blank?).each do |link| %>

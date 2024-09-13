@@ -32,6 +32,9 @@ class Project < ::ApplicationRecord
   before_validation if: -> { slug.blank? }, on: :create do
     self.slug = ::Slug.new(max_len: ::User::SLUG_MAX_LEN).generate(name)
   end
+  after_save -> { logo.purge_later }, if: :_remove_logo
+
+  attr_accessor :_remove_logo
 
   broadcast_with ::Broadcasts::Project
 
