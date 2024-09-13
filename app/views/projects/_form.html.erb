@@ -5,7 +5,6 @@
   <div class="mb-2">
     <%= f.label :name, class: 'form-label' %>
     <%= f.text_field :name,
-          value:  project.name,
           class:  "form-control #{project.errors.include?(:name) ? 'is-invalid' : ''}",
           aria:   { describedby:  'validation-error-name name-help' },
           placeholder: '',
@@ -19,7 +18,6 @@
   <div class="mb-3">
     <%= f.label :description, class: 'form-label' %>
     <%= f.text_field :description,
-          value:  project.description,
           class:  "form-control #{project.errors.include?(:description) ? 'is-invalid' : ''}",
           aria:   { describedby:  'validation-error-description description-help' }
     %>
@@ -34,7 +32,6 @@
   <div class="mb-3">
     <%= f.label :upstream_url, class: 'form-label' %>
     <%= f.text_field :upstream_url,
-          value:  project.upstream_url,
           class:  "form-control #{project.errors.include?(:upstream_url) ? 'is-invalid' : ''}",
           aria:   { describedby:  'validation-error-upstream_url upstream_url-help' }
     %>
@@ -48,17 +45,20 @@
 
   <div class="mb-3">
     <%= f.label :logo, class: 'form-label' %>
-    <div class="d-flex">
-      <%= f.file_field :logo,
-            value:  project.logo,
-            class:  "form-control #{project.errors.include?(:logo) ? 'is-invalid' : ''}",
-            aria:   { describedby:  'validation-error-logo logo-help' },
-            accept: 'image/*'
-      %>
-      <% if project.logo.present? %>
-        <%= image_tag(url_for(project.logo), height: '32', width: '32', class: 'img ms-2', alt: 'logo') %>
-      <% end %>
-    </div>
+    <%= f.file_field :logo,
+          class:  "form-control #{project.errors.include?(:logo) ? 'is-invalid' : ''}",
+          aria:   { describedby:  'validation-error-logo logo-help' },
+          accept: 'image/*'
+    %>
+    <% if project.logo.present? %>
+      <div class="d-flex">
+        <%= image_tag(url_for(project.logo), height: '32', width: '32', class: 'img m-1', alt: 'current logo') %>
+        <div class="form-check m-2">
+          <%= f.check_box :_remove_logo, class: "form-check-input", id: 'remove-logo-checkbox' %>
+          <%= f.label 'Remove', class: "form-check-label", for: 'remove-logo-checkbox' %>
+        </div>
+      </div>
+    <% end %>
     <div id="validation-error-logo" class="invalid-feedback d-block">
       <%= project.errors.messages_for(:logo).to_sentence %>
     </div>
@@ -74,7 +74,6 @@
         Slug will be used in bucket's name and thus must contain only alphanumeric url-safe characters. It cannot be changed later.
       </div>
       <%= f.text_field :slug,
-            value:  project.slug,
             class:  "form-control #{project.errors.include?(:slug) ? 'is-invalid' : ''}",
             aria:   { describedby:  'validation-error-slug slug-help' },
             placeholder: '',
@@ -106,7 +105,6 @@
   <div class="mb-5">
     <%= f.label :sources_location, class: 'form-label' %>
     <%= f.text_field :sources_location,
-          value:  project.sources_location,
           class:  "form-control #{project.errors.include?(:sources_location) ? 'is-invalid' : ''}",
           aria:   { describedby: 'validation-error-sources_location' },
           placeholder: 'git@github.com:username/awesome-project.git'
@@ -117,7 +115,6 @@
 
     <%= f.label :sources_branch, class: 'form-label' %>
     <%= f.text_field :sources_branch,
-          value:  project.sources_branch,
           class:  "form-control #{project.errors.include?(:sources_branch) ? 'is-invalid' : ''}",
           aria:   { describedby:  'validation-error-sources_branch sources_branch-help' },
           placeholder: 'master'
@@ -139,7 +136,6 @@
         If the source code is located in subfolder, not in the root.
       </div>
       <%= f.text_field :sources_subdir,
-            value:  project.sources_subdir,
             class:  "form-control #{project.errors.include?(:sources_subdir) ? 'is-invalid' : ''}",
             aria:   { describedby: 'validation-error-sources_subdir' }
       %>
