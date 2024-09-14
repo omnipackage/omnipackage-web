@@ -84,4 +84,8 @@ class Project < ::ApplicationRecord
 
     user.repository_default_storage_config.append_path(slug)
   end
+
+  def badge
+    ::Project::Badge.new(self)
+  end
 end

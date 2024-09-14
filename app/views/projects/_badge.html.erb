@@ -1,0 +1,21 @@
+<%# locals: (project:) -%>
+
+<span>
+  <a href="#collapseBadge" class="link-underline link-underline-opacity-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBadge" aria-expanded="false" aria-controls="collapseBadge">
+    show
+  </a>
+</span>
+
+<div class="collapse" id="collapseBadge" data-controller="clipboard">
+  <%= link_to package_install_path(project.user.slug, project.slug), target: '_blank' do %>
+    <%= image_tag(project.badge.url, class: 'img mb-2 mt-2', alt: 'badge will be generated after publishing a repository') %>
+  <% end %>
+
+  <div class="bg-body-tertiary p-2 rounded-2">
+    <pre class="pre-line-wrap" data-clipboard-target="source"><%= project.badge.markdown(package_install_url(project.user.slug, project.slug)) %></pre>
+  </div>
+
+  <div class="btn-group" role="group" aria-label="badge actions">
+    <button data-action="clipboard#copy" class="btn btn-link btn-sm"><i class="bi bi-copy me-1"></i>Copy markdown</button>
+  </div>
+</div>

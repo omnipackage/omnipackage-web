@@ -21,6 +21,7 @@ class Repository
           logger.info("finish\n#{::ShellUtil.execute("tree #{dir}").out}")
         end
         repository.update!(published_at: ::Time.now.utc, last_publish_error: nil, publish_status: 'published')
+        repository.project.badge.generate_and_upload
       rescue ::StandardError => e
         logger.info("error: #{e.message}")
         repository.update!(last_publish_error: e.message, publish_status: 'pending')

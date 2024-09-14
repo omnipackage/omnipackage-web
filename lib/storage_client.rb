@@ -90,9 +90,9 @@ class StorageClient
     end
   end
 
-  def upload(bucket:, from:, key:)
+  def upload(bucket:, from:, key:, content_type: nil)
     ::File.open(from, 'rb') do |file|
-      c.bucket(bucket).object(key).put(body: file)
+      c.bucket(bucket).object(key).put(**{ body: file, content_type: }.compact)
     end
   end
 
