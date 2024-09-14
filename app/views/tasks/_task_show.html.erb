@@ -62,10 +62,16 @@
 </div>
 
 <div class="pt-3">
-  <div class="btn-group" role="group" aria-label="webhooks buttons">
+  <div class="btn-group" role="group" aria-label="task action buttons">
     <% if task.pending_fetch? || task.pending_build? || task.running? %>
       <%= button_to cancel_task_path(task), method: :post, class: 'btn btn-link link-danger', form: { data: { turbo_confirm: "Cancel this task?" } } do %>
         Cancel
+      <% end %>
+    <% end %>
+
+    <% if task.cancelled? %>
+      <%= button_to task_path(task), method: :delete, class: 'btn btn-link link-danger', form: { data: { turbo_confirm: "Delete this task?" } } do %>
+        Delete
       <% end %>
     <% end %>
   </div>

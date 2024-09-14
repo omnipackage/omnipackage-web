@@ -64,7 +64,7 @@ require 'sidekiq-scheduler/web'
   end
 
   resources :agents
-  resources :tasks, only: %i[index show create] do
+  resources :tasks, only: %i[index show create destroy] do
     get 'log', on: :member
     post 'cancel', on: :member
   end
