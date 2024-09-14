@@ -39,7 +39,14 @@ class Project
     end
 
     def text
-      "#{project.repositories.published.rpm.count} RPM #{project.repositories.published.deb.count} DEB"
+      distros = ->(pkg) { ::Distro.by_package_type(pkg).map { "'#{_1.id}'" }.join(',') }
+      sql = <<~SQL.squish
+      COUNT(CASE WHEN distro_id IN (#{distros['rpm']}) THEN 1 ELSE NULL END) AS rpm,
+      COUNT(CASE WHEN distro_id IN (#{distros['deb']}) THEN 1 ELSE NULL END) AS deb
+      SQL
+      result = project.repositories.published.select(sql).to_a.sole
+
+      "#{result.rpm} RPM #{result.deb} DEB"
     end
 
     def title

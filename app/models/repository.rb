@@ -21,8 +21,7 @@ class Repository < ::ApplicationRecord
     ids = ::Distro.ids
     order(::Arel.sql("CASE #{ids.map { "WHEN distro_id = ? THEN ?" }.join(' ')} ELSE 10000 END", *ids.map.with_index.to_a.flatten))
   }
-  scope :rpm, -> { where(distro_id: ::Distro.by_package_type('rpm').map(&:id)) }
-  scope :deb, -> { where(distro_id: ::Distro.by_package_type('deb').map(&:id)) }
+  scope :by_package_type, ->(pkg) { where(distro_id: ::Distro.by_package_type(pkg.to_s).map(&:id)) }
 
   def distro
     ::Distro[distro_id]
