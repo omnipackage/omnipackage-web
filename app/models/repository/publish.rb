@@ -73,6 +73,8 @@ class Repository
     end
 
     def extract_installable_filename(dir, synced_artefacts)
+      return unless synced_artefacts
+
       installable_filename = synced_artefacts.map(&:filename).first
       result = ::Dir.glob(dir + '/**/*').find { ::File.basename(_1) == installable_filename }
       result.gsub(dir, '')
