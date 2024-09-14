@@ -6,7 +6,7 @@ class InstallsController < ::ApplicationPublicController
                .includes(:user, :sources_tarball, :custom_repository_storage)
                .where(slug: params[:project_slug], users: { slug: params[:user_slug] })
                .sole
-    @repositories = @project.repositories.published.ordered.includes(:user)
+    @repositories = @project.repositories.ordered.includes(:user)
   end
 
   protected
