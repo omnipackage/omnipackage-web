@@ -16,11 +16,13 @@ class Repository
         repository.publishing!
         storage.create_bucket_if_not_exists!
 
+        installable_filename = nil
         ::Dir.mktmpdir do |dir|
-          sync_repo_files(artefacts, dir)
+          synced_artefacts = sync_repo_files(artefacts, dir)
+          installable_filename = extract_installable_filename(dir, synced_artefacts)
           logger.info("finish\n#{::ShellUtil.execute("tree #{dir}").out}")
         end
-        repository.update!(published_at: ::Time.now.utc, last_publish_error: nil, publish_status: 'published')
+        repository.update!(published_at: ::Time.now.utc, last_publish_error: nil, publish_status: 'published', installable_filename:)
         repository.project.badge.generate_and_upload
       rescue ::StandardError => e
         logger.info("error: #{e.message}")
@@ -46,6 +48,8 @@ class Repository
 
       storage.upload_all(from: dir)
       storage.delete_deleted_files(from: dir)
+
+      suitable_artefacts
     end
 
     def build_repo_manage(dir)
@@ -66,6 +70,12 @@ class Repository
         image:      repository.distro.image,
         setup_cli:  repository.distro.setup_repo
       )
+    end
+
+    def extract_installable_filename(dir, synced_artefacts)
+      installable_filename = synced_artefacts.map(&:filename).first
+      result = ::Dir.glob(dir + '/**/*').find { ::File.basename(_1) == installable_filename }
+      result.gsub(dir, '')
     end
   end
 end

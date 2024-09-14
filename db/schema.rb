@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_12_130833) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_14_131315) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -129,6 +129,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_12_130833) do
     t.string "last_publish_error"
     t.string "publish_status", default: "", null: false
     t.bigint "project_id", null: false
+    t.string "installable_filename"
     t.index ["distro_id"], name: "index_repositories_on_distro_id"
     t.index ["project_id"], name: "index_repositories_on_project_id"
   end

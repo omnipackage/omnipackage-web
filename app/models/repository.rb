@@ -61,6 +61,12 @@ class Repository < ::ApplicationRecord
     end.join("\n")
   end
 
+  def installable_file_url
+    return unless installable_filename
+
+    storage_config.append_path(installable_filename).url
+  end
+
   def humanized_name
     "#{project.name} / #{distro.name}"
   end

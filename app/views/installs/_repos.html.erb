@@ -31,6 +31,14 @@
               <pre><%= repo.gpg_key.public_info.strip %></pre>
             </div>
           </div>
+
+          <% if repo.installable_file_url %>
+            <div class="mt-3 fw-light">
+              <span>Or download package directly</span>:
+              <%= link_to ::File.basename(repo.installable_filename), repo.installable_file_url, class: 'fw-light' %>
+            </div>
+          <% end %>
+
         </div>
       </div>
     </div>
