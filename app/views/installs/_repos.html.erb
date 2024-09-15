@@ -16,7 +16,13 @@
           <% unless repo.published? %>
             <div class="mb-3 mt-2 fw-light">
               <small>
-                <i class="bi bi-exclamation-triangle-fill text-warning"></i>  The repository has not been published yet. Package installation may fail. Please try again later
+                <i class="bi bi-exclamation-triangle-fill text-warning"></i>
+                <% if repo.publishing? %>
+                  The repository is being published now, package installation may fail.
+                <% elsif repo.pending? %>
+                  The repository has not been published yet.
+                <% end %>
+                 Please try again later
               </small>
             </div>
           <% end %>
