@@ -31,7 +31,7 @@
         <div class="container-fluid py-3 text-center">
           <h6 class="fw-light">Powered by</h6>
           <%= link_to ::APP_SETTINGS.dig(:links, :home) || root_path, target: '_blank' do %>
-            <img src="<%= asset_path("brand/logo_with_slogan.svg") %>" alt="logo" height="100px">
+            <img src="<%= asset_path("brand/logo_with_slogan.svg") %>" alt="omnipackage logo" style="max-height:80px" class="img-fluid">
           <% end %>
         </div>
       </div>
