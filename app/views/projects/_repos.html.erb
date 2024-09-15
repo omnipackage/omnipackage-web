@@ -3,7 +3,7 @@
 <div class="vstack gap-2">
   <% repositories.ordered.group_by { |repo| repo.distro.family }.each do |family, repos| %>
     <div class="row align-items-center">
-      <div class="col-md-auto">
+      <div class="col-md-auto m-2">
         <%= render partial: 'distro_icon', locals: { family: family, size: 48 } %>
       </div>
 
