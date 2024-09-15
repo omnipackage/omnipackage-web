@@ -18,6 +18,6 @@ test:
 
 production:
   <<: *default
-  pool: 64
+  pool: 128
   database: omnipackage-web-production
   username: omnipackage
