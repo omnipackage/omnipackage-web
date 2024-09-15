@@ -2,8 +2,8 @@
 
 <h5>Projects</h5>
 
-<div class="container pt-2">
-  <div class="vstack gap-3">
+<div class="container pt-3">
+  <div class="vstack gap-5">
     <% @projects.each do |project| %>
       <div id="<%= dom_id(project) %>">
         <%= render partial: 'project', locals: { project: project } %>
@@ -15,7 +15,7 @@
     <%= render partial: 'pagination', locals: { pagination: @pagination } %>
   </div>
 
-  <div class="pt-3">
+  <div class="pt-5">
     <%= link_to new_project_path, class: 'btn btn-primary' do %>
       <i class="bi bi-plus-circle"></i> Add new project
     <% end %>

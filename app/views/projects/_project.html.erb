@@ -1,49 +1,46 @@
 <%# locals: (project:) -%>
 
-<div class="card">
-  <div class="card-body">
-    <h5 class="card-title">
-      <%= link_to project.name, project_path(project.id), class: 'card-link' %>
-
+<div>
+  <div class="row">
+    <div class="col-md-auto">
       <% if project.logo.present? %>
-        <%= image_tag(url_for(project.logo), height: '32', width: '32', class: 'img', alt: 'logo') %>
+        <%= image_tag(url_for(project.logo), height: '64', width: '64', class: 'img', alt: 'logo') %>
       <% end %>
-    </h5>
+    </div>
 
-    <div class="card-text">
+    <div class="col">
+      <h5>
+        <%= link_to project.name, project_path(project.id), class: 'card-link' %>
+      </h5>
 
-      <div class="row align-items-center">
-        <div class="col text-body-secondary">
-          <div class="fw-light">
-            <% if project.sources_fetch_error.present? %>
-              <span class="text-danger">
-                Sources fetch error
-              </span>
-            <% elsif project.sources_verified_at %>
-              Last sources fetch <%= time_ago_in_words(project.sources_verified_at) %> ago
-            <% end %>
-          </div>
-
-          <div>
-            <%= render partial: 'projects/task_state', locals: { project: project } %>
-          </div>
-        </div>
-
-        <div class="col text-end">
-          <span>
-            <% if project.sources_verified? %>
-              <%= link_to package_install_path(project.user.slug, project.slug), class: 'btn btn-link link-secondary', target: '_blank' do %>
-                <i class="bi bi-download me-2"></i> Public download page
-              <% end %>
-
-              <% project.distros.map(&:family).uniq.each do |df| %>
-                <%= render partial: 'distro_icon', locals: { family: df, size: 24 } %>
-              <% end %>
-            <% end %>
+      <div class="fw-light text-body-secondary">
+        <% if project.sources_fetch_error.present? %>
+          <span class="text-danger">
+            Sources fetch error
           </span>
-        </div>
+        <% elsif project.sources_verified_at %>
+          Last sources fetch <%= time_ago_in_words(project.sources_verified_at) %> ago
+        <% end %>
       </div>
 
+      <div>
+        <%= render partial: 'projects/task_state', locals: { project: project } %>
+      </div>
+    </div>
+
+    <div class="col text-end">
+      <span>
+        <% if project.sources_verified? %>
+          <% project.distros.map(&:family).uniq.each do |df| %>
+            <%= render partial: 'distro_icon', locals: { family: df, size: 16 } %>
+          <% end %>
+
+          <%= link_to package_install_path(project.user.slug, project.slug), class: 'btn btn-link', target: '_blank' do %>
+            <i class="bi bi-download me-2"></i> Public install page
+          <% end %>
+        <% end %>
+      </span>
     </div>
   </div>
+
 </div>
