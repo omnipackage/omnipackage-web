@@ -38,9 +38,7 @@
   </div>
 
   <div class="pt-3">
-    <% if repository.project.repositories.where(distro_id: repository.distro_id).count > 1 %>
-      <a class="btn btn-link link-danger" href="#" data-bs-toggle="modal" data-bs-target="#delete_repository_modal">Delete repository</a>
-    <% end %>
+    <a class="btn btn-link link-danger" href="#" data-bs-toggle="modal" data-bs-target="#delete_repository_modal">Delete repository</a>
   </div>
 
   <div class="modal fade" id="delete_repository_modal" tabindex="-1" aria-labelledby="delete_repository_modal" aria-hidden="true">
@@ -48,7 +46,7 @@
       <div class="modal-content">
         <div class="modal-body">
           <p>
-            Deleting the respository will also delete all files in the bucket.
+            Deleting the respository will also delete all files in the bucket. A new repository will be created upon sources fetch if there is a config for it.
           </p>
 
           <p class="text-warning">

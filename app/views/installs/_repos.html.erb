@@ -13,7 +13,13 @@
 
       <div id="collapse-accordion-<%= dom_friendly(repo.distro.id) %>" class="accordion-collapse collapse <%= params[:active] == repo.distro.id ? 'show' : '' %>" data-bs-parent="#accordion-<%= dom_friendly(family) %>">
         <div class="accordion-body" data-controller="clipboard">
-
+          <% unless repo.published? %>
+            <div class="mb-3 mt-2 fw-light">
+              <small>
+                <i class="bi bi-exclamation-triangle-fill text-warning"></i>  The repository has not been published yet. Package installation may fail. Please try again later
+              </small>
+            </div>
+          <% end %>
           <h6>Package installation steps for <%= repo.distro.name %></h6>
           <div class="bg-body-tertiary p-2 rounded-2">
             <pre id="steps-pre-<%= dom_friendly(repo.distro.id) %>" data-clipboard-target="source"><%= repo.installable_cli %></pre>
