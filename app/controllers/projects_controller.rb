@@ -46,7 +46,7 @@ class ProjectsController < ::ApplicationController
 
   def update
     @project = find_project
-    @project.assign_attributes(project_params)
+    @project.assign_attributes(project_params.except(:slug))
     if @project.save
       if %w[sources_location sources_kind].intersect?(@project.previous_changes.keys)
         ::SourcesFetchJob.start(@project)

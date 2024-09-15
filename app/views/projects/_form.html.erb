@@ -88,6 +88,17 @@
         You will be able to configure custom storage location later
       </div>
     </div>
+  <% else %>
+    <div class="mb-5">
+      <%= f.label :slug, class: 'form-label' %>
+      <div id="slug-help" class="form-text">
+        Slug cannot be changed.
+      </div>
+      <%= f.text_field :slug,
+            class:  "form-control #{project.errors.include?(:slug) ? 'is-invalid' : ''}",
+            disabled: true
+      %>
+    </div>
   <% end %>
 
   <div class="mb-1">
