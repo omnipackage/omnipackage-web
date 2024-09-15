@@ -11,8 +11,7 @@ class Project < ::ApplicationRecord
   encrypts :sources_private_ssh_key
 
   has_one_attached :logo
-  extend ::RemovableAttachment
-  removable_attachment :logo
+  removable_has_one_attached :logo
 
   serialize :secrets, coder: ::Project::Secrets
   encrypts :secrets

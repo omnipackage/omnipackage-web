@@ -17,8 +17,7 @@ class User < ::ApplicationRecord
   has_many :tasks, class_name: '::Task', through: :projects
 
   has_one_attached :avatar
-  extend ::RemovableAttachment
-  removable_attachment :avatar
+  removable_has_one_attached :avatar
 
   validates :email, presence: true, uniqueness: true, format: { with: ::URI::MailTo::EMAIL_REGEXP }, length: { maximum: 300 }
   validates :password, allow_nil: true, length: { minimum: PASSWORD_MIN_LENGTH, maximum: 30 }
