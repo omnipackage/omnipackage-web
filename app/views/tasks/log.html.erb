@@ -16,8 +16,16 @@
       <%= link_to 'Raw text', log_task_path(@log.task, format: :text) %>
     </div>
 
-    <div>
-      <pre id="<%= dom_id(@log, :text) %>"><%= @log.text %></pre>
+    <div data-controller="log-tail">
+      <div class="card">
+        <div class="overflow-auto vh-100 card-body">
+          <pre id="<%= dom_id(@log, :text) %>" data-log-tail-target="log"><%= @log.text %></pre>
+        </div>
+      </div>
+
+      <div class="btn-group mt-1" role="group" aria-label="log tail controls">
+        <button data-action="log-tail#scrollToBottom" class="btn btn-link btn-sm"><i class="bi bi-arrow-down-short me-1"></i>Scroll to bottom</button>
+      </div>
     </div>
   </div>
 
