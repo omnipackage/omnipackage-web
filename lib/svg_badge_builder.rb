@@ -10,14 +10,12 @@ class SvgBadgeBuilder # rubocop: disable Metrics/ClassLength
 
   def save(dir:, filename:)
     ::File.open(::Pathname.new(dir).join(filename), 'wb') do |file|
-      file.write(template(filename:))
+      file.write(generate)
     end
   end
 
-  private
-
-  def template(filename:) # rubocop: disable Metrics/MethodLength
-    <<~SVG.strip
+  def generate # rubocop: disable Metrics/MethodLength
+    <<~SVG.squish
     <?xml version="1.0" encoding="UTF-8" standalone="no"?>
     <svg
        width="108"
@@ -26,7 +24,7 @@ class SvgBadgeBuilder # rubocop: disable Metrics/ClassLength
        aria-label="#{title}"
        version="1.1"
        id="svg8"
-       sodipodi:docname="#{filename}"
+       sodipodi:docname="badge.svg"
        inkscape:version="1.3.2 (091e20ef0f, 2023-11-25)"
        xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
        xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
