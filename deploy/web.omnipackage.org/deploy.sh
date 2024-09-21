@@ -9,7 +9,6 @@ SKIP_CADDY=0
 SKIP_SIDEKIQ=0
 
 POSITIONAL_ARGS=()
-
 while [[ $# -gt 0 ]]; do
   case $1 in
     -c|--console)
@@ -39,15 +38,15 @@ while [[ $# -gt 0 ]]; do
       ;;
   esac
 done
-
 set -- "${POSITIONAL_ARGS[@]}" # restore positional parameters
 
 ssh -T $USER@$HOST <<EOL
   set -xEeuo pipefail
   cd ~/.rbenv/ && git pull && cd ~/.rbenv/plugins/ruby-build/ && git pull
-	cd $DIR
+  cd $DIR
   git checkout $BRANCH
-  git pull
+  git pull --depth=1
+
   export RAILS_ENV=production
   rbenv install --skip-existing
   bundle config --local without development test
@@ -57,8 +56,8 @@ ssh -T $USER@$HOST <<EOL
   bin/rails assets:clean
   bin/rails assets:precompile
   bin/rails db:migrate
+  
   sudo systemctl daemon-reload
-
   if (( $SKIP_SIDEKIQ == 0 )); then
     sudo systemctl restart sidekiq@default
     sudo systemctl restart sidekiq@long
@@ -67,6 +66,5 @@ ssh -T $USER@$HOST <<EOL
   if (( $SKIP_CADDY == 0 )); then
     sudo systemctl restart caddy
   fi
-
   sudo systemctl restart puma
 EOL
