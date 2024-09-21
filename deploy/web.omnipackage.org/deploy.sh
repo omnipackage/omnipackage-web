@@ -5,15 +5,42 @@ USER="debian"
 DIR="/home/$USER/omnipackage-web"
 BRANCH=`git branch --show-current`
 
-if [ "$1" == "console" ] || [ "$1" == "c" ]; then
-  ssh -t $USER@$HOST "bash -lic 'cd $DIR && bin/rails c -e production'"
-  exit $?
-fi
+SKIP_CADDY=0
+SKIP_SIDEKIQ=0
 
-if [ "$1" == "shell" ] || [ "$1" == "s" ]; then
-  ssh -t $USER@$HOST "cd $DIR && RAILS_ENV=production bash -li"
-  exit $?
-fi
+POSITIONAL_ARGS=()
+
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    -c|--console)
+      ssh -t $USER@$HOST "bash -lic 'cd $DIR && bin/rails c -e production'"
+      exit $?
+      ;;
+    -s|--shell)
+      ssh -t $USER@$HOST "cd $DIR && RAILS_ENV=production bash -li"
+      exit $?
+      shift
+      ;;
+    --skip-caddy)
+      SKIP_CADDY=1
+      shift
+      ;;
+    --skip-sidekiq)
+      SKIP_SIDEKIQ=1
+      shift
+      ;;
+    -*|--*)
+      echo "Unknown option $1"
+      exit 1
+      ;;
+    *)
+      POSITIONAL_ARGS+=("$1") # save positional arg
+      shift # past argument
+      ;;
+  esac
+done
+
+set -- "${POSITIONAL_ARGS[@]}" # restore positional parameters
 
 ssh -T $USER@$HOST <<EOL
   set -xEeuo pipefail
@@ -31,9 +58,15 @@ ssh -T $USER@$HOST <<EOL
   bin/rails assets:precompile
   bin/rails db:migrate
   sudo systemctl daemon-reload
-  sudo systemctl restart sidekiq@default
-  sudo systemctl restart sidekiq@long
-  sudo systemctl restart sidekiq@publish
+
+  if (( $SKIP_SIDEKIQ == 0 )); then
+    sudo systemctl restart sidekiq@default
+    sudo systemctl restart sidekiq@long
+    sudo systemctl restart sidekiq@publish
+  fi
+  if (( $SKIP_CADDY == 0 )); then
+    sudo systemctl restart caddy
+  fi
+
   sudo systemctl restart puma
-  sudo systemctl restart caddy
 EOL
