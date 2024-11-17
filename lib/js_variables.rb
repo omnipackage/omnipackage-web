@@ -11,6 +11,7 @@ class JsVariables
 
   def set(name, value)
     h[name] = value
+    self
   end
 
   def to_json(*args)
