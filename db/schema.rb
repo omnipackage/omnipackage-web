@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_14_131315) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_19_195308) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+  enable_extension "pg_catalog.plpgsql"
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -173,7 +173,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_14_131315) do
   end
 
   create_table "tasks", force: :cascade do |t|
-    t.bigint "sources_tarball_id", null: false
+    t.bigint "sources_tarball_id"
     t.string "state", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -181,7 +181,9 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_14_131315) do
     t.string "distro_ids", null: false, array: true
     t.datetime "started_at"
     t.datetime "finished_at"
+    t.bigint "project_id", null: false
     t.index ["agent_id"], name: "index_tasks_on_agent_id"
+    t.index ["project_id"], name: "index_tasks_on_project_id"
     t.index ["sources_tarball_id"], name: "index_tasks_on_sources_tarball_id"
     t.index ["state"], name: "index_tasks_on_state"
   end
@@ -227,5 +229,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_14_131315) do
   add_foreign_key "task_stats", "tasks"
   add_foreign_key "tasks", "agents"
   add_foreign_key "tasks", "project_sources_tarballs", column: "sources_tarball_id"
+  add_foreign_key "tasks", "projects"
   add_foreign_key "webhooks", "projects"
 end

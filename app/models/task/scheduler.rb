@@ -10,7 +10,7 @@ class Task
         if task
           result[:task] = {
             id:                   task.id,
-            sources_tarball_url:  task.project.sources_tarball.tarball.url(expires_in: 3.days),
+            sources_tarball_url:  task.sources.url(expires_in: 3.days),
             upload_artefact_url:  view_context.agent_api_upload_artefact_url(task.id),
             distros:              task.distro_ids,
             limits:               task.agent_limits,
@@ -79,8 +79,7 @@ class Task
           started_at = NOW() at time zone 'utc'
         WHERE id = (
           SELECT t.id FROM tasks t
-          JOIN project_sources_tarballs pst ON t.sources_tarball_id = pst.id
-          JOIN projects p ON pst.project_id = p.id
+          JOIN projects p ON t.project_id = p.id
           JOIN agents a ON (p.user_id = a.user_id OR a.user_id ISNULL)
           WHERE
             t.state = 'pending_build' AND
