@@ -29,7 +29,7 @@ class SourcesFetchJob < ::ApplicationJob
 
   private
 
-  def success!(project, source, task) # rubocop: disable Metrics/MethodLength
+  def success!(project, source, task)
     project.transaction do
       tb = project.sources_tarball || project.build_sources_tarball
       tb.upload_tarball(source.tarball)
@@ -38,10 +38,7 @@ class SourcesFetchJob < ::ApplicationJob
       project.sources_fetch_error = nil
       project.verified!
       project.create_default_repositories
-      if task
-        task.copy_project_sources!
-        task.update!(state: 'pending_build', distro_ids: task.distro_ids & project.distro_ids)
-      end
+      ::Task::Starter.new(project).sources_fetched(task)
     end
   end
 

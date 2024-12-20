@@ -24,6 +24,13 @@ class Task
       task
     end
 
+    def sources_fetched(task)
+      return unless task
+
+      task.copy_project_sources!
+      task.update!(state: 'pending_build', distro_ids: task.distro_ids & distro_ids)
+    end
+
     private
 
     attr_reader :project, :skip_fetch, :distro_ids

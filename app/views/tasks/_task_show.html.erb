@@ -14,7 +14,9 @@
   <%= render partial: 'tasks/state_text', locals: { task: task } %>
 </div>
 
-<%= link_to 'Sources snapshot', task.sources.url, class: 'btn btn-link btn-sm link-secondary', data: { turbo: false } %>
+<% if task.sources.present? %>
+  <%= link_to 'Sources snapshot', task.sources.url, class: 'btn btn-link btn-sm link-secondary', data: { turbo: false } %>
+<% end %>
 
 <div class="container pt-1">
 
