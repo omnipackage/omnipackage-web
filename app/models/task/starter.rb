@@ -8,31 +8,32 @@ class Task
       @skip_fetch = skip_fetch
     end
 
-    def call
-      return if already_exists?
-
+    def call # rubocop: disable Metrics/MethodLength
       create_source_tarball_if_not_exists
 
-      task = ::Task.create(
-        sources_tarball:  project.sources_tarball,
-        state:            skip_fetch && project.sources_verified? ? 'pending_build' : 'pending_fetch',
-        distro_ids:       distro_ids
-      )
-      ::SourcesFetchJob.start(project, task) if task.valid? && task.pending_fetch?
+      task = project.tasks.build(distro_ids: distro_ids)
+      if skip_fetch && project.sources_verified?
+        task.state = 'pending_build'
+        task.copy_project_sources!
+      else
+        task.state = 'pending_fetch'
+      end
+      if task.save && task.pending_fetch?
+        ::SourcesFetchJob.start(project, task)
+      end
       task
+    end
+
+    def sources_fetched(task)
+      return unless task
+
+      task.copy_project_sources!
+      task.update!(state: 'pending_build', distro_ids: task.distro_ids & distro_ids)
     end
 
     private
 
     attr_reader :project, :skip_fetch, :distro_ids
-
-    def already_exists?
-      project.sources_verified? && ::Task.exists?(
-        sources_tarball_id: project.sources_tarball.id,
-        state:              %w[pending_build pending_fetch running],
-        distro_ids:         distro_ids
-      )
-    end
 
     def create_source_tarball_if_not_exists
       return if project.sources_tarball

@@ -1,14 +1,15 @@
 # frozen_string_literal: true
 
 class Task < ::ApplicationRecord
-  belongs_to :sources_tarball, class_name: '::Project::SourcesTarball'
+  belongs_to :project, class_name: '::Project'
   belongs_to :agent, class_name: '::Agent', optional: true
-  has_one :project, class_name: '::Project', through: :sources_tarball
   has_one :user, class_name: '::User', through: :project
   has_many :artefacts, class_name: '::Task::Artefact', dependent: :destroy
   has_many :repositories, ->(task) { where(distro_id: task.distro_ids) }, through: :project, class_name: '::Repository'
   has_one :log, class_name: '::Task::Log', dependent: :destroy
   has_one :stat, class_name: '::Task::Stat', dependent: :destroy
+
+  has_one_attached :sources
 
   enum :state, %w[pending_fetch pending_build running finished cancelled failed].index_with(&:itself), default: 'pending_fetch'
 
@@ -20,6 +21,7 @@ class Task < ::ApplicationRecord
 
   validates :distro_ids, presence: true
   validates_with ::Distro::DistrosValidator
+  validates :sources, presence: true, unless: -> { pending_fetch? }
 
   before_create { build_log }
 
@@ -78,5 +80,9 @@ class Task < ::ApplicationRecord
   def progress
     d = log.distro_ids
     Progress.new(done: d.successfull.sort, failed: d.failed.sort, total: distro_ids.sort)
+  end
+
+  def copy_project_sources!
+    sources.attach(project.sources_tarball.tarball.blob) if project.sources_verified?
   end
 end
