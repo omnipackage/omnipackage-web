@@ -8,7 +8,7 @@ sidekiq_publish: bundle exec sidekiq -C config/sidekiq/publish.yml
 
 #
 # go install github.com/mailhog/MailHog@latest
-mailhog: ~/.go/bin/MailHog >/dev/null
+# mailhog: ~/.go/bin/MailHog >/dev/null
 
 #
 # go install github.com/minio/minio@latest
