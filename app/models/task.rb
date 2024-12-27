@@ -85,4 +85,8 @@ class Task < ::ApplicationRecord
   def copy_project_sources!
     sources.attach(project.sources_tarball.tarball.blob) if project.sources_verified?
   end
+
+  def reset_progress!
+    log&.update!(text: '')
+  end
 end
