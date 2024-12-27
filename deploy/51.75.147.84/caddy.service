@@ -6,7 +6,7 @@ After=network.target
 Type=simple
 WorkingDirectory=/home/debian/omnipackage-web
 Environment=HOME=/root
-ExecStart=caddy run --config deploy/web.omnipackage.org/Caddyfile
+ExecStart=caddy run --config deploy/51.75.147.84/Caddyfile
 
 RestartSec=1
 Restart=on-failure
