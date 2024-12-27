@@ -52,7 +52,6 @@ class Agent < ::ApplicationRecord
   def reschedule_all_tasks!
     transaction do
       tasks.running.find_each(&:reset_progress!)
-      tasks.running.update(state: 'pending_build', agent_id: nil)
     end
     ::Broadcasts::Agent.new(self).update
   end

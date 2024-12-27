@@ -87,6 +87,9 @@ class Task < ::ApplicationRecord
   end
 
   def reset_progress!
-    log&.update!(text: '')
+    transaction do
+      log&.update!(text: '')
+      update!(state: 'pending_build', agent_id: nil)
+    end
   end
 end
