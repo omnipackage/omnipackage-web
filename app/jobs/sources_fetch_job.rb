@@ -39,7 +39,7 @@ class SourcesFetchJob < ::ApplicationJob
       project.verified!
       project.create_default_repositories
     end
-    ::Task::Starter.new(project).sources_fetched(task)
+    ::Task::Starter.new(project.reload).sources_fetched(task)
   end
 
   def error!(project, error_message)
