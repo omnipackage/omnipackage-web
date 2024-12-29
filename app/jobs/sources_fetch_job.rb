@@ -35,11 +35,13 @@ class SourcesFetchJob < ::ApplicationJob
       tb.upload_tarball(source.tarball)
       tb.config = source.config
       tb.save!
+      project.reload
+      project.sources_tarball.reload
       project.sources_fetch_error = nil
       project.verified!
       project.create_default_repositories
     end
-    ::Task::Starter.new(project.reload).sources_fetched(task)
+    ::Task::Starter.new(project).sources_fetched(task)
   end
 
   def error!(project, error_message)
