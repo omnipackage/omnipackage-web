@@ -29,7 +29,7 @@ class SourcesFetchJob < ::ApplicationJob
 
   private
 
-  def success!(project, source, task)
+  def success!(project, source, task) # rubocop: disable Metrics/MethodLength
     project.transaction do
       tb = project.sources_tarball || project.build_sources_tarball
       tb.upload_tarball(source.tarball)

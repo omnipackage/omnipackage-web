@@ -78,5 +78,11 @@
         Delete
       <% end %>
     <% end %>
+
+    <% if task.finished? || (task.failed? && task.artefacts.successful.exists?) %>
+      <%= button_to publish_task_path(task), method: :post, class: 'btn btn-link link-secondary', form: { data: { turbo_confirm: "Publishing will overwrite artefacts in repositories. Continue?" } } do %>
+        Publish repository
+      <% end %>
+    <% end %>
   </div>
 </div>

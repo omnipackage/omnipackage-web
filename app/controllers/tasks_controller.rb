@@ -60,6 +60,11 @@ class TasksController < ::ApplicationController
     end
   end
 
+  def publish
+    ::RepositoryPublishJob.start(task)
+    redirect_to(task_path(task), notice: 'Repository publish job has been successfully started')
+  end
+
   private
 
   def project
