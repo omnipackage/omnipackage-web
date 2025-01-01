@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Project
   class Badge
     delegate :url, to: :storage_config

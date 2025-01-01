@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Task
   class Starter
     def initialize(project, skip_fetch: false, distro_ids: nil)

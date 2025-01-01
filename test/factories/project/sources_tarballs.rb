@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 ::FactoryBot.define do
   factory :project_sources_tarball, class: '::Project::SourcesTarball' do
     transient do

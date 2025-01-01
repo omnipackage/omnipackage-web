@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class PruneImagesJob < ::ApplicationJob
   queue_as :long
 

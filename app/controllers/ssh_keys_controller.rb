@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class SshKeysController < ::ApplicationController
   def create
     if project.generate_ssh_keys && project.save

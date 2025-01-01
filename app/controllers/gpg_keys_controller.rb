@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class GpgKeysController < ::ApplicationController
   def index # rubocop: disable Metrics/AbcSize, Metrics/MethodLength
     @current_key = current_key

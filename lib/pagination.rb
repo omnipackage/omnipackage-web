@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Pagination
   attr_reader :page, :per_page, :extend_upto
 

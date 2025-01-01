@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Repository
   class Publish
     attr_reader :repository

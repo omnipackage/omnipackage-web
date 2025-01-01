@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Project
   class CustomRepositoryStorage < ::ApplicationRecord
     belongs_to :project, class_name: '::Project', inverse_of: :custom_repository_storage

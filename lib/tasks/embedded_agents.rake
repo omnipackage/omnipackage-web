@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 namespace :embedded_agents do # rubocop: disable Metrics/BlockLength
   desc 'Run embedded agents (if any)'
   task run: [:environment, :load_gem] do # rubocop: disable Metrics/BlockLength

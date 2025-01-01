@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class FileAttachValidator < ::ActiveModel::Validator
   include ::ActionView::Helpers::NumberHelper
 

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Git
   attr_reader :exe, :ssh_exe, :global_env, :ssh_private_key
 

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class SshKeygen
   Key = ::Data.define(:priv, :pub)
 

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 redis_config = { url: ::ENV.fetch('REDIS_URL') { 'redis://localhost:6379/11' } }
 
 ::Sidekiq.configure_server do |config|

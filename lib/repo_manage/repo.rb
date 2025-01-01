@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module RepoManage
   class Repo
     class << self

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class SvgBadgeBuilder # rubocop: disable Metrics/ClassLength
   attr_reader :title, :text
 

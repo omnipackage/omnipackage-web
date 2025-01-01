@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module RemovableHasOneAttached
   def removable_has_one_attached(attribute)
     class_exec(attribute) do |attr|

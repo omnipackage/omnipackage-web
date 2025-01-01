@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class InstallsController < ::ApplicationPublicController
   def index
     @project = ::Project

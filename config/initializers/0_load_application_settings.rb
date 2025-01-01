@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 APP_SETTINGS = begin
   path = ::Rails.root.join('config/application_settings.yml')
   content = ::File.read(path)

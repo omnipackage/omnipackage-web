@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Broadcasts
   class Agent < ::Broadcasts::BaseBroadcast
     def update

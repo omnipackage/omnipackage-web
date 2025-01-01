@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Distro
   class DistrosValidator < ::ActiveModel::Validator
     def validate(record)

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Identity
   class PasswordResetsController < ::ApplicationController
     skip_before_action :require_authentication

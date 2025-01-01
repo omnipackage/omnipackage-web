@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class RepositoryPublishJob < ::ApplicationJob
   queue_as :publish
 

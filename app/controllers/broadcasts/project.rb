@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Broadcasts
   class Project < ::Broadcasts::BaseBroadcast
     def update # rubocop: disable Metrics/MethodLength

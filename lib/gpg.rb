@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Gpg
   Key = ::Data.define(:priv, :pub) do
     def private_id

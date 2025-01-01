@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module RepoManage
   class Runtime
     attr_reader :executable, :workdir, :setup_cli, :homedir, :limits, :lock

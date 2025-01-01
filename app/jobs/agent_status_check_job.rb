@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class AgentStatusCheckJob < ::ApplicationJob
   queue_as :default
 

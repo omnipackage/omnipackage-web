@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 ::FactoryBot.define do
   factory :repository do
     project { association :project }

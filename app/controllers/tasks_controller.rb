@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class TasksController < ::ApplicationController
   def index # rubocop: disable Metrics/AbcSize
     # if params.key?(:project_id) && params[:project_id].blank?

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Webhook < ::ApplicationRecord
   has_secure_token :key
   encrypts :secret

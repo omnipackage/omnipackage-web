@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class RegistrationsController < ::ApplicationController
   skip_before_action :require_authentication
   before_action :require_no_authentication

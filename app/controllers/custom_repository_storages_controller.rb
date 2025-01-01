@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class CustomRepositoryStoragesController < ::ApplicationController
   def show
     @custom_repository_storage = project.custom_repository_storage || project.build_custom_repository_storage

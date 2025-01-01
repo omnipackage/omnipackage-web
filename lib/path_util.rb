@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module PathUtil
   module_function
 

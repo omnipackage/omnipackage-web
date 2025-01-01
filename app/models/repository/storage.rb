@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Repository
   class Storage
     FileItem = ::Data.define(:key, :size, :last_modified_at, :url)

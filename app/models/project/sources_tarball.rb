@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Project
   class SourcesTarball < ::ApplicationRecord
     belongs_to :project, class_name: '::Project'

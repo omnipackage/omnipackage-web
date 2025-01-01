@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Task
   class Scheduler # rubocop: disable Metrics/ClassLength
     attr_reader :agent

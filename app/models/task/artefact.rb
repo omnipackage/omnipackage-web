@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Task
   class Artefact < ::ApplicationRecord
     belongs_to :task, class_name: '::Task'

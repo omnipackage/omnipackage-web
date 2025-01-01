@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class WebhooksController < ::ApplicationController
   def index
     @project = find_project

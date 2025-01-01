@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Identity
   class EmailVerificationsController < ::ApplicationController
     skip_before_action :require_authentication, only: :edit

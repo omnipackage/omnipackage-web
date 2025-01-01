@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Task < ::ApplicationRecord
   belongs_to :project, class_name: '::Project'
   belongs_to :agent, class_name: '::Agent', optional: true

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module AgentApi
   class ApiController < ::ActionController::Base # rubocop: disable Rails/ApplicationController
     before_action :authorize

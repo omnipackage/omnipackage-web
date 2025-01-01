@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Project
   class Sources
     class Localfs < ::Project::Sources

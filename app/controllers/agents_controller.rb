@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class AgentsController < ::ApplicationController
   def index
     @pagination, @agents = ::Pagination.new(current_user.private_agents.order(created_at: :asc), self).call

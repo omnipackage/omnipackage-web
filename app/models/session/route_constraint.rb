@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Session
   class RouteConstraint
     attr_reader :meth

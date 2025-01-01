@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class PurgeOrphanedActivestorageBlobsJob < ::ApplicationJob
   queue_as :long
 
