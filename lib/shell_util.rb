@@ -4,6 +4,7 @@ module ShellUtil
   module_function
 
   class ShellError < ::StandardError; end
+
   ShellResult = ::Data.define(:exitcode, :out, :err, :cli) do
     delegate :success?, to: :exitcode
 
@@ -15,7 +16,7 @@ module ShellUtil
   end
 
   def execute(*cli, chdir: ::Dir.pwd, env: {}, timeout_sec: 30, term_timeout_sec: 10) # rubocop: disable Metrics/MethodLength, Metrics/AbcSize
-    stdin, stdout, stderr, wait_thr = ::Open3.popen3(env, *cli, chdir: chdir)
+    stdin, stdout, stderr, wait_thr = ::Open3.popen3(env, *cli, chdir:)
 
     begin
       ::Timeout.timeout(timeout_sec) do
