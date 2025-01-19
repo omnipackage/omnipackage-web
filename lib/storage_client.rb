@@ -61,7 +61,7 @@ class StorageClient
     c.bucket(bucket).objects(prefix: normalize_remote_path(prefix))
   end
 
-  def download_dir(bucket:, to:, from: '') # rubocop: disable Metrics/MethodLength
+  def download_dir(bucket:, to:, from: '') # rubocop: disable Metrics/AbcSize, Metrics/MethodLength
     from = normalize_remote_path(from)
     ls(bucket:, prefix: from).each do |object|
       key = object.key
@@ -70,7 +70,7 @@ class StorageClient
 
       if dirs.any?
         fdir = ::Pathname.new(to).join(*dirs)
-        ::FileUtils.mkdir_p(fdir)
+        ::FileUtils.mkdir_p(fdir) unless ::File.exist?(fdir)
       end
 
       object.get(response_target: ::Pathname.new(to).join(key))

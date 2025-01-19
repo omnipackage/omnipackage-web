@@ -27,7 +27,7 @@ class Task
     end
 
     def download(to:, overwrite_existing: false) # rubocop: disable Metrics/MethodLength
-      ::FileUtils.mkdir_p(to)
+      ::FileUtils.mkdir_p(to) unless ::File.exist?(to)
 
       fpath = ::Pathname.new(to).join(filename)
       if ::File.exist?(fpath)
