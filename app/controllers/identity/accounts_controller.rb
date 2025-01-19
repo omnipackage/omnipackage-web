@@ -16,7 +16,7 @@ module Identity
     private
 
     def user_params
-      params.require(:user).permit(:name, :profile_link_1, :profile_link_2, :profile_link_3, :avatar, :_remove_avatar) # rubocop: disable Naming/VariableNumber
+      params.expect(user: [:name, :profile_link_1, :profile_link_2, :profile_link_3, :avatar, :_remove_avatar]) # rubocop: disable Naming/VariableNumber
     end
   end
 end
