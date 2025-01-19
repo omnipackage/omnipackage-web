@@ -53,7 +53,7 @@ class WebhooksController < ::ApplicationController
   private
 
   def webhook_params
-    params.require(:webhook).permit(:key, :secret)
+    params.expect(webhook: [:key, :secret])
   end
 
   def find_project

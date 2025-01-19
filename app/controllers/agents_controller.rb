@@ -60,7 +60,7 @@ class AgentsController < ::ApplicationController
   private
 
   def agent_params
-    params.require(:agent).permit(:name, :arch)
+    params.expect(agent: [:name, :arch])
   end
 
   def build_agent
