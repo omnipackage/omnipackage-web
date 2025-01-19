@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'aws-sdk-s3', '1.176.1' # Header 'x-amz-checksum-crc32' with value '7ooqxQ==' not implemented
+gem 'aws-sdk-s3'
 gem 'bcrypt'
 gem 'bootsnap', require: false
 gem 'importmap-rails'
