@@ -17,8 +17,6 @@ module OmnipackageWeb
     # in config/environments, which are processed later.
     #
 
-    config.autoload_lib(ignore: %w(assets tasks))
-
     config.active_job.queue_adapter = :sidekiq
     config.time_zone = 'UTC'
 
