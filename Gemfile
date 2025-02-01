@@ -1,12 +1,10 @@
 source 'https://rubygems.org'
 
-# update to AWS gems causes issuis on CloudFlare, keep these locked
-# gem 'aws-eventstream', '1.3.0'
-# gem 'aws-partitions', '1.1029.0'
+# update to AWS gems causes issues on CloudFlare, keep these locked
+# https://github.com/aws/aws-sdk-ruby/issues/3174
+# https://www.cloudflarestatus.com/incidents/t5nrjmpxc1cj
 gem 'aws-sdk-core', '3.214.1'
-# gem 'aws-sdk-kms', '1.96.0'
 gem 'aws-sdk-s3', '1.176.1'
-# gem 'aws-sigv4', '1.10.1'
 
 gem 'bcrypt'
 gem 'bootsnap', require: false
