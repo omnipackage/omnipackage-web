@@ -49,6 +49,8 @@ class StorageClient
 
   def initialize(config)
     @config = ::StorageClient::Config.new(config)
+    @config[:request_checksum_calculation] = 'when_required'
+    @config[:response_checksum_validation] = 'when_required'
     @c = ::Aws::S3::Resource.new(client: ::Aws::S3::Client.new(**@config))
     freeze
   end
