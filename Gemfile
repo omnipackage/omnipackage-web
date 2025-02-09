@@ -9,7 +9,6 @@ gem 'aws-sdk-s3', '1.176.1'
 gem 'bcrypt'
 gem 'bootsnap', require: false
 gem 'importmap-rails'
-gem 'ostruct' # warning: /home/debian/.rbenv/versions/3.4.1/lib/ruby/3.4.0/ostruct.rb was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 3.5.0
 gem 'pg'
 gem 'propshaft'
 gem 'pry-rails'
