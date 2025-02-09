@@ -29,6 +29,9 @@ class StorageClient
       self[:secret_access_key] = hash.fetch(:secret_access_key)
       self[:region] = hash.fetch(:region)
       self[:endpoint] = hash.fetch(:endpoint)
+      self[:request_checksum_calculation] = hash[:request_checksum_calculation]
+      self[:response_checksum_validation] = hash[:response_checksum_validation]
+      compact!
       freeze
     end
 
@@ -49,8 +52,6 @@ class StorageClient
 
   def initialize(config)
     @config = ::StorageClient::Config.new(config)
-    @config[:request_checksum_calculation] = 'when_required'
-    @config[:response_checksum_validation] = 'when_required'
     @c = ::Aws::S3::Resource.new(client: ::Aws::S3::Client.new(**@config))
     freeze
   end
