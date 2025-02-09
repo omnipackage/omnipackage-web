@@ -1,11 +1,6 @@
 source 'https://rubygems.org'
 
-# update to AWS gems causes issues on CloudFlare, keep these locked
-# https://github.com/aws/aws-sdk-ruby/issues/3174
-# https://www.cloudflarestatus.com/incidents/t5nrjmpxc1cj
-# gem 'aws-sdk-core', '3.214.1'
-gem 'aws-sdk-s3' # , '1.176.1'
-
+gem 'aws-sdk-s3'
 gem 'bcrypt'
 gem 'bootsnap', require: false
 gem 'importmap-rails'

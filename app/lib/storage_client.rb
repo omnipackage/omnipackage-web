@@ -21,7 +21,7 @@ class StorageClient
       end
     end
 
-    def initialize(hash)
+    def initialize(hash) # rubocop: disable Metrics/AbcSize, Metrics/MethodLength
       super()
       hash = hash.symbolize_keys
       self[:force_path_style] = hash.fetch(:force_path_style, true)
