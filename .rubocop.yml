@@ -1,12 +1,10 @@
-require:
-- rubocop-capybara
-
 plugins:
 - rubocop-performance
 - rubocop-rake
 - rubocop-rails
 - rubocop-thread_safety
 - rubocop-factory_bot
+- rubocop-capybara
 
 AllCops:
   NewCops: enable
