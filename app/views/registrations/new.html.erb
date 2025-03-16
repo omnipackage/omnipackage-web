@@ -85,7 +85,7 @@
           <%= render partial: 'turnstile' %>
         </div>
 
-        <div>
+        <div id="hidden-until-captcha-callback">
           <%= form.submit "Sign up", class: "btn btn-primary w-100" %>
         </div>
       <% end %>

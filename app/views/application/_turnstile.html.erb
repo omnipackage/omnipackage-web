@@ -1,7 +1,28 @@
 <script>
+  function getTurnstileHiddenElement() {
+    return document.getElementById("hidden-until-captcha-callback");
+  }
+
   function turnstileCallback(token) {
     console.info("Turnstile success", token);
+    const elem = getTurnstileHiddenElement();
+    if (elem) {
+      elem.removeAttribute("hidden")
+    }
   }
+
+  function hideHiddenElement() {
+    const elem = getTurnstileHiddenElement();
+    if (elem) {
+      elem.setAttribute("hidden", true)
+    }
+  }
+
+  <% if ::Turnstile.enabled? %>
+  setTimeout(hideHiddenElement, 100);
+  <% end %>
 </script>
 
-<div class="cf-turnstile" data-sitekey="<%= ::Turnstile.site_key %>" data-callback="turnstileCallback"></div>
+<% if ::Turnstile.enabled? %>
+  <div class="cf-turnstile" data-sitekey="<%= ::Turnstile.site_key %>" data-callback="turnstileCallback"></div>
+<% end %>
