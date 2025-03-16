@@ -4,7 +4,7 @@
 
   config.enable_rails_error_subscriber = true
 
-  config.access_token = ::Rails.application.credentials.rollbar_api_key || ::ENV['OMNIPACKAGE_ROLLBAR_API_KEY']
+  config.access_token = ::Rails.application.credentials.dig(:rollbar, :api_key) || ::ENV['OMNIPACKAGE_ROLLBAR_API_KEY']
 
   config.enabled = ::Rails.env.production? || ::ENV['OMNIPACKAGE_ROLLBAR_API_KEY'].present?
 
@@ -78,9 +78,10 @@
   })
   config.populate_empty_backtraces = true
 
-  config.js_enabled = config.enabled && ::Rails.application.credentials.rollbar_js_api_key.present?
+  js_api_key = ::Rails.application.credentials.dig(:rollbar, :js_api_key)
+  config.js_enabled = config.enabled && js_api_key.present?
   config.js_options = {
-    accessToken: ::Rails.application.credentials.rollbar_js_api_key,
+    accessToken: js_api_key,
     captureUncaught: true,
     payload: {
       environment: config.environment,
