@@ -21,6 +21,7 @@ class Turnstile
     return false unless response
 
     response = ::Net::HTTP.post_form(::URI.parse(self.class.verification_url), secret: self.class.secret_key, response:, remoteip:)
+    ::Rails.logger.info("Turnstile: #{response.body}")
     !!::JSON.parse(response.body).dig('success')
   end
 end
