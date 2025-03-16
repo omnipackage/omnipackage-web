@@ -8,7 +8,7 @@ class RegistrationsController < ::ApplicationController
     js_variables.set(:storage_base_url, ::Repository::Storage::Config.default.url)
   end
 
-  def create # rubocop: disable Metrics/MethodLength
+  def create # rubocop: disable Metrics/MethodLength, Metrics/AbcSize
     @user = ::User.new(user_params)
 
     unless captcha_verified?
@@ -23,6 +23,7 @@ class RegistrationsController < ::ApplicationController
       send_email_verification(@user)
       redirect_to(root_path, notice: 'Welcome! You have signed up successfully')
     else
+      flash.now[:alert] = @user.errors.full_messages.to_sentence
       render(:new, status: :unprocessable_entity)
     end
   end
