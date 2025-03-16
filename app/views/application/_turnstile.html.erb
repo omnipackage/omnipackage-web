@@ -1,1 +1,7 @@
-<div class="cf-turnstile" data-sitekey="<%= ::Turnstile.site_key %>"></div>
+<script>
+  function turnstileCallback(token) {
+    console.info("Turnstile success", token);
+  }
+</script>
+
+<div class="cf-turnstile" data-sitekey="<%= ::Turnstile.site_key %>" data-callback="turnstileCallback"></div>

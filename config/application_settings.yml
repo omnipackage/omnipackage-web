@@ -24,7 +24,7 @@ test:
 
 production:
   <<: *default
-  disable_registration: true
+  disable_registration: false
   image_cache_enable: true
   repositories:
     bucket: 'repositories'
