@@ -55,4 +55,8 @@ class ApplicationController < ::ActionController::Base
   def page_title
     "OmniPackage#{breadcrumb.to_page_title_part}"
   end
+
+  def captcha_verified?
+    ::Turnstile.new.call(params['cf-turnstile-response'], request.remote_ip)
+  end
 end
