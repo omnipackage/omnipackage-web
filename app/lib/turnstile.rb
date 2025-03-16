@@ -14,7 +14,7 @@ class Turnstile
   end
 
   def verify(controller_context)
-    call(params['cf-turnstile-response'], controller_context.request.remote_ip)
+    call(controller_context.params['cf-turnstile-response'], controller_context.request.remote_ip)
   end
 
   def call(response, remoteip)
