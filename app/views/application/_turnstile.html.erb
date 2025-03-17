@@ -11,15 +11,13 @@
     }
   }
 
-  function hideHiddenElement() {
+  <% if ::Turnstile.enabled? %>
+  setTimeout(() => {
     const elem = getTurnstileHiddenElement();
     if (elem) {
       elem.setAttribute("hidden", true)
     }
-  }
-
-  <% if ::Turnstile.enabled? %>
-  setTimeout(hideHiddenElement, 100);
+  }, 100);
   <% end %>
 </script>
 

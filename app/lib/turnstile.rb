@@ -13,7 +13,7 @@ class Turnstile
     end
 
     def verification_url
-      'https://challenges.cloudflare.com/turnstile/v0/siteverify'
+      ::URI.parse('https://challenges.cloudflare.com/turnstile/v0/siteverify')
     end
   end
 
@@ -25,7 +25,7 @@ class Turnstile
     return true unless self.class.enabled?
     return false unless response
 
-    response = ::Net::HTTP.post_form(::URI.parse(self.class.verification_url), secret: self.class.secret_key, response:, remoteip:)
+    response = ::Net::HTTP.post_form(self.class.verification_url, secret: self.class.secret_key, response:, remoteip:)
     logger.info("Turnstile response: #{response.body}")
     !!::JSON.parse(response.body).dig('success')
   end
