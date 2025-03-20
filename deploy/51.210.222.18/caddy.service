@@ -1,0 +1,15 @@
+[Unit]
+Description=OmniPackage web Caddy
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/debian/omnipackage-web
+Environment=HOME=/root
+ExecStart=caddy run --config deploy/51.210.222.18/Caddyfile
+
+RestartSec=1
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
