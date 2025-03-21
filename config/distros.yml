@@ -17,7 +17,7 @@ debian: &debian
   - 'DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential debhelper %{build_dependencies}'
   setup_repo:
   - 'DEBIAN_FRONTEND=noninteractive apt-get update'
-  - 'DEBIAN_FRONTEND=noninteractive apt-get -y install dpkg-dev'
+  - 'DEBIAN_FRONTEND=noninteractive apt-get -y install dpkg-dev gpg'
   install_steps:
   - "echo 'deb %{url} stable/' | sudo tee /etc/apt/sources.list.d/omnipackage_%{project_slug}.list"
   - "curl -fsSL %{url}/stable/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/omnipackage_%{project_slug}.gpg > /dev/null"
