@@ -64,7 +64,7 @@ class Task < ::ApplicationRecord
 
     # if user.root?
     {
-      memory: '8g',
+      memory: '16g',
       cpus: '6',
       pids: 50_000,
       execute_timeout: 86_400
