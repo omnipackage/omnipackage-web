@@ -30,8 +30,10 @@
       <% end %>
       <%= d.name %>
       <% if task.progress.failed.include?(d.id) %>
-        <% log_blob = task.artefacts.failed.where(distro: d.id).find { _1.filename.end_with?('.log') }&.attachment&.blob %>
-        <%= link_to_if log_blob.present?, 'log', rails_blob_path(log_blob) %>
+        <% log_artefact = task.artefacts.failed.where(distro: d.id).find { _1.filename.end_with?('.log') } %>
+        <% if log_artefact.present? && log_artefact.attachment.present? &&  log_artefact.attachment.blob.present? %>
+          <%= link_to 'log', rails_blob_path(log_artefact.attachment.blob) %>
+        <% end %>
       <% end %>
       <br />
     <% end %>
