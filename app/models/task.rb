@@ -90,4 +90,8 @@ class Task < ::ApplicationRecord
       update!(state: 'pending_build', agent_id: nil)
     end
   end
+
+  def log_artefact(distro_id)
+    artefacts.failed.where(distro: distro_id).find { _1.filename.end_with?('.log') }
+  end
 end
