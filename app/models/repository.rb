@@ -49,13 +49,13 @@ class Repository < ::ApplicationRecord
     gpg_key_private.present? && gpg_key_public.present?
   end
 
-  def installable_package_name
-    project.installable_package_name(distro.id)
+  def package_name
+    project.package_name(distro.id)
   end
 
   def installable_cli
     distro.install_steps.map do |command|
-      format(command, project_slug: project.slug, installable_package_name: installable_package_name, url: storage.url)
+      format(command, project_slug: project.slug, package_name:, url: storage.url)
     end.join("\n")
   end
 

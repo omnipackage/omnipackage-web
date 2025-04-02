@@ -8,7 +8,7 @@ opensuse: &opensuse
   install_steps:
   - 'zypper addrepo --refresh %{url}/%{project_slug}.repo'
   - 'zypper refresh'
-  - 'zypper install %{installable_package_name}'
+  - 'zypper install %{package_name}'
 
 debian: &debian
   package_type: 'deb'
@@ -22,7 +22,7 @@ debian: &debian
   - "echo 'deb %{url} stable/' | sudo tee /etc/apt/sources.list.d/omnipackage_%{project_slug}.list"
   - "curl -fsSL %{url}/stable/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/omnipackage_%{project_slug}.gpg > /dev/null"
   - "sudo apt update"
-  - "sudo apt install %{installable_package_name}"
+  - "sudo apt install %{package_name}"
 
 redhat: &redhat
   package_type: 'rpm'
@@ -32,7 +32,7 @@ redhat: &redhat
   - 'dnf install -y --allowerasing createrepo rpm-sign'
   install_steps:
   - "curl -o /etc/yum.repos.d/%{project_slug}.repo %{url}/%{project_slug}.repo"
-  - "dnf install %{installable_package_name}"
+  - "dnf install %{package_name}"
 
 distros:
 - id: 'opensuse_15.3'

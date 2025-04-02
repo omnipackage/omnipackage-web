@@ -23,8 +23,8 @@ class Project
       distros&.map(&:id)
     end
 
-    def installable_package_name(for_distro)
-      config['builds'].find { |i| i['distro'] == for_distro }&.dig('installable_package_name')
+    def package_name(for_distro)
+      config['builds'].find { |i| i['distro'] == for_distro }&.dig('package_name')
     end
   end
 end
