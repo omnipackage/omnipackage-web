@@ -2,12 +2,16 @@ class SourcesFetchJob < ::ApplicationJob
   queue_as :long
 
   class << self
-    def start(project, task = nil)
+    def start(project, task = nil, delay: nil)
       return if project.fetching?
       return if task && !task.pending_fetch?
 
       project.fetching!
-      perform_later(project.id, task&.id)
+      if delay
+        set(wait: delay).perform_later(project.id, task&.id)
+      else
+        perform_later(project.id, task&.id)
+      end
     end
   end
 

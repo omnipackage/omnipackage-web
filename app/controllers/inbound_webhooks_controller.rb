@@ -3,7 +3,7 @@ class InboundWebhooksController < ::ActionController::Base # rubocop: disable Ra
   before_action :verify!
 
   def trigger
-    ::Task::Starter.new(webhook.project).call
+    ::Task::Starter.new(webhook.project).call(sources_fetch_delay: 20.seconds)
     head(:ok)
   rescue ::ActiveRecord::RecordInvalid
     head(:unprocessable_entity)

@@ -6,7 +6,7 @@ class Task
       @skip_fetch = skip_fetch
     end
 
-    def call # rubocop: disable Metrics/MethodLength
+    def call(sources_fetch_delay: nil) # rubocop: disable Metrics/MethodLength
       create_source_tarball_if_not_exists
 
       task = project.tasks.build(distro_ids: distro_ids)
@@ -17,7 +17,7 @@ class Task
         task.state = 'pending_fetch'
       end
       if task.save && task.pending_fetch?
-        ::SourcesFetchJob.start(project, task)
+        ::SourcesFetchJob.start(project, task, delay: sources_fetch_delay)
       end
       task
     end
