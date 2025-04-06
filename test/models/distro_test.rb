@@ -8,7 +8,7 @@ class DistroTest < ::ActiveSupport::TestCase
       assert d.name.is_a?(::String)
       assert d.setup.is_a?(::Array)
       assert d.setup.size.positive?
-      assert %w[rpm deb].include?(d.package_type) # rubocop: disable Performance/CollectionLiteralInLoop
+      assert %w[rpm deb].include?(d.package_type)
       d.setup.each do |s|
         assert s.is_a?(::String)
       end
