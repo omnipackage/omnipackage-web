@@ -12,7 +12,8 @@ class Task
             upload_artefact_url:  view_context.agent_api_upload_artefact_url(task.id),
             distros:              task.distro_ids,
             limits:               task.agent_limits,
-            secrets:              task.secrets
+            secrets:              task.secrets,
+            build_config_path:    task.project.sources.config_path
           }
         end
         result.freeze
