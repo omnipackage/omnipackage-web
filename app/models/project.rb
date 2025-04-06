@@ -42,7 +42,8 @@ class Project < ::ApplicationRecord
       location:         sources_location,
       subdir:           sources_subdir,
       branch:           sources_branch,
-      ssh_private_key:  sources_private_ssh_key
+      ssh_private_key:  sources_private_ssh_key,
+      config_path:      sources_config_path
     )
   end
 

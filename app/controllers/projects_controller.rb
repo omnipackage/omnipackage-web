@@ -71,6 +71,6 @@ class ProjectsController < ::ApplicationController
   end
 
   def project_params
-    params.expect(project: [:name, :slug, :sources_location, :sources_kind, :sources_subdir, :sources_branch, :secrets, :description, :upstream_url, :logo, :_remove_logo])
+    params.expect(project: [:name, :slug, :sources_location, :sources_kind, :sources_subdir, :sources_branch, :secrets, :description, :upstream_url, :logo, :_remove_logo, :sources_config_path])
   end
 end

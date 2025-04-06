@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_19_195308) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_06_084236) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -112,6 +112,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_19_195308) do
     t.string "slug", limit: 120, null: false
     t.string "description", limit: 1000
     t.string "upstream_url", limit: 1000
+    t.string "sources_config_path", limit: 4096
     t.index ["name"], name: "index_projects_on_name"
     t.index ["sources_kind"], name: "index_projects_on_sources_kind"
     t.index ["sources_status"], name: "index_projects_on_sources_status"

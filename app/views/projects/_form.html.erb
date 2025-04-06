@@ -156,6 +156,24 @@
     </div>
 
     <div class="gap-1 pt-3">
+      <a class="link-offset-2 link-underline link-underline-opacity-0 form-label" data-bs-toggle="collapse" href="#collapseConfigPath" role="button" aria-expanded="false" aria-controls="collapseConfigPath">
+        Config file location
+      </a>
+    </div>
+    <div class="collapse <%= project.sources_config_path.present? ? 'show' : '' %> ps-3 pe-3" id="collapseConfigPath">
+      <div class="form-text">
+        If config file located not in <code>.omnipackage/config.yml</code>
+      </div>
+      <%= f.text_field :sources_config_path,
+            class:  "form-control #{project.errors.include?(:sources_config_path) ? 'is-invalid' : ''}",
+            aria:   { describedby: 'validation-error-sources_config_path' }
+      %>
+      <div id="validation-error-sources_config_path" class="invalid-feedback d-block">
+        <%= project.errors.messages_for(:sources_config_path).to_sentence %>
+      </div>
+    </div>
+
+    <div class="gap-1 pt-3">
       <a class="link-offset-2 link-underline link-underline-opacity-0 form-label" data-bs-toggle="collapse" href="#collapseSecrets" role="button" aria-expanded="false" aria-controls="collapseSecrets">
         Secrets
       </a>

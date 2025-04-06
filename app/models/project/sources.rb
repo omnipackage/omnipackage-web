@@ -23,11 +23,12 @@ class Project
 
     Envelop = ::Data.define(:config, :tarball)
 
-    attr_reader :location, :subdir
+    attr_reader :location, :subdir, :config_path
 
     def initialize(**kwargs)
       @location = kwargs.fetch(:location)
       @subdir = kwargs.fetch(:subdir, '')
+      @config_path = kwargs[:config_path].presence || '.omnipackage/config.yml'
       raise "forbidden subdir '#{subdir}'" if subdir.start_with?('/') || subdir.include?('..')
     end
 
@@ -48,7 +49,10 @@ class Project
     private
 
     def read_config(dir)
-      ::YAML.load_file(::File.join(dir, '.omnipackage', 'config.yml'), aliases: true)
+      path = ::File.join(dir, config_path)
+      raise "file '#{config_path}' does not exist" unless ::File.exist?(path)
+
+      ::YAML.load_file(path, aliases: true)
     end
 
     def tarball_excludes
