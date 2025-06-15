@@ -47,7 +47,7 @@ class Project < ::ApplicationRecord
     )
   end
 
-  def generate_ssh_keys
+  def generate_ssh_keys # rubocop: disable Naming/PredicateMethod
     keys = ::SshKeygen.new.generate
     if keys
       self.sources_private_ssh_key = keys.priv

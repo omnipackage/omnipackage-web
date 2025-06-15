@@ -98,6 +98,13 @@ distros:
   arch: x86_64
   image_info_url: 'https://hub.docker.com/_/fedora'
 
+- id: 'fedora_42'
+  name: 'Fedora 42'
+  image: 'fedora:42'
+  <<: *redhat
+  arch: x86_64
+  image_info_url: 'https://hub.docker.com/_/fedora'
+
 - id: 'fedora_rawhide'
   name: 'Fedora Rawhide'
   image: 'fedora:rawhide'
@@ -206,6 +213,13 @@ distros:
 - id: 'almalinux_9'
   name: 'AlmaLinux 9'
   image: 'almalinux:9'
+  <<: *redhat
+  arch: x86_64
+  image_info_url: 'https://hub.docker.com/_/almalinux'
+
+- id: 'almalinux_10'
+  name: 'AlmaLinux 10'
+  image: 'almalinux:10'
   <<: *redhat
   arch: x86_64
   image_info_url: 'https://hub.docker.com/_/almalinux'
