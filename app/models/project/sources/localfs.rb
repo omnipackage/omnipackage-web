@@ -1,7 +1,7 @@
 class Project
   class Sources
     class Localfs < ::Project::Sources
-      def probe
+      def probe # rubocop: disable Naming/PredicateMethod
         ::File.exist?(full_location)
       end
 
