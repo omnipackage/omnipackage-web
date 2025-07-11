@@ -1,6 +1,15 @@
 <%# locals: (project:) -%>
 
-<h5>Project <%= project.name %></h5> <span class="fw-light text-body-secondary"><%= project.description %></span>
+<div class="row">
+  <div class="col-auto">
+    <h5>Project <%= project.name %></h5> <span class="fw-light text-body-secondary"><%= project.description %></span>
+  </div>
+  <div class="col-auto" style="width: 80px">
+    <% if project.logo.present? %>
+      <%= image_tag(url_for(project.logo), height: '64', width: '64', class: 'img', alt: 'logo') %>
+    <% end %>
+  </div>
+</div>
 
 <div class="container pt-3">
   <div class="row">
