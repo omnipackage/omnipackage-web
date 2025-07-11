@@ -10,6 +10,10 @@ class Distro
       end
     end
 
+    def all_active
+      @all_active ||= all.reject(&:deprecated?)
+    end
+
     def by_id(id)
       find { |i| i.id == id.to_s } || (raise "no such distro '#{id}'")
     end
@@ -63,6 +67,10 @@ class Distro
 
   def slug
     id.gsub(/[^0-9a-z]/i, '-')
+  end
+
+  def deprecated?
+    config['deprecated'] == true
   end
 
   private

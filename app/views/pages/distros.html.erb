@@ -2,7 +2,7 @@
 
 <div class="container pt-3">
 
-  <% ::Distro.all.group_by(&:family).each do |family, distros| %>
+  <% ::Distro.all_active.group_by(&:family).each do |family, distros| %>
     <div class="row pt-3 pb-3 align-items-center">
       <div class="col-md-auto">
         <%= render partial: 'distro_icon', locals: { family: family, size: 64 } %>

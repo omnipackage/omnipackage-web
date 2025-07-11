@@ -16,6 +16,9 @@
             <div class="card">
               <div class="card-body">
                 <h6 class="card-title"><%= d.name %> <small class="text-secondary"><%= d.arch %></small></h6>
+                <% if d.deprecated? %>
+                  <span class="text-warning">Deprecated <a href="#<%= d.id %>"><i class="bi bi-question-circle-fill"></i></a></span> 
+                <% end %>
 
                 <ul class="list-group list-group-flush">
                   <% repos_for_distro.sort_by { |repo| repo.created_at }.each do |repo| %>
