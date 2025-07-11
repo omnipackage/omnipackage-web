@@ -25,7 +25,7 @@
         <%= render partial: 'projects/task_state', locals: { project: project } %>
       </div>
 
-      <% if project.sources_verified? %>
+      <% if project.sources_verified? && %w[pending_fetch pending_build running].exclude?(project.tasks.order(:created_at).last&.state) %>
         <%= button_to 'Build now', tasks_path(project_id: project.id, no_redirect: 'true'), method: :post, class: 'btn btn-link btn-sm' %>
       <% end %>
     </div>
