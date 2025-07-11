@@ -26,7 +26,7 @@
       </div>
 
       <% if project.sources_verified? %>
-        <%= button_to 'Build now', tasks_path(project_id: project.id), method: :post, class: 'btn btn-link btn-sm' %>
+        <%= button_to 'Build now', tasks_path(project_id: project.id, no_redirect: 'true'), method: :post, class: 'btn btn-link btn-sm' %>
       <% end %>
     </div>
 
