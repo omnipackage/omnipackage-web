@@ -16,7 +16,35 @@
         <% if logged_in? %>
           <%= render partial: 'navbar_link', locals: { path: projects_path, text: 'Projects', active: -> { params[:controller] == 'projects' } } %>
           <%= render partial: 'navbar_link', locals: { path: repositories_path, text: 'Repositories', active: -> { params[:controller] == 'repositories' } } %>
-          <%= render partial: 'navbar_link', locals: { path: tasks_path, text: 'Tasks', active: -> { params[:controller] == 'tasks' } } %>
+
+          <% if logged_in? %>
+            <li class="nav-item dropdown ms-3 me-3">
+              <%- tasks = current_user.tasks.where(state: %w[pending_fetch pending_build running failed]).load_async %>
+              <a class="nav-link dropdown-toggle <%= params[:controller] == 'tasks' ? 'active' : '' %>" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <% if tasks.any?(&:running?) %>
+                  <span class="spinner-border spinner-border-sm"></span>
+                <% end %>
+                Build tasks
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end shadow">
+                <% tasks.first(15).each do |task| %>
+                  <li>
+                    <%= link_to task_path(task), class: 'dropdown-item' do %>
+                      <%= render partial: 'tasks/state_icon', locals: { task: task } %>
+                      <%= task.state.humanize %>
+                      <% if task.running? %>
+                        <%= task.progress.to_s %>
+                      <% end %>
+                    <% end %>
+                  </li>
+                <% end %>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                  <%= link_to 'Show all', tasks_path, class: 'dropdown-item' %>
+                </li>
+              </ul>
+            </li>
+          <% end %>
         <% end %>
       </ul>
 
