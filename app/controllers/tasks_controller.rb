@@ -22,7 +22,7 @@ class TasksController < ::ApplicationController
     breadcrumb.add("Task #{@task.id}")
   end
 
-  def create # rubocop: disable Metrics/AbcSize
+  def create # rubocop: disable Metrics/AbcSize, Metrics/MethodLength
     task = ::Task::Starter.new(project, skip_fetch: params[:skip_fetch] == 'true', distro_ids: params[:distro_ids].presence).call
     if task.nil?
       redirect_back(fallback_location: tasks_path, alert: 'Pending task already exists, skipping')

@@ -1,7 +1,8 @@
 class Task
   class Starter
     def initialize(project, skip_fetch: false, distro_ids: nil)
-      @distro_ids = distro_ids || project.distro_ids.presence || ::Distro.ids
+      @distro_ids = distro_ids || project.distro_ids.presence || ::Distro.active_ids
+      @distro_ids &= ::Distro.active_ids
       @project = project
       @skip_fetch = skip_fetch
     end

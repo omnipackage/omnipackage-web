@@ -11,7 +11,7 @@ class Distro
     end
 
     def all_active
-      @all_active ||= all.reject(&:deprecated?)
+      @all_active ||= all.reject(&:deprecated?) # rubocop: disable ThreadSafety/ClassInstanceVariable
     end
 
     def by_id(id)
@@ -29,6 +29,10 @@ class Distro
 
     def ids
       map(&:id)
+    end
+
+    def active_ids
+      all_active.map(&:id)
     end
 
     def arches
@@ -49,7 +53,7 @@ class Distro
     freeze
   end
 
-  %w[id name image package_type setup setup_repo install_steps arch image_info_url].each do |attr|
+  %w[id name image package_type setup setup_repo install_steps arch image_info_url deprecated].each do |attr|
     define_method(attr) { config.fetch(attr) }
   end
 
@@ -70,7 +74,7 @@ class Distro
   end
 
   def deprecated?
-    config['deprecated'] == true
+    config['deprecated'].present?
   end
 
   private

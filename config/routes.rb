@@ -79,4 +79,5 @@ require 'sidekiq-scheduler/web'
   ::PagesController::ALL.each do |page|
     get page, to: "pages##{page}", as: "pages_#{page}"
   end
+  get 'distros/deprecated/:id', to: 'pages#deprecated_distro', as: :deprecated_distro_path
 end

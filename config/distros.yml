@@ -118,6 +118,7 @@ distros:
   <<: *debian
   arch: x86_64
   image_info_url: 'https://hub.docker.com/_/debian'
+  deprecated: 'Official support ended in <a href="https://endoflife.date/debian" target="_blank">September 2020</a>. Repositories stopped working in July 2025'
 
 - id: 'debian_11'
   name: 'Debian 11'

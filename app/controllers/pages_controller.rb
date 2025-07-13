@@ -8,4 +8,8 @@ class PagesController < ::ApplicationController
       breadcrumb.add(page.to_s.humanize)
     end
   end
+
+  def deprecated_distro
+    @distro = ::Distro[params.fetch(:id)]
+  end
 end
