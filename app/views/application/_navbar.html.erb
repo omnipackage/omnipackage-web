@@ -19,7 +19,7 @@
 
           <% if logged_in? %>
             <li class="nav-item dropdown ms-3 me-3">
-              <%- tasks = current_user.tasks.where(state: %w[pending_fetch pending_build running failed]).order(created_at: :desc).load_async %>
+              <%- tasks = current_user.tasks.where(state: %w[pending_fetch pending_build running failed]).load_async %>
               <a class="nav-link dropdown-toggle <%= params[:controller] == 'tasks' ? 'active' : '' %>" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <% if tasks.any?(&:running?) %>
                   <span class="spinner-border spinner-border-sm"></span>
