@@ -15,7 +15,7 @@ gem 'sidekiq'
 gem 'sidekiq-scheduler'
 gem 'stimulus-rails'
 gem 'turbo-rails'
-gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
+gem 'tzinfo-data', platforms: %i[windows]
 
 group :development, :test do
   gem 'brakeman', require: false
