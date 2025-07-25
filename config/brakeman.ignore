@@ -1,13 +1,47 @@
 {
   "ignored_warnings": [
     {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 2,
+      "fingerprint": "3d2ac8d0ff3885384918a6cdd729c2c2d595b57bfdb127d8d5caf4a419e7966b",
+      "check_name": "CrossSiteScripting",
+      "message": "Unescaped model attribute",
+      "file": "app/views/pages/deprecated_distro.html.erb",
+      "line": 5,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross_site_scripting",
+      "code": "::Distro[params.fetch(:id)].deprecated",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "PagesController",
+          "method": "deprecated_distro",
+          "line": 14,
+          "file": "app/controllers/pages_controller.rb",
+          "rendered": {
+            "name": "pages/deprecated_distro",
+            "file": "app/views/pages/deprecated_distro.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "pages/deprecated_distro"
+      },
+      "user_input": null,
+      "confidence": "Medium",
+      "cwe_id": [
+        79
+      ],
+      "note": ""
+    },
+    {
       "warning_type": "Command Injection",
       "warning_code": 14,
       "fingerprint": "e233e5738240e368ad190714f6707a75021c329f749ce6aee94be0cba9f7fc73",
       "check_name": "Execute",
       "message": "Possible command injection",
       "file": "config/initializers/check_system_packages.rb",
-      "line": 9,
+      "line": 7,
       "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
       "code": "system(\"#{cmd} >/dev/null 2>&1\")",
       "render_path": null,
@@ -20,6 +54,5 @@
       "note": ""
     }
   ],
-  "updated": "2024-07-21 08:19:15 +0200",
-  "brakeman_version": "6.1.2"
+  "brakeman_version": "7.1.0"
 }
