@@ -224,6 +224,8 @@ distros:
   name: 'AlmaLinux 10'
   image: 'almalinux:10'
   <<: *redhat
+  setup_repo:
+  - 'dnf install -y --allowerasing createrepo rpm-sign gpg'
   arch: x86_64
   image_info_url: 'https://hub.docker.com/_/almalinux'
 
