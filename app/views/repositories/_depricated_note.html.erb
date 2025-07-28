@@ -2,7 +2,7 @@
 
 <% if distro.deprecated? %>
   <span class="text-warning">Deprecated
-    <%= link_to deprecated_distro_path_path(distro.id) do %>
+    <%= link_to deprecated_distro_path_path(distro.url_safe_id) do %>
       <i class="bi bi-question-circle-fill"></i>
     <% end %>
   </span>

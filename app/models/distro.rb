@@ -15,7 +15,8 @@ class Distro
     end
 
     def by_id(id)
-      find { |i| i.id == id.to_s } || (raise "no such distro '#{id}'")
+      id = id.to_s.gsub('%2E', '.')
+      find { |i| i.id == id } || (raise "no such distro '#{id}'")
     end
     alias [] by_id
 
@@ -75,6 +76,10 @@ class Distro
 
   def deprecated?
     config['deprecated'].present?
+  end
+
+  def url_safe_id
+    id.gsub('.', '%2E')
   end
 
   private
