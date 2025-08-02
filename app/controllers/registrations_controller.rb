@@ -13,7 +13,7 @@ class RegistrationsController < ::ApplicationController
 
     unless captcha_verified?
       flash.now[:alert] = 'CAPTCHA failed'
-      render(:new, status: :unprocessable_entity)
+      render(:new, status: :unprocessable_content)
       return
     end
 
@@ -24,7 +24,7 @@ class RegistrationsController < ::ApplicationController
       redirect_to(root_path, notice: 'Welcome! You have signed up successfully')
     else
       flash.now[:alert] = @user.errors.full_messages.to_sentence
-      render(:new, status: :unprocessable_entity)
+      render(:new, status: :unprocessable_content)
     end
   end
 

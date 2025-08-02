@@ -12,7 +12,7 @@ class PasswordsController < ::ApplicationController
       redirect_to(root_path, notice: 'Your password has been changed')
     else
       flash.now[:alert] = @user.errors.full_messages.to_sentence
-      render(:edit, status: :unprocessable_entity)
+      render(:edit, status: :unprocessable_content)
     end
   end
 

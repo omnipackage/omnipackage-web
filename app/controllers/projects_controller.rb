@@ -38,7 +38,7 @@ class ProjectsController < ::ApplicationController
       ::SourcesFetchJob.perform_later(@project.id)
       redirect_to(projects_path, notice: "Project #{@project.name} has been successfully created")
     else
-      render(:new, status: :unprocessable_entity)
+      render(:new, status: :unprocessable_content)
     end
   end
 
@@ -51,7 +51,7 @@ class ProjectsController < ::ApplicationController
       end
       redirect_to(project_path(@project.id), notice: "Project #{@project.name} has been successfully updated")
     else
-      render(:edit, status: :unprocessable_entity)
+      render(:edit, status: :unprocessable_content)
     end
   end
 

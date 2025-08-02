@@ -38,7 +38,7 @@ class AgentsController < ::ApplicationController
       @agent.save!
       redirect_to(agents_path, notice: "Agent #{@agent.id} has been successfully created")
     else
-      render(:new, status: :unprocessable_entity)
+      render(:new, status: :unprocessable_content)
     end
   end
 
@@ -48,7 +48,7 @@ class AgentsController < ::ApplicationController
     if @agent.save
       redirect_to(agents_path(@agent.id), notice: "Agent #{@agent.id} has been successfully updated")
     else
-      render(:edit, status: :unprocessable_entity)
+      render(:edit, status: :unprocessable_content)
     end
   end
 

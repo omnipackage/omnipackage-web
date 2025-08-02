@@ -14,7 +14,7 @@ class CustomRepositoryStoragesController < ::ApplicationController
       @custom_repository_storage.save!
       redirect_to(project_path(project), notice: "Project's #{project.name} custom repository storage has been successfully created")
     else
-      render(:show, status: :unprocessable_entity)
+      render(:show, status: :unprocessable_content)
     end
   end
 
@@ -25,7 +25,7 @@ class CustomRepositoryStoragesController < ::ApplicationController
       @custom_repository_storage.save!
       redirect_to(project_path(project), notice: "Project's #{project.name} custom repository storage has been successfully updated")
     else
-      render(:show, status: :unprocessable_entity)
+      render(:show, status: :unprocessable_content)
     end
   end
 

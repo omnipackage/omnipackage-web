@@ -31,7 +31,7 @@ class ProjectsFlowTest < ::ActionDispatch::IntegrationTest
   test 'not create invalid project' do
     assert_no_difference('@user.projects.count') do
       post projects_path, params: { project: { name: 'TestProject', sources_location: 'git@someurl.com/test', sources_kind: 'git', sources_subdir: '../../../etc/passwd' } }
-      assert_response :unprocessable_entity
+      assert_response :unprocessable_content
     end
   end
 

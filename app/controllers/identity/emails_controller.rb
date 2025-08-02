@@ -10,7 +10,7 @@ module Identity
         redirect_to_root
       else
         flash.now[:alert] = @user.errors.full_messages.to_sentence
-        render(:edit, status: :unprocessable_entity)
+        render(:edit, status: :unprocessable_content)
       end
     end
 

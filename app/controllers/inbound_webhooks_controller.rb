@@ -6,7 +6,7 @@ class InboundWebhooksController < ::ActionController::Base # rubocop: disable Ra
     ::AsyncTaskStarterJob.perform_later(webhook.project_id)
     head(:ok)
   rescue ::ActiveRecord::RecordInvalid
-    head(:unprocessable_entity)
+    head(:unprocessable_content)
   end
 
   private

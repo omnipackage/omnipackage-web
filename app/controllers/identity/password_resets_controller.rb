@@ -26,7 +26,7 @@ module Identity
         redirect_to(sign_in_path, notice: 'Your password was reset successfully. Please sign in')
       else
         flash.now[:alert] = @user.errors.full_messages.to_sentence
-        render(:edit, status: :unprocessable_entity)
+        render(:edit, status: :unprocessable_content)
       end
     end
 

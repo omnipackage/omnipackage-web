@@ -31,7 +31,7 @@ class WebhooksController < ::ApplicationController
     if @webhook.save
       redirect_to(project_webhooks_path(@webhook.project), notice: "Webhook has been successfully created")
     else
-      render(:new, status: :unprocessable_entity)
+      render(:new, status: :unprocessable_content)
     end
   end
 
@@ -40,7 +40,7 @@ class WebhooksController < ::ApplicationController
     if @webhook.update(webhook_params)
       redirect_to(project_webhooks_path(@webhook.project), notice: "Webhook has been successfully updated")
     else
-      render(:show, status: :unprocessable_entity)
+      render(:show, status: :unprocessable_content)
     end
   end
 
