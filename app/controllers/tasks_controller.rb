@@ -70,7 +70,7 @@ class TasksController < ::ApplicationController
   private
 
   def project
-    @project ||= current_user.projects.find_by(id: params[:project_id])
+    @project ||= current_user.projects.find_by(id: params[:project_id]) # rubocop: disable Rails/FindByOrAssignmentMemoization
   end
 
   def task
