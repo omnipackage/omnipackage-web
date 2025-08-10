@@ -51,6 +51,7 @@ ssh -T $USER@$HOST <<EOL
   rbenv install --skip-existing
   bundle config --local without development test
   bundle config set deployment true
+  bundle config set simulate_version 4
   # bundle config build.pg --with-pg-include=/usr/pgsql-16/include/ --with-pg-lib=/usr/pgsql-16/lib/
 
   bin/bundle install
