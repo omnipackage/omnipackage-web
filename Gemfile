@@ -14,7 +14,6 @@ gem 'rollbar'
 gem 'sidekiq'
 gem 'sidekiq-scheduler'
 gem 'stimulus-rails'
-gem 'thruster', require: false
 gem 'turbo-rails'
 gem 'tzinfo-data', platforms: %i[windows]
 

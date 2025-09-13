@@ -323,7 +323,6 @@ GEM
     super_awesome_print (0.2.6)
       awesome_print
     thor (1.4.0)
-    thruster (0.1.15-x86_64-linux)
     timeout (0.4.3)
     turbo-rails (2.0.16)
       actionpack (>= 7.1.0)
@@ -377,7 +376,6 @@ DEPENDENCIES
   sidekiq-scheduler
   stimulus-rails
   super_awesome_print
-  thruster
   turbo-rails
   tzinfo-data
 
