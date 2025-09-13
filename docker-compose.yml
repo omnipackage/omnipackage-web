@@ -1,0 +1,131 @@
+# RAILS_MASTER_KEY=$(cat config/credentials/production.key) docker compose up
+
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: omnipackage_web_production
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      retries: 5
+    networks:
+      - internal
+
+  redis:
+    image: redis:7
+    command: redis-server --save "" --appendonly no
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      retries: 5
+    networks:
+      - internal
+
+  web:
+    build: .
+    command: bash -c "bin/rails db:prepare && bin/rails server -b 0.0.0.0 -p 3000"
+    ports:
+      - "3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
+      DATABASE_URL: "postgresql://postgres:postgres@db:5432/omnipackage_web_production"
+      REDIS_URL: "redis://redis:6379/0"
+      RAILS_ENV: production
+    volumes:
+      - public_assets:/app/public:ro
+    networks:
+      - internal
+
+  sidekiq_default:
+    build: .
+    command: bundle exec sidekiq -C config/sidekiq/default.yml
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
+      DATABASE_URL: "postgresql://postgres:postgres@db:5432/omnipackage_web_production"
+      REDIS_URL: "redis://redis:6379/0"
+      RAILS_ENV: production
+    networks:
+      - internal
+
+  sidekiq_long:
+    build: .
+    command: bundle exec sidekiq -C config/sidekiq/long.yml
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
+      DATABASE_URL: "postgresql://postgres:postgres@db:5432/omnipackage_web_production"
+      REDIS_URL: "redis://redis:6379/0"
+      RAILS_ENV: production
+    networks:
+      - internal
+
+  sidekiq_publish:
+    build: .
+    command: bundle exec sidekiq -C config/sidekiq/publish.yml
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
+      DATABASE_URL: "postgresql://postgres:postgres@db:5432/omnipackage_web_production"
+      REDIS_URL: "redis://redis:6379/0"
+      RAILS_ENV: production
+    networks:
+      - internal
+
+  caddy:
+    image: caddy:2
+    ports:
+      - "8080:80"
+    command: >
+      sh -c "echo ':80 {
+        file_server
+        root * /app/public/
+        @notStatic {
+          not file
+        }
+        reverse_proxy @notStatic web:3000
+        encode zstd gzip
+      }' | caddy run --config - --adapter caddyfile"
+    volumes:
+      - public_assets:/app/public:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - web
+    networks:
+      - internal
+
+volumes:
+  db_data:
+  redis_data:
+  caddy_data:
+  caddy_config:
+  public_assets:
+
+networks:
+  internal:
+    driver: bridge
