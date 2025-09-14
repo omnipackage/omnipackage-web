@@ -1,0 +1,18 @@
+{
+  log {
+    format console
+    level INFO
+  }
+  local_certs
+}
+
+
+web.omnipackage.local {
+  file_server
+  root /app/public/
+  @notStatic {
+    not file
+  }
+  reverse_proxy @notStatic web:3000
+  encode zstd gzip
+}

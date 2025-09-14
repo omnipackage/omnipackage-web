@@ -93,4 +93,5 @@ require 'active_support/core_ext/integer/time'
 
   config.hosts << 'web.omnipackage.org'
   config.hosts << 'localhost'
+  config.hosts << 'web.omnipackage.local'
 end
