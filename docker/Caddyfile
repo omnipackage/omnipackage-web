@@ -7,7 +7,7 @@
 }
 
 
-web.omnipackage.local {
+web.omnipackage.local:80 {
   file_server
   root /app/public/
   @notStatic {
