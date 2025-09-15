@@ -1,5 +1,14 @@
 # echo "127.0.0.1 web.omnipackage.local" >> /etc/hosts
 
+# docker compose exec minio bash
+#   mc alias set myminio http://localhost:9000 root password
+#   mc mb myminio/activestorage
+#   mc mb myminio/repositories
+#   mc anonymous set public myminio/repositories
+
+# docker compose exec web bin/rails console
+#   User.create!(email: 'admin@omnipackage.local', password: '12345678', root: true, slug: 'admin')
+
 # RAILS_MASTER_KEY=$(cat ../config/credentials/production.key) MINIO_ACCESS_KEY_ID=root MINIO_SECRET_ACCESS_KEY=password docker compose up
 
 services:
