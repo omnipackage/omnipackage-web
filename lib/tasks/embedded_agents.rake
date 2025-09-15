@@ -25,7 +25,7 @@ namespace :embedded_agents do # rubocop: disable Metrics/BlockLength
           apikey:             a.apikey,
           container_runtime:  ::APP_SETTINGS[:container_runtime],
           build_dir:          build_dir,
-          container_limits_disable: ::ENV['EMBEDDED_AGENTS_LIMITS_DISABLE'].present?
+          container_limits_disable: !::APP_SETTINGS[:publish_container_limits_enable]
         })
         log_formatter = ::OmnipackageAgent::Logging::Formatter.new(tags: [a.name])
         logger = ::OmnipackageAgent::Logging::Logger.new(formatter: log_formatter)
