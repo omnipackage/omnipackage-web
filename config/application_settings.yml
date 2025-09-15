@@ -27,5 +27,5 @@ production:
   disable_registration: true
   image_cache_enable: true
   repositories:
-    bucket: 'repositories'
-    bucket_public_url: 'https://repositories.omnipackage.org'
+    bucket: <%= ::ENV['REPOSITORIES_BUCKET'] || 'repositories' %>
+    bucket_public_url: <%= ::ENV['REPOSITORIES_PUBLIC_URL'] || 'https://repositories.omnipackage.org' %> 

@@ -16,3 +16,7 @@ web.omnipackage.local:80 {
   reverse_proxy @notStatic web:3000
   encode zstd gzip
 }
+
+storage.omnipackage.local:80 {
+  reverse_proxy minio:9000
+}

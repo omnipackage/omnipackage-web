@@ -38,7 +38,7 @@ require 'active_support/core_ext/integer/time'
   # config.action_dispatch.x_sendfile_header = "X-Accel-Redirect" # for NGINX
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
-  config.active_storage.service = :cloudflare
+  config.active_storage.service = ::ENV['ACTIVESTORAGE_SERVICE']&.to_sym || :cloudflare
 
   # Mount Action Cable outside main process or domain.
   # config.action_cable.mount_path = nil

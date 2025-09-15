@@ -1,6 +1,6 @@
 # echo "127.0.0.1 web.omnipackage.local" >> /etc/hosts
 
-# RAILS_MASTER_KEY=$(cat ../config/credentials/production.key) docker compose up
+# RAILS_MASTER_KEY=$(cat ../config/credentials/production.key) MINIO_ACCESS_KEY_ID=root MINIO_SECRET_ACCESS_KEY=password docker compose up
 
 services:
   db:
@@ -45,6 +45,12 @@ services:
       DATABASE_URL: "postgresql://postgres:postgres@db:5432/omnipackage_web_production"
       REDIS_URL: "redis://redis:6379/0"
       RAILS_ENV: production
+      ACTIVESTORAGE_SERVICE: minio
+      MINIO_ENDPOINT: http://storage.omnipackage.local
+      MINIO_ACCESS_KEY_ID: ${MINIO_ACCESS_KEY_ID}
+      MINIO_SECRET_ACCESS_KEY: ${MINIO_SECRET_ACCESS_KEY}
+      REPOSITORIES_BUCKET: repositories
+      REPOSITORIES_PUBLIC_URL: http://storage.omnipackage.local/repositories
     volumes:
       - public_assets:/app/public:ro
     networks:
@@ -75,6 +81,21 @@ services:
     depends_on:
       - web
     networks:
+      internal:
+         aliases:
+          - storage.omnipackage.local
+
+  minio:
+    image: minio/minio:latest
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ACCESS_KEY_ID}
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRET_ACCESS_KEY}
+    command: server /data --console-address ":9001"
+    ports:
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    networks:
       - internal
 
 volumes:
@@ -83,6 +104,7 @@ volumes:
   caddy_data:
   caddy_config:
   public_assets:
+  minio_data:
 
 networks:
   internal:
