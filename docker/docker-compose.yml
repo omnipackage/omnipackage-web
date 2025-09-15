@@ -51,7 +51,7 @@ services:
       MINIO_SECRET_ACCESS_KEY: ${MINIO_SECRET_ACCESS_KEY}
       REPOSITORIES_BUCKET: repositories
       REPOSITORIES_PUBLIC_URL: http://storage.omnipackage.local/repositories
-      PUBLISH_CONTAINER_LIMITS_DISABLE: true
+      INNER_CONTAINER_LIMITS_DISABLE: true
     volumes:
       - public_assets:/app/public:ro
     networks:

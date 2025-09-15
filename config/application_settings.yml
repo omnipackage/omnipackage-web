@@ -30,4 +30,4 @@ production:
   repositories:
     bucket: <%= ::ENV['REPOSITORIES_BUCKET'] || 'repositories' %>
     bucket_public_url: <%= ::ENV['REPOSITORIES_PUBLIC_URL'] || 'https://repositories.omnipackage.org' %>
-  publish_container_limits_enable: <%= ::ENV['PUBLISH_CONTAINER_LIMITS_DISABLE'].present? ? false : true %>
+  publish_container_limits_enable: <%= ::ENV['INNER_CONTAINER_LIMITS_DISABLE'].present? ? false : true %>
