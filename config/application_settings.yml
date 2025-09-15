@@ -1,6 +1,7 @@
 default: &default
   container_runtime: podman
   image_cache_enable: false
+  publish_container_limits_enable: true
   repositories:
     bucket: 'repositories'
   links:
@@ -28,4 +29,5 @@ production:
   image_cache_enable: true
   repositories:
     bucket: <%= ::ENV['REPOSITORIES_BUCKET'] || 'repositories' %>
-    bucket_public_url: <%= ::ENV['REPOSITORIES_PUBLIC_URL'] || 'https://repositories.omnipackage.org' %> 
+    bucket_public_url: <%= ::ENV['REPOSITORIES_PUBLIC_URL'] || 'https://repositories.omnipackage.org' %>
+  publish_container_limits_enable: <%= ::ENV['PUBLISH_CONTAINER_LIMITS_DISABLE'].present? ? false : true %>

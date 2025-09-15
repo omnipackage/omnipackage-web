@@ -51,6 +51,7 @@ services:
       MINIO_SECRET_ACCESS_KEY: ${MINIO_SECRET_ACCESS_KEY}
       REPOSITORIES_BUCKET: repositories
       REPOSITORIES_PUBLIC_URL: http://storage.omnipackage.local/repositories
+      PUBLISH_CONTAINER_LIMITS_DISABLE: true
     volumes:
       - public_assets:/app/public:ro
     networks:
@@ -68,16 +69,16 @@ services:
     <<: *app
     command: bundle exec sidekiq -C config/sidekiq/publish.yml
     privileged: true
-    user: root
+    #user: root
     #environment:
     #  PODMAN_SYSTEMD_UNIT: ''
-    tmpfs:
-      - /run
-      - /tmp
-    security_opt:
-      - seccomp=unconfined
-      - apparmor=unconfined
-    cgroup: host
+    #tmpfs:
+    #  - /run
+    #  - /tmp
+    #security_opt:
+    #  - seccomp=unconfined
+    #  - apparmor=unconfined
+    #cgroup: host
 
   caddy:
     image: caddy:2

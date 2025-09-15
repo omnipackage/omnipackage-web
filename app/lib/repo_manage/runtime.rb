@@ -2,14 +2,21 @@ module RepoManage
   class Runtime
     attr_reader :executable, :workdir, :setup_cli, :homedir, :limits, :lock
 
-    def initialize(workdir:, image:, setup_cli:, executable:, limits: ::RepoManage::Runtime::Limits.new) # rubocop: disable Metrics/MethodLength
+    # rubocop: disable Metrics/MethodLength
+    def initialize(
+      workdir:,
+      image:,
+      setup_cli:,
+      executable:,
+      limits: ::RepoManage::Runtime::Limits.new(enabled: ::APP_SETTINGS[:publish_container_limits_enable])
+    )
       @executable = executable
       @workdir = workdir
       @setup_cli = setup_cli
       @homedir = ::Dir.mktmpdir
-      @image_cache = ::RepoManage::Runtime::ImageCache.new(executable: executable, default_image: image, setup_cli: setup_cli, enabled: ::APP_SETTINGS[:image_cache_enable])
+      @image_cache = ::RepoManage::Runtime::ImageCache.new(executable:, default_image: image, setup_cli:, enabled: ::APP_SETTINGS[:image_cache_enable])
       @limits = limits
-      @lock = ::RepoManage::Runtime::Lock.new(key: image_cache.container_name, limits: limits)
+      @lock = ::RepoManage::Runtime::Lock.new(key: image_cache.container_name, limits:)
 
       ::Rails.error.set_context(
         default_image:  image_cache.default_image,
@@ -17,6 +24,7 @@ module RepoManage
         container_name: image_cache.container_name
       )
     end
+    # rubocop: enable Metrics/MethodLength
 
     def execute(commands)
       raise 'execute can only be used once' if frozen?
