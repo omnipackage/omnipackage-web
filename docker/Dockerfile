@@ -4,6 +4,12 @@ WORKDIR /app
 
 RUN zypper dup -y && zypper in -y patterns-devel-base-devel_basis postgresql-devel libxml2-devel libyaml-devel podman ruby-devel git openssh tree
 
+RUN zypper --non-interactive --gpg-auto-import-keys addrepo \
+      https://repositories.omnipackage.org/oleg/omnipackage-agent/opensuse-tumbleweed/omnipackage-agent.repo \
+ && zypper --non-interactive --gpg-auto-import-keys refresh \
+ && zypper --non-interactive in omnipackage-agent
+
+
 ENV RAILS_ENV=production
 ENV RAILS_LOG_TO_STDOUT=true
 ENV WEB_CONCURRENCY=0
