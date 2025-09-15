@@ -8,6 +8,9 @@
 
 # docker compose exec web bin/rails console
 #   User.create!(email: 'admin@omnipackage.local', password: '12345678', root: true, slug: 'admin')
+#
+# docker compose exec web bin/rails embedded_agents:create
+# docker compose exec web bin/rails embedded_agents:create
 
 # RAILS_MASTER_KEY=$(cat ../config/credentials/production.key) MINIO_ACCESS_KEY_ID=root MINIO_SECRET_ACCESS_KEY=password docker compose up
 
@@ -61,10 +64,17 @@ services:
       REPOSITORIES_BUCKET: repositories
       REPOSITORIES_PUBLIC_URL: http://storage.omnipackage.local/repositories
       INNER_CONTAINER_LIMITS_DISABLE: true
+      EMBEDDED_AGENTS_APIHOST: http://web.omnipackage.local:3000
     volumes:
       - public_assets:/app/public:ro
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/up || exit 1"]
+      interval: 5s
+      retries: 10
     networks:
-      - internal
+      internal:
+         aliases:
+          - web.omnipackage.local
 
   sidekiq_default:
     <<: *app
@@ -78,16 +88,6 @@ services:
     <<: *app
     command: bundle exec sidekiq -C config/sidekiq/publish.yml
     privileged: true
-    #user: root
-    #environment:
-    #  PODMAN_SYSTEMD_UNIT: ''
-    #tmpfs:
-    #  - /run
-    #  - /tmp
-    #security_opt:
-    #  - seccomp=unconfined
-    #  - apparmor=unconfined
-    #cgroup: host
 
   caddy:
     image: caddy:2
@@ -118,6 +118,13 @@ services:
       - minio_data:/data
     networks:
       - internal
+
+  embedded_agents:
+    <<: *app
+    command: bin/rails embedded_agents:run
+    depends_on:
+      - web
+    privileged: true
 
 volumes:
   db_data:
