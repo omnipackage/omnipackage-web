@@ -3,7 +3,7 @@ set -e
 
 bin/rails db:prepare
 
-bin/rails runner <<-RUBY
+bin/rails runner 'eval(STDIN.read)' <<'RUBY'
 unless Agent.exists?
   2.times do
     agent = Agent.create!(name: "embedded_#{_1 + 1}", arch: ::Distro.arches.first)

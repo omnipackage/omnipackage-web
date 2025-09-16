@@ -12,7 +12,7 @@
 # docker compose exec web bin/rails embedded_agents:create
 # docker compose exec web bin/rails embedded_agents:create
 
-# RAILS_MASTER_KEY=$(cat ../config/credentials/production.key) MINIO_ACCESS_KEY_ID=root MINIO_SECRET_ACCESS_KEY=password docker compose up
+# RAILS_MASTER_KEY=$(cat ../config/credentials/production.key) docker compose up
 
 services:
   db:
@@ -101,7 +101,8 @@ services:
       - caddy_data:/data
       - caddy_config:/config
     depends_on:
-      - web
+      web:
+        condition: service_healthy
     networks:
       internal:
          aliases:
@@ -112,7 +113,7 @@ services:
     environment:
       MINIO_ROOT_USER: ${MINIO_ACCESS_KEY_ID}
       MINIO_ROOT_PASSWORD: ${MINIO_SECRET_ACCESS_KEY}
-    command: ["/bin/sh", "/minio_entrypoint.sh"]
+    entrypoint: ["/bin/sh", "/minio_entrypoint.sh"]
     ports:
       - "9001:9001"
     volumes:
@@ -125,7 +126,8 @@ services:
     <<: *app
     command: bin/rails embedded_agents:run
     depends_on:
-      - web
+      web:
+        condition: service_healthy
     privileged: true
 
 volumes:
