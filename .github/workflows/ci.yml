@@ -43,6 +43,9 @@ jobs:
       - name: Set up database
         run: bundle exec rails db:setup
 
+      - name: Copy example .env
+        run: cp .env.example .env
+
       - name: Run tests
         run: bundle exec rails test
 
