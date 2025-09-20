@@ -124,6 +124,10 @@ GEM
     connection_pool (2.5.4)
     crass (1.0.6)
     date (3.4.1)
+    dotenv (3.1.8)
+    dotenv-rails (3.1.8)
+      dotenv (= 3.1.8)
+      railties (>= 6.1)
     drb (2.2.3)
     erb (5.0.2)
     erubi (1.13.1)
@@ -354,6 +358,7 @@ DEPENDENCIES
   brakeman
   bundle-audit
   capybara
+  dotenv-rails
   factory_bot_rails
   faker
   importmap-rails

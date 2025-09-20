@@ -37,3 +37,6 @@
 /config/credentials/production.key
 
 /vendor/bundle
+
+/.env*
+!/.env.example
