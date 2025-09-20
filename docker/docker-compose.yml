@@ -1,0 +1,143 @@
+# echo "127.0.0.1 web.omnipackage.local" >> /etc/hosts
+
+# docker compose exec minio bash
+#   mc alias set myminio http://localhost:9000 root password
+#   mc mb myminio/activestorage
+#   mc mb myminio/repositories
+#   mc anonymous set public myminio/repositories
+
+# docker compose exec web bin/rails console
+#   User.create!(email: 'admin@omnipackage.local', password: '12345678', root: true, slug: 'admin')
+#
+# docker compose exec web bin/rails embedded_agents:create
+# docker compose exec web bin/rails embedded_agents:create
+
+# RAILS_MASTER_KEY=$(cat ../config/credentials/production.key) docker compose up
+
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: omnipackage_web_production
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      retries: 5
+    networks:
+      - internal
+
+  redis:
+    image: redis:7
+    command: redis-server --save "" --appendonly no
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      retries: 5
+    networks:
+      - internal
+
+  web: &app
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile
+    command: ["/bin/sh", "/web_entrypoint.sh"]
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
+      DATABASE_URL: "postgresql://postgres:postgres@db:5432/omnipackage_web_production"
+      REDIS_URL: "redis://redis:6379/0"
+      RAILS_ENV: production
+      ACTIVESTORAGE_SERVICE: minio
+      MINIO_ENDPOINT: http://storage.omnipackage.local
+      MINIO_ACCESS_KEY_ID: ${MINIO_ACCESS_KEY_ID}
+      MINIO_SECRET_ACCESS_KEY: ${MINIO_SECRET_ACCESS_KEY}
+      REPOSITORIES_BUCKET: repositories
+      REPOSITORIES_PUBLIC_URL: http://storage.omnipackage.local/repositories
+      INNER_CONTAINER_LIMITS_DISABLE: true
+      EMBEDDED_AGENTS_APIHOST: http://web.omnipackage.local:3000
+    volumes:
+      - public_assets:/app/public:ro
+      - ./web_entrypoint.sh:/web_entrypoint.sh
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/up || exit 1"]
+      interval: 5s
+      retries: 10
+    networks:
+      internal:
+         aliases:
+          - web.omnipackage.local
+
+  sidekiq_default:
+    <<: *app
+    command: bundle exec sidekiq -C config/sidekiq/default.yml
+
+  sidekiq_long:
+    <<: *app
+    command: bundle exec sidekiq -C config/sidekiq/long.yml
+
+  sidekiq_publish:
+    <<: *app
+    command: bundle exec sidekiq -C config/sidekiq/publish.yml
+    privileged: true
+
+  caddy:
+    image: caddy:2
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - public_assets:/app/public:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      web:
+        condition: service_healthy
+    networks:
+      internal:
+         aliases:
+          - storage.omnipackage.local
+
+  minio:
+    image: minio/minio:latest
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ACCESS_KEY_ID}
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRET_ACCESS_KEY}
+    entrypoint: ["/bin/sh", "/minio_entrypoint.sh"]
+    ports:
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+      - ./minio_entrypoint.sh:/minio_entrypoint.sh
+    networks:
+      - internal
+
+  embedded_agents:
+    <<: *app
+    command: bin/rails embedded_agents:run
+    depends_on:
+      web:
+        condition: service_healthy
+    privileged: true
+
+volumes:
+  db_data:
+  redis_data:
+  caddy_data:
+  caddy_config:
+  public_assets:
+  minio_data:
+
+networks:
+  internal:
+    driver: bridge

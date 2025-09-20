@@ -18,7 +18,7 @@ require 'active_support/core_ext/integer/time'
 
   # Ensures that a master key has been made available in either ENV["RAILS_MASTER_KEY"]
   # or in config/master.key. This key is used to decrypt credentials (and other encrypted files).
-  config.require_master_key = true
+  config.require_master_key = false
 
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
@@ -38,7 +38,7 @@ require 'active_support/core_ext/integer/time'
   # config.action_dispatch.x_sendfile_header = "X-Accel-Redirect" # for NGINX
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
-  config.active_storage.service = :cloudflare
+  config.active_storage.service = ::ENV['ACTIVESTORAGE_SERVICE']&.to_sym || :cloudflare
 
   # Mount Action Cable outside main process or domain.
   # config.action_cable.mount_path = nil
@@ -93,4 +93,5 @@ require 'active_support/core_ext/integer/time'
 
   config.hosts << 'web.omnipackage.org'
   config.hosts << 'localhost'
+  config.hosts << 'web.omnipackage.local'
 end
