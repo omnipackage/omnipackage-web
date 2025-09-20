@@ -38,5 +38,5 @@
 
 /vendor/bundle
 
-/.env*
-!/.env.example
+/.env.*
+!/.env
