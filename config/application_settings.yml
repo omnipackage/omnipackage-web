@@ -1,6 +1,6 @@
 default: &default
-  container_runtime: podman
-  image_cache_enable: false
+  container_runtime: <%= ::ENV['CONTAINER_RUNTIME'] || 'podman' %>
+  image_cache_enable: <%= ::ENV['IMAGE_CACHE_ENABLE'].present? %>
   publish_container_limits_enable: true
   repositories:
     bucket: 'repositories'
