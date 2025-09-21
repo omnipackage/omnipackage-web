@@ -1,11 +1,11 @@
 class Turnstile
   class << self
     def secret_key
-      ::Rails.application.credentials.dig(:cloudflare_turnstile, :secret_key)
+      ::ENV['CLOUDFLARE_TURNSTILE_SECRET_KEY']
     end
 
     def site_key
-      ::Rails.application.credentials.dig(:cloudflare_turnstile, :site_key)
+      ::ENV['CLOUDFLARE_TURNSTILE_SITE_KEY']
     end
 
     def enabled?

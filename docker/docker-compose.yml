@@ -1,18 +1,5 @@
-# echo "127.0.0.1 web.omnipackage.local" >> /etc/hosts
-
-# docker compose exec minio bash
-#   mc alias set myminio http://localhost:9000 root password
-#   mc mb myminio/activestorage
-#   mc mb myminio/repositories
-#   mc anonymous set public myminio/repositories
-
-# docker compose exec web bin/rails console
-#   User.create!(email: 'admin@omnipackage.local', password: '12345678', root: true, slug: 'admin')
-#
-# docker compose exec web bin/rails embedded_agents:create
-# docker compose exec web bin/rails embedded_agents:create
-
-# RAILS_MASTER_KEY=$(cat ../config/credentials/production.key) docker compose up
+# Before running add hosts:
+#   echo "127.0.0.1 web.omnipackage.local storage.omnipackage.local" >> /etc/hosts
 
 services:
   db:
@@ -53,7 +40,6 @@ services:
       redis:
         condition: service_healthy
     environment:
-      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
       DATABASE_URL: "postgresql://postgres:postgres@db:5432/omnipackage_web_production"
       REDIS_URL: "redis://redis:6379/0"
       RAILS_ENV: production
@@ -65,6 +51,11 @@ services:
       REPOSITORIES_PUBLIC_URL: http://storage.omnipackage.local/repositories
       INNER_CONTAINER_LIMITS_DISABLE: true
       EMBEDDED_AGENTS_APIHOST: http://web.omnipackage.local:3000
+      SERVE_HOSTNAME: web.omnipackage.local
+      SECRET_KEY_BASE: 52119c0497947bc307dd2f0d99d57498f3d9dc9e0fb635deda6fc76e64f3c71383cc82b40dc2589ea2e86f64908c6a488997b35640239020da79d5708e62b2a7
+      ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY: jRdRpMiqF1181ZTfyvJdpbY9MPsQvCZI
+      ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY: aLvR9Er6j82UuNdgIMTmj8Jd8CpPA8qd
+      ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT: QTqCtQoIoUh3bTHKpLGPvkDaycGjvadF
     volumes:
       - public_assets:/app/public:ro
       - ./web_entrypoint.sh:/web_entrypoint.sh

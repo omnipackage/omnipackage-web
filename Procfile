@@ -12,7 +12,7 @@ sidekiq_publish: bundle exec sidekiq -C config/sidekiq/publish.yml
 
 #
 # go install github.com/minio/minio@latest
-minio: MINIO_ROOT_USER=`bundle exec rails runner 'puts ::Rails.application.credentials.minio.access_key_id'` MINIO_ROOT_PASSWORD=`bundle exec rails runner 'puts ::Rails.application.credentials.minio.secret_access_key'` ~/.go/bin/minio server ./storage/minio --console-address ":9001"
+minio: MINIO_ROOT_USER=`bundle exec rails runner 'puts ::ENV["MINIO_ACCESS_KEY_ID"]'` MINIO_ROOT_PASSWORD=`bundle exec rails runner 'puts ::ENV["MINIO_SECRET_ACCESS_KEY"]'` ~/.go/bin/minio server ./storage/minio --console-address ":9001"
 
 #agents: bundle exec rails embedded_agents:run > /dev/null
 

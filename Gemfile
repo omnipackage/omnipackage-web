@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem 'aws-sdk-s3'
 gem 'bcrypt'
 gem 'bootsnap', require: false
+gem 'dotenv-rails'
 gem 'importmap-rails'
 gem 'pg'
 gem 'propshaft'

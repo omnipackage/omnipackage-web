@@ -44,6 +44,7 @@ ssh -T $USER@$HOST <<EOL
   set -xEeuo pipefail
   cd ~/.rbenv/ && git pull && cd ~/.rbenv/plugins/ruby-build/ && git pull
   cd $DIR
+  git fetch
   git checkout $BRANCH
   git pull
 

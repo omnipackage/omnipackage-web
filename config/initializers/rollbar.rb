@@ -4,9 +4,9 @@
 
   config.enable_rails_error_subscriber = true
 
-  config.access_token = ::Rails.application.credentials.dig(:rollbar, :api_key) || ::ENV['OMNIPACKAGE_ROLLBAR_API_KEY']
+  config.access_token = ::ENV['ROLLBAR_API_KEY']
 
-  config.enabled = ::Rails.env.production? || ::ENV['OMNIPACKAGE_ROLLBAR_API_KEY'].present?
+  config.enabled = config.access_token.present?
 
   # By default, Rollbar will try to call the `current_user` controller method
   # to fetch the logged-in user object, and then call that object's `id`
@@ -78,7 +78,7 @@
   })
   config.populate_empty_backtraces = true
 
-  js_api_key = ::Rails.application.credentials.dig(:rollbar, :js_api_key)
+  js_api_key = ::ENV['ROLLBAR_API_KEY_JS']
   config.js_enabled = config.enabled && js_api_key.present?
   config.js_options = {
     accessToken: js_api_key,
