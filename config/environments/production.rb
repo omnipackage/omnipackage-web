@@ -93,4 +93,6 @@ require 'active_support/core_ext/integer/time'
 
   config.hosts << 'localhost'
   config.hosts << ::ENV['SERVE_HOSTNAME'] if ::ENV['SERVE_HOSTNAME'].present?
+
+  config.silence_healthcheck_path = '/up'
 end
