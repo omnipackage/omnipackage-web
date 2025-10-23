@@ -1,5 +1,5 @@
 ::CI.run do
-  step 'Setup', 'bin/setup'
+  step 'Setup', 'bin/setup --skip-server'
   step 'Lint', 'bundle exec rubocop -DP'
 
   step 'Brakeman', 'bundle exec brakeman --no-pager'

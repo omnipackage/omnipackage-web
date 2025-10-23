@@ -31,4 +31,5 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
+      - run: bin/setup
       - run: bin/ci
