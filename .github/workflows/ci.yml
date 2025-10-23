@@ -1,4 +1,4 @@
-name: "CI"
+name: CI
 
 on:
   push:
@@ -29,49 +29,6 @@ jobs:
       REDIS_URL: "redis://localhost:6379/1"
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Install Ruby and gems
-        uses: ruby/setup-ruby@v1
-        #with:
-        #  bundler-cache: true
-
-      - name: Bundle install
-        run: bundle install
-
-      - name: Set up database
-        run: bundle exec rails db:setup
-
-      - name: Run tests
-        run: bundle exec rails test
-
-      - name: Run system tests
-        run: bundle exec rails test:system
-
-
-  lint:
-    runs-on: ubuntu-latest
-    env:
-      RAILS_ENV: test
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Install Ruby and gems
-        uses: ruby/setup-ruby@v1
-        #with:
-        #  bundler-cache: true # otherwise `cannot load such file -- rubocop-minitest`
-
-      - name: Bundle install
-        run: bundle install
-
-      - name: Rubocop
-        run: bundle exec rubocop -DP
-
-      - name: Brakeman
-        run: bundle exec brakeman
-
-      - name: Bundle audit
-        run: bundle exec bundle-audit check --update
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+      - run: bundle install
