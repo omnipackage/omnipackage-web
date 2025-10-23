@@ -7,7 +7,7 @@ on:
     branches: [ "master" ]
 
 jobs:
-  ci:
+  rails_ci:
     runs-on: ubuntu-latest
     services:
       postgres:
