@@ -7,7 +7,7 @@ on:
     branches: [ "master" ]
 
 jobs:
-  test:
+  ci:
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -31,4 +31,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
-      - run: bundle install
+      - run: bin/ci
