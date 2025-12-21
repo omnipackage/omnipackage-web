@@ -3,7 +3,7 @@ class InboundWebhooksController < ::ActionController::Base # rubocop: disable Ra
   before_action :verify!
 
   def trigger
-    ::AsyncTaskStarterJob.perform_later(webhook.project_id)
+    webhook.trigger_async!
     head(:ok)
   rescue ::ActiveRecord::RecordInvalid
     head(:unprocessable_content)

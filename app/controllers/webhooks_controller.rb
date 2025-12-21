@@ -53,7 +53,9 @@ class WebhooksController < ::ApplicationController
   private
 
   def webhook_params
-    params.expect(webhook: [:key, :secret])
+    pm = params.expect(webhook: [:key, :secret, :debounce])
+    pm[:debounce] = ActiveSupport::Duration.build(pm[:debounce].to_i)
+    pm
   end
 
   def find_project

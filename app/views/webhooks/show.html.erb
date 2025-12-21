@@ -6,6 +6,10 @@
 curl -X POST <%= trigger_webhook_url(@webhook.key) %><%= @webhook.secret.present? ? " -H '#{@webhook.sample_header_github}" : ''%>
   </pre>
 
+  <p>
+    Last trigger: <%= @webhook.last_trigger_at || 'never' %>
+  </p>
+
   <%= render partial: 'webhooks/form', locals: { webhook: @webhook } %>
 
   <div class="btn-group" role="group" aria-label="webhooks buttons">

@@ -20,6 +20,22 @@
         </div>
       </div>
 
+      <div class="mb-5">
+        <%= f.label :debounce, class: 'form-label' %>
+        <div id="debounce-help" class="form-text">
+          Within this period in seconds after last trigger any new webhooks will be ignored. 0 means no debounce.
+        </div>
+        <%= f.number_field :debounce,
+              value:  webhook.debounce.to_i,
+              class:  "form-control #{webhook.errors.include?(:debounce) ? 'is-invalid' : ''}",
+              aria:   { describedby:  'validation-error-debounce debounce-help' },
+              placeholder: ''
+        %>
+        <div id="validation-error-debounce" class="invalid-feedback d-block">
+          <%= webhook.errors.messages_for(:debounce).to_sentence %>
+        </div>
+      </div>
+
       <%= f.submit 'Save', class: 'btn btn-primary' %>
     <% end %>
   </div>

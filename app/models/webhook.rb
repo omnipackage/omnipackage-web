@@ -5,6 +5,9 @@ class Webhook < ::ApplicationRecord
   belongs_to :project, class_name: '::Project'
 
   validates :key, presence: true, uniqueness: true
+  validates :debounce, presence: true
+
+  attribute :debounce, default: -> { 10.seconds }
 
   before_validation do
     self.secret = nil if secret.blank?
@@ -24,5 +27,16 @@ class Webhook < ::ApplicationRecord
     return unless secret
 
     'X-Hub-Signature-256: sha256=' + sha256_hmac(payload_body)
+  end
+
+  def can_trigger_now?
+    !last_trigger_at || (last_trigger_at + debounce) < ::Time.now.utc
+  end
+
+  def trigger_async!
+    return unless can_trigger_now?
+
+    ::AsyncTaskStarterJob.perform_later(project_id)
+    update(last_trigger_at: ::Time.now.utc)
   end
 end
