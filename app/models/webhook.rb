@@ -36,7 +36,7 @@ class Webhook < ::ApplicationRecord
   def trigger_async!
     return unless can_trigger_now?
 
-    ::AsyncTaskStarterJob.perform_later(project_id)
+    ::AsyncTaskStarterJob.set(wait: 5.seconds).perform_later(project_id)
     update(last_trigger_at: ::Time.now.utc)
   end
 end
