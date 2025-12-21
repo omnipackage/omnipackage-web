@@ -10,6 +10,7 @@ class SessionsTest < ::ApplicationSystemTestCase
     visit identity_account_path
 
     click_on 'Devices & Sessions'
+
     assert_selector 'h5', text: 'Sessions'
   end
 
@@ -18,6 +19,7 @@ class SessionsTest < ::ApplicationSystemTestCase
     fill_in 'Email', with: @user.email
     fill_in 'Password', with: 'Secret1*3*5*'
     find('input[name="commit"]').click
+
     assert_text 'Signed in successfully'
   end
 
@@ -26,6 +28,7 @@ class SessionsTest < ::ApplicationSystemTestCase
     visit identity_account_path
 
     click_on 'Log out'
+
     assert_text 'That session has been logged out'
   end
 end

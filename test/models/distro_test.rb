@@ -2,15 +2,15 @@ require 'test_helper'
 
 class DistroTest < ::ActiveSupport::TestCase
   test 'all distros valid' do
-    assert ::Distro.all.size.positive?
+    assert_predicate ::Distro.all.size, :positive?
     ::Distro.all.each do |d| # rubocop: disable Rails/FindEach
-      assert d.id.is_a?(::String)
-      assert d.name.is_a?(::String)
-      assert d.setup.is_a?(::Array)
-      assert d.setup.size.positive?
-      assert %w[rpm deb].include?(d.package_type)
+      assert_kind_of ::String, d.id
+      assert_kind_of ::String, d.name
+      assert_kind_of ::Array, d.setup
+      assert_predicate d.setup.size, :positive?
+      assert_includes %w[rpm deb], d.package_type
       d.setup.each do |s|
-        assert s.is_a?(::String)
+        assert_kind_of ::String, s
       end
     end
   end

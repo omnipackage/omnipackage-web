@@ -2,9 +2,9 @@ require 'test_helper'
 
 class WebhookTest < ::ActiveSupport::TestCase
   test 'validations' do
-    assert build(:webhook).valid?
-    assert build(:webhook, key: nil).invalid?
-    assert build(:webhook, project: nil).invalid?
+    assert_predicate build(:webhook), :valid?
+    assert_predicate build(:webhook, key: nil), :invalid?
+    assert_predicate build(:webhook, project: nil), :invalid?
   end
 
   test 'verify signature github' do

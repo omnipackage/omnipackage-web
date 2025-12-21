@@ -8,6 +8,7 @@ module Identity
 
     test 'should get new' do
       get new_identity_password_reset_url
+
       assert_response :success
     end
 
@@ -15,6 +16,7 @@ module Identity
       sid = @user.password_reset_tokens.create.signed_id(expires_in: 20.minutes)
 
       get edit_identity_password_reset_url(sid:)
+
       assert_response :success
     end
 
@@ -50,6 +52,7 @@ module Identity
       sid = @user.password_reset_tokens.create.signed_id(expires_in: 20.minutes)
 
       patch identity_password_reset_url, params: { sid:, password: 'Secret6*4*2*', password_confirmation: 'Secret6*4*2*' }
+
       assert_redirected_to sign_in_url
     end
 
@@ -57,6 +60,7 @@ module Identity
       sid_exp = @user.password_reset_tokens.create.signed_id(expires_in: 0.minutes)
 
       patch identity_password_reset_url, params: { sid: sid_exp, password: 'Secret6*4*2*', password_confirmation: 'Secret6*4*2*' }
+
       assert_redirected_to new_identity_password_reset_url
       assert_equal 'That password reset link is invalid', flash[:alert]
     end

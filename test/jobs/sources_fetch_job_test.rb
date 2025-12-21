@@ -7,6 +7,7 @@ class SourcesFetchJobTest < ::ActiveJob::TestCase
     o = create(:project_sources_tarball)
     original_timestamp = o.updated_at
     ::SourcesFetchJob.perform_now(o.project_id)
-    assert o.reload.updated_at > original_timestamp
+
+    assert_operator o.reload.updated_at, :>, original_timestamp
   end
 end

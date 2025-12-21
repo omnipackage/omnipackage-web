@@ -23,6 +23,7 @@ class ProjectsFlowTest < ::ActionDispatch::IntegrationTest
   test 'create project' do
     assert_difference('@user.projects.count') do
       post projects_path, params: { project: { name: 'TestProject', sources_location: 'git@someurl.com/test', sources_kind: 'git' } }
+
       assert_redirected_to projects_path
     end
     assert_enqueued_with job: ::SourcesFetchJob, args: [@user.projects.first.id]
@@ -31,6 +32,7 @@ class ProjectsFlowTest < ::ActionDispatch::IntegrationTest
   test 'not create invalid project' do
     assert_no_difference('@user.projects.count') do
       post projects_path, params: { project: { name: 'TestProject', sources_location: 'git@someurl.com/test', sources_kind: 'git', sources_subdir: '../../../etc/passwd' } }
+
       assert_response :unprocessable_content
     end
   end
@@ -39,6 +41,7 @@ class ProjectsFlowTest < ::ActionDispatch::IntegrationTest
     project = create(:project, user: @user)
     assert_difference('@user.projects.count', -1) do
       delete project_path(project)
+
       assert_redirected_to projects_path
     end
   end

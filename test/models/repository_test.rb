@@ -2,12 +2,13 @@ require 'test_helper'
 
 class RepositoryTest < ::ActiveSupport::TestCase
   test 'valid factory' do
-    assert build(:repository).valid?
-    assert build(:repository, distro_id: 'ololo').invalid?
+    assert_predicate build(:repository), :valid?
+    assert_predicate build(:repository, distro_id: 'ololo'), :invalid?
   end
 
   test 'gpg keys' do
     repo = create(:repository)
+
     assert_not repo.with_own_gpg_key?
 
     gpg = ::Gpg.new.generate_keys(::Faker::Internet.username, ::Faker::Internet.email)

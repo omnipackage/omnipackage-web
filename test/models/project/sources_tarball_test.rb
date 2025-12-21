@@ -15,12 +15,14 @@ class Project
         ::ShellUtil.decompress(o.tarball.download, tmpdir)
 
         extracted = ::Dir.glob(tmpdir + '/**/*')
+
         assert_equal ::Dir.glob(sources_location.to_s + '/**/*').size, extracted.size
 
         assert_equal ::File.read(sources_location.join('.omnipackage/config.yml')), ::File.read("#{tmpdir}/.omnipackage/config.yml")
 
         extracted.each do |fp|
           src_file = ::Rails.root.join(sources_location, fp.remove(tmpdir + '/'))
+
           assert_equal ::File.read(src_file), ::File.read(fp)
         end
       ensure

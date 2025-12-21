@@ -5,6 +5,7 @@ plugins:
 - rubocop-thread_safety
 - rubocop-factory_bot
 - rubocop-capybara
+- rubocop-minitest
 
 AllCops:
   NewCops: enable
@@ -48,4 +49,7 @@ Layout/HeredocIndentation:
   Enabled: false
 
 Layout/FirstHashElementIndentation:
+  Enabled: false
+
+Minitest/MultipleAssertions:
   Enabled: false

@@ -18,8 +18,8 @@ minio: MINIO_ROOT_USER=`bundle exec rails runner 'puts ::ENV["MINIO_ACCESS_KEY_I
 
 #
 # mkdocs documentation in sibling folder
-docs: test -f ../omnipackage-docs/Makefile && cd ../omnipackage-docs && make
+#docs: test -f ../omnipackage-docs/Makefile && cd ../omnipackage-docs && make
 
 #
 # mkdocs documentation in sibling folder
-landing: test -f ../landing/Makefile && cd ../landing && make
+#landing: test -f ../landing/Makefile && cd ../landing && make
