@@ -18,7 +18,8 @@ class TaskTest < ::ActiveSupport::TestCase
   test 'create' do
     project = create(:project_with_sources)
     ::Task::Starter.new(project).call
+    active_distros = (project.distros.map(&:id) & ::Distro.active_ids)
 
-    assert_equal 1, project.tasks.count
+    assert_equal active_distros.count, project.tasks.count
   end
 end

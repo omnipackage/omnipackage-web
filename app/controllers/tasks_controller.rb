@@ -22,18 +22,20 @@ class TasksController < ::ApplicationController
     breadcrumb.add("Task #{@task.id}")
   end
 
-  def create # rubocop: disable Metrics/AbcSize, Metrics/MethodLength
-    task = ::Task::Starter.new(project, skip_fetch: params[:skip_fetch] == 'true', distro_ids: params[:distro_ids].presence).call
-    if task.nil?
+  def create # rubocop: disable Metrics/AbcSize, Metrics/MethodLength, Metrics/PerceivedComplexity
+    tasks = ::Task::Starter.new(project, skip_fetch: params[:skip_fetch] == 'true', distro_ids: params[:distro_ids].presence).call
+    if tasks.empty?
       redirect_back_or_to(tasks_path, alert: 'Pending task already exists, skipping')
-    elsif task.valid?
+    elsif tasks.all?(&:valid?)
       if params[:no_redirect] == 'true'
         redirect_back_or_to(tasks_path)
+      elsif tasks.size == 1
+        redirect_to(tasks_path(project_id: project.id, highlight: tasks.sole.id))
       else
-        redirect_to(tasks_path(project_id: project.id, highlight: task.id))
+        redirect_to(tasks_path(project_id: project.id))
       end
     else
-      redirect_back_or_to(tasks_path, alert: "Error creating CI task: #{task.errors.full_messages.to_sentence}")
+      redirect_back_or_to(tasks_path, alert: "Error creating CI task: #{task.find(&:invalid?).errors.full_messages.to_sentence}")
     end
   end
 

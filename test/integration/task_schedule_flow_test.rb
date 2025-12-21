@@ -23,11 +23,12 @@ class TaskScheduleFlowTest < ::ActionDispatch::IntegrationTest
     perform_enqueued_jobs do
       post tasks_path(project_id: @project.id, skip_fetch: 'true')
     end
+    active_distros = (@project.distros.map(&:id) & ::Distro.active_ids)
 
-    assert_equal 1, @project.tasks.count
+    assert_equal active_distros.count, @project.tasks.count
     task = @project.tasks.first
 
-    assert_redirected_to tasks_path(project_id: @project.id, highlight: task.id)
+    assert_redirected_to tasks_path(project_id: @project.id)
     assert_predicate task, :pending_build?
 
     post agent_api_path, headers: { 'Authorization' => "Bearer #{@agent.apikey}" }, params: { payload: { state: 'idle' } }

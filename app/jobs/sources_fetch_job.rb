@@ -2,32 +2,31 @@ class SourcesFetchJob < ::ApplicationJob
   queue_as :long
 
   class << self
-    def start(project, task = nil)
+    def start(project, tasks = [])
       return if project.fetching?
-      return if task && !task.pending_fetch?
 
       project.fetching!
-      perform_later(project.id, task&.id)
+      perform_later(project.id, tasks.select(&:pending_fetch?).map(&:id))
     end
   end
 
-  def perform(project_id, task_id = nil)
+  def perform(project_id, task_ids = [])
     project = ::Project.find(project_id)
-    task = ::Task.find(task_id) if task_id
+    tasks = ::Task.where(id: task_ids)
     source = project.sources.sync
 
     return error!(project, 'no sources') if !source
     return error!(project, 'no build config') if !source.config
     return error!(project, 'no sources tarball') if !source.tarball
 
-    success!(project, source, task)
+    success!(project, source, tasks)
   rescue ::StandardError => e
     error!(project, e.message)
   end
 
   private
 
-  def success!(project, source, task) # rubocop: disable Metrics/MethodLength
+  def success!(project, source, tasks) # rubocop: disable Metrics/MethodLength
     project.transaction do
       tb = project.sources_tarball || project.build_sources_tarball
       tb.upload_tarball(source.tarball)
@@ -39,7 +38,7 @@ class SourcesFetchJob < ::ApplicationJob
       project.verified!
       project.create_default_repositories
     end
-    ::Task::Starter.new(project).sources_fetched(task)
+    ::Task::Starter.new(project).sources_fetched(tasks)
   end
 
   def error!(project, error_message)
