@@ -5,11 +5,12 @@ gem 'bcrypt'
 gem 'bootsnap', require: false
 gem 'dotenv-rails'
 gem 'importmap-rails'
-gem 'pg'
+gem 'pg', '< 1.6' # 1.6 fails on ruby 4, requires update to libpq
 gem 'propshaft'
 gem 'pry-rails'
 gem 'puma'
 gem 'rails'
+gem 'readline' # needed by pry
 gem 'redis'
 gem 'rollbar'
 gem 'sidekiq'
