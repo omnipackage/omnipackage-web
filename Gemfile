@@ -10,7 +10,6 @@ gem 'propshaft'
 gem 'pry-rails'
 gem 'puma'
 gem 'rails'
-gem 'readline' # needed by pry
 gem 'redis'
 gem 'rollbar'
 gem 'sidekiq'
