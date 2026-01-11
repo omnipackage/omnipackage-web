@@ -36,7 +36,7 @@ end
 
 group :test do
   gem 'capybara'
-  gem 'minitest', '< 6' # Minitest 6 is not compatible with Rails yet
+  gem 'minitest'
   gem 'selenium-webdriver'
 end
 
