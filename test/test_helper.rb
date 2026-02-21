@@ -1,9 +1,8 @@
 ::ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
 require 'rails/test_help'
-require 'sidekiq/testing'
 
-::Sidekiq::Testing.fake!
+::Sidekiq.testing!(:fake)
 ::Sidekiq.configure_client do |config|
   config.logger.level = ::Logger::WARN
 end
